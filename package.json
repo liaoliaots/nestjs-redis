@@ -1,0 +1,46 @@
+{
+    "name": "@liaoliao/nestjs-redis",
+    "version": "0.1.0",
+    "description": "Redis(ioredis) module for NestJS",
+    "author": "LiaoLiao",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "license": "MIT",
+    "keywords": [
+        "redis",
+        "ioredis",
+        "nestjs",
+        "nestjs-redis"
+    ],
+    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
+    },
+    "scripts": {
+        "prebuild": "rimraf dist",
+        "build": "concurrently --prefix index \"npm run prebuild\" \"tsc -p tsconfig.build.json\""
+    },
+    "devDependencies": {
+        "@nestjs/common": "^7.6.15",
+        "@typescript-eslint/eslint-plugin": "^4.22.1",
+        "@typescript-eslint/parser": "^4.22.1",
+        "concurrently": "^6.0.2",
+        "eslint": "^7.25.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-eslint-comments": "^3.2.0",
+        "eslint-plugin-functional": "^3.2.1",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.2.1",
+        "rimraf": "^3.0.2",
+        "tslib": "^2.2.0",
+        "typescript": "^4.2.4"
+    },
+    "peerDependencies": {
+        "ioredis": "^4.27.2"
+    }
+}
