@@ -17,6 +17,5 @@
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true
-    },
-    "include": ["src/**/*"]
+    }
 }
