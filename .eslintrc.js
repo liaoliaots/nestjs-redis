@@ -5,15 +5,12 @@ module.exports = {
         project: 'tsconfig.json',
         sourceType: 'module'
     },
-    plugins: ['@typescript-eslint', 'functional'],
+    plugins: ['@typescript-eslint'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:functional/external-recommended',
-        'plugin:functional/recommended',
-        'plugin:functional/stylitic',
         'plugin:eslint-comments/recommended',
         'plugin:prettier/recommended'
     ],
