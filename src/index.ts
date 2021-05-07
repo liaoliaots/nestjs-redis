@@ -1,1 +1,1 @@
-import { Injectable } from '@nestjs/common';
+export * from './redis.module';
