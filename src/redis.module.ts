@@ -1,11 +1,11 @@
 import { Module, DynamicModule } from '@nestjs/common';
-import { RedisOptions } from 'ioredis';
 import { RedisService } from './redis.service';
 import { REDIS_MODULE_OPTIONS } from './redis.constants';
+import { RedisModuleOptions, RedisModuleAsyncOptions } from './redis.interface';
 
 @Module({})
 export class RedisModule {
-    static forRoot(options: RedisOptions): DynamicModule {
+    static forRoot(options: RedisModuleOptions): DynamicModule {
         return {
             module: RedisModule,
             global: true,
@@ -18,5 +18,9 @@ export class RedisModule {
             ],
             exports: [RedisService]
         };
+    }
+
+    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
+        return {};
     }
 }

@@ -25,7 +25,8 @@
         "prebuild": "rimraf dist",
         "build": "concurrently --prefix index \"npm run prebuild\" \"tsc -p tsconfig.build.json\"",
         "lint": "eslint \"{src,tests}/**/*.ts\" --fix",
-        "test": "jest"
+        "test": "jest",
+        "test:cov": "jest --coverage"
     },
     "devDependencies": {
         "@nestjs/common": "^7.6.15",
@@ -66,7 +67,7 @@
         "collectCoverageFrom": [
             "**/*.(t|j)s"
         ],
-        "coverageDirectory": "../coverage",
+        "coverageDirectory": "./coverage",
         "testEnvironment": "node",
         "verbose": true,
         "moduleNameMapper": {
