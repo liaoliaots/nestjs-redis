@@ -5,7 +5,7 @@ module.exports = {
         project: 'tsconfig.json',
         sourceType: 'module'
     },
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
@@ -22,5 +22,7 @@ module.exports = {
     },
     ignorePatterns: ['.eslintrc.js', 'dist/*'],
     reportUnusedDisableDirectives: true,
-    rules: {}
+    rules: {
+        'tsdoc/syntax': 'warn'
+    }
 };

@@ -11,15 +11,17 @@ export interface RedisModuleOptions {
     name?: string | symbol | number;
     /**
      * Uses scheme-redis url or scheme-rediss url to specify connection options.
-     *
      * - scheme-redis: https://www.iana.org/assignments/uri-schemes/prov/redis
      * - scheme-rediss: https://www.iana.org/assignments/uri-schemes/prov/rediss
      * - ioredis related: https://github.com/luin/ioredis#connect-to-redis
      */
     url?: string;
     /**
+     * Indicates if this module is a global module.
+     */
+    isGlobal?: boolean;
+    /**
      * When a redis instance is created, this method will be called, and the new redis instance as arguments.
-     *
      * You can add some logic here, for example:
      * - listen the connection events: https://github.com/luin/ioredis#connection-events
      */

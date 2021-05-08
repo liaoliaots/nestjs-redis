@@ -41,6 +41,7 @@
         "eslint-plugin-eslint-comments": "^3.2.0",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-tsdoc": "^0.2.14",
         "jest": "^26.6.3",
         "prettier": "^2.2.1",
         "reflect-metadata": "^0.1.13",
