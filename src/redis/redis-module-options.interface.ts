@@ -1,5 +1,10 @@
-import { Redis, RedisOptions } from 'ioredis';
 import { Type, ModuleMetadata } from '@nestjs/common';
+import { Redis, RedisOptions } from 'ioredis';
+
+/**
+ * Interface for client name.
+ */
+export type ClientName = string | symbol;
 
 /**
  * Interface for redis module options.
@@ -8,7 +13,7 @@ export interface RedisModuleOptions {
     /**
      * Client name, must be unique.
      */
-    name?: string | symbol | number;
+    name: ClientName;
     /**
      * Uses scheme-redis url or scheme-rediss url to specify connection options.
      * - scheme-redis: https://www.iana.org/assignments/uri-schemes/prov/redis
@@ -17,11 +22,7 @@ export interface RedisModuleOptions {
      */
     url?: string;
     /**
-     * Indicates if this module is a global module.
-     */
-    isGlobal?: boolean;
-    /**
-     * When a redis instance is created, this method will be called, and the new redis instance as arguments.
+     * When a redis instance is created, this method will be called, and the instance as arguments.
      * You can add some logic here, for example:
      * - listen the connection events: https://github.com/luin/ioredis#connection-events
      */
@@ -35,7 +36,7 @@ export interface RedisModuleOptions {
 /**
  * Interface for redis module options factory.
  */
-export interface RedisModuleOptionsFactory {
+export interface RedisOptionsFactory {
     createRedisModuleOptions():
         | RedisModuleOptions
         | Promise<RedisModuleOptions>
@@ -47,10 +48,10 @@ export interface RedisModuleOptionsFactory {
  * Interface for async redis module options.
  */
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-    useExisting?: Type<RedisModuleOptionsFactory>;
-    useClass?: Type<RedisModuleOptionsFactory>;
+    useExisting?: Type<RedisOptionsFactory>;
+    useClass?: Type<RedisOptionsFactory>;
     useFactory?: (
-        ...args: unknown[]
+        ...args: any[]
     ) => RedisModuleOptions | Promise<RedisModuleOptions> | RedisModuleOptions[] | Promise<RedisModuleOptions[]>;
-    inject?: unknown[];
+    inject?: any[];
 }
