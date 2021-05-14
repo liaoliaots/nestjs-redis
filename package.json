@@ -13,6 +13,14 @@
         "nestjs",
         "nestjs-redis"
     ],
+    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
+    },
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc -p tsconfig.build.json",
@@ -21,14 +29,6 @@
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
-    },
-    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
-    },
-    "bugs": {
-        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
     },
     "dependencies": {
         "@sindresorhus/is": "^4.0.1",
