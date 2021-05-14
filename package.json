@@ -22,6 +22,14 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
     },
+    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
+    },
     "dependencies": {
         "@sindresorhus/is": "^4.0.1",
         "tslib": "^2.2.0"
@@ -75,12 +83,14 @@
             "^@/(.*)$": "<rootDir>/$1"
         }
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-angular"
+        ]
     },
-    "bugs": {
-        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
-    },
-    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme"
+    "lint-staged": {
+        "src/**/*.ts": [
+            "eslint"
+        ]
+    }
 }
