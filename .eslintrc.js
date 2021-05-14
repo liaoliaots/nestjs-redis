@@ -8,6 +8,8 @@ module.exports = {
     plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
         'eslint:recommended',
+        'plugin:import/errors',
+        'plugin:import/typescript',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
@@ -21,6 +23,14 @@ module.exports = {
         es2020: true
     },
     ignorePatterns: ['.eslintrc.js', 'dist/*'],
+    settings: {
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: false,
+                project: 'tsconfig.json'
+            }
+        }
+    },
     reportUnusedDisableDirectives: true,
     rules: {
         'tsdoc/syntax': 'warn'
