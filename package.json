@@ -27,6 +27,8 @@
         "tslib": "^2.2.0"
     },
     "devDependencies": {
+        "@commitlint/cli": "^12.1.4",
+        "@commitlint/config-angular": "^12.1.4",
         "@nestjs/common": "^7.6.15",
         "@nestjs/core": "^7.6.15",
         "@nestjs/testing": "^7.6.15",
