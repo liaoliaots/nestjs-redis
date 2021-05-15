@@ -13,14 +13,6 @@
         "nestjs",
         "nestjs-redis"
     ],
-    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
-    },
-    "bugs": {
-        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
-    },
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc -p tsconfig.build.json",
@@ -93,5 +85,13 @@
         "src/**/*.ts": [
             "eslint"
         ]
+    },
+    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
     }
 }

@@ -1,6 +1,6 @@
 import IORedis, { Redis } from 'ioredis';
 import { RedisModuleOptions } from './redis-module-options.interface';
-import { isNotEmpty } from '@/utils';
+import { isNotEmpty } from '../utils';
 
 /**
  * Creates redis client

@@ -11,9 +11,6 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "incremental": true,
-        "paths": {
-            "@/*": ["src/*"]
-        },
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true
