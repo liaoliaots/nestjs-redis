@@ -34,6 +34,19 @@ export interface RedisModuleOptions {
 }
 
 /**
+ * Interface for async redis module options.
+ */
+export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
+    useExisting?: Type<RedisOptionsFactory>;
+    useClass?: Type<RedisOptionsFactory>;
+    useFactory?: (
+        ...args: unknown[]
+    ) => RedisModuleOptions | Promise<RedisModuleOptions> | RedisModuleOptions[] | Promise<RedisModuleOptions[]>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    inject?: any[];
+}
+
+/**
  * Interface for redis module options factory.
  */
 export interface RedisOptionsFactory {
@@ -42,16 +55,4 @@ export interface RedisOptionsFactory {
         | Promise<RedisModuleOptions>
         | RedisModuleOptions[]
         | Promise<RedisModuleOptions[]>;
-}
-
-/**
- * Interface for async redis module options.
- */
-export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-    useExisting?: Type<RedisOptionsFactory>;
-    useClass?: Type<RedisOptionsFactory>;
-    useFactory?: (
-        ...args: any[]
-    ) => RedisModuleOptions | Promise<RedisModuleOptions> | RedisModuleOptions[] | Promise<RedisModuleOptions[]>;
-    inject?: any[];
 }

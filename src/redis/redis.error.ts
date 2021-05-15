@@ -1,11 +1,11 @@
 /**
- * Throws a custom error with a 500 status code
+ * Throws a Error.
  */
-export class RedisClientError extends Error {
+export class RedisError extends Error {
     constructor(message: string) {
         super(message);
 
+        this.name = RedisError.name;
         Error.captureStackTrace(this, this.constructor);
-        this.name = RedisClientError.name;
     }
 }
