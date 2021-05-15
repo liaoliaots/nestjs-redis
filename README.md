@@ -21,7 +21,11 @@
 ## Install
 
 ```sh
-npm install --save @liaoliao/nestjs-redis
+npm install --save @liaoliao/nestjs-redis ioredis
+```
+
+```sh
+npm install --save-dev @types/ioredis
 ```
 
 ## Author
