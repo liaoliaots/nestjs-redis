@@ -88,8 +88,8 @@
         ]
     },
     "lint-staged": {
-        "src/**/*.ts": [
-            "eslint"
+        "*.ts": [
+            "eslint --ext ts"
         ]
     },
     "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
