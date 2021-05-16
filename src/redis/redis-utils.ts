@@ -15,12 +15,3 @@ export const createClient = (options: RedisModuleOptions): Redis => {
 
     return client;
 };
-
-const a = new IORedis();
-a.get('1')
-    .then(value => {
-        console.log('value:', value);
-    })
-    .catch(err => {
-        console.log('err:', err);
-    });
