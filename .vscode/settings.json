@@ -1,4 +1,4 @@
 {
-    "eslint.validate": ["typescript", "javascript"],
+    "eslint.validate": ["javascript", "typescript"],
     "typescript.tsdk": "node_modules/typescript/lib"
 }
