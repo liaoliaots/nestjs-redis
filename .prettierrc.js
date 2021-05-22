@@ -10,11 +10,9 @@ module.exports = {
     bracketSpacing: true,
     jsxBracketSameLine: false,
     arrowParens: 'avoid',
-    requirePragma: false,
-    insertPragma: false,
     proseWrap: 'preserve',
-    htmlWhitespaceSensitivity: 'css',
+    htmlWhitespaceSensitivity: 'strict',
     vueIndentScriptAndStyle: true,
     endOfLine: 'auto',
-    embeddedLanguageFormatting: 'auto'
+    embeddedLanguageFormatting: 'off'
 };

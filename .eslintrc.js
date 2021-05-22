@@ -1,9 +1,11 @@
 module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaVersion: 2020,
-        project: 'tsconfig.json',
-        sourceType: 'module'
+        sourceType: 'module',
+        ecmaFeatures: {
+            impliedStrict: true
+        },
+        project: 'tsconfig.json'
     },
     plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
@@ -26,8 +28,7 @@ module.exports = {
     settings: {
         'import/resolver': {
             typescript: {
-                alwaysTryTypes: false,
-                project: 'tsconfig.json'
+                alwaysTryTypes: false
             }
         }
     },

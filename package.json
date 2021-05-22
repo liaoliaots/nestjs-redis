@@ -16,7 +16,6 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc -p tsconfig.build.json",
-        "lint": "eslint \"{src,test}/**/*.ts\"",
         "test": "jest",
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
@@ -86,11 +85,6 @@
     "commitlint": {
         "extends": [
             "@commitlint/config-angular"
-        ]
-    },
-    "lint-staged": {
-        "*.ts": [
-            "eslint --ext ts"
         ]
     },
     "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
