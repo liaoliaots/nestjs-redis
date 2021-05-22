@@ -2,7 +2,7 @@
     "name": "@liaoliao/nestjs-redis",
     "version": "0.1.0",
     "description": "Redis(ioredis) module for NestJS",
-    "author": "LiaoLiao",
+    "author": "LiaoLiao <yxiaosong002@gmail.com>",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "license": "MIT",
@@ -19,7 +19,8 @@
         "test": "jest",
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
+        "madge": "madge --image dist/dependencies-graph.svg dist/index.js",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@sindresorhus/is": "^4.0.1",
@@ -87,12 +88,12 @@
             "@commitlint/config-angular"
         ]
     },
-    "homepage": "https://github.com/DevAngsy/nestjs-redis#readme",
+    "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/DevAngsy/nestjs-redis.git"
+        "url": "https://github.com/liaoliaots/nestjs-redis.git"
     },
     "bugs": {
-        "url": "https://github.com/DevAngsy/nestjs-redis/issues"
+        "url": "https://github.com/liaoliaots/nestjs-redis/issues"
     }
 }
