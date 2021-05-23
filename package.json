@@ -15,13 +15,13 @@
     ],
     "scripts": {
         "prebuild": "rimraf dist",
+        "prepare": "husky install",
         "build": "tsc -p tsconfig.build.json",
         "test": "jest",
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
-        "madge": "madge --image dist/dependencies-graph.svg dist/index.js",
-        "prepare": "husky install"
+        "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
     },
     "dependencies": {
         "@sindresorhus/is": "^4.0.1",
@@ -33,6 +33,7 @@
         "@nestjs/common": "7.6.17",
         "@nestjs/core": "7.6.17",
         "@nestjs/platform-fastify": "7.6.17",
+        "@nestjs/terminus": "7.2.0",
         "@nestjs/testing": "7.6.17",
         "@types/ioredis": "4.26.4",
         "@types/jest": "26.0.23",
@@ -62,6 +63,7 @@
     "peerDependencies": {
         "@nestjs/common": "7.x",
         "@nestjs/core": "7.x",
+        "@nestjs/terminus": "7.x",
         "ioredis": "4.x"
     },
     "jest": {
