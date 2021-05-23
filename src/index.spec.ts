@@ -1,10 +1,12 @@
-import * as allExports from './';
-import { isDefined } from './utils';
+import * as interfaces from './';
 
-test('should have 1 exports', () => {
-    expect(Object.keys(allExports)).toHaveLength(1);
+test('should export 2 interfaces', () => {
+    expect(Object.keys(interfaces)).toHaveLength(2);
 });
 
-test('each of exports should be defined', () => {
-    Object.values(allExports).forEach(value => expect(isDefined(value)).toBe(true));
+test('each of interfaces should be defined', () => {
+    Object.values(interfaces).forEach(value => {
+        expect(value).not.toBeNull();
+        expect(value).not.toBeUndefined();
+    });
 });

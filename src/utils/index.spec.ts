@@ -1,7 +1,7 @@
 import { isDefined, isEmpty, isNotEmpty } from './';
 
 describe(isDefined.name, () => {
-    const validValues = [0, 1, '', '0', false, true];
+    const validValues = [false, 0, '', NaN, true, 1, '0'];
     const invalidValues = [undefined, null];
 
     test('should be true if method said that it is valid', () => {
@@ -15,7 +15,7 @@ describe(isDefined.name, () => {
 
 describe(isEmpty.name, () => {
     const validValues = ['', undefined, null];
-    const invalidValues = [0, 1, '0', false, true];
+    const invalidValues = [false, 0, NaN, true, 1, '0'];
 
     test('should be true if method said that it is valid', () => {
         validValues.forEach(value => expect(isEmpty(value)).toBe(true));
@@ -27,7 +27,7 @@ describe(isEmpty.name, () => {
 });
 
 describe(isNotEmpty.name, () => {
-    const validValues = [0, 1, '0', false, true];
+    const validValues = [false, 0, NaN, true, 1, '0'];
     const invalidValues = ['', undefined, null];
 
     test('should be true if method said that it is valid', () => {
