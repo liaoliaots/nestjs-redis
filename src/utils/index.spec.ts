@@ -1,6 +1,6 @@
 import { isDefined, isEmpty, isNotEmpty } from './';
 
-describe(isDefined.name, () => {
+describe(`${isDefined.name}`, () => {
     const validValues = [false, 0, '', NaN, true, 1, '0'];
     const invalidValues = [undefined, null];
 
@@ -13,7 +13,7 @@ describe(isDefined.name, () => {
     });
 });
 
-describe(isEmpty.name, () => {
+describe(`${isEmpty.name}`, () => {
     const validValues = ['', undefined, null];
     const invalidValues = [false, 0, NaN, true, 1, '0'];
 
@@ -26,7 +26,7 @@ describe(isEmpty.name, () => {
     });
 });
 
-describe(isNotEmpty.name, () => {
+describe(`${isNotEmpty.name}`, () => {
     const validValues = [false, 0, NaN, true, 1, '0'];
     const invalidValues = ['', undefined, null];
 
