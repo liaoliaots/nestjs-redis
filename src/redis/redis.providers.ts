@@ -6,7 +6,7 @@ import {
     RedisOptionsFactory,
     ClientNamespace
 } from './redis-module-options.interface';
-import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { RedisError } from '../errors/redis.error';
 import { RedisClients } from './redis.interface';
 import { createClient } from './redis-utils';
@@ -89,6 +89,14 @@ export const redisClientsProvider: Provider = {
     provide: REDIS_CLIENTS,
     useFactory: (options: RedisModuleOptions | RedisModuleOptions[]): RedisClients => {
         const clients: RedisClients = new Map<ClientNamespace, Redis>();
+
+        if (Array.isArray(options)) {
+            options.forEach(item => clients.set(item.namespace ?? DEFAULT_REDIS_CLIENT, createClient(item)));
+
+            return clients;
+        }
+
+        clients.set(options.namespace ?? DEFAULT_REDIS_CLIENT, createClient(options));
 
         return clients;
     },

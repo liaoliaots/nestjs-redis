@@ -4,6 +4,7 @@ export { DEFAULT_REDIS_CLIENT } from './redis/redis.constants';
 
 // * Types & Interfaces
 export {
+    ClientNamespace,
     RedisModuleOptions,
     RedisModuleAsyncOptions,
     RedisOptionsFactory

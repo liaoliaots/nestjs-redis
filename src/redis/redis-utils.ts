@@ -1,6 +1,5 @@
 import IORedis, { Redis } from 'ioredis';
 import { RedisModuleOptions } from './redis-module-options.interface';
-import { isNotEmpty } from '../utils';
 
 /**
  * Creates redis client.
@@ -8,7 +7,7 @@ import { isNotEmpty } from '../utils';
 export const createClient = (options: RedisModuleOptions): Redis => {
     const { url, ...redisOptions } = options;
 
-    const client = isNotEmpty(url) ? new IORedis(url, redisOptions) : new IORedis(options);
+    const client = url ? new IORedis(url, redisOptions) : new IORedis(options);
 
     return client;
 };
