@@ -10,6 +10,8 @@ import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.cons
 import { RedisError } from '../errors/redis.error';
 import { RedisClients } from './redis.interface';
 import { createClient } from './redis-utils';
+import { namespaces } from './redis.decorator';
+import { parseNamespace } from './redis-utils';
 
 /**
  * Creates an array of providers for forRoot.
@@ -101,4 +103,27 @@ export const redisClientsProvider: Provider = {
         return clients;
     },
     inject: [REDIS_OPTIONS]
+};
+
+/**
+ * Creates a list of redis client providers.
+ */
+export const createRedisClientProviders = (): Provider[] => {
+    const providers: Provider[] = [];
+
+    namespaces.forEach(
+        (namespace): Provider => ({
+            provide: namespace,
+            useFactory: (redisClients: RedisClients) => {
+                const client = redisClients.get(namespace);
+
+                if (!client) throw new RedisError(`Unable to find the '${parseNamespace(namespace)}' client`);
+
+                return client;
+            },
+            inject: [REDIS_CLIENTS]
+        })
+    );
+
+    return providers;
 };

@@ -1,5 +1,5 @@
 import { Redis } from 'ioredis';
-import { createClient } from './redis-utils';
+import { createClient, parseNamespace } from './redis-utils';
 
 let client: Redis;
 
@@ -35,7 +35,7 @@ describe('url', () => {
 });
 
 describe('options', () => {
-    test('should get an error when creating client properly via empty options on a redis server with password', async () => {
+    test('should get an error when creating client properly via empty options on the redis server with a password', async () => {
         client = createClient({});
 
         const err = await new Promise(resolve => {
@@ -54,5 +54,25 @@ describe('options', () => {
         const res = await client.ping();
 
         expect(res).toBe('PONG');
+    });
+});
+
+describe(`${parseNamespace.name}`, () => {
+    test('if the value is a string, the result should be equal to this string', () => {
+        const value = 'a namespace';
+
+        expect(parseNamespace(value)).toBe(value);
+    });
+
+    test('if the value is a symbol, the result should be equal to symbol.toString()', () => {
+        const value = Symbol('a namespace');
+
+        expect(parseNamespace(value)).toBe(value.toString());
+    });
+
+    test('if the value is neither string nor symbol, the result should be unknown', () => {
+        const value = undefined;
+
+        expect(parseNamespace(value)).toBe('unknown');
     });
 });

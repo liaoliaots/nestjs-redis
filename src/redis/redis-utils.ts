@@ -11,3 +11,13 @@ export const createClient = (options: RedisModuleOptions): Redis => {
 
     return client;
 };
+
+/**
+ * Parses namespace.
+ */
+export const parseNamespace = (namespace: unknown): string => {
+    if (typeof namespace === 'string') return namespace;
+    if (typeof namespace === 'symbol') return namespace.toString();
+
+    return 'unknown';
+};

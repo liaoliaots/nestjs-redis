@@ -4,6 +4,7 @@ import { REDIS_CLIENTS } from './redis.constants';
 import { RedisClients } from './redis.interface';
 import { ClientNamespace } from './redis-module-options.interface';
 import { RedisError } from '../errors/redis.error';
+import { parseNamespace } from './redis-utils';
 
 @Injectable()
 export class RedisService {
@@ -17,22 +18,12 @@ export class RedisService {
     }
 
     /**
-     * Parses client name.
+     * Gets client via namespace.
      */
-    private parseName(name: ClientNamespace): string {
-        if (typeof name === 'string') return name;
-        if (typeof name === 'symbol') return name.toString();
+    getClient(namespace: ClientNamespace): Redis {
+        const client = this.redisClients.get(namespace);
 
-        return 'unknown';
-    }
-
-    /**
-     * Gets client via client name.
-     */
-    getClient(name: ClientNamespace): Redis {
-        const client = this.redisClients.get(name);
-
-        if (!client) throw new RedisError(`Unable to find the '${this.parseName(name)}' client`);
+        if (!client) throw new RedisError(`Unable to find the '${parseNamespace(namespace)}' client`);
 
         return client;
     }
