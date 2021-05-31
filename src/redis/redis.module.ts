@@ -1,4 +1,4 @@
-import { Module, DynamicModule, Global, Provider } from '@nestjs/common';
+import { Module, DynamicModule, Provider, Global } from '@nestjs/common';
 import { RedisModuleOptions, RedisModuleAsyncOptions } from './redis-module-options.interface';
 import { RedisService } from './redis.service';
 import { createProviders, createAsyncProviders } from './redis.providers';
@@ -9,7 +9,7 @@ export class RedisModule {
     /**
      * Register the module synchronously.
      */
-    static forRoot(options: RedisModuleOptions | RedisModuleOptions[]): DynamicModule {
+    static forRoot(options: RedisModuleOptions | RedisModuleOptions[] = {}): DynamicModule {
         const providers: Provider[] = [...createProviders(options), RedisService];
 
         return {

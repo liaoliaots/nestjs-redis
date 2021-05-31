@@ -1,9 +1,13 @@
 import { Provider } from '@nestjs/common';
 import { Redis } from 'ioredis';
-import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory } from './redis-module-options.interface';
+import {
+    RedisModuleOptions,
+    RedisModuleAsyncOptions,
+    RedisOptionsFactory,
+    ClientNamespace
+} from './redis-module-options.interface';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
-import { RedisError } from './redis.error';
-import { ClientName } from './redis-module-options.interface';
+import { RedisError } from '../errors/redis.error';
 import { RedisClients } from './redis.interface';
 import { createClient } from './redis-utils';
 
@@ -15,7 +19,8 @@ export const createProviders = (options: RedisModuleOptions | RedisModuleOptions
         {
             provide: REDIS_OPTIONS,
             useValue: options
-        }
+        },
+        redisClientsProvider
     ];
 };
 
@@ -24,20 +29,21 @@ export const createProviders = (options: RedisModuleOptions | RedisModuleOptions
  */
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
     if (!options.useFactory && !options.useClass && !options.useExisting) {
-        throw new RedisError('configuration is missing, must provide useFactory or useClass or useExisting');
+        throw new RedisError('configuration is missing, must provide one of useFactory, useClass and useExisting');
     }
 
     if (options.useClass) {
         return [
-            createAsyncOptionsProvider(options),
             {
                 provide: options.useClass,
                 useClass: options.useClass
-            }
+            },
+            createAsyncOptionsProvider(options),
+            redisClientsProvider
         ];
     }
 
-    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options)];
+    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options), redisClientsProvider];
 
     return [];
 };
@@ -77,15 +83,12 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
 };
 
 /**
- * Creates redis clients rrovider.
+ * Creates redis clients provider.
  */
-export const redisClientProvider: Provider = {
+export const redisClientsProvider: Provider = {
     provide: REDIS_CLIENTS,
     useFactory: (options: RedisModuleOptions | RedisModuleOptions[]): RedisClients => {
-        const clients: RedisClients = new Map<ClientName, Redis>();
-
-        if (Array.isArray(options)) options.forEach(item => clients.set(item.name, createClient(item)));
-        else clients.set(options.name, createClient(options));
+        const clients: RedisClients = new Map<ClientNamespace, Redis>();
 
         return clients;
     },

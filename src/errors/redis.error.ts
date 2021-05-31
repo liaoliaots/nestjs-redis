@@ -1,5 +1,5 @@
 /**
- * Throws a Error.
+ * Throws an Error with a 500 status code.
  */
 export class RedisError extends Error {
     constructor(message: string) {

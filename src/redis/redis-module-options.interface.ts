@@ -1,53 +1,43 @@
 import { Type, ModuleMetadata } from '@nestjs/common';
-import { Redis, RedisOptions } from 'ioredis';
+import { RedisOptions } from 'ioredis';
 
 /**
- * Interface for client name.
+ * Type for client name.
  */
-export type ClientName = string | symbol;
+export type ClientNamespace = string | symbol;
 
 /**
- * Interface for redis module options.
+ * Interface for the options of redis module.
  */
-export interface RedisModuleOptions {
+export interface RedisModuleOptions extends RedisOptions {
     /**
-     * Client name, must be unique.
+     * The client name must be unique.
      */
-    name: ClientName;
+    namespace?: ClientNamespace;
     /**
-     * Uses scheme-redis url or scheme-rediss url to specify connection options.
-     * - scheme-redis: https://www.iana.org/assignments/uri-schemes/prov/redis
-     * - scheme-rediss: https://www.iana.org/assignments/uri-schemes/prov/rediss
-     * - ioredis related: https://github.com/luin/ioredis#connect-to-redis
+     * The redis:// URL or rediss:// URL to specify connection options.
+     * - redis:// https://www.iana.org/assignments/uri-schemes/prov/redis
+     * - rediss:// https://www.iana.org/assignments/uri-schemes/prov/rediss
      */
     url?: string;
-    /**
-     * When a redis instance is created, this method will be called, and the instance as arguments.
-     * You can add some logic here, for example:
-     * - listen the connection events: https://github.com/luin/ioredis#connection-events
-     */
-    onClientCreated?: (client: Redis) => void;
-    /**
-     * Connection options of ioredis: https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options
-     */
-    redisOptions?: RedisOptions;
 }
 
 /**
- * Interface for async redis module options.
+ * Interface for the async options of redis module.
  */
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
     useExisting?: Type<RedisOptionsFactory>;
     useClass?: Type<RedisOptionsFactory>;
     useFactory?: (
-        ...args: unknown[]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...args: any[]
     ) => RedisModuleOptions | Promise<RedisModuleOptions> | RedisModuleOptions[] | Promise<RedisModuleOptions[]>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inject?: any[];
 }
 
 /**
- * Interface for redis module options factory.
+ * Interface for the factory class of redis module options.
  */
 export interface RedisOptionsFactory {
     createRedisModuleOptions():

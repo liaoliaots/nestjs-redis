@@ -3,15 +3,12 @@ import { RedisModuleOptions } from './redis-module-options.interface';
 import { isNotEmpty } from '../utils';
 
 /**
- * Creates redis client
- *
- * @param options - The options of redis module
+ * Creates redis client.
  */
 export const createClient = (options: RedisModuleOptions): Redis => {
-    const { url, onClientCreated, redisOptions } = options;
+    const { url, ...redisOptions } = options;
 
-    const client = isNotEmpty(url) ? new IORedis(url) : new IORedis(redisOptions);
-    if (onClientCreated) onClientCreated(client);
+    const client = isNotEmpty(url) ? new IORedis(url, redisOptions) : new IORedis(options);
 
     return client;
 };
