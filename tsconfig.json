@@ -13,6 +13,7 @@
         "incremental": true,
         "esModuleInterop": true,
         "importHelpers": true,
-        "strict": true
+        "strict": true,
+        "lib": ["ES2020"]
     }
 }

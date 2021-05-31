@@ -2,20 +2,22 @@
     "name": "@liaoliao/nestjs-redis",
     "version": "0.1.0",
     "description": "Redis(ioredis) module for NestJS",
-    "author": "LiaoLiao <yxiaosong002@gmail.com>",
+    "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "license": "MIT",
     "keywords": [
         "redis",
-        "ioredis",
         "cluster",
+        "ioredis",
         "nestjs",
-        "nestjs-redis"
+        "nestjs-redis",
+        "nestjs-cluster",
+        "nestjs-ioredis"
     ],
     "scripts": {
-        "prebuild": "rimraf dist",
         "prepare": "husky install",
+        "prebuild": "rimraf dist",
         "build": "tsc -p tsconfig.build.json",
         "test": "jest",
         "test:cov": "jest --coverage",
@@ -24,7 +26,6 @@
         "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
     },
     "dependencies": {
-        "@sindresorhus/is": "^4.0.1",
         "tslib": "^2.2.0"
     },
     "devDependencies": {
