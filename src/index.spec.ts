@@ -1,7 +1,7 @@
 import * as interfaces from './';
 
-test('should export 2 interfaces', () => {
-    expect(Object.keys(interfaces)).toHaveLength(2);
+test('should export 4 interfaces', () => {
+    expect(Object.keys(interfaces)).toHaveLength(4);
 });
 
 test('each of the interfaces must be defined', () => {

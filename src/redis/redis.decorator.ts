@@ -10,5 +10,8 @@ export const namespaces: ClientNamespace[] = [];
 /**
  * Injects redis client via namespace.
  */
-export const RedisClient = (namespace: ClientNamespace = DEFAULT_REDIS_CLIENT): ReturnType<typeof Inject> =>
-    Inject(namespace);
+export const RedisClient = (namespace: ClientNamespace = DEFAULT_REDIS_CLIENT): ReturnType<typeof Inject> => {
+    namespaces.push(namespace);
+
+    return Inject(namespace);
+};

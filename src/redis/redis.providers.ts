@@ -111,8 +111,8 @@ export const redisClientsProvider: Provider = {
 export const createRedisClientProviders = (): Provider[] => {
     const providers: Provider[] = [];
 
-    namespaces.forEach(
-        (namespace): Provider => ({
+    namespaces.forEach(namespace => {
+        providers.push({
             provide: namespace,
             useFactory: (redisClients: RedisClients) => {
                 const client = redisClients.get(namespace);
@@ -122,8 +122,8 @@ export const createRedisClientProviders = (): Provider[] => {
                 return client;
             },
             inject: [REDIS_CLIENTS]
-        })
-    );
+        });
+    });
 
     return providers;
 };

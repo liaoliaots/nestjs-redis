@@ -1,6 +1,7 @@
-// export { RedisModule } from './redis/redis.module';
-export { RedisError } from './errors/redis.error';
+export { RedisModule } from './redis/redis.module';
 export { DEFAULT_REDIS_CLIENT } from './redis/redis.constants';
+export { RedisService } from './redis/redis.service';
+export { RedisClient } from './redis/redis.decorator';
 
 // * Types & Interfaces
 export {
