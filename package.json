@@ -5,6 +5,9 @@
     "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "license": "MIT",
     "keywords": [
         "redis",
