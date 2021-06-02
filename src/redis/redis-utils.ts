@@ -1,10 +1,10 @@
 import IORedis, { Redis } from 'ioredis';
-import { RedisModuleOptions } from './redis-module-options.interface';
+import { ClientOptions } from './redis-module-options.interface';
 
 /**
  * Creates redis client.
  */
-export const createClient = (options: RedisModuleOptions): Redis => {
+export const createClient = (options: ClientOptions): Redis => {
     const { url, ...redisOptions } = options;
 
     const client = url ? new IORedis(url, redisOptions) : new IORedis(options);
