@@ -27,13 +27,6 @@ module.exports = {
         es2020: true
     },
     ignorePatterns: ['.eslintrc.js', 'dist/*'],
-    settings: {
-        'import/resolver': {
-            typescript: {
-                alwaysTryTypes: false
-            }
-        }
-    },
     reportUnusedDisableDirectives: true,
     rules: {
         'tsdoc/syntax': 'warn'
