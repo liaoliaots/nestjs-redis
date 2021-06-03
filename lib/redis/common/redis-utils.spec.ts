@@ -1,5 +1,10 @@
 import { Redis } from 'ioredis';
-import { createClient, parseNamespace } from './redis-utils';
+import { createClient, parseNamespace } from '.';
+
+const port = 6380;
+const password = '1519411258901';
+
+const url = `redis://:${password}@127.0.0.1:${port}/0`;
 
 let client: Redis;
 
@@ -8,8 +13,6 @@ afterEach(() => {
 });
 
 describe('url', () => {
-    const url = 'redis://:1519411258901@127.0.0.1:6380/0';
-
     test('should create client properly via URL', async () => {
         client = createClient({
             url
@@ -35,7 +38,7 @@ describe('url', () => {
 });
 
 describe('options', () => {
-    test('should get an error when creating client properly via empty options on the redis server with a password', async () => {
+    test('should throw an error when creating a client via empty options on the redis server with a password', async () => {
         client = createClient({});
 
         const err = await new Promise(resolve => {
@@ -47,8 +50,8 @@ describe('options', () => {
 
     test('should create client properly via options', async () => {
         client = createClient({
-            port: 6380,
-            password: '1519411258901'
+            port,
+            password
         });
 
         const res = await client.ping();
@@ -59,20 +62,18 @@ describe('options', () => {
 
 describe(`${parseNamespace.name}`, () => {
     test('if the value is a string, the result should be equal to this string', () => {
-        const value = 'a namespace';
+        const value = 'client namespace';
 
         expect(parseNamespace(value)).toBe(value);
     });
 
     test('if the value is a symbol, the result should be equal to symbol.toString()', () => {
-        const value = Symbol('a namespace');
+        const value = Symbol('client namespace');
 
         expect(parseNamespace(value)).toBe(value.toString());
     });
 
     test('if the value is neither string nor symbol, the result should be unknown', () => {
-        const value = undefined;
-
-        expect(parseNamespace(value)).toBe('unknown');
+        expect(parseNamespace(undefined)).toBe('unknown');
     });
 });

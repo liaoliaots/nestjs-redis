@@ -14,11 +14,7 @@
         "cluster",
         "ioredis",
         "health",
-        "nestjs",
-        "nestjs-redis",
-        "nestjs-cluster",
-        "nestjs-ioredis",
-        "nestjs-health"
+        "nestjs"
     ],
     "scripts": {
         "prepare": "husky install",
@@ -88,7 +84,11 @@
         ],
         "coverageDirectory": "../coverage",
         "testEnvironment": "node",
-        "verbose": true
+        "verbose": true,
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/interfaces/"
+        ]
     },
     "commitlint": {
         "extends": [

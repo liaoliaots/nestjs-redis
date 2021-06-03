@@ -1,17 +1,8 @@
 import { Provider } from '@nestjs/common';
-import { Redis } from 'ioredis';
-import {
-    RedisModuleOptions,
-    RedisModuleAsyncOptions,
-    RedisOptionsFactory,
-    ClientNamespace
-} from './redis-module-options.interface';
+import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { RedisError } from '../errors/redis.error';
-import { RedisClients } from './redis.interface';
-import { createClient } from './redis-utils';
-import { namespaces } from './redis.decorator';
-import { parseNamespace } from './redis-utils';
+import { createClient, namespaces, parseNamespace } from './common';
 
 export const createProviders = (options: RedisModuleOptions): Provider[] => {
     return [
@@ -78,7 +69,7 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
 export const redisClientsProvider: Provider = {
     provide: REDIS_CLIENTS,
     useFactory: (options: RedisModuleOptions): RedisClients => {
-        const clients: RedisClients = new Map<ClientNamespace, Redis>();
+        const clients: RedisClients = new Map();
 
         if (Array.isArray(options.clients)) {
             options.clients.forEach(client =>
