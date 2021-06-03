@@ -5,15 +5,13 @@
         "removeComments": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
         "target": "ES2017",
-        "sourceMap": true,
+        "lib": ["ES2020"],
+        "sourceMap": false,
         "outDir": "./dist",
-        "baseUrl": "./",
-        "incremental": true,
+        "rootDir": "./lib",
         "esModuleInterop": true,
         "importHelpers": true,
-        "strict": true,
-        "lib": ["ES2020"]
+        "strict": true
     }
 }

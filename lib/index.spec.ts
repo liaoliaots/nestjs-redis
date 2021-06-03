@@ -1,4 +1,4 @@
-import * as interfaces from './';
+import * as interfaces from '.';
 
 test('should export 4 interfaces', () => {
     expect(Object.keys(interfaces)).toHaveLength(4);
