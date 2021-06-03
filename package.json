@@ -13,10 +13,12 @@
         "redis",
         "cluster",
         "ioredis",
+        "health",
         "nestjs",
         "nestjs-redis",
         "nestjs-cluster",
-        "nestjs-ioredis"
+        "nestjs-ioredis",
+        "nestjs-health"
     ],
     "scripts": {
         "prepare": "husky install",
