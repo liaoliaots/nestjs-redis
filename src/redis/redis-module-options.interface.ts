@@ -32,14 +32,9 @@ export interface RedisModuleOptions {
     defaultOptions?: RedisOptions;
 
     /**
-     * Specify only a single client.
+     * Specify a single client or multiple clients.
      */
-    client?: ClientOptions;
-
-    /**
-     * Specify multiple clients.
-     */
-    clients?: ClientOptions[];
+    clients?: ClientOptions | ClientOptions[];
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

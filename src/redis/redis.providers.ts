@@ -88,8 +88,8 @@ export const redisClientsProvider: Provider = {
             return clients;
         }
 
-        if (options.client) {
-            clients.set(options.client.namespace ?? DEFAULT_REDIS_CLIENT, createClient(options.client));
+        if (options.clients) {
+            clients.set(options.clients.namespace ?? DEFAULT_REDIS_CLIENT, createClient(options.clients));
 
             return clients;
         }
