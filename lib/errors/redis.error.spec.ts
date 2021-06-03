@@ -18,6 +18,6 @@ describe('message', () => {
 
 describe('stack', () => {
     test('the stack should be set properly', () => {
-        expect(typeof new RedisError(message).stack).toBe('string');
+        expect(new RedisError(message).stack).toBeDefined();
     });
 });

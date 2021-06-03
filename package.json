@@ -78,7 +78,7 @@
             "json",
             "ts"
         ],
-        "rootDir": "src",
+        "rootDir": "lib",
         "testRegex": ".*\\.spec\\.ts$",
         "transform": {
             "^.+\\.(t|j)s$": "ts-jest"
@@ -88,10 +88,7 @@
         ],
         "coverageDirectory": "../coverage",
         "testEnvironment": "node",
-        "verbose": true,
-        "moduleNameMapper": {
-            "^@/(.*)$": "<rootDir>/$1"
-        }
+        "verbose": true
     },
     "commitlint": {
         "extends": [
