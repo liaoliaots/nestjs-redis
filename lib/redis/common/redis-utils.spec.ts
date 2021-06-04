@@ -13,7 +13,7 @@ afterEach(() => {
 });
 
 describe('url', () => {
-    test('should create client properly via URL', async () => {
+    test('should create client via URL', async () => {
         client = createClient({
             url
         });
@@ -23,7 +23,7 @@ describe('url', () => {
         expect(res).toBe('PONG');
     });
 
-    test('should create client properly via URL with options', async () => {
+    test('should create client via URL with options', async () => {
         client = createClient({
             url,
             lazyConnect: true
@@ -48,7 +48,7 @@ describe('options', () => {
         expect(err).toBeDefined();
     });
 
-    test('should create client properly via options', async () => {
+    test('should create client via options', async () => {
         client = createClient({
             port,
             password
@@ -61,19 +61,21 @@ describe('options', () => {
 });
 
 describe(`${parseNamespace.name}`, () => {
-    test('if the value is a string, the result should be equal to this string', () => {
+    test('if value is a string, the result should be equal to this string', () => {
         const value = 'client namespace';
 
         expect(parseNamespace(value)).toBe(value);
     });
 
-    test('if the value is a symbol, the result should be equal to symbol.toString()', () => {
+    test('if value is a symbol, the result should be equal to value.toString()', () => {
         const value = Symbol('client namespace');
 
         expect(parseNamespace(value)).toBe(value.toString());
     });
 
-    test('if the value is neither string nor symbol, the result should be unknown', () => {
+    test('if value is neither string nor symbol, the result should be unknown', () => {
         expect(parseNamespace(undefined)).toBe('unknown');
+        expect(parseNamespace(null)).toBe('unknown');
+        expect(parseNamespace(false)).toBe('unknown');
     });
 });

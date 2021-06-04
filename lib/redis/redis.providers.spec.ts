@@ -1,3 +1,4 @@
+import IORedis from 'ioredis';
 import {
     createProviders,
     createAsyncProviders,
@@ -5,7 +6,12 @@ import {
     redisClientsProvider,
     createRedisClientProviders
 } from './redis.providers';
-import { RedisOptionsFactory } from './interfaces';
+import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
+import { REDIS_OPTIONS } from './redis.constants';
+import { namespaces } from './common';
+
+const port = 6380;
+const password = '1519411258901';
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions() {
@@ -14,42 +20,13 @@ class RedisConfigService implements RedisOptionsFactory {
 }
 
 describe(`${createProviders.name}`, () => {
-    test('the result list should be defined', () => {
-        expect(createProviders({})).toBeDefined();
-    });
-
-    test('the result list should have 2 members', () => {
+    test('should have 2 members in the result array', () => {
         expect(createProviders({})).toHaveLength(2);
-    });
-
-    test('each of the members of the result list should be defined', () => {
-        createProviders({}).forEach(provider => expect(provider).toBeDefined());
     });
 });
 
 describe(`${createAsyncProviders.name}`, () => {
-    test('the result list should be defined', () => {
-        expect(
-            createAsyncProviders({
-                useFactory: () => ({}),
-                inject: []
-            })
-        ).toBeDefined();
-
-        expect(
-            createAsyncProviders({
-                useClass: RedisConfigService
-            })
-        ).toBeDefined();
-
-        expect(
-            createAsyncProviders({
-                useExisting: RedisConfigService
-            })
-        ).toBeDefined();
-    });
-
-    test('if use useFactory or useExisting, the result list should have 2 members', () => {
+    test('if use useFactory or useExisting, should have 2 members in the result array', () => {
         expect(
             createAsyncProviders({
                 useFactory: () => ({}),
@@ -64,27 +41,12 @@ describe(`${createAsyncProviders.name}`, () => {
         ).toHaveLength(2);
     });
 
-    test('if use useClass, the result list should have 3 members', () => {
+    test('if use useClass, should have 3 members in the result array', () => {
         expect(
             createAsyncProviders({
                 useClass: RedisConfigService
             })
         ).toHaveLength(3);
-    });
-
-    test('each of the members of the result list should be defined', () => {
-        createAsyncProviders({
-            useFactory: () => ({}),
-            inject: []
-        }).forEach(provider => expect(provider).toBeDefined());
-
-        createAsyncProviders({
-            useClass: RedisConfigService
-        }).forEach(provider => expect(provider).toBeDefined());
-
-        createAsyncProviders({
-            useExisting: RedisConfigService
-        }).forEach(provider => expect(provider).toBeDefined());
     });
 
     test('should throw an error when not specify useFactory, useClass and useExisting', () => {
@@ -93,36 +55,93 @@ describe(`${createAsyncProviders.name}`, () => {
 });
 
 describe(`${createAsyncOptionsProvider.name}`, () => {
-    test('the result should be defined', () => {
-        expect(
-            createAsyncOptionsProvider({
-                useFactory: () => ({}),
-                inject: []
-            })
-        ).toBeDefined();
+    test('should create async options provider with useFactory', () => {
+        const options: RedisModuleAsyncOptions = {
+            useFactory: () => ({}),
+            inject: ['DIToken']
+        };
 
-        expect(
-            createAsyncOptionsProvider({
-                useClass: RedisConfigService
-            })
-        ).toBeDefined();
+        expect(createAsyncOptionsProvider(options)).toEqual({ ...options, provide: REDIS_OPTIONS });
+    });
 
-        expect(
-            createAsyncOptionsProvider({
-                useExisting: RedisConfigService
-            })
-        ).toBeDefined();
+    test('should create async options provider with useClass', () => {
+        const options: RedisModuleAsyncOptions = {
+            useClass: RedisConfigService
+        };
+
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
+    });
+
+    test('should create async options provider with useExisting', () => {
+        const options: RedisModuleAsyncOptions = {
+            useExisting: RedisConfigService
+        };
+
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
+        expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
+    });
+
+    test('should create async options provider without options', () => {
+        expect(createAsyncOptionsProvider({})).toEqual({ provide: REDIS_OPTIONS, useValue: {} });
     });
 });
 
 describe('redisClientsProvider', () => {
-    test('the provider should be defined', () => {
-        expect(redisClientsProvider).toBeDefined();
+    let clients: RedisClients;
+
+    afterEach(() => {
+        [...clients.values()].forEach(client => client.disconnect());
+    });
+
+    test('useFactory should create a map with a single client', () => {
+        const options: RedisModuleOptions = {
+            clients: { port, password }
+        };
+
+        clients = redisClientsProvider.useFactory(options);
+
+        expect(clients.size).toBe(1);
+        [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
+    });
+
+    test('useFactory should create a map with multiple clients', () => {
+        const options: RedisModuleOptions = {
+            clients: [
+                { port, password, db: 0 },
+                { port, password, db: 1, namespace: 'client1' }
+            ]
+        };
+
+        clients = redisClientsProvider.useFactory(options);
+
+        expect(clients.size).toBe(2);
+        [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
+    });
+
+    test('useFactory should create a map with an empty option', () => {
+        const options: RedisModuleOptions = {};
+
+        clients = redisClientsProvider.useFactory(options);
+
+        expect(clients.size).toBe(1);
+        [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
     });
 });
 
 describe(`${createRedisClientProviders.name}`, () => {
-    test('the result list should have no members', () => {
-        expect(createRedisClientProviders()).toHaveLength(0);
+    beforeAll(() => {
+        namespaces.push(...['client1', Symbol('client2')]);
+    });
+
+    test('should create redis client providers', () => {
+        expect(createRedisClientProviders()).toHaveLength(2);
+        createRedisClientProviders().forEach(item => {
+            expect(item).toHaveProperty('provide');
+            expect(item).toHaveProperty('useFactory');
+            expect(item).toHaveProperty('inject');
+        });
     });
 });

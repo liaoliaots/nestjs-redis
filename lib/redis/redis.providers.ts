@@ -1,8 +1,10 @@
-import { Provider } from '@nestjs/common';
+import { Provider, FactoryProvider } from '@nestjs/common';
+import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { RedisError } from '../errors/redis.error';
-import { createClient, namespaces, parseNamespace } from './common';
+import { RedisError } from '../errors';
+import { createClient, namespaces } from './common';
+import { RedisService } from './redis.service';
 
 export const createProviders = (options: RedisModuleOptions): Provider[] => {
     return [
@@ -15,11 +17,10 @@ export const createProviders = (options: RedisModuleOptions): Provider[] => {
 };
 
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
-    if (!options.useFactory && !options.useClass && !options.useExisting) {
+    if (!options.useFactory && !options.useClass && !options.useExisting)
         throw new RedisError('configuration is missing, must provide one of useFactory, useClass and useExisting');
-    }
 
-    if (options.useClass) {
+    if (options.useClass)
         return [
             {
                 provide: options.useClass,
@@ -28,37 +29,35 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
             createAsyncOptionsProvider(options),
             redisClientsProvider
         ];
-    }
 
-    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options), redisClientsProvider];
+    if (options.useFactory) return [createAsyncOptionsProvider(options), redisClientsProvider];
+
+    if (options.useExisting) return [createAsyncOptionsProvider(options), redisClientsProvider];
 
     return [];
 };
 
 export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Provider => {
-    if (options.useFactory) {
-        return {
-            provide: REDIS_OPTIONS,
-            useFactory: options.useFactory,
-            inject: options.inject
-        };
-    }
-
-    if (options.useClass) {
+    if (options.useClass)
         return {
             provide: REDIS_OPTIONS,
             useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
             inject: [options.useClass]
         };
-    }
 
-    if (options.useExisting) {
+    if (options.useFactory)
+        return {
+            provide: REDIS_OPTIONS,
+            useFactory: options.useFactory,
+            inject: options.inject
+        };
+
+    if (options.useExisting)
         return {
             provide: REDIS_OPTIONS,
             useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
             inject: [options.useExisting]
         };
-    }
 
     return {
         provide: REDIS_OPTIONS,
@@ -66,7 +65,7 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
     };
 };
 
-export const redisClientsProvider: Provider = {
+export const redisClientsProvider: FactoryProvider<RedisClients> = {
     provide: REDIS_CLIENTS,
     useFactory: (options: RedisModuleOptions): RedisClients => {
         const clients: RedisClients = new Map();
@@ -92,20 +91,14 @@ export const redisClientsProvider: Provider = {
     inject: [REDIS_OPTIONS]
 };
 
-export const createRedisClientProviders = (): Provider[] => {
-    const providers: Provider[] = [];
+export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
+    const providers: FactoryProvider<Redis>[] = [];
 
     namespaces.forEach(namespace => {
         providers.push({
             provide: namespace,
-            useFactory: (redisClients: RedisClients) => {
-                const client = redisClients.get(namespace);
-
-                if (!client) throw new RedisError(`Unable to find the '${parseNamespace(namespace)}' client`);
-
-                return client;
-            },
-            inject: [REDIS_CLIENTS]
+            useFactory: (redisService: RedisService): Redis => redisService.getClient(namespace),
+            inject: [RedisService]
         });
     });
 

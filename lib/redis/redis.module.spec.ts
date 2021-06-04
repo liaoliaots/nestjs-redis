@@ -1,28 +1,30 @@
 import { RedisModule } from './redis.module';
-import { RedisModuleAsyncOptions } from './interfaces';
+import { RedisModuleAsyncOptions, RedisModuleOptions } from './interfaces';
 
 describe(`${RedisModule.forRoot.name}`, () => {
-    test('the result should be defined', () => {
-        expect(RedisModule.forRoot()).toBeDefined();
+    test('should register module without options', () => {
+        expect(RedisModule.forRoot().module).toBe(RedisModule);
+        expect(RedisModule.forRoot().imports).toHaveLength(1);
     });
 
-    test('the property module of the result should be equal to RedisModule', () => {
-        expect(RedisModule.forRoot().module).toBe(RedisModule);
+    test('should register module with options', () => {
+        const options: RedisModuleOptions = {
+            defaultOptions: {}
+        };
+
+        expect(RedisModule.forRoot(options).module).toBe(RedisModule);
+        expect(RedisModule.forRoot(options).imports).toHaveLength(1);
     });
 });
 
 describe(`${RedisModule.forRootAsync.name}`, () => {
     const options: RedisModuleAsyncOptions = {
-        imports: [],
         useFactory: () => ({}),
         inject: []
     };
 
-    test('the result should be defined', () => {
-        expect(RedisModule.forRootAsync(options)).toBeDefined();
-    });
-
-    test('the property module of the result should be equal to RedisModule', () => {
+    test('should register async module with async options', () => {
         expect(RedisModule.forRootAsync(options).module).toBe(RedisModule);
+        expect(RedisModule.forRootAsync(options).imports).toHaveLength(1);
     });
 });

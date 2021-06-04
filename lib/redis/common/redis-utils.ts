@@ -4,7 +4,7 @@ import { ClientOptions } from '../interfaces';
 export const createClient = (options: ClientOptions): Redis => {
     const { url, ...redisOptions } = options;
 
-    const client = url ? new IORedis(url, redisOptions) : new IORedis(options);
+    const client = url ? new IORedis(url, redisOptions) : new IORedis(redisOptions);
 
     return client;
 };
@@ -12,7 +12,7 @@ export const createClient = (options: ClientOptions): Redis => {
 /**
  * Parses namespace of the client to string.
  *
- * @param namespace - The namespace of the client
+ * @param namespace - The namespace of a client
  * @returns A readable string
  */
 export const parseNamespace = (namespace: unknown): string => {

@@ -11,8 +11,6 @@ describe(`${RedisService.name}`, () => {
     const CLIENT_SESSION = Symbol();
 
     const clients: RedisClients = new Map();
-    clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ port, password, db: 0 }));
-    clients.set(CLIENT_SESSION, new IORedis({ port, password, db: 1 }));
 
     let redisService: RedisService;
 
@@ -21,6 +19,9 @@ describe(`${RedisService.name}`, () => {
     });
 
     beforeAll(async () => {
+        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ port, password, db: 0 }));
+        clients.set(CLIENT_SESSION, new IORedis({ port, password, db: 1 }));
+
         const moduleRef = await Test.createTestingModule({
             providers: [
                 {
@@ -38,7 +39,7 @@ describe(`${RedisService.name}`, () => {
         expect(redisService.clients.size).toBe(clients.size);
     });
 
-    test('should get client properly with namespace', async () => {
+    test('should get client with namespace', async () => {
         const client = redisService.getClient(CLIENT_SESSION);
 
         expect(client.options.db).toBe(1);
@@ -48,7 +49,7 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should get default client properly without namespace', async () => {
+    test('should get default client without namespace', async () => {
         const client = redisService.getClient();
 
         expect(client.options.db).toBe(0);
@@ -58,7 +59,7 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should get default client properly with namespace', async () => {
+    test('should get default client with namespace', async () => {
         const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
         expect(client.options.db).toBe(0);

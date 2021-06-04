@@ -5,7 +5,7 @@ export type RedisClients = Map<ClientNamespace, Redis>;
 
 export interface RedisClientsService {
     /**
-     * All clients.
+     * All clients as a read-only map.
      */
     clients: ReadonlyMap<ClientNamespace, Redis>;
 
