@@ -1,12 +1,12 @@
 # Welcome to @liaoliao/nestjs-redis 👋
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/github/license/liaoliaots/nestjs-redis)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-> Redis(ioredis) module for NestJS
+> Redis(ioredis) module for NestJS framework
 
 ### 🏠 [Homepage](https://github.com/liaoliaots/nestjs-redis#readme)
 

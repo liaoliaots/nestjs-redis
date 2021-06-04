@@ -1,7 +1,7 @@
 {
     "version": "0.1",
     "language": "en",
-    "minWordLength": 1,
+    "minWordLength": 2,
     "allowCompoundWords": false,
     "numSuggestions": 6,
     "words": ["liaoliao", "liaoliaots", "prebuild", "tsc", "cov", "rediss", "nestjs", "fastify", "commitlint", "tsdoc"]
