@@ -72,14 +72,20 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
 
         if (Array.isArray(options.clients)) {
             options.clients.forEach(client =>
-                clients.set(client.namespace ?? DEFAULT_REDIS_CLIENT, createClient(client))
+                clients.set(
+                    client.namespace ?? DEFAULT_REDIS_CLIENT,
+                    createClient({ ...(options.defaultOptions ?? {}), ...client })
+                )
             );
 
             return clients;
         }
 
         if (options.clients) {
-            clients.set(options.clients.namespace ?? DEFAULT_REDIS_CLIENT, createClient(options.clients));
+            clients.set(
+                options.clients.namespace ?? DEFAULT_REDIS_CLIENT,
+                createClient({ ...(options.defaultOptions ?? {}), ...options.clients })
+            );
 
             return clients;
         }

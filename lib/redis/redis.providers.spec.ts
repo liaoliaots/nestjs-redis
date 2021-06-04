@@ -96,7 +96,7 @@ describe('redisClientsProvider', () => {
         [...clients.values()].forEach(client => client.disconnect());
     });
 
-    test('useFactory should create a map with a single client', () => {
+    test('useFactory should create a map with a single client', async () => {
         const options: RedisModuleOptions = {
             clients: { port, password }
         };
@@ -104,10 +104,30 @@ describe('redisClientsProvider', () => {
         clients = redisClientsProvider.useFactory(options);
 
         expect(clients.size).toBe(1);
-        [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
+
+        const [clientDefault] = [...clients.values()];
+
+        const resDefault = await clientDefault.ping();
+        expect(resDefault).toBe('PONG');
     });
 
-    test('useFactory should create a map with multiple clients', () => {
+    test('useFactory should create a map with a single client and default options', async () => {
+        const options: RedisModuleOptions = {
+            defaultOptions: { port, password },
+            clients: { db: 0 }
+        };
+
+        clients = redisClientsProvider.useFactory(options);
+
+        expect(clients.size).toBe(1);
+
+        const [clientDefault] = [...clients.values()];
+
+        const resDefault = await clientDefault.ping();
+        expect(resDefault).toBe('PONG');
+    });
+
+    test('useFactory should create a map with multiple clients', async () => {
         const options: RedisModuleOptions = {
             clients: [
                 { port, password, db: 0 },
@@ -118,13 +138,37 @@ describe('redisClientsProvider', () => {
         clients = redisClientsProvider.useFactory(options);
 
         expect(clients.size).toBe(2);
-        [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
+
+        const [clientDefault, client1] = [...clients.values()];
+
+        const resDefault = await clientDefault.ping();
+        expect(resDefault).toBe('PONG');
+
+        const res1 = await client1.ping();
+        expect(res1).toBe('PONG');
+    });
+
+    test('useFactory should create a map with multiple clients and default options', async () => {
+        const options: RedisModuleOptions = {
+            defaultOptions: { port, password },
+            clients: [{ db: 0 }, { db: 1, namespace: 'client1' }]
+        };
+
+        clients = redisClientsProvider.useFactory(options);
+
+        expect(clients.size).toBe(2);
+
+        const [clientDefault, client1] = [...clients.values()];
+
+        const resDefault = await clientDefault.ping();
+        expect(resDefault).toBe('PONG');
+
+        const res1 = await client1.ping();
+        expect(res1).toBe('PONG');
     });
 
     test('useFactory should create a map with an empty option', () => {
-        const options: RedisModuleOptions = {};
-
-        clients = redisClientsProvider.useFactory(options);
+        clients = redisClientsProvider.useFactory({});
 
         expect(clients.size).toBe(1);
         [...clients.values()].forEach(client => expect(client).toBeInstanceOf(IORedis));
