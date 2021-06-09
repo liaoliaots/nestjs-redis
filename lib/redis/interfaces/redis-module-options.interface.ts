@@ -1,5 +1,5 @@
 import { Type, ModuleMetadata } from '@nestjs/common';
-import { RedisOptions } from 'ioredis';
+import { RedisOptions, Redis } from 'ioredis';
 
 export type ClientNamespace = string | symbol;
 
@@ -16,6 +16,11 @@ export interface ClientOptions extends RedisOptions {
      * - rediss:// https://www.iana.org/assignments/uri-schemes/prov/rediss
      */
     url?: string;
+
+    /**
+     * The function will be called when the client has created, the first parameter is the redis instance.
+     */
+    onClientCreated?: (client: Redis) => void;
 }
 
 export interface RedisModuleOptions {

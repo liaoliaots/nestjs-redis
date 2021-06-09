@@ -6,11 +6,13 @@ export const createClient = (options: ClientOptions): Redis => {
 
     const client = url ? new IORedis(url, redisOptions) : new IORedis(redisOptions);
 
+    if (options.onClientCreated) options.onClientCreated(client);
+
     return client;
 };
 
 /**
- * Parses namespace of the client to string.
+ * Parses namespace to string.
  *
  * @param namespace - The namespace of a client
  * @returns A readable string

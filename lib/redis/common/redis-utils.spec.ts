@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis';
+import IORedis, { Redis } from 'ioredis';
 import { createClient, parseNamespace } from '.';
 
 const port = 6380;
@@ -55,6 +55,23 @@ describe('options', () => {
         });
 
         const res = await client.ping();
+
+        expect(res).toBe('PONG');
+    });
+
+    test('should call onClientCreated', async () => {
+        const mockCreated = jest.fn((client: Redis) => client);
+
+        client = createClient({
+            port,
+            password,
+            onClientCreated: mockCreated
+        });
+
+        expect(mockCreated.mock.calls).toHaveLength(1);
+        expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis);
+
+        const res = await (mockCreated.mock.results[0].value as Redis).ping();
 
         expect(res).toBe('PONG');
     });
