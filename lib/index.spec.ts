@@ -1,9 +1,9 @@
-import * as interfaces from '.';
+import * as all from '.';
 
-test('should export 4 interfaces', () => {
-    expect(Object.keys(interfaces)).toHaveLength(4);
+test('should have 5 exports', () => {
+    expect(Object.keys(all)).toHaveLength(5);
 });
 
-test('each of the interfaces should be defined', () => {
-    Object.values(interfaces).forEach(value => expect(value).toBeDefined());
+test('each of the exports should be defined', () => {
+    Object.values(all).forEach(value => expect(value).toBeDefined());
 });

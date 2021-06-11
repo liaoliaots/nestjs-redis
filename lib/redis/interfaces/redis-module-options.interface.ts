@@ -18,7 +18,7 @@ export interface ClientOptions extends RedisOptions {
     url?: string;
 
     /**
-     * The function will be called when the client has created, the first parameter is the redis instance.
+     * The function will be called when the client has been created, and this client is the first parameter.
      */
     onClientCreated?: (client: Redis) => void;
 }
@@ -39,7 +39,7 @@ export interface RedisModuleOptions {
     /**
      * Specify a single client or multiple clients.
      */
-    clients?: ClientOptions | ClientOptions[];
+    config?: ClientOptions | ClientOptions[];
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
@@ -52,5 +52,5 @@ export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'>
 }
 
 export interface RedisOptionsFactory {
-    createRedisOptions(): RedisModuleOptions | Promise<RedisModuleOptions>;
+    createRedisOptions: () => RedisModuleOptions | Promise<RedisModuleOptions>;
 }

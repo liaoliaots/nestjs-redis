@@ -3,6 +3,7 @@ import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './int
 import { RedisService } from './redis.service';
 import { createProviders, createAsyncProviders, createRedisClientProviders } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
+import { RedisHealthIndicator } from './redis.health';
 
 @Global()
 @Module({})
@@ -14,24 +15,34 @@ export class RedisCoreModule implements OnApplicationShutdown {
 
     static forRoot(options: RedisModuleOptions = {}): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
-        const providers: Provider[] = [...createProviders(options), RedisService, ...redisClientProviders];
+        const providers: Provider[] = [
+            ...createProviders(options),
+            RedisService,
+            RedisHealthIndicator,
+            ...redisClientProviders
+        ];
 
         return {
             module: RedisCoreModule,
             providers,
-            exports: [RedisService, ...redisClientProviders]
+            exports: [RedisService, RedisHealthIndicator, ...redisClientProviders]
         };
     }
 
     static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
-        const providers: Provider[] = [...createAsyncProviders(options), RedisService, ...redisClientProviders];
+        const providers: Provider[] = [
+            ...createAsyncProviders(options),
+            RedisService,
+            RedisHealthIndicator,
+            ...redisClientProviders
+        ];
 
         return {
             module: RedisCoreModule,
             imports: options.imports,
             providers,
-            exports: [RedisService, ...redisClientProviders]
+            exports: [RedisService, RedisHealthIndicator, ...redisClientProviders]
         };
     }
 

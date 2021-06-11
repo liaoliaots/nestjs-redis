@@ -14,3 +14,20 @@ export interface RedisClientsService {
      */
     getClient: (namespace: ClientNamespace) => Redis;
 }
+
+export interface RedisPingCheckOptions {
+    /**
+     * The namespace of redis client, this client will execute ping check.
+     */
+    clientNamespace: ClientNamespace;
+
+    /**
+     * The amount of time for ping check.
+     */
+    timeout?: number;
+
+    /**
+     * The message will pass to the ping command.
+     */
+    pingMessage?: string;
+}

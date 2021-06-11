@@ -70,8 +70,8 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
     useFactory: (options: RedisModuleOptions): RedisClients => {
         const clients: RedisClients = new Map();
 
-        if (Array.isArray(options.clients)) {
-            options.clients.forEach(client =>
+        if (Array.isArray(options.config)) {
+            options.config.forEach(client =>
                 clients.set(
                     client.namespace ?? DEFAULT_REDIS_CLIENT,
                     createClient({ ...(options.defaultOptions ?? {}), ...client })
@@ -81,10 +81,10 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
             return clients;
         }
 
-        if (options.clients) {
+        if (options.config) {
             clients.set(
-                options.clients.namespace ?? DEFAULT_REDIS_CLIENT,
-                createClient({ ...(options.defaultOptions ?? {}), ...options.clients })
+                options.config.namespace ?? DEFAULT_REDIS_CLIENT,
+                createClient({ ...(options.defaultOptions ?? {}), ...options.config })
             );
 
             return clients;

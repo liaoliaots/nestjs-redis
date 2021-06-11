@@ -98,7 +98,7 @@ describe('redisClientsProvider', () => {
 
     test('useFactory should create a map with a single client', async () => {
         const options: RedisModuleOptions = {
-            clients: { port, password }
+            config: { port, password }
         };
 
         clients = redisClientsProvider.useFactory(options);
@@ -114,7 +114,7 @@ describe('redisClientsProvider', () => {
     test('useFactory should create a map with a single client and default options', async () => {
         const options: RedisModuleOptions = {
             defaultOptions: { port, password },
-            clients: { db: 0 }
+            config: { db: 0 }
         };
 
         clients = redisClientsProvider.useFactory(options);
@@ -129,7 +129,7 @@ describe('redisClientsProvider', () => {
 
     test('useFactory should create a map with multiple clients', async () => {
         const options: RedisModuleOptions = {
-            clients: [
+            config: [
                 { port, password, db: 0 },
                 { port, password, db: 1, namespace: 'client1' }
             ]
@@ -151,7 +151,7 @@ describe('redisClientsProvider', () => {
     test('useFactory should create a map with multiple clients and default options', async () => {
         const options: RedisModuleOptions = {
             defaultOptions: { port, password },
-            clients: [{ db: 0 }, { db: 1, namespace: 'client1' }]
+            config: [{ db: 0 }, { db: 1, namespace: 'client1' }]
         };
 
         clients = redisClientsProvider.useFactory(options);
