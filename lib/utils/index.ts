@@ -18,7 +18,7 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
 };
 
 /**
- * Uses for the test.
+ * Uses for testing.
  */
 export const testConfig = {
     host: process.env.REDIS_HOST as string,
