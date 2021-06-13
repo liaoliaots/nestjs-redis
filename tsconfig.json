@@ -9,7 +9,7 @@
         "lib": ["ES2020"],
         "sourceMap": false,
         "outDir": "./dist",
-        "rootDir": "./lib",
+        "baseUrl": "./",
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true
