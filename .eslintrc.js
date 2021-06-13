@@ -26,7 +26,7 @@ module.exports = {
         jest: true,
         es2020: true
     },
-    ignorePatterns: ['.eslintrc.js', 'dist/*', 'set-env-vars.ts'],
+    ignorePatterns: ['.eslintrc.js', 'dist/*'],
     reportUnusedDisableDirectives: true,
     rules: {
         'tsdoc/syntax': 'warn'

@@ -5,6 +5,7 @@
         "removeComments": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
         "target": "ES2017",
         "lib": ["ES2020"],
         "sourceMap": false,
@@ -13,6 +14,5 @@
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true
-    },
-    "exclude": ["node_modules", "set-env-vars.ts"]
+    }
 }
