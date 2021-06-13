@@ -13,5 +13,6 @@
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true
-    }
+    },
+    "exclude": ["node_modules", "set-env-vars.ts"]
 }
