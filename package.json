@@ -27,7 +27,7 @@
         "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
     },
     "dependencies": {
-        "tslib": "^2.2.0"
+        "tslib": "^2.3.0"
     },
     "devDependencies": {
         "@commitlint/cli": "12.1.4",
@@ -51,7 +51,7 @@
         "eslint-plugin-prettier": "3.4.0",
         "eslint-plugin-tsdoc": "0.2.14",
         "husky": "6.0.0",
-        "ioredis": "4.27.5",
+        "ioredis": "4.27.6",
         "jest": "27.0.4",
         "lint-staged": "11.0.0",
         "prettier": "2.3.1",
