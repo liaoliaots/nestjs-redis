@@ -87,6 +87,9 @@
         "coveragePathIgnorePatterns": [
             "/node_modules/",
             "/interfaces/"
+        ],
+        "setupFiles": [
+            "../set-env-vars.ts"
         ]
     },
     "commitlint": {

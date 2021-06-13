@@ -3,6 +3,7 @@ import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestj
 import { Redis } from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisPingCheckOptions } from './interfaces';
+import { promiseTimeout } from '../utils';
 
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
@@ -12,18 +13,25 @@ export class RedisHealthIndicator extends HealthIndicator {
 
     async pingCheck(key: string, options: RedisPingCheckOptions): Promise<HealthIndicatorResult> {
         let client: Redis;
-        let isHealthy = false;
 
         try {
             client = this.redisService.getClient(options.clientNamespace);
-        } catch (error) {
-            throw new HealthCheckError('client not found', this.getStatus(key, isHealthy));
+        } catch (e) {
+            const error = e as Error;
+
+            throw new HealthCheckError(error.message, this.getStatus(key, false, { message: error.message }));
         }
 
-        const pingRes = await client.ping();
+        try {
+            await (typeof options.timeout === 'number'
+                ? promiseTimeout(options.timeout, client.ping())
+                : client.ping());
+        } catch (e) {
+            const error = e as Error;
 
-        isHealthy = true;
+            throw new HealthCheckError(error.message, this.getStatus(key, false, { message: error.message }));
+        }
 
-        return this.getStatus(key, isHealthy, { res: pingRes });
+        return this.getStatus(key, true);
     }
 }

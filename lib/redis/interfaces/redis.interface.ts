@@ -25,9 +25,4 @@ export interface RedisPingCheckOptions {
      * The amount of time for ping check.
      */
     timeout?: number;
-
-    /**
-     * The message will pass to the ping command.
-     */
-    pingMessage?: string;
 }

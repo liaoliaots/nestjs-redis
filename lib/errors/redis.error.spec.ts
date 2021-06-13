@@ -1,4 +1,4 @@
-import { RedisError } from './redis.error';
+import { RedisError } from '.';
 
 const message = 'a redis error';
 
@@ -9,7 +9,7 @@ describe('name', () => {
 });
 
 describe('message', () => {
-    test('the message should be set', () => {
+    test('the message should be set correctly', () => {
         expect(() => {
             throw new RedisError(message);
         }).toThrow(message);
@@ -17,7 +17,7 @@ describe('message', () => {
 });
 
 describe('stack', () => {
-    test('the stack should be set', () => {
+    test('the stack should be set correctly', () => {
         expect(new RedisError(message).stack).toBeDefined();
     });
 });

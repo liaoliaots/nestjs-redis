@@ -15,7 +15,6 @@ export const createClient = (options: ClientOptions): Redis => {
  * Parses namespace to string.
  *
  * @param namespace - The namespace of a client
- * @returns A readable string
  */
 export const parseNamespace = (namespace: unknown): string => {
     if (typeof namespace === 'string') return namespace;
