@@ -3,13 +3,9 @@ import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-
-const port = 6380;
-const password = '1519411258901';
+import { testConfig } from '../utils';
 
 describe(`${RedisService.name}`, () => {
-    const CLIENT_SESSION = Symbol();
-
     const clients: RedisClients = new Map();
 
     let redisService: RedisService;
@@ -19,8 +15,8 @@ describe(`${RedisService.name}`, () => {
     });
 
     beforeAll(async () => {
-        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ port, password, db: 0 }));
-        clients.set(CLIENT_SESSION, new IORedis({ port, password, db: 1 }));
+        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
+        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ ...testConfig, db: 1 }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [
@@ -39,10 +35,10 @@ describe(`${RedisService.name}`, () => {
         expect(redisService.clients.size).toBe(clients.size);
     });
 
-    test('should get client with namespace', async () => {
-        const client = redisService.getClient(CLIENT_SESSION);
+    test('should get a client with namespace', async () => {
+        const client = redisService.getClient('client0');
 
-        expect(client.options.db).toBe(1);
+        expect(client.options.db).toBe(0);
 
         const res = await client.ping();
 
@@ -52,7 +48,7 @@ describe(`${RedisService.name}`, () => {
     test('should get default client without namespace', async () => {
         const client = redisService.getClient();
 
-        expect(client.options.db).toBe(0);
+        expect(client.options.db).toBe(1);
 
         const res = await client.ping();
 
@@ -62,7 +58,7 @@ describe(`${RedisService.name}`, () => {
     test('should get default client with namespace', async () => {
         const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
-        expect(client.options.db).toBe(0);
+        expect(client.options.db).toBe(1);
 
         const res = await client.ping();
 

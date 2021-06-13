@@ -1,12 +1,10 @@
 import { Test } from '@nestjs/testing';
+import IORedis from 'ioredis';
 import { RedisHealthIndicator } from './redis.health';
 import { REDIS_CLIENTS } from './redis.constants';
-import { createClient } from './common';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
-
-const port = 6380;
-const password = '1519411258901';
+import { testConfig } from '../utils';
 
 describe(`${RedisHealthIndicator.name}`, () => {
     const clients: RedisClients = new Map();
@@ -20,10 +18,8 @@ describe(`${RedisHealthIndicator.name}`, () => {
     beforeAll(async () => {
         clients.set(
             'client0',
-            createClient({
-                port,
-                password,
-                retryStrategy: () => null
+            new IORedis({
+                ...testConfig
             })
         );
 
@@ -42,7 +38,7 @@ describe(`${RedisHealthIndicator.name}`, () => {
     });
 
     test('should state up', () => {
-        return expect(redisHealth.pingCheck('redis', { clientNamespace: 'client0' })).resolves.toEqual({
+        return expect(redisHealth.pingCheck('redis', { namespace: 'client0' })).resolves.toEqual({
             redis: { status: 'up' }
         });
     });

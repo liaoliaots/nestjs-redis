@@ -1,23 +1,21 @@
 import { RedisError } from '.';
 
-const message = 'a redis error';
-
-describe('name', () => {
-    test('the name should be equal to RedisError.name', () => {
-        expect(new RedisError(message).name).toBe(RedisError.name);
-    });
+test('should be an instance of Error', () => {
+    expect(new RedisError('')).toBeInstanceOf(Error);
 });
 
-describe('message', () => {
-    test('the message should be set correctly', () => {
-        expect(() => {
-            throw new RedisError(message);
-        }).toThrow(message);
-    });
+test('the name should be equal to RedisError.name', () => {
+    expect(new RedisError('').name).toBe(RedisError.name);
 });
 
-describe('stack', () => {
-    test('the stack should be set correctly', () => {
-        expect(new RedisError(message).stack).toBeDefined();
-    });
+test('the message should be set correctly', () => {
+    const message = 'a redis error';
+
+    expect(() => {
+        throw new RedisError(message);
+    }).toThrow(message);
+});
+
+test('the stack should be set correctly', () => {
+    expect(new RedisError('').stack).toBeDefined();
 });

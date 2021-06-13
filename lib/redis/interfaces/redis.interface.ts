@@ -19,7 +19,7 @@ export interface RedisPingCheckOptions {
     /**
      * The namespace of redis client, this client will execute ping check.
      */
-    clientNamespace: ClientNamespace;
+    namespace: ClientNamespace;
 
     /**
      * The amount of time for ping check.

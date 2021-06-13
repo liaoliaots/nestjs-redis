@@ -64,14 +64,14 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
 
 export const redisClientsProvider: FactoryProvider<RedisClients> = {
     provide: REDIS_CLIENTS,
-    useFactory: (options: RedisModuleOptions): RedisClients => {
+    useFactory: (options: RedisModuleOptions) => {
         const clients: RedisClients = new Map();
 
         if (Array.isArray(options.config)) {
-            options.config.forEach(client =>
+            options.config.forEach(item =>
                 clients.set(
-                    client.namespace ?? DEFAULT_REDIS_CLIENT,
-                    createClient({ ...(options.defaultOptions ?? {}), ...client })
+                    item.namespace ?? DEFAULT_REDIS_CLIENT,
+                    createClient({ ...(options.defaultOptions ?? {}), ...item })
                 )
             );
 
@@ -100,7 +100,7 @@ export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
     namespaces.forEach(namespace => {
         providers.push({
             provide: namespace,
-            useFactory: (redisService: RedisService): Redis => redisService.getClient(namespace),
+            useFactory: (redisService: RedisService) => redisService.getClient(namespace),
             inject: [RedisService]
         });
     });

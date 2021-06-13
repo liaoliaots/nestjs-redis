@@ -48,9 +48,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
 
     onApplicationShutdown(): void {
         if (this.options.closeClient) {
-            [...this.clients.values()].forEach(client => {
-                void client.quit();
-            });
+            [...this.clients.values()].forEach(client => void client.quit());
         }
     }
 }
