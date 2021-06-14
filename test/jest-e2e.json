@@ -7,5 +7,5 @@
     },
     "testEnvironment": "node",
     "verbose": true,
-    "setupFiles": ["../set-env-vars.ts"]
+    "setupFiles": ["../jest-env.ts"]
 }

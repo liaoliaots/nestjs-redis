@@ -87,7 +87,7 @@
             "/interfaces/"
         ],
         "setupFiles": [
-            "../set-env-vars.ts"
+            "../jest-env.ts"
         ]
     },
     "commitlint": {
