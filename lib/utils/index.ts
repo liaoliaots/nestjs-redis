@@ -21,7 +21,7 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
  * Uses for testing.
  */
 export const testConfig = {
-    host: process.env.REDIS_HOST as string,
-    port: Number.parseInt(process.env.REDIS_PORT as string, 10),
-    password: process.env.REDIS_PASSWORD as string
+    host: process.env.REDIS_HOST ?? '127.0.0.1',
+    port: Number.parseInt(process.env.REDIS_PORT ?? '6379', 10),
+    password: process.env.REDIS_PASSWORD
 };

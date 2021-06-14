@@ -2,7 +2,7 @@ import IORedis, { Redis } from 'ioredis';
 import { createClient, parseNamespace } from '.';
 import { testConfig } from '../../utils';
 
-const url = `redis://:${testConfig.password}@127.0.0.1:${testConfig.port}/0`;
+const url = `redis://:${testConfig.password ?? ''}@127.0.0.1:${testConfig.port}/0`;
 
 let client: Redis;
 

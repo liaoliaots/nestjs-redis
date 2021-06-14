@@ -26,12 +26,6 @@ describe(`${promiseTimeout.name}`, () => {
 });
 
 describe('testConfig', () => {
-    test('should contain host, port, and password', () => {
-        expect(testConfig).toHaveProperty('host');
-        expect(testConfig).toHaveProperty('port');
-        expect(testConfig).toHaveProperty('password');
-    });
-
     test('the host should be of type string', () => {
         expect(typeof testConfig.host).toBe('string');
     });
@@ -41,6 +35,6 @@ describe('testConfig', () => {
     });
 
     test('the password should be of type string', () => {
-        expect(typeof testConfig.password).toBe('string');
+        expect(typeof testConfig.password === 'string' || typeof testConfig.password === 'undefined').toBe(true);
     });
 });
