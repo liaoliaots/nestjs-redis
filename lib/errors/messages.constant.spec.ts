@@ -8,11 +8,9 @@ describe('CONFIGURATION_MISSING', () => {
 
 describe(`${CLIENT_NOT_FOUND.name}`, () => {
     test('should get a string that contains a specified string', () => {
-        const namespaceInString = 'client1';
-        const namespaceInSymbol = Symbol('client2');
+        const namespace = 'client0';
 
-        expect(CLIENT_NOT_FOUND(namespaceInString)).toContain(namespaceInString);
-        expect(CLIENT_NOT_FOUND(namespaceInSymbol)).toContain(namespaceInSymbol.toString());
+        expect(CLIENT_NOT_FOUND(namespace)).toContain(namespace);
     });
 });
 

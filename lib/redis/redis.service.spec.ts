@@ -3,7 +3,7 @@ import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { testConfig } from '../utils';
+import { testConfig, quitClients } from '../utils';
 
 describe(`${RedisService.name}`, () => {
     const clients: RedisClients = new Map();
@@ -11,7 +11,7 @@ describe(`${RedisService.name}`, () => {
     let redisService: RedisService;
 
     afterAll(() => {
-        [...clients.values()].forEach(client => client.disconnect());
+        quitClients(clients);
     });
 
     beforeAll(async () => {
@@ -19,13 +19,7 @@ describe(`${RedisService.name}`, () => {
         clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ ...testConfig, db: 1 }));
 
         const moduleRef = await Test.createTestingModule({
-            providers: [
-                {
-                    provide: REDIS_CLIENTS,
-                    useValue: clients
-                },
-                RedisService
-            ]
+            providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService]
         }).compile();
 
         redisService = moduleRef.get<RedisService>(RedisService);
@@ -35,7 +29,7 @@ describe(`${RedisService.name}`, () => {
         expect(redisService.clients.size).toBe(clients.size);
     });
 
-    test('should get a client with namespace', async () => {
+    test('should get client with namespace', async () => {
         const client = redisService.getClient('client0');
 
         expect(client.options.db).toBe(0);
@@ -45,8 +39,8 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should get default client without namespace', async () => {
-        const client = redisService.getClient();
+    test('should get default client with namespace', async () => {
+        const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
         expect(client.options.db).toBe(1);
 
@@ -55,8 +49,8 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should get default client with namespace', async () => {
-        const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+    test('should get default client without namespace', async () => {
+        const client = redisService.getClient();
 
         expect(client.options.db).toBe(1);
 

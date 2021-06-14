@@ -19,7 +19,7 @@ export const createProviders = (options: RedisModuleOptions): Provider[] => {
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
     if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(CONFIGURATION_MISSING);
 
-    if (options.useClass)
+    if (options.useClass) {
         return [
             {
                 provide: options.useClass,
@@ -28,6 +28,7 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
             createAsyncOptionsProvider(options),
             redisClientsProvider
         ];
+    }
 
     if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options), redisClientsProvider];
 
@@ -35,26 +36,29 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
 };
 
 export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Provider => {
-    if (options.useFactory)
+    if (options.useFactory) {
         return {
             provide: REDIS_OPTIONS,
             useFactory: options.useFactory,
             inject: options.inject
         };
+    }
 
-    if (options.useClass)
+    if (options.useClass) {
         return {
             provide: REDIS_OPTIONS,
             useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
             inject: [options.useClass]
         };
+    }
 
-    if (options.useExisting)
+    if (options.useExisting) {
         return {
             provide: REDIS_OPTIONS,
             useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
             inject: [options.useExisting]
         };
+    }
 
     return {
         provide: REDIS_OPTIONS,
@@ -71,7 +75,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
             options.config.forEach(item =>
                 clients.set(
                     item.namespace ?? DEFAULT_REDIS_CLIENT,
-                    createClient({ ...(options.defaultOptions ?? {}), ...item })
+                    createClient({ ...options.defaultOptions, ...item })
                 )
             );
 
@@ -81,7 +85,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
         if (options.config) {
             clients.set(
                 options.config.namespace ?? DEFAULT_REDIS_CLIENT,
-                createClient({ ...(options.defaultOptions ?? {}), ...options.config })
+                createClient({ ...options.defaultOptions, ...options.config })
             );
 
             return clients;

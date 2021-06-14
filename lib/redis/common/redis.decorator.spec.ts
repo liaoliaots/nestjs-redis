@@ -6,10 +6,7 @@ import { DEFAULT_REDIS_CLIENT } from '../redis.constants';
 describe(`${InjectRedisClient.name}`, () => {
     const _name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
     const _gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'cute' };
-    const _default: ValueProvider<string> = {
-        provide: DEFAULT_REDIS_CLIENT,
-        useValue: 'default'
-    };
+    const _default: ValueProvider<string> = { provide: DEFAULT_REDIS_CLIENT, useValue: 'default' };
 
     @Injectable()
     class TestName {

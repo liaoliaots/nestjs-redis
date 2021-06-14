@@ -11,11 +11,7 @@ describe(`${RedisCoreModule.forRoot.name}`, () => {
     });
 
     test('should register the module with options', () => {
-        const options: RedisModuleOptions = {
-            closeClient: false,
-            defaultOptions: {},
-            config: []
-        };
+        const options: RedisModuleOptions = { closeClient: false, defaultOptions: {}, config: [] };
 
         expect(RedisCoreModule.forRoot(options).module).toBe(RedisCoreModule);
         expect(RedisCoreModule.forRoot(options).providers).toBeDefined();
@@ -26,11 +22,7 @@ describe(`${RedisCoreModule.forRoot.name}`, () => {
 });
 
 describe(`${RedisCoreModule.forRootAsync.name}`, () => {
-    const options: RedisModuleAsyncOptions = {
-        imports: [],
-        useFactory: () => ({}),
-        inject: []
-    };
+    const options: RedisModuleAsyncOptions = { imports: [], useFactory: () => ({}), inject: [] };
 
     test('should register the async module with async options', () => {
         expect(RedisCoreModule.forRootAsync(options).module).toBe(RedisCoreModule);

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
-import { RedisHealthIndicator, DEFAULT_REDIS_CLIENT } from '../../../lib';
+import { RedisHealthIndicator, DEFAULT_REDIS_CLIENT } from '../../lib';
 
 @Controller('health')
 export class HealthController {
@@ -9,8 +9,8 @@ export class HealthController {
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redis.pingCheck('default', { namespace: DEFAULT_REDIS_CLIENT }),
-            () => this.redis.pingCheck('client0', { namespace: 'client0' })
+            () => this.redis.pingCheck('client0', { namespace: 'client0', timeout: 1000 }),
+            () => this.redis.pingCheck('default', { namespace: DEFAULT_REDIS_CLIENT, timeout: 1000 })
         ]);
     }
 

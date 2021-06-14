@@ -1,27 +1,54 @@
-import { promiseTimeout, testConfig } from '.';
+import IORedis from 'ioredis';
+import { promiseTimeout, quitClients, testConfig } from '.';
 import { RedisError } from '../errors';
+import { RedisClients } from '../redis/interfaces';
 
 describe(`${promiseTimeout.name}`, () => {
-    test('should resolve promise when the time of executing promise less than ms', () => {
-        const promise = new Promise<string>(resolve => {
+    const timeout = () =>
+        new Promise<string>(resolve => {
             const id = setTimeout(() => {
                 clearTimeout(id);
                 resolve('resolved');
             }, 10);
         });
 
-        return expect(promiseTimeout(20, promise)).resolves.toBe('resolved');
+    test('should resolve promise when the time of executing promise less than ms', () => {
+        return expect(promiseTimeout(20, timeout())).resolves.toBe('resolved');
     });
 
     test('should reject promise when the time of executing promise greater than ms', () => {
-        const promise = new Promise<string>(resolve => {
+        return expect(promiseTimeout(0, timeout())).rejects.toBeInstanceOf(RedisError);
+    });
+});
+
+describe(`${quitClients.name}`, () => {
+    const clients: RedisClients = new Map();
+
+    const timeout = () =>
+        new Promise(resolve => {
             const id = setTimeout(() => {
                 clearTimeout(id);
-                resolve('resolved');
-            }, 30);
+                resolve(undefined);
+            }, 50);
         });
 
-        return expect(promiseTimeout(20, promise)).rejects.toBeInstanceOf(RedisError);
+    beforeAll(async () => {
+        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
+        clients.set('client1', new IORedis({ ...testConfig, db: 1 }));
+
+        await timeout();
+    });
+
+    test('the state should be ready', () => {
+        clients.forEach(client => expect(client.status).toBe('ready'));
+    });
+
+    test('the state should be end', async () => {
+        quitClients(clients);
+
+        await timeout();
+
+        clients.forEach(client => expect(client.status).toBe('end'));
     });
 });
 
@@ -34,7 +61,7 @@ describe('testConfig', () => {
         expect(typeof testConfig.port).toBe('number');
     });
 
-    test('the password should be of type string', () => {
+    test('the password should be of type string or undefined', () => {
         expect(typeof testConfig.password === 'string' || typeof testConfig.password === 'undefined').toBe(true);
     });
 });

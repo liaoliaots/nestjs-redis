@@ -4,6 +4,7 @@ import { RedisService } from './redis.service';
 import { createProviders, createAsyncProviders, createRedisClientProviders } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { RedisHealthIndicator } from './redis.health';
+import { quitClients } from '../utils';
 
 @Global()
 @Module({})
@@ -47,8 +48,6 @@ export class RedisCoreModule implements OnApplicationShutdown {
     }
 
     onApplicationShutdown(): void {
-        if (this.options.closeClient) {
-            [...this.clients.values()].forEach(client => void client.quit());
-        }
+        if (this.options.closeClient) quitClients(this.clients);
     }
 }

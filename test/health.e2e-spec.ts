@@ -2,18 +2,18 @@ import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { TerminusModule } from '@nestjs/terminus';
 import { RedisModule } from '../lib';
-import { testConfig } from '../lib/utils';
+import { testConfig, quitClients } from '../lib/utils';
 import { RedisClients } from '../lib/redis/interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from '../lib/redis/redis.constants';
 import { CLIENT_NOT_FOUND } from '../lib/errors';
-import { HealthController } from './app/controllers/health.controller';
+import { HealthController } from './controllers/health.controller';
 
 let clients: RedisClients;
 
 let app: NestFastifyApplication;
 
 afterAll(async () => {
-    [...clients.values()].forEach(client => client.disconnect());
+    quitClients(clients);
 
     await app.close();
 });
@@ -21,18 +21,7 @@ afterAll(async () => {
 beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [
-            RedisModule.forRoot({
-                defaultOptions: testConfig,
-                config: [
-                    {
-                        db: 0
-                    },
-                    {
-                        db: 1,
-                        namespace: 'client0'
-                    }
-                ]
-            }),
+            RedisModule.forRoot({ defaultOptions: testConfig, config: [{ namespace: 'client0', db: 0 }, { db: 1 }] }),
             TerminusModule
         ],
         controllers: [HealthController]
@@ -54,19 +43,19 @@ test('/health (GET)', async () => {
     expect(JSON.parse(res.payload)).toEqual({
         status: 'ok',
         info: {
-            default: {
+            client0: {
                 status: 'up'
             },
-            client0: {
+            default: {
                 status: 'up'
             }
         },
         error: {},
         details: {
-            default: {
+            client0: {
                 status: 'up'
             },
-            client0: {
+            default: {
                 status: 'up'
             }
         }
@@ -96,12 +85,8 @@ test('/health/with-unknown-namespace (GET)', async () => {
 });
 
 describe('disconnect', () => {
-    beforeEach(() => {
-        clients.get(DEFAULT_REDIS_CLIENT)?.disconnect();
-    });
-
-    afterEach(async () => {
-        await clients.get(DEFAULT_REDIS_CLIENT)?.connect();
+    beforeEach(async () => {
+        await clients.get(DEFAULT_REDIS_CLIENT)?.quit();
     });
 
     test('/health/with-disconnected-client (GET)', async () => {

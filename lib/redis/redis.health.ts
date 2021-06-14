@@ -11,7 +11,8 @@ export class RedisHealthIndicator extends HealthIndicator {
     }
 
     async pingCheck(key: string, options: RedisPingCheckOptions): Promise<HealthIndicatorResult> {
-        const shouldUseTimeout = (value?: number): value is number => typeof value === 'number' && !Number.isNaN(value);
+        const shouldUseTimeout = (value?: unknown): value is number =>
+            typeof value === 'number' && !Number.isNaN(value);
 
         try {
             const client = this.redisService.getClient(options.namespace);

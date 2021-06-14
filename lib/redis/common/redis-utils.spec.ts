@@ -6,26 +6,21 @@ const url = `redis://:${testConfig.password ?? ''}@127.0.0.1:${testConfig.port}/
 
 let client: Redis;
 
-afterEach(() => {
-    client.disconnect();
+afterEach(async () => {
+    await client.quit();
 });
 
 describe('url', () => {
-    test('should create a client with a URL', async () => {
-        client = createClient({
-            url
-        });
+    test('should create client with URL', async () => {
+        client = createClient({ url });
 
         const res = await client.ping();
 
         expect(res).toBe('PONG');
     });
 
-    test('should create a client with a URL and options', async () => {
-        client = createClient({
-            url,
-            lazyConnect: true
-        });
+    test('should create client with URL and options', async () => {
+        client = createClient({ url, lazyConnect: true });
 
         expect(client.status).toBe('wait');
 
@@ -36,16 +31,14 @@ describe('url', () => {
 });
 
 describe('options', () => {
-    test('should create a client without options', () => {
+    test('should create client without options', () => {
         client = createClient({});
 
         expect(client).toBeInstanceOf(IORedis);
     });
 
-    test('should create a client with options', async () => {
-        client = createClient({
-            ...testConfig
-        });
+    test('should create client with options', async () => {
+        client = createClient({ ...testConfig });
 
         const res = await client.ping();
 
@@ -55,10 +48,7 @@ describe('options', () => {
     test('should call onClientCreated', () => {
         const mockCreated = jest.fn((client: Redis) => client);
 
-        client = createClient({
-            ...testConfig,
-            onClientCreated: mockCreated
-        });
+        client = createClient({ ...testConfig, onClientCreated: mockCreated });
 
         expect(mockCreated.mock.calls).toHaveLength(1);
         expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis);
