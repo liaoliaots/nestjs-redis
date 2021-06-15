@@ -3,9 +3,6 @@
     "version": "1.0.0",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
-    "publishConfig": {
-        "access": "public"
-    },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -104,6 +101,9 @@
         "branches": [
             "main"
         ]
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
     "repository": {

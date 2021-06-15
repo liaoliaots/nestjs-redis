@@ -1,5 +1,5 @@
 /**
- * v1.0.0 2021-06-15 16:45
+ * v1.0.0 2021-06-15 16:58
  */
 
 export { RedisModule } from './redis/redis.module';
