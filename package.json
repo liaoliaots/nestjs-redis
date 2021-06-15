@@ -1,5 +1,5 @@
 {
-    "name": "@liaoliao/nestjs-redis",
+    "name": "@liaoliaots/nestjs-redis",
     "version": "1.0.0",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
@@ -24,8 +24,7 @@
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
-        "madge": "madge --image dist/dependencies-graph.svg dist/index.js",
-        "semantic-release": "semantic-release"
+        "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
     },
     "dependencies": {
         "tslib": "^2.3.0"

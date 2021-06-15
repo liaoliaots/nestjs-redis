@@ -13,7 +13,7 @@
 ## Install
 
 ```sh
-npm install --save @liaoliao/nestjs-redis @nestjs/terminus ioredis
+npm install --save @liaoliaots/nestjs-redis @nestjs/terminus ioredis
 ```
 
 ```sh
