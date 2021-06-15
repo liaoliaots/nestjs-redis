@@ -20,7 +20,7 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
 /**
  * Parses namespace to string.
  *
- * @param namespace - The namespace of a client
+ * @param namespace - The namespace of client
  */
 export const parseNamespace = (namespace: unknown): string => {
     if (typeof namespace === 'string') return namespace;

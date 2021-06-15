@@ -60,7 +60,7 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should throw an error when getting a client with an unknown namespace', () => {
+    test('should throw an error when getting client with an unknown namespace', () => {
         expect(() => redisService.getClient('')).toThrow();
     });
 });
