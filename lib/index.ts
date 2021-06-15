@@ -1,3 +1,7 @@
+/**
+ * v1.0.0
+ */
+
 export { RedisModule } from './redis/redis.module';
 export { DEFAULT_REDIS_CLIENT } from './redis/redis.constants';
 export { RedisService } from './redis/redis.service';
