@@ -7,6 +7,5 @@
     },
     "testEnvironment": "node",
     "verbose": true,
-    "setupFiles": ["../jest-env.ts"],
-    "detectOpenHandles": false
+    "setupFiles": ["../jest-env.ts"]
 }
