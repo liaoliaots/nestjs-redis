@@ -33,15 +33,15 @@ beforeAll(async () => {
     await app.getHttpAdapter().getInstance().ready();
 });
 
-test('/inject/default (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/inject/default' });
+test('/inject/client0 (GET)', async () => {
+    const res = await app.inject({ method: 'GET', url: '/inject/client0' });
 
     expect(res.statusCode).toBe(200);
     expect(res.payload).toBe('PONG');
 });
 
-test('/inject/client0 (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/inject/client0' });
+test('/inject/default (GET)', async () => {
+    const res = await app.inject({ method: 'GET', url: '/inject/default' });
 
     expect(res.statusCode).toBe(200);
     expect(res.payload).toBe('PONG');
