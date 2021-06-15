@@ -17,6 +17,8 @@ jobs:
               run: npm ci
             - name: Set access
               run: npm config set access public
+            - name: Get config
+              run: npm config list
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
