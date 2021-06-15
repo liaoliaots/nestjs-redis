@@ -25,8 +25,6 @@ export const quitClients = (clients: RedisClients): void => {
     clients.forEach(client => {
         if (client.status !== 'end') void client.quit();
     });
-
-    clients.clear();
 };
 
 /**
