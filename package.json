@@ -97,6 +97,9 @@
             "@commitlint/config-angular"
         ]
     },
+    "release": {
+        "branches": ["main"]
+    },
     "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
     "repository": {
         "type": "git",
