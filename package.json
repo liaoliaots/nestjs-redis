@@ -24,7 +24,8 @@
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
-        "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
+        "madge": "madge --image dist/dependencies-graph.svg dist/index.js",
+        "semantic-release": "semantic-release"
     },
     "dependencies": {
         "tslib": "^2.3.0"
