@@ -3,7 +3,7 @@ import { Redis } from 'ioredis';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { RedisClients, RedisClientsService, ClientNamespace } from './interfaces';
 import { RedisError, CLIENT_NOT_FOUND } from '../errors';
-import { parseNamespace } from './common';
+import { parseNamespace } from '../utils';
 
 @Injectable()
 export class RedisService implements RedisClientsService {

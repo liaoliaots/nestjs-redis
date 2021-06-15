@@ -1,7 +1,5 @@
-import IORedis from 'ioredis';
-import { promiseTimeout, quitClients, testConfig } from '.';
+import { promiseTimeout, testConfig, parseNamespace } from '.';
 import { RedisError } from '../errors';
-import { RedisClients } from '../redis/interfaces';
 
 describe(`${promiseTimeout.name}`, () => {
     const timeout = () =>
@@ -21,34 +19,23 @@ describe(`${promiseTimeout.name}`, () => {
     });
 });
 
-describe(`${quitClients.name}`, () => {
-    const clients: RedisClients = new Map();
+describe(`${parseNamespace.name}`, () => {
+    test('if value is a string, the result should be equal to this string', () => {
+        const value = 'client namespace';
 
-    const timeout = () =>
-        new Promise(resolve => {
-            const id = setTimeout(() => {
-                clearTimeout(id);
-                resolve(undefined);
-            }, 50);
-        });
-
-    beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
-        clients.set('client1', new IORedis({ ...testConfig, db: 1 }));
-
-        await timeout();
+        expect(parseNamespace(value)).toBe(value);
     });
 
-    test('the state should be ready', () => {
-        clients.forEach(client => expect(client.status).toBe('ready'));
+    test('if value is a symbol, the result should be equal to symbol.toString()', () => {
+        const value = Symbol('client namespace');
+
+        expect(parseNamespace(value)).toBe(value.toString());
     });
 
-    test('the state should be end', async () => {
-        quitClients(clients);
-
-        await timeout();
-
-        clients.forEach(client => expect(client.status).toBe('end'));
+    test('if value is neither string nor symbol, the result should be unknown', () => {
+        expect(parseNamespace(undefined)).toBe('unknown');
+        expect(parseNamespace(null)).toBe('unknown');
+        expect(parseNamespace(false)).toBe('unknown');
     });
 });
 

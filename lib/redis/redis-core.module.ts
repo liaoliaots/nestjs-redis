@@ -4,7 +4,7 @@ import { RedisService } from './redis.service';
 import { createProviders, createAsyncProviders, createRedisClientProviders } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { RedisHealthIndicator } from './redis.health';
-import { quitClients } from '../utils';
+import { quitClients } from './common';
 
 @Global()
 @Module({})

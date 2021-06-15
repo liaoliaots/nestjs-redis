@@ -9,8 +9,8 @@ import {
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { namespaces } from './common';
-import { testConfig, quitClients } from '../utils';
+import { namespaces, quitClients } from './common';
+import { testConfig } from '../utils';
 import { RedisService } from './redis.service';
 
 class RedisConfigService implements RedisOptionsFactory {

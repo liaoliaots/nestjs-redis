@@ -1,76 +1,90 @@
 import IORedis, { Redis } from 'ioredis';
-import { createClient, parseNamespace } from '.';
+import { createClient, quitClients } from '.';
 import { testConfig } from '../../utils';
+import { RedisClients } from '../interfaces';
 
-const url = `redis://:${testConfig.password ?? ''}@127.0.0.1:${testConfig.port}/0`;
+const url = `redis://:${testConfig.password ?? ''}@${testConfig.host}:${testConfig.port}/0`;
 
-let client: Redis;
+describe(`${createClient.name}`, () => {
+    let client: Redis;
 
-afterEach(async () => {
-    await client.quit();
+    afterEach(async () => {
+        await client.quit();
+    });
+
+    describe('with URL', () => {
+        test('should create client with URL', async () => {
+            client = createClient({ url });
+
+            const res = await client.ping();
+
+            expect(res).toBe('PONG');
+        });
+
+        test('should create client with URL and options', async () => {
+            client = createClient({ url, lazyConnect: true });
+
+            expect(client.status).toBe('wait');
+
+            const res = await client.ping();
+
+            expect(res).toBe('PONG');
+        });
+    });
+
+    describe('with options', () => {
+        test('should create client without options', () => {
+            client = createClient({});
+
+            expect(client).toBeInstanceOf(IORedis);
+        });
+
+        test('should create client with options', async () => {
+            client = createClient({ ...testConfig });
+
+            const res = await client.ping();
+
+            expect(res).toBe('PONG');
+        });
+
+        test('should call onClientCreated', () => {
+            const mockCreated = jest.fn((client: Redis) => client);
+
+            client = createClient({ ...testConfig, onClientCreated: mockCreated });
+
+            expect(mockCreated.mock.calls).toHaveLength(1);
+            expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis);
+        });
+    });
 });
 
-describe('url', () => {
-    test('should create client with URL', async () => {
-        client = createClient({ url });
+describe(`${quitClients.name}`, () => {
+    const clients: RedisClients = new Map();
 
-        const res = await client.ping();
+    const timeout = () =>
+        new Promise(resolve => {
+            const id = setTimeout(() => {
+                clearTimeout(id);
+                resolve(undefined);
+            }, 50);
+        });
 
-        expect(res).toBe('PONG');
+    beforeAll(async () => {
+        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
+        clients.set('client1', new IORedis({ ...testConfig, db: 1 }));
+
+        await timeout();
     });
 
-    test('should create client with URL and options', async () => {
-        client = createClient({ url, lazyConnect: true });
-
-        expect(client.status).toBe('wait');
-
-        const res = await client.ping();
-
-        expect(res).toBe('PONG');
-    });
-});
-
-describe('options', () => {
-    test('should create client without options', () => {
-        client = createClient({});
-
-        expect(client).toBeInstanceOf(IORedis);
+    test('the state should be ready', () => {
+        clients.forEach(client => expect(client.status).toBe('ready'));
     });
 
-    test('should create client with options', async () => {
-        client = createClient({ ...testConfig });
+    test('the state should be end', async () => {
+        quitClients(clients);
 
-        const res = await client.ping();
+        await timeout();
 
-        expect(res).toBe('PONG');
-    });
-
-    test('should call onClientCreated', () => {
-        const mockCreated = jest.fn((client: Redis) => client);
-
-        client = createClient({ ...testConfig, onClientCreated: mockCreated });
-
-        expect(mockCreated.mock.calls).toHaveLength(1);
-        expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis);
-    });
-});
-
-describe(`${parseNamespace.name}`, () => {
-    test('if the value is a string, the result should be equal to this string', () => {
-        const value = 'client namespace';
-
-        expect(parseNamespace(value)).toBe(value);
-    });
-
-    test('if the value is a symbol, the result should be equal to symbol.toString()', () => {
-        const value = Symbol('client namespace');
-
-        expect(parseNamespace(value)).toBe(value.toString());
-    });
-
-    test('if the value is neither string nor symbol, the result should be unknown', () => {
-        expect(parseNamespace(undefined)).toBe('unknown');
-        expect(parseNamespace(null)).toBe('unknown');
-        expect(parseNamespace(false)).toBe('unknown');
+        clients.forEach(client => expect(client.status).toBe('end'));
     });
 });

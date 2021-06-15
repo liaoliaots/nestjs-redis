@@ -1,5 +1,4 @@
 import { RedisError, TIMEOUT_EXCEEDED } from '../errors';
-import { RedisClients } from '../redis/interfaces';
 
 /**
  * Executes promise in the given timeout. If the promise does not finish in the given timeout, it will reject.
@@ -19,12 +18,15 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
 };
 
 /**
- * Quits all clients.
+ * Parses namespace to string.
+ *
+ * @param namespace - The namespace of a client
  */
-export const quitClients = (clients: RedisClients): void => {
-    clients.forEach(client => {
-        if (client.status !== 'end') void client.quit();
-    });
+export const parseNamespace = (namespace: unknown): string => {
+    if (typeof namespace === 'string') return namespace;
+    if (typeof namespace === 'symbol') return namespace.toString();
+
+    return 'unknown';
 };
 
 /**

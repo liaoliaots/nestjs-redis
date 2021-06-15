@@ -1,9 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { RedisModule } from '../lib';
-import { testConfig, quitClients } from '../lib/utils';
+import { testConfig } from '../lib/utils';
 import { RedisClients } from '../lib/redis/interfaces';
 import { REDIS_CLIENTS } from '../lib/redis/redis.constants';
+import { quitClients } from '../lib/redis/common';
 import { InjectController } from './controllers/inject.controller';
 
 let clients: RedisClients;

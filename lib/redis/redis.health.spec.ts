@@ -4,7 +4,8 @@ import { RedisHealthIndicator } from './redis.health';
 import { REDIS_CLIENTS } from './redis.constants';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
-import { testConfig, quitClients } from '../utils';
+import { testConfig } from '../utils';
+import { quitClients } from './common';
 
 describe(`${RedisHealthIndicator.name}`, () => {
     const clients: RedisClients = new Map();
