@@ -2,7 +2,7 @@
     "name": "@liaoliaots/nestjs-redis",
     "version": "1.1.1",
     "description": "Redis(ioredis) module for NestJS framework",
-    "author": "liaoliaots <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
+    "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
