@@ -66,7 +66,7 @@ describe(`${quitClients.name}`, () => {
             const id = setTimeout(() => {
                 clearTimeout(id);
                 resolve(undefined);
-            }, 50);
+            }, 100);
         });
 
     beforeAll(async () => {

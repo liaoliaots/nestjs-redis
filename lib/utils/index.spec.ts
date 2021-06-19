@@ -3,15 +3,15 @@ import { RedisError } from '../errors';
 
 describe(`${promiseTimeout.name}`, () => {
     const timeout = () =>
-        new Promise<string>(resolve => {
+        new Promise<undefined>(resolve => {
             const id = setTimeout(() => {
                 clearTimeout(id);
-                resolve('resolved');
+                resolve(undefined);
             }, 10);
         });
 
     test('should resolve promise when the time of executing promise less than ms', () => {
-        return expect(promiseTimeout(20, timeout())).resolves.toBe('resolved');
+        return expect(promiseTimeout(20, timeout())).resolves.toBeUndefined();
     });
 
     test('should reject promise when the time of executing promise greater than ms', () => {
@@ -21,13 +21,13 @@ describe(`${promiseTimeout.name}`, () => {
 
 describe(`${parseNamespace.name}`, () => {
     test('if value is a string, the result should be equal to this string', () => {
-        const value = 'client namespace';
+        const value = 'namespace';
 
         expect(parseNamespace(value)).toBe(value);
     });
 
     test('if value is a symbol, the result should be equal to symbol.toString()', () => {
-        const value = Symbol('client namespace');
+        const value = Symbol('namespace');
 
         expect(parseNamespace(value)).toBe(value.toString());
     });
@@ -36,6 +36,7 @@ describe(`${parseNamespace.name}`, () => {
         expect(parseNamespace(undefined)).toBe('unknown');
         expect(parseNamespace(null)).toBe('unknown');
         expect(parseNamespace(false)).toBe('unknown');
+        expect(parseNamespace(0)).toBe('unknown');
     });
 });
 
