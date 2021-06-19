@@ -1,4 +1,4 @@
-# Welcome to @liaoliao/nestjs-redis 👋
+# Welcome to @liaoliaots/nestjs-redis 👋
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
