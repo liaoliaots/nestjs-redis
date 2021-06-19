@@ -14,6 +14,8 @@ jobs:
                   node-version: '14'
                   check-latest: true
                   registry-url: https://registry.npmjs.org
+            - name: Update npm
+              run: npm install -g npm@latest -verbose
             - name: Install dependencies
               run: npm install
             - name: Build
@@ -27,6 +29,8 @@ jobs:
                   node-version: '14'
                   check-latest: true
                   registry-url: https://npm.pkg.github.com
+            - name: Update npm
+              run: npm install -g npm@latest -verbose
             - name: Install dependencies
               run: npm install
             - name: Build
