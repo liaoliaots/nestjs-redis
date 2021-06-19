@@ -2,7 +2,7 @@
     "name": "@liaoliaots/nestjs-redis",
     "version": "1.0.0",
     "description": "Redis(ioredis) module for NestJS framework",
-    "author": "LiaoLiao <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
+    "author": "liaoliaots <yxiaosong002@gmail.com> (https://github.com/liaoliaots)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -94,11 +94,6 @@
     "commitlint": {
         "extends": [
             "@commitlint/config-angular"
-        ]
-    },
-    "release": {
-        "branches": [
-            "main"
         ]
     },
     "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
