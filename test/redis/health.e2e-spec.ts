@@ -1,13 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { TerminusModule } from '@nestjs/terminus';
-import { RedisModule } from '../lib';
-import { testConfig } from '../lib/utils';
-import { RedisClients } from '../lib/redis/interfaces';
-import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from '../lib/redis/redis.constants';
-import { CLIENT_NOT_FOUND } from '../lib/errors';
-import { quitClients } from '../lib/redis/common';
-import { HealthController } from './controllers/health.controller';
+import { RedisClients } from '../../lib/redis/interfaces';
+import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from '../../lib/redis/redis.constants';
+import { CLIENT_NOT_FOUND } from '../../lib/errors';
+import { quitClients } from '../../lib/redis/common';
+import { AppModule } from './app/app.module';
 
 let clients: RedisClients;
 
@@ -21,11 +18,7 @@ afterAll(async () => {
 
 beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-        imports: [
-            RedisModule.forRoot({ defaultOptions: testConfig, config: [{ namespace: 'client0', db: 0 }, { db: 1 }] }),
-            TerminusModule
-        ],
-        controllers: [HealthController]
+        imports: [AppModule]
     }).compile();
 
     clients = moduleRef.get<RedisClients>(REDIS_CLIENTS);

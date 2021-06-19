@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { RedisService } from '../../lib';
+import { RedisService } from '../../../../lib';
+import { CLIENT_0 } from '../app.module';
 
 @Controller('service')
 export class ServiceController {
@@ -7,7 +8,7 @@ export class ServiceController {
 
     @Get('client0')
     async pingClient0(): Promise<string> {
-        return await this.redisService.getClient('client0').ping();
+        return await this.redisService.getClient(CLIENT_0).ping();
     }
 
     @Get('default')
