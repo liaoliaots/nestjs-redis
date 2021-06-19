@@ -1,7 +1,6 @@
 import { Type, ModuleMetadata } from '@nestjs/common';
 import { RedisOptions, Redis } from 'ioredis';
-
-export type ClientNamespace = string | symbol;
+import { ClientNamespace } from '../../interfaces';
 
 export interface ClientOptions extends RedisOptions {
     /**

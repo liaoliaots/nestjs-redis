@@ -1,5 +1,5 @@
 import { Redis } from 'ioredis';
-import { ClientNamespace } from './redis-module-options.interface';
+import { ClientNamespace } from '../../interfaces';
 
 export type RedisClients = Map<ClientNamespace, Redis>;
 
