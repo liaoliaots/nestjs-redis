@@ -11,12 +11,12 @@ export class InjectController {
     ) {}
 
     @Get('client0')
-    async pingClient0(): Promise<string> {
-        return await this.redisClient0.ping();
+    pingClient0(): Promise<string> {
+        return this.redisClient0.ping();
     }
 
     @Get('default')
-    async pingDefault(): Promise<string> {
-        return await this.redisDefault.ping();
+    pingDefault(): Promise<string> {
+        return this.redisDefault.ping();
     }
 }
