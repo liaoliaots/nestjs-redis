@@ -1,13 +1,16 @@
 # Welcome to @liaoliaots/nestjs-redis 👋
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
+[![npm version](https://badge.fury.io/js/%40liaoliaots%2Fnestjs-redis.svg)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
+[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/github/license/liaoliaots/nestjs-redis)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 > Redis(ioredis) module for NestJS framework
 
-### 🏠 [Homepage](https://github.com/liaoliaots/nestjs-redis#readme)
+| Statements                                                                      | Branches                                                            | Functions                                                                | Lines                                                                 |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-91.59%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-86%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-85.37%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-91.18%25-brightgreen.svg) |
 
 ## Install
 
@@ -24,6 +27,10 @@ npm install --save-dev @types/ioredis
 ```sh
 TODO
 ```
+
+## Dependencies graph
+
+![](./dependencies-graph.svg)
 
 ## Author
 

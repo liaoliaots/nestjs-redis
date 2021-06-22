@@ -24,7 +24,8 @@
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
-        "madge": "madge --image dist/dependencies-graph.svg dist/index.js"
+        "make-badges": "istanbul-badges-readme",
+        "madge": "madge --image ./dependencies-graph.svg dist/index.js"
     },
     "dependencies": {
         "tslib": "^2.3.0"
@@ -51,6 +52,7 @@
         "eslint-plugin-tsdoc": "0.2.14",
         "husky": "6.0.0",
         "ioredis": "4.27.6",
+        "istanbul-badges-readme": "1.4.0",
         "jest": "27.0.4",
         "lint-staged": "11.0.0",
         "prettier": "2.3.1",
@@ -88,6 +90,9 @@
         ],
         "setupFiles": [
             "../jest-env.ts"
+        ],
+        "coverageReporters": [
+            "json-summary"
         ]
     },
     "commitlint": {
