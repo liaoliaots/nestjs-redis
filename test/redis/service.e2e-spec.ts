@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+import { AppModule } from './app/app.module';
 import { RedisClients } from '../../lib/redis/interfaces';
 import { REDIS_CLIENTS } from '../../lib/redis/redis.constants';
 import { quitClients } from '../../lib/redis/common';
-import { AppModule } from './app/app.module';
 
 let clients: RedisClients;
 

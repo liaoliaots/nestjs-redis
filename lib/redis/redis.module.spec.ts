@@ -8,7 +8,7 @@ describe(`${RedisModule.forRoot.name}`, () => {
     });
 
     test('should register the module with options', () => {
-        const options: RedisModuleOptions = { closeClient: false, defaultOptions: {}, config: [] };
+        const options: RedisModuleOptions = {};
 
         expect(RedisModule.forRoot(options).module).toBe(RedisModule);
         expect(RedisModule.forRoot(options).imports).toHaveLength(1);

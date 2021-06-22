@@ -89,42 +89,42 @@ process.env.CLUSTER_3_PASSWORD = '15194112589master';
 export const testConfig = {
     master: {
         host: process.env.MASTER_HOST,
-        port: Number.parseInt(process.env.MASTER_PORT),
+        port: Number.parseInt(process.env.MASTER_PORT, 10),
         password: process.env.MASTER_PASSWORD
     },
     slave1: {
         host: process.env.SLAVE_1_HOST,
-        port: Number.parseInt(process.env.SLAVE_1_PORT),
+        port: Number.parseInt(process.env.SLAVE_1_PORT, 10),
         password: process.env.SLAVE_1_PASSWORD
     },
     slave2: {
         host: process.env.SLAVE_2_HOST,
-        port: Number.parseInt(process.env.SLAVE_2_PORT),
+        port: Number.parseInt(process.env.SLAVE_2_PORT, 10),
         password: process.env.SLAVE_2_PASSWORD
     },
     sentinel1: {
         host: process.env.SENTINEL_1_HOST,
-        port: Number.parseInt(process.env.SENTINEL_1_PORT),
+        port: Number.parseInt(process.env.SENTINEL_1_PORT, 10),
         password: process.env.SENTINEL_1_PASSWORD
     },
     sentinel2: {
         host: process.env.SENTINEL_2_HOST,
-        port: Number.parseInt(process.env.SENTINEL_2_PORT),
+        port: Number.parseInt(process.env.SENTINEL_2_PORT, 10),
         password: process.env.SENTINEL_2_PASSWORD
     },
     cluster1: {
         host: process.env.CLUSTER_1_HOST,
-        port: Number.parseInt(process.env.CLUSTER_1_PORT),
+        port: Number.parseInt(process.env.CLUSTER_1_PORT, 10),
         password: process.env.CLUSTER_1_PASSWORD
     },
     cluster2: {
         host: process.env.CLUSTER_2_HOST,
-        port: Number.parseInt(process.env.CLUSTER_2_PORT),
+        port: Number.parseInt(process.env.CLUSTER_2_PORT, 10),
         password: process.env.CLUSTER_2_PASSWORD
     },
     cluster3: {
         host: process.env.CLUSTER_3_HOST,
-        port: Number.parseInt(process.env.CLUSTER_3_PORT),
+        port: Number.parseInt(process.env.CLUSTER_3_PORT, 10),
         password: process.env.CLUSTER_3_PASSWORD
     }
 };

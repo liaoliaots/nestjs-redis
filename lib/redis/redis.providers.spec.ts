@@ -10,8 +10,8 @@ import {
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { namespaces, quitClients } from './common';
-import { testConfig } from '../../jest-env';
 import { RedisService } from './redis.service';
+import { testConfig } from '../../jest-env';
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions() {
@@ -44,7 +44,7 @@ describe(`${createAsyncOptionsProvider.name}`, () => {
     test('should create provider with useFactory', () => {
         const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['DIToken'] };
 
-        expect(createAsyncOptionsProvider(options)).toEqual({ ...options, provide: REDIS_OPTIONS });
+        expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {
@@ -110,16 +110,16 @@ describe('redisClientsProvider', () => {
             expect(clients.size).toBe(2);
         });
 
-        test('should get default client with namespace', async () => {
-            const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+        test('should get client with namespace', async () => {
+            const client = redisService.getClient('client0');
 
             const res = await client.ping();
 
             expect(res).toBe('PONG');
         });
 
-        test('should get client with namespace', async () => {
-            const client = redisService.getClient('client0');
+        test('should get default client with namespace', async () => {
+            const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
             const res = await client.ping();
 
