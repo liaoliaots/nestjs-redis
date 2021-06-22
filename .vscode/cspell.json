@@ -16,6 +16,11 @@
         "commitlint",
         "tsdoc",
         "env",
-        "npx"
+        "npx",
+        "requirepass",
+        "slaveof",
+        "masterauth",
+        "mymaster",
+        "appendonly"
     ]
 }
