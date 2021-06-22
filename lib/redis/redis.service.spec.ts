@@ -3,7 +3,7 @@ import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { testConfig } from '../utils';
+import { testConfig } from '../../jest-env';
 import { quitClients } from './common';
 
 describe(`${RedisService.name}`, () => {
@@ -16,8 +16,8 @@ describe(`${RedisService.name}`, () => {
     });
 
     beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
-        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ ...testConfig, db: 1 }));
+        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
+        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ ...testConfig.master, db: 1 }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService]

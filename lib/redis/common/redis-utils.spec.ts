@@ -1,9 +1,9 @@
 import IORedis, { Redis } from 'ioredis';
 import { createClient, quitClients } from '.';
-import { testConfig } from '../../utils';
+import { testConfig } from '../../../jest-env';
 import { RedisClients } from '../interfaces';
 
-const url = `redis://:${testConfig.password ?? ''}@${testConfig.host}:${testConfig.port}/0`;
+const url = `redis://:${testConfig.master.password}@${testConfig.master.host}:${testConfig.master.port}/0`;
 
 describe(`${createClient.name}`, () => {
     let client: Redis;
@@ -40,7 +40,7 @@ describe(`${createClient.name}`, () => {
         });
 
         test('should create client with options', async () => {
-            client = createClient({ ...testConfig });
+            client = createClient({ ...testConfig.master });
 
             const res = await client.ping();
 
@@ -50,7 +50,7 @@ describe(`${createClient.name}`, () => {
         test('should call onClientCreated', () => {
             const mockCreated = jest.fn((client: Redis) => client);
 
-            client = createClient({ ...testConfig, onClientCreated: mockCreated });
+            client = createClient({ ...testConfig.master, onClientCreated: mockCreated });
 
             expect(mockCreated.mock.calls).toHaveLength(1);
             expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis);
@@ -70,8 +70,8 @@ describe(`${quitClients.name}`, () => {
         });
 
     beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
-        clients.set('client1', new IORedis({ ...testConfig, db: 1 }));
+        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
+        clients.set('client1', new IORedis({ ...testConfig.master, db: 1 }));
 
         await timeout();
     });
