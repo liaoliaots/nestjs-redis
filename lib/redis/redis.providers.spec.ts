@@ -10,7 +10,7 @@ import {
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { namespaces, quitClients } from './common';
-import { testConfig } from '../utils';
+import { testConfig } from '../../jest-env';
 import { RedisService } from './redis.service';
 
 class RedisConfigService implements RedisOptionsFactory {
@@ -81,18 +81,18 @@ describe('redisClientsProvider', () => {
         beforeAll(async () => {
             const options: RedisModuleOptions = {
                 defaultOptions: {
-                    port: testConfig.port
+                    port: testConfig.master.port
                 },
                 config: [
                     {
-                        host: testConfig.host,
-                        password: testConfig.password,
+                        host: testConfig.master.host,
+                        password: testConfig.master.password,
                         namespace: 'client0',
                         db: 0
                     },
                     {
-                        host: testConfig.host,
-                        password: testConfig.password,
+                        host: testConfig.master.host,
+                        password: testConfig.master.password,
                         db: 1
                     }
                 ]
@@ -139,11 +139,11 @@ describe('redisClientsProvider', () => {
         beforeAll(async () => {
             const options: RedisModuleOptions = {
                 defaultOptions: {
-                    port: testConfig.port
+                    port: testConfig.master.port
                 },
                 config: {
-                    host: testConfig.host,
-                    password: testConfig.password,
+                    host: testConfig.master.host,
+                    password: testConfig.master.password,
                     db: 1
                 }
             };
@@ -212,8 +212,8 @@ describe(`${createRedisClientProviders.name}`, () => {
     beforeAll(async () => {
         namespaces.push(...['client0', 'client1']);
 
-        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
-        clients.set('client1', new IORedis({ ...testConfig, db: 1 }));
+        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
+        clients.set('client1', new IORedis({ ...testConfig.master, db: 1 }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService, ...createRedisClientProviders()]

@@ -1,4 +1,4 @@
-import { promiseTimeout, testConfig, parseNamespace } from '.';
+import { promiseTimeout, parseNamespace } from '.';
 import { RedisError } from '../errors';
 
 describe(`${promiseTimeout.name}`, () => {
@@ -37,19 +37,5 @@ describe(`${parseNamespace.name}`, () => {
         expect(parseNamespace(null)).toBe('unknown');
         expect(parseNamespace(false)).toBe('unknown');
         expect(parseNamespace(0)).toBe('unknown');
-    });
-});
-
-describe('testConfig', () => {
-    test('the host should be of type string', () => {
-        expect(typeof testConfig.host).toBe('string');
-    });
-
-    test('the port should be of type number', () => {
-        expect(typeof testConfig.port).toBe('number');
-    });
-
-    test('the password should be of type string or undefined', () => {
-        expect(typeof testConfig.password === 'string' || typeof testConfig.password === 'undefined').toBe(true);
     });
 });

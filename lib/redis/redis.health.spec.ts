@@ -4,7 +4,7 @@ import { RedisHealthIndicator } from './redis.health';
 import { REDIS_CLIENTS } from './redis.constants';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
-import { testConfig } from '../utils';
+import { testConfig } from '../../jest-env';
 import { quitClients } from './common';
 
 describe(`${RedisHealthIndicator.name}`, () => {
@@ -17,7 +17,7 @@ describe(`${RedisHealthIndicator.name}`, () => {
     });
 
     beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig, db: 0 }));
+        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService, RedisHealthIndicator]
