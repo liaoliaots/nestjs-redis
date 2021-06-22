@@ -1,4 +1,4 @@
-# Welcome to @liaoliaots/nestjs-redis 👋
+# Welcome to nestjs-redis 👋
 
 [![npm version](https://badge.fury.io/js/%40liaoliaots%2Fnestjs-redis.svg)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
 [![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
