@@ -3,8 +3,8 @@ import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { testConfig } from '../../jest-env';
 import { quitClients } from './common';
+import { testConfig } from '../../jest-env';
 
 describe(`${RedisService.name}`, () => {
     const clients: RedisClients = new Map();
@@ -60,7 +60,7 @@ describe(`${RedisService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should throw an error when getting client with an unknown namespace', () => {
+    test('should throw an error while getting client with an unknown namespace', () => {
         expect(() => redisService.getClient('')).toThrow();
     });
 });
