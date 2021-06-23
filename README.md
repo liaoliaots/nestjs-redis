@@ -5,6 +5,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/github/license/liaoliaots/nestjs-redis)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 > Redis(ioredis) module for NestJS framework
 
@@ -28,9 +29,9 @@ npm install --save-dev @types/ioredis
 TODO
 ```
 
-## Dependencies graph
+## Package dependency overview
 
-![](./dependencies-graph.svg)
+![](./dependency-graph.svg)
 
 ## Author
 
