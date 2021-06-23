@@ -32,7 +32,7 @@
     },
     "devDependencies": {
         "@commitlint/cli": "12.1.4",
-        "@commitlint/config-angular": "12.1.4",
+        "@commitlint/config-conventional": "12.1.4",
         "@nestjs/common": "7.6.18",
         "@nestjs/core": "7.6.18",
         "@nestjs/platform-fastify": "7.6.18",
@@ -97,8 +97,11 @@
     },
     "commitlint": {
         "extends": [
-            "@commitlint/config-angular"
+            "@commitlint/config-conventional"
         ]
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
     "repository": {
