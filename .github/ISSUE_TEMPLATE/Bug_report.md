@@ -4,6 +4,7 @@ about: "If something isn't working as expected \U0001F914."
 title: ''
 labels: 'type: potential issue :broken_heart:,needs triage'
 assignees: ''
+
 ---
 
 ## Bug Report
@@ -17,7 +18,7 @@ assignees: ''
 <!-- REPL or Repo link if applicable: -->
 
 ```ts
-const your = code => here;
+const your = (code) => here;
 ```
 
 ## Expected behavior
