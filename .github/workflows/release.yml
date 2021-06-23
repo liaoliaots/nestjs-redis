@@ -15,26 +15,18 @@ jobs:
                   check-latest: true
                   registry-url: https://registry.npmjs.org
             - name: Update npm
-              run: npm install -g npm@latest -verbose
+              run: npm install -g npm@7.18.1
             - name: Install dependencies
               run: npm install
             - name: Build
               run: npm run build
             - name: Publish to npm
-              run: npm publish --access public
+              run: npm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
-                  check-latest: true
                   registry-url: https://npm.pkg.github.com
-            - name: Update npm
-              run: npm install -g npm@latest -verbose
-            - name: Install dependencies
-              run: npm install
-            - name: Build
-              run: npm run build
             - name: Publish to GitHub Packages
               run: npm publish
               env:
