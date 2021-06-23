@@ -5,7 +5,7 @@ module.exports = {
         ecmaFeatures: {
             impliedStrict: true
         },
-        project: 'tsconfig.json'
+        project: './tsconfig.json'
     },
     plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
