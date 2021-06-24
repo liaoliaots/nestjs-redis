@@ -1,0 +1,107 @@
+import { Test } from '@nestjs/testing';
+import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+import { AppModule } from './app/app.module';
+import { ClusterClients } from '../../lib/cluster/interfaces';
+import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from '../../lib/cluster/cluster.constants';
+import { CLIENT_NOT_FOUND } from '../../lib/errors';
+import { quitClients } from '../../lib/cluster/common';
+
+let clients: ClusterClients;
+
+let app: NestFastifyApplication;
+
+afterAll(async () => {
+    quitClients(clients);
+
+    await app.close();
+});
+
+beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+        imports: [AppModule]
+    }).compile();
+
+    clients = moduleRef.get<ClusterClients>(CLUSTER_CLIENTS);
+
+    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+
+    await app.init();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    await app.getHttpAdapter().getInstance().ready();
+});
+
+test('/health (GET)', async () => {
+    const res = await app.inject({ method: 'GET', url: '/health' });
+
+    expect(res.statusCode).toBe(200);
+    expect(JSON.parse(res.payload)).toEqual({
+        status: 'ok',
+        info: {
+            client0: {
+                status: 'up'
+            },
+            default: {
+                status: 'up'
+            }
+        },
+        error: {},
+        details: {
+            client0: {
+                status: 'up'
+            },
+            default: {
+                status: 'up'
+            }
+        }
+    });
+});
+
+test('/health/with-unknown-namespace (GET)', async () => {
+    const res = await app.inject({ method: 'GET', url: '/health/with-unknown-namespace' });
+
+    expect(res.statusCode).toBe(503);
+    expect(JSON.parse(res.payload)).toEqual({
+        status: 'error',
+        info: {},
+        error: {
+            unknown: {
+                status: 'down',
+                message: CLIENT_NOT_FOUND('?')
+            }
+        },
+        details: {
+            unknown: {
+                status: 'down',
+                message: CLIENT_NOT_FOUND('?')
+            }
+        }
+    });
+});
+
+describe('disconnect', () => {
+    beforeEach(async () => {
+        await clients.get(DEFAULT_CLUSTER_CLIENT)?.quit();
+    });
+
+    test('/health/with-disconnected-client (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/health/with-disconnected-client' });
+
+        expect(res.statusCode).toBe(503);
+        expect(JSON.parse(res.payload)).toEqual({
+            status: 'error',
+            info: {},
+            error: {
+                default: {
+                    status: 'down',
+                    message: 'None of startup nodes is available'
+                }
+            },
+            details: {
+                default: {
+                    status: 'down',
+                    message: 'None of startup nodes is available'
+                }
+            }
+        });
+    });
+});

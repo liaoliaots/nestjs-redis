@@ -58,6 +58,29 @@
  * sudo redis-server /etc/redis/16381.conf
  * sudo redis-server /etc/redis/16382.conf
  * redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 -a 15194112589master
+ *
+ * master4 127.0.0.1 16383
+ * requirepass 15194112589master
+ * cluster-enabled yes
+ * cluster-config-file nodes-16383.conf
+ * appendonly yes
+ *
+ * master5 127.0.0.1 16384
+ * requirepass 15194112589master
+ * cluster-enabled yes
+ * cluster-config-file nodes-16384.conf
+ * appendonly yes
+ *
+ * master6 127.0.0.1 16385
+ * requirepass 15194112589master
+ * cluster-enabled yes
+ * cluster-config-file nodes-16385.conf
+ * appendonly yes
+ *
+ * sudo redis-server /etc/redis/16383.conf
+ * sudo redis-server /etc/redis/16384.conf
+ * sudo redis-server /etc/redis/16385.conf
+ * redis-cli --cluster create 127.0.0.1:16383 127.0.0.1:16384 127.0.0.1:16385 -a 15194112589master
  */
 
 process.env.MASTER_HOST = '127.0.0.1';
@@ -85,6 +108,16 @@ process.env.CLUSTER_2_PASSWORD = '15194112589master';
 process.env.CLUSTER_3_HOST = '127.0.0.1';
 process.env.CLUSTER_3_PORT = '16382';
 process.env.CLUSTER_3_PASSWORD = '15194112589master';
+
+process.env.CLUSTER_4_HOST = '127.0.0.1';
+process.env.CLUSTER_4_PORT = '16383';
+process.env.CLUSTER_4_PASSWORD = '15194112589master';
+process.env.CLUSTER_5_HOST = '127.0.0.1';
+process.env.CLUSTER_5_PORT = '16384';
+process.env.CLUSTER_5_PASSWORD = '15194112589master';
+process.env.CLUSTER_6_HOST = '127.0.0.1';
+process.env.CLUSTER_6_PORT = '16385';
+process.env.CLUSTER_6_PASSWORD = '15194112589master';
 
 export const testConfig = {
     master: {
@@ -126,5 +159,20 @@ export const testConfig = {
         host: process.env.CLUSTER_3_HOST,
         port: Number.parseInt(process.env.CLUSTER_3_PORT, 10),
         password: process.env.CLUSTER_3_PASSWORD
+    },
+    cluster4: {
+        host: process.env.CLUSTER_4_HOST,
+        port: Number.parseInt(process.env.CLUSTER_4_PORT, 10),
+        password: process.env.CLUSTER_4_PASSWORD
+    },
+    cluster5: {
+        host: process.env.CLUSTER_5_HOST,
+        port: Number.parseInt(process.env.CLUSTER_5_PORT, 10),
+        password: process.env.CLUSTER_5_PASSWORD
+    },
+    cluster6: {
+        host: process.env.CLUSTER_6_HOST,
+        port: Number.parseInt(process.env.CLUSTER_6_PORT, 10),
+        password: process.env.CLUSTER_6_PASSWORD
     }
 };

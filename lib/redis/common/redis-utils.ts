@@ -2,11 +2,11 @@ import IORedis, { Redis } from 'ioredis';
 import { ClientOptions, RedisClients } from '../interfaces';
 
 export const createClient = (options: ClientOptions): Redis => {
-    const { url, ...redisOptions } = options;
+    const { url, onClientCreated, ...redisOptions } = options;
 
     const client = url ? new IORedis(url, redisOptions) : new IORedis(redisOptions);
 
-    if (options.onClientCreated) options.onClientCreated(client);
+    if (onClientCreated) onClientCreated(client);
 
     return client;
 };

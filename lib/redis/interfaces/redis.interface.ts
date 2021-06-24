@@ -5,7 +5,7 @@ export type RedisClients = Map<ClientNamespace, Redis>;
 
 export interface RedisClientsService {
     /**
-     * All clients as a read-only map.
+     * Returns all clients.
      */
     clients: ReadonlyMap<ClientNamespace, Redis>;
 
@@ -22,7 +22,7 @@ export interface RedisPingCheckOptions {
     namespace: ClientNamespace;
 
     /**
-     * The amount of time for ping check.
+     * The amount of time in ms for ping check.
      */
     timeout?: number;
 }

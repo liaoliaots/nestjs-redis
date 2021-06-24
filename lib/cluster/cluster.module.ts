@@ -1,24 +1,26 @@
 import { Module, DynamicModule } from '@nestjs/common';
+import { ClusterModuleOptions, ClusterModuleAsyncOptions } from './interfaces';
+import { ClusterCoreModule } from './cluster-core.module';
 
 @Module({})
 export class ClusterModule {
     /**
      * Registers the module synchronously.
      */
-    static forRoot(): DynamicModule {
+    static forRoot(options: ClusterModuleOptions): DynamicModule {
         return {
             module: ClusterModule,
-            imports: []
+            imports: [ClusterCoreModule.forRoot(options)]
         };
     }
 
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(): DynamicModule {
+    static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
         return {
             module: ClusterModule,
-            imports: []
+            imports: [ClusterCoreModule.forRootAsync(options)]
         };
     }
 }
