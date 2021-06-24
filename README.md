@@ -9,9 +9,9 @@
 
 > Redis(ioredis) module for NestJS framework
 
-| Statements                                                                      | Branches                                                            | Functions                                                                | Lines                                                                 |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-91.59%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-86%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-85.37%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-91.18%25-brightgreen.svg) |
+| Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                 |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-95.08%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-84.62%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-88.57%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-94.84%25-brightgreen.svg) |
 
 ## Install
 
