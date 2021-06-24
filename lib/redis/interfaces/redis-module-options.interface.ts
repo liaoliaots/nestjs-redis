@@ -17,14 +17,14 @@ export interface ClientOptions extends RedisOptions {
     url?: string;
 
     /**
-     * The function will be called when the client has been created, and this client is the first parameter.
+     * The function will be executed when the client has been created, and the first parameter is the client.
      */
     onClientCreated?: (client: Redis) => void;
 }
 
 export interface RedisModuleOptions {
     /**
-     * If `true`, the connection of every client will be closed automatically on nestjs application shutdown.
+     * If `true`, all clients will be closed automatically on nestjs application shutdown.
      *
      * Default: false
      */
