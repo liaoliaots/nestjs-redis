@@ -25,7 +25,7 @@
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme",
-        "madge": "madge --image ./dependencies-graph.svg dist/index.js"
+        "madge": "madge --image ./dependency-graph.svg dist/index.js"
     },
     "dependencies": {
         "tslib": "^2.3.0"
