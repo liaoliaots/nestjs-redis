@@ -27,7 +27,7 @@ describe(`${RedisHealthIndicator.name}`, () => {
     });
 
     test('should state up', () => {
-        return expect(redisHealth.pingCheck('redis', { namespace: 'client0' })).resolves.toEqual({
+        return expect(redisHealth.isHealthy('redis', { namespace: 'client0' })).resolves.toEqual({
             redis: { status: 'up' }
         });
     });

@@ -9,18 +9,18 @@ export class HealthController {
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redis.pingCheck('client0', { namespace: 'client0', timeout: 1000 }),
-            () => this.redis.pingCheck('default', { namespace: DEFAULT_CLUSTER_CLIENT, timeout: 1000 })
+            () => this.redis.isHealthy('client0', { namespace: 'client0' }),
+            () => this.redis.isHealthy('default', { namespace: DEFAULT_CLUSTER_CLIENT })
         ]);
     }
 
     @Get('with-unknown-namespace')
     healthCheckWithUnknownNamespace(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.pingCheck('unknown', { namespace: '?' })]);
+        return this.health.check([() => this.redis.isHealthy('unknown', { namespace: '?' })]);
     }
 
     @Get('with-disconnected-client')
     healthCheckWithDisconnect(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.pingCheck('default', { namespace: DEFAULT_CLUSTER_CLIENT })]);
+        return this.health.check([() => this.redis.isHealthy('default', { namespace: DEFAULT_CLUSTER_CLIENT })]);
     }
 }

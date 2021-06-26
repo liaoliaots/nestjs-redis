@@ -93,13 +93,13 @@ describe('disconnect', () => {
             error: {
                 default: {
                     status: 'down',
-                    message: 'None of startup nodes is available'
+                    message: 'Connection is closed.'
                 }
             },
             details: {
                 default: {
                     status: 'down',
-                    message: 'None of startup nodes is available'
+                    message: 'Connection is closed.'
                 }
             }
         });
