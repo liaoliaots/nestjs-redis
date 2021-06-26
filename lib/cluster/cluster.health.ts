@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import { ClusterService } from './cluster.service';
 import { ClusterPingCheckOptions } from './interfaces';
-import { promiseTimeout } from '../utils';
+import { parseNamespace } from '../utils';
+import { RedisError, CLUSTER_STATE_FAIL } from '../errors';
 
 @Injectable()
 export class ClusterHealthIndicator extends HealthIndicator {
@@ -10,14 +11,15 @@ export class ClusterHealthIndicator extends HealthIndicator {
         super();
     }
 
-    async pingCheck(key: string, options: ClusterPingCheckOptions): Promise<HealthIndicatorResult> {
-        const shouldUseTimeout = (value?: unknown): value is number =>
-            typeof value === 'number' && !Number.isNaN(value);
-
+    async isHealthy(key: string, options: ClusterPingCheckOptions): Promise<HealthIndicatorResult> {
         try {
             const client = this.clusterService.getClient(options.namespace);
 
-            await (shouldUseTimeout(options.timeout) ? promiseTimeout(options.timeout, client.ping()) : client.ping());
+            const clusterInfo = (await client.cluster('info')) as string;
+
+            if (!clusterInfo.includes('cluster_state:ok')) {
+                throw new RedisError(CLUSTER_STATE_FAIL(parseNamespace(options.namespace)));
+            }
         } catch (e) {
             const error = e as Error;
 

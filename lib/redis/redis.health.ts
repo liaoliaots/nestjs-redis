@@ -10,7 +10,7 @@ export class RedisHealthIndicator extends HealthIndicator {
         super();
     }
 
-    async pingCheck(key: string, options: RedisPingCheckOptions): Promise<HealthIndicatorResult> {
+    async isHealthy(key: string, options: RedisPingCheckOptions): Promise<HealthIndicatorResult> {
         const shouldUseTimeout = (value?: unknown): value is number =>
             typeof value === 'number' && !Number.isNaN(value);
 

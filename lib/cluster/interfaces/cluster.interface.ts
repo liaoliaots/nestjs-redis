@@ -20,9 +20,4 @@ export interface ClusterPingCheckOptions {
      * The namespace of cluster client, this client will execute ping check.
      */
     namespace: ClientNamespace;
-
-    /**
-     * The amount of time in ms for ping check.
-     */
-    timeout?: number;
 }

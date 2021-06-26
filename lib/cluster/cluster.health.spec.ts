@@ -41,8 +41,8 @@ describe(`${ClusterHealthIndicator.name}`, () => {
     });
 
     test('should state up', () => {
-        return expect(clusterHealth.pingCheck('redis', { namespace: 'client0' })).resolves.toEqual({
-            redis: { status: 'up' }
+        return expect(clusterHealth.isHealthy('cluster', { namespace: 'client0' })).resolves.toEqual({
+            cluster: { status: 'up' }
         });
     });
 });
