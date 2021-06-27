@@ -2,14 +2,6 @@ import { RedisCoreModule } from './redis-core.module';
 import { RedisModuleAsyncOptions, RedisModuleOptions } from './interfaces';
 
 describe(`${RedisCoreModule.forRoot.name}`, () => {
-    test('should register the module without options', () => {
-        expect(RedisCoreModule.forRoot().module).toBe(RedisCoreModule);
-        expect(RedisCoreModule.forRoot().providers).toBeDefined();
-        expect(RedisCoreModule.forRoot().providers?.length).toBeGreaterThanOrEqual(4);
-        expect(RedisCoreModule.forRoot().exports).toBeDefined();
-        expect(RedisCoreModule.forRoot().exports?.length).toBeGreaterThanOrEqual(2);
-    });
-
     test('should register the module with options', () => {
         const options: RedisModuleOptions = {};
 
@@ -18,6 +10,14 @@ describe(`${RedisCoreModule.forRoot.name}`, () => {
         expect(RedisCoreModule.forRoot(options).providers?.length).toBeGreaterThanOrEqual(4);
         expect(RedisCoreModule.forRoot(options).exports).toBeDefined();
         expect(RedisCoreModule.forRoot(options).exports?.length).toBeGreaterThanOrEqual(2);
+    });
+
+    test('should register the module without options', () => {
+        expect(RedisCoreModule.forRoot().module).toBe(RedisCoreModule);
+        expect(RedisCoreModule.forRoot().providers).toBeDefined();
+        expect(RedisCoreModule.forRoot().providers?.length).toBeGreaterThanOrEqual(4);
+        expect(RedisCoreModule.forRoot().exports).toBeDefined();
+        expect(RedisCoreModule.forRoot().exports?.length).toBeGreaterThanOrEqual(2);
     });
 });
 

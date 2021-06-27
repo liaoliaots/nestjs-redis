@@ -1,28 +1,28 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { InjectRedisClient, namespaces } from '.';
+import { InjectRedis, namespaces } from '.';
 import { DEFAULT_REDIS_CLIENT } from '../redis.constants';
 
-describe(`${InjectRedisClient.name}`, () => {
+describe(`${InjectRedis.name}`, () => {
     const _name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
     const _gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'cute' };
     const _default: ValueProvider<string> = { provide: DEFAULT_REDIS_CLIENT, useValue: 'default' };
 
     @Injectable()
     class TestName {
-        constructor(@InjectRedisClient(_name.provide as string) public readonly value: string) {}
+        constructor(@InjectRedis(_name.provide as string) public readonly value: string) {}
     }
     @Injectable()
     class TestGender {
-        constructor(@InjectRedisClient(_gender.provide as symbol) public readonly value: string) {}
+        constructor(@InjectRedis(_gender.provide as symbol) public readonly value: string) {}
     }
     @Injectable()
     class TestDefaultWithoutNamespace {
-        constructor(@InjectRedisClient() public readonly value: string) {}
+        constructor(@InjectRedis() public readonly value: string) {}
     }
     @Injectable()
     class TestDefaultWithNamespace {
-        constructor(@InjectRedisClient(DEFAULT_REDIS_CLIENT) public readonly value: string) {}
+        constructor(@InjectRedis(DEFAULT_REDIS_CLIENT) public readonly value: string) {}
     }
 
     let testName: TestName;

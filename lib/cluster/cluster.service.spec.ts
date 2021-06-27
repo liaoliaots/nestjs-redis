@@ -18,33 +18,19 @@ describe(`${ClusterService.name}`, () => {
     beforeAll(async () => {
         clients.set(
             'client0',
-            new IORedis.Cluster(
-                [
-                    { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                    { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                    { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                ],
-                {
-                    redisOptions: {
-                        password: testConfig.cluster1.password
-                    }
+            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
+                redisOptions: {
+                    password: testConfig.cluster1.password
                 }
-            )
+            })
         );
         clients.set(
             DEFAULT_CLUSTER_CLIENT,
-            new IORedis.Cluster(
-                [
-                    { host: testConfig.cluster4.host, port: testConfig.cluster4.port },
-                    { host: testConfig.cluster5.host, port: testConfig.cluster5.port },
-                    { host: testConfig.cluster6.host, port: testConfig.cluster6.port }
-                ],
-                {
-                    redisOptions: {
-                        password: testConfig.cluster4.password
-                    }
+            new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
+                redisOptions: {
+                    password: testConfig.cluster4.password
                 }
-            )
+            })
         );
 
         const moduleRef = await Test.createTestingModule({
@@ -58,7 +44,7 @@ describe(`${ClusterService.name}`, () => {
         expect(clusterService.clients.size).toBe(clients.size);
     });
 
-    test('should get client with namespace', async () => {
+    test('should get a client with namespace', async () => {
         const client = clusterService.getClient('client0');
 
         const res = await client.ping();
@@ -82,7 +68,7 @@ describe(`${ClusterService.name}`, () => {
         expect(res).toBe('PONG');
     });
 
-    test('should throw an error while getting client with an unknown namespace', () => {
+    test('should throw an error when getting a client with an unknown namespace', () => {
         expect(() => clusterService.getClient('')).toThrow();
     });
 });

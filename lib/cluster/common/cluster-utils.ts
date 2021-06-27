@@ -1,10 +1,10 @@
 import IORedis, { Cluster } from 'ioredis';
 import { ClientOptions, ClusterClients } from '../interfaces';
 
-export const createClient = (options: ClientOptions): Cluster => {
-    const { startupNodes, clusterOptions, onClientCreated } = options;
+export const createClient = (clientOptions: ClientOptions): Cluster => {
+    const { nodes, options, onClientCreated } = clientOptions;
 
-    const client = new IORedis.Cluster(startupNodes, clusterOptions);
+    const client = new IORedis.Cluster(nodes, options);
 
     if (onClientCreated) onClientCreated(client);
 

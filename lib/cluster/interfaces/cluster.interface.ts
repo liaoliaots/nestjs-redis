@@ -15,9 +15,9 @@ export interface ClusterClientsService {
     getClient: (namespace: ClientNamespace) => Cluster;
 }
 
-export interface ClusterPingCheckOptions {
+export interface ClusterHealthCheckOptions {
     /**
-     * The namespace of cluster client, this client will execute ping check.
+     * The namespace of cluster client, this client will execute health check.
      */
     namespace: ClientNamespace;
 }

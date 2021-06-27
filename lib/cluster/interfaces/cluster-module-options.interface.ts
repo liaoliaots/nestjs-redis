@@ -11,15 +11,17 @@ export interface ClientOptions {
     /**
      * A list of nodes of the cluster.
      */
-    startupNodes: ClusterNode[];
+    nodes: ClusterNode[];
 
     /**
      * The cluster options.
      */
-    clusterOptions?: ClusterOptions;
+    options?: ClusterOptions;
 
     /**
-     * The function will be executed when the client has been created, and the first parameter is the client.
+     * Once the client has been created, this function will be executed immediately.
+     *
+     * @param client - The client.
      */
     onClientCreated?: (client: Cluster) => void;
 }

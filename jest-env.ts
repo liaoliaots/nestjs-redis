@@ -32,8 +32,6 @@
  * sudo redis-server /etc/redis/7380.conf --sentinel
  * sudo redis-server /etc/redis/7381.conf --sentinel
  *
- * -- Heart is higher than the sky, life is thinner than paper --
- *
  * cluster config
  *
  * master1 127.0.0.1 16380
@@ -119,7 +117,7 @@ process.env.CLUSTER_6_HOST = '127.0.0.1';
 process.env.CLUSTER_6_PORT = '16385';
 process.env.CLUSTER_6_PASSWORD = '15194112589master';
 
-export const testConfig = {
+export const testConfig: Record<string, { host: string; port: number; password: string }> = {
     master: {
         host: process.env.MASTER_HOST,
         port: Number.parseInt(process.env.MASTER_PORT, 10),

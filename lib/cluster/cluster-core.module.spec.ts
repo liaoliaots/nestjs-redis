@@ -1,7 +1,7 @@
 import { ClusterCoreModule } from './cluster-core.module';
 import { ClusterModuleAsyncOptions, ClusterModuleOptions } from './interfaces';
 
-const clusterModuleOptions: ClusterModuleOptions = { config: { startupNodes: [] } };
+const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
 
 describe(`${ClusterCoreModule.forRoot.name}`, () => {
     test('should register the module with options', () => {
