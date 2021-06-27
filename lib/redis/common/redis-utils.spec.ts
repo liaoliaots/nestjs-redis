@@ -33,18 +33,18 @@ describe(`${createClient.name}`, () => {
     });
 
     describe('with options', () => {
-        test('should create client without options', () => {
-            client = createClient({});
-
-            expect(client).toBeInstanceOf(IORedis);
-        });
-
-        test('should create client with options', async () => {
+        test('should create clients with options', async () => {
             client = createClient({ ...testConfig.master });
 
             const res = await client.ping();
 
             expect(res).toBe('PONG');
+        });
+
+        test('should create clients without options', () => {
+            client = createClient({});
+
+            expect(client).toBeInstanceOf(IORedis);
         });
 
         test('should call onClientCreated', () => {
@@ -61,13 +61,14 @@ describe(`${createClient.name}`, () => {
 describe(`${quitClients.name}`, () => {
     const clients: RedisClients = new Map();
 
-    const timeout = () =>
-        new Promise(resolve => {
+    const timeout = () => {
+        return new Promise<void>(resolve => {
             const id = setTimeout(() => {
                 clearTimeout(id);
-                resolve(undefined);
+                resolve();
             }, 100);
         });
+    };
 
     beforeAll(async () => {
         clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));

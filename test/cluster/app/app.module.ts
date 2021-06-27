@@ -13,24 +13,16 @@ import { testConfig } from '../../../jest-env';
             config: [
                 {
                     namespace: 'client0',
-                    startupNodes: [
-                        { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                        { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                        { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                    ],
-                    clusterOptions: {
+                    nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
+                    options: {
                         redisOptions: {
                             password: testConfig.cluster1.password
                         }
                     }
                 },
                 {
-                    startupNodes: [
-                        { host: testConfig.cluster4.host, port: testConfig.cluster4.port },
-                        { host: testConfig.cluster5.host, port: testConfig.cluster5.port },
-                        { host: testConfig.cluster6.host, port: testConfig.cluster6.port }
-                    ],
-                    clusterOptions: {
+                    nodes: [{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }],
+                    options: {
                         redisOptions: {
                             password: testConfig.cluster4.password
                         }

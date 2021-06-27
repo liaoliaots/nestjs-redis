@@ -15,9 +15,9 @@ export interface RedisClientsService {
     getClient: (namespace: ClientNamespace) => Redis;
 }
 
-export interface RedisPingCheckOptions {
+export interface RedisHealthCheckOptions {
     /**
-     * The namespace of redis client, this client will execute ping check.
+     * The namespace of redis client, this client will execute health check.
      */
     namespace: ClientNamespace;
 

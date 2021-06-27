@@ -30,10 +30,8 @@ describe(`${RedisService.name}`, () => {
         expect(redisService.clients.size).toBe(clients.size);
     });
 
-    test('should get client with namespace', async () => {
+    test('should get a client with namespace', async () => {
         const client = redisService.getClient('client0');
-
-        expect(client.options.db).toBe(0);
 
         const res = await client.ping();
 
@@ -43,8 +41,6 @@ describe(`${RedisService.name}`, () => {
     test('should get default client with namespace', async () => {
         const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
-        expect(client.options.db).toBe(1);
-
         const res = await client.ping();
 
         expect(res).toBe('PONG');
@@ -53,14 +49,12 @@ describe(`${RedisService.name}`, () => {
     test('should get default client without namespace', async () => {
         const client = redisService.getClient();
 
-        expect(client.options.db).toBe(1);
-
         const res = await client.ping();
 
         expect(res).toBe('PONG');
     });
 
-    test('should throw an error while getting client with an unknown namespace', () => {
+    test('should throw an error when getting a client with an unknown namespace', () => {
         expect(() => redisService.getClient('')).toThrow();
     });
 });

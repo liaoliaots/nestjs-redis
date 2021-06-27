@@ -1,21 +1,21 @@
 import { Controller, Get } from '@nestjs/common';
 import { Cluster } from 'ioredis';
-import { InjectClusterClient } from '../../../../lib';
+import { InjectCluster } from '../../../../lib';
 
 @Controller('inject')
 export class InjectController {
     constructor(
-        @InjectClusterClient('client0') private readonly redisClient0: Cluster,
-        @InjectClusterClient() private readonly redisDefault: Cluster
+        @InjectCluster('client0') private readonly client0: Cluster,
+        @InjectCluster() private readonly clientDefault: Cluster
     ) {}
 
     @Get('client0')
     pingClient0(): Promise<string> {
-        return this.redisClient0.ping();
+        return this.client0.ping();
     }
 
     @Get('default')
     pingDefault(): Promise<string> {
-        return this.redisDefault.ping();
+        return this.clientDefault.ping();
     }
 }

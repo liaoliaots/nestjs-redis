@@ -110,7 +110,7 @@ describe('redisClientsProvider', () => {
             expect(clients.size).toBe(2);
         });
 
-        test('should get client with namespace', async () => {
+        test('should get a client with namespace', async () => {
             const client = redisService.getClient('client0');
 
             const res = await client.ping();

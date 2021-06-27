@@ -19,18 +19,11 @@ describe(`${ClusterHealthIndicator.name}`, () => {
     beforeAll(async () => {
         clients.set(
             'client0',
-            new IORedis.Cluster(
-                [
-                    { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                    { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                    { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                ],
-                {
-                    redisOptions: {
-                        password: testConfig.cluster1.password
-                    }
+            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
+                redisOptions: {
+                    password: testConfig.cluster1.password
                 }
-            )
+            })
         );
 
         const moduleRef = await Test.createTestingModule({

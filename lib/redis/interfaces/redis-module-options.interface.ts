@@ -17,7 +17,9 @@ export interface ClientOptions extends RedisOptions {
     url?: string;
 
     /**
-     * The function will be executed when the client has been created, and the first parameter is the client.
+     * Once the client has been created, this function will be executed immediately.
+     *
+     * @param client - The client.
      */
     onClientCreated?: (client: Redis) => void;
 }

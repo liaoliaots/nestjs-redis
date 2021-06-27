@@ -13,17 +13,13 @@ import { namespaces, quitClients } from './common';
 import { ClusterService } from './cluster.service';
 import { testConfig } from '../../jest-env';
 
+const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
+
 class ClusterConfigService implements ClusterOptionsFactory {
     createClusterOptions(): ClusterModuleOptions {
-        return {
-            config: {
-                startupNodes: []
-            }
-        };
+        return clusterModuleOptions;
     }
 }
-
-const clusterModuleOptions: ClusterModuleOptions = { config: { startupNodes: [] } };
 
 describe(`${createProviders.name}`, () => {
     test('should have 2 members in the result array', () => {
@@ -89,24 +85,16 @@ describe('clusterClientsProvider', () => {
                 config: [
                     {
                         namespace: 'client0',
-                        startupNodes: [
-                            { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                            { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                            { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                        ],
-                        clusterOptions: {
+                        nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
+                        options: {
                             redisOptions: {
                                 password: testConfig.cluster1.password
                             }
                         }
                     },
                     {
-                        startupNodes: [
-                            { host: testConfig.cluster4.host, port: testConfig.cluster4.port },
-                            { host: testConfig.cluster5.host, port: testConfig.cluster5.port },
-                            { host: testConfig.cluster6.host, port: testConfig.cluster6.port }
-                        ],
-                        clusterOptions: {
+                        nodes: [{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }],
+                        options: {
                             redisOptions: {
                                 password: testConfig.cluster4.password
                             }
@@ -127,7 +115,7 @@ describe('clusterClientsProvider', () => {
             expect(clients.size).toBe(2);
         });
 
-        test('should get client with namespace', async () => {
+        test('should get a client with namespace', async () => {
             const client = clusterService.getClient('client0');
 
             const res = await client.ping();
@@ -156,12 +144,8 @@ describe('clusterClientsProvider', () => {
         beforeAll(async () => {
             const options: ClusterModuleOptions = {
                 config: {
-                    startupNodes: [
-                        { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                        { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                        { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                    ],
-                    clusterOptions: {
+                    nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
+                    options: {
                         redisOptions: {
                             password: testConfig.cluster1.password
                         }
@@ -206,33 +190,19 @@ describe(`${createClusterClientProviders.name}`, () => {
 
         clients.set(
             'client0',
-            new IORedis.Cluster(
-                [
-                    { host: testConfig.cluster1.host, port: testConfig.cluster1.port },
-                    { host: testConfig.cluster2.host, port: testConfig.cluster2.port },
-                    { host: testConfig.cluster3.host, port: testConfig.cluster3.port }
-                ],
-                {
-                    redisOptions: {
-                        password: testConfig.cluster1.password
-                    }
+            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
+                redisOptions: {
+                    password: testConfig.cluster1.password
                 }
-            )
+            })
         );
         clients.set(
             'client1',
-            new IORedis.Cluster(
-                [
-                    { host: testConfig.cluster4.host, port: testConfig.cluster4.port },
-                    { host: testConfig.cluster5.host, port: testConfig.cluster5.port },
-                    { host: testConfig.cluster6.host, port: testConfig.cluster6.port }
-                ],
-                {
-                    redisOptions: {
-                        password: testConfig.cluster4.password
-                    }
+            new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
+                redisOptions: {
+                    password: testConfig.cluster4.password
                 }
-            )
+            })
         );
 
         const moduleRef = await Test.createTestingModule({

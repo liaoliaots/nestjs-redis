@@ -1,28 +1,28 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { InjectClusterClient, namespaces } from '.';
+import { InjectCluster, namespaces } from '.';
 import { DEFAULT_CLUSTER_CLIENT } from '../cluster.constants';
 
-describe(`${InjectClusterClient.name}`, () => {
+describe(`${InjectCluster.name}`, () => {
     const _name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
     const _gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'cute' };
     const _default: ValueProvider<string> = { provide: DEFAULT_CLUSTER_CLIENT, useValue: 'default' };
 
     @Injectable()
     class TestName {
-        constructor(@InjectClusterClient(_name.provide as string) public readonly value: string) {}
+        constructor(@InjectCluster(_name.provide as string) public readonly value: string) {}
     }
     @Injectable()
     class TestGender {
-        constructor(@InjectClusterClient(_gender.provide as symbol) public readonly value: string) {}
+        constructor(@InjectCluster(_gender.provide as symbol) public readonly value: string) {}
     }
     @Injectable()
     class TestDefaultWithoutNamespace {
-        constructor(@InjectClusterClient() public readonly value: string) {}
+        constructor(@InjectCluster() public readonly value: string) {}
     }
     @Injectable()
     class TestDefaultWithNamespace {
-        constructor(@InjectClusterClient(DEFAULT_CLUSTER_CLIENT) public readonly value: string) {}
+        constructor(@InjectCluster(DEFAULT_CLUSTER_CLIENT) public readonly value: string) {}
     }
 
     let testName: TestName;
