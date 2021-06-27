@@ -1,8 +1,8 @@
 import IORedis, { Redis } from 'ioredis';
 import { ClientOptions, RedisClients } from '../interfaces';
 
-export const createClient = (options: ClientOptions): Redis => {
-    const { url, onClientCreated, ...redisOptions } = options;
+export const createClient = (clientOptions: ClientOptions): Redis => {
+    const { url, onClientCreated, ...redisOptions } = clientOptions;
 
     const client = url ? new IORedis(url, redisOptions) : new IORedis(redisOptions);
 
