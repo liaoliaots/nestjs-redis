@@ -33,12 +33,12 @@ export interface RedisModuleOptions {
     closeClient?: boolean;
 
     /**
-     * The options of default for every client.
+     * The default options for every client.
      */
     defaultOptions?: RedisOptions;
 
     /**
-     * Specify a single client or multiple clients.
+     * Specify single or multiple clients.
      */
     config?: ClientOptions | ClientOptions[];
 }
