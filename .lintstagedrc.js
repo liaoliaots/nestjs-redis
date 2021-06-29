@@ -1,3 +1,3 @@
 module.exports = {
-    '*.ts': ['prettier --write', () => 'tsc -p tsconfig.json --noEmit', 'eslint --ext .ts']
+    '*.ts': ['prettier --write', () => 'tsc -p tsconfig.build.json --noEmit', 'eslint --ext .ts']
 };

@@ -9,8 +9,8 @@ export class HealthController {
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redis.isHealthy('client0', { namespace: 'client0', timeout: 1000 }),
-            () => this.redis.isHealthy('default', { namespace: DEFAULT_REDIS_CLIENT, timeout: 1000 })
+            () => this.redis.isHealthy('client0', { namespace: 'client0' }),
+            () => this.redis.isHealthy('default', { namespace: DEFAULT_REDIS_CLIENT })
         ]);
     }
 
