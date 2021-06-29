@@ -1,23 +1,4 @@
-import { promiseTimeout, parseNamespace } from '.';
-import { RedisError } from '../errors';
-
-describe(`${promiseTimeout.name}`, () => {
-    const timeout = () =>
-        new Promise<undefined>(resolve => {
-            const id = setTimeout(() => {
-                clearTimeout(id);
-                resolve(undefined);
-            }, 10);
-        });
-
-    test('should resolve promise when the time of executing promise less than ms', () => {
-        return expect(promiseTimeout(20, timeout())).resolves.toBeUndefined();
-    });
-
-    test('should reject promise when the time of executing promise greater than ms', () => {
-        return expect(promiseTimeout(0, timeout())).rejects.toBeInstanceOf(RedisError);
-    });
-});
+import { parseNamespace } from '.';
 
 describe(`${parseNamespace.name}`, () => {
     test('if value is a string, the result should be equal to this string', () => {
