@@ -34,9 +34,9 @@
 
 ## Install
 
-**NOTE:** This lib requires **nestjs 7**, **ioredis 4**.
+**NOTE:** This lib requires **nestjs 7**, **ioredis 4**, **@nestjs/terminus 7**.
 
-**NOTE:** Version **1** is deprecated, please use version **2**.
+**NOTE:** Version 1 is deprecated, please use version **2**.
 
 Install with npm
 
@@ -62,24 +62,14 @@ yarn add --dev @types/ioredis
 
 ### Usage
 
-**First**, register the RedisModule([a global module](https://docs.nestjs.com/modules#global-modules)) in app.module.ts:
-
-with sync config:
+**First**, register the RedisModule([global module](https://docs.nestjs.com/modules#global-modules)) in app.module.ts:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
-    imports: [
-        RedisModule.forRoot({
-            closeClient: true,
-            config: {
-                host: '127.0.0.1',
-                port: 6379
-            }
-        })
-    ]
+    imports: [RedisModule.forRoot()]
 })
 export class AppModule {}
 ```
@@ -88,37 +78,19 @@ with async config:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
-import { RedisModule, RedisOptionsFactory, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ConfigService, ConfigModule } from '@nestjs/config';
-
-class RedisConfigService implements RedisOptionsFactory {
-    createRedisOptions(): RedisModuleOptions {
-        return {
-            closeClient: true,
-            config: {}
-        };
-    }
-}
 
 @Module({
     imports: [
         RedisModule.forRootAsync({
-            useFactory(configService: ConfigService) {
-                const config = configService.get('redis');
-
-                return {
-                    closeClient: true,
-                    config
-                };
-            },
+            useFactory: (configService: ConfigService) => ({ config: configService.get('redis') }),
             inject: [ConfigService],
-            imports: [ConfigModule],
+            imports: [ConfigModule]
 
-            // or use a class
-            useClass: RedisConfigService,
+            // useClass:
 
-            // or use an existing class
-            useExisting: RedisConfigService // just a example
+            // useExisting:
         })
     ]
 })
@@ -134,13 +106,12 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
             config: {
                 host: 'localhost',
-                port: 6379,
+                port: 6380,
 
                 // or with URL
-                url: 'redis://:your_password@127.0.0.1:6379/0'
+                // url: 'redis://:your_password@127.0.0.1:6380/0'
             }
         })
     ]
@@ -163,14 +134,14 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             config: [
                 {
                     host: '127.0.0.1',
-                    port: 6379,
+                    port: 6380,
                     db: 0,
                     enableAutoPipelining: true
                 },
                 {
                     namespace: 'cache',
                     host: '127.0.0.1',
-                    port: 6379,
+                    port: 6380,
                     db: 1,
                     enableAutoPipelining: true
                 }
@@ -181,7 +152,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-You should notice that in the config above, those clients have the same config: host, port, and enableAutoPipelining. You can move the same config to **defaultOptions**.
+**In some cases**, you can move the same config to **defaultOptions**.
 
 **NOTE:** The **defaultOptions** only work with multiple clients.
 
@@ -195,7 +166,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             closeClient: true,
             defaultOptions: {
                 host: '127.0.0.1',
-                port: 6379,
+                port: 6380,
                 enableAutoPipelining: true
             },
             config: [
@@ -225,7 +196,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             closeClient: true,
             defaultOptions: {
                 host: '127.0.0.1',
-                port: 6379,
+                port: 6380,
                 enableAutoPipelining: true
             },
             config: [
@@ -235,7 +206,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 {
                     namespace: 'cache',
                     db: 1,
-                    enableAutoPipelining: false // will override the default
+                    enableAutoPipelining: false // override the default options
                 }
             ]
         })
@@ -253,14 +224,13 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
             config: {
                 onClientCreated(client) {
-                    client.on('error', err => {});
                     client.on('ready', () => {});
+                    client.on('error', err => {});
                 },
                 host: 'localhost',
-                port: 6379
+                port: 6380
             }
         })
     ]
@@ -273,28 +243,24 @@ export class AppModule {}
 via decorator:
 
 ```TypeScript
-import { Controller, Get } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { InjectRedis, DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
 
-@Controller('app')
-export class AppController {
+@Injectable()
+export class AppService {
     constructor(
-        @InjectRedis() private readonly client_default: Redis,
+        @InjectRedis() private readonly clientDefault: Redis,
         // or
-        @InjectRedis(DEFAULT_REDIS_CLIENT) private readonly client_default: Redis,
+        // @InjectRedis(DEFAULT_REDIS_CLIENT) private readonly clientDefault: Redis,
 
-        @InjectRedis('cache') private readonly client_cache: Redis
+        @InjectRedis('cache') private readonly clientCache: Redis
     ) {}
 
-    @Get('default')
-    default(): Promise<string | null> {
-        return this.client_default.get('key');
-    }
+    async set(): Promise<void> {
+        await this.clientDefault.set('foo', 'bar');
 
-    @Get('cache')
-    cache(): Promise<string | null> {
-        return this.client_cache.get('key');
+        await this.clientCache.set('foo', 'bar');
     }
 }
 ```
@@ -302,28 +268,32 @@ export class AppController {
 via service:
 
 ```TypeScript
-import { Controller, Get } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
-import { RedisService, DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
+import { DEFAULT_REDIS_CLIENT, RedisService } from '@liaoliaots/nestjs-redis';
 
-@Controller('app')
-export class AppController {
-    constructor(private readonly redisService: RedisService) {}
+@Injectable()
+export class AppService {
+    private clientDefault: Redis;
 
-    @Get('default')
-    default(): Promise<string | null> {
-        const client: Redis = this.redisService.getClient();
+    private clientCache: Redis;
+
+    private clients;
+
+    constructor(private readonly redisService: RedisService) {
+        this.clientDefault = redisService.getClient();
         // or
-        const client: Redis = this.redisService.getClient(DEFAULT_REDIS_CLIENT);
+        // this.clientDefault = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
-        return client.get('key');
+        this.clientCache = redisService.getClient('cache');
+
+        this.clients = redisService.clients; // get all clients
     }
 
-    @Get('cache')
-    cache(): Promise<string | null> {
-        const client: Redis = this.redisService.getClient('cache');
+    async set(): Promise<void> {
+        await this.clientDefault.set('foo', 'bar');
 
-        return client.get('key');
+        await this.clientCache.set('foo', 'bar');
     }
 }
 ```
@@ -338,16 +308,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
-    imports: [
-        TerminusModule,
-        RedisModule.forRoot({
-            closeClient: true,
-            config: {
-                host: 'localhost',
-                port: 6379
-            }
-        })
-    ]
+    imports: [TerminusModule, RedisModule.forRoot({ config: { host: 'localhost', port: 6380 } })]
 })
 export class AppModule {}
 ```
@@ -366,7 +327,7 @@ export class AppController {
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redisIndicator.isHealthy('client_default', { namespace: DEFAULT_REDIS_CLIENT })
+            () => this.redisIndicator.isHealthy('clientDefault', { namespace: DEFAULT_REDIS_CLIENT })
         ]);
     }
 }
@@ -378,13 +339,13 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 {
     status: 'ok',
     info: {
-        client_default: {
+        clientDefault: {
             status: 'up'
         }
     },
     error: {},
     details: {
-        client_default: {
+        clientDefault: {
             status: 'up'
         }
     }
@@ -395,11 +356,11 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 
 #### RedisModuleOptions
 
-| Name           | Type                                                                                          | Default value | Description                                                                         |
-| -------------- | --------------------------------------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------- |
-| closeClient    | boolean                                                                                       | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. |
-| defaultOptions | [RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | undefined     | The default options for every client.                                               |
-| config         | ClientOptions or ClientOptions[]                                                              | undefined     | Specify single or multiple clients.                                                 |
+| Name           | Type                                                                                          | Default value | Description                                                                                                                                                                                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient    | boolean                                                                                       | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**: [details](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| defaultOptions | [RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | undefined     | The default options for every client.                                                                                                                                                                                                                             |
+| config         | ClientOptions or ClientOptions[]                                                              | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                               |
 
 #### ClientOptions
 
@@ -408,7 +369,7 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 | namespace                                                                                       | string or symbol | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_REDIS_CLIENT** to reference the default value.                                                                 |
 | url                                                                                             | string           | undefined         | The URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) specifies connection options. |
 | onClientCreated                                                                                 | function         | undefined         | Once the client has been created, this function will be executed immediately.                                                                                                       |
-| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8) | object           | -                 | Extends from the [RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options).                                                                     |
+| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8) | object           | -                 | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options).                                                                          |
 
 #### RedisHealthCheckOptions
 
