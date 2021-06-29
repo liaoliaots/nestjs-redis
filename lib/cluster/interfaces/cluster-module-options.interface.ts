@@ -35,7 +35,7 @@ export interface ClusterModuleOptions {
     closeClient?: boolean;
 
     /**
-     * Specify a single client or multiple clients.
+     * Specify single or multiple clients.
      */
     config: ClientOptions | ClientOptions[];
 }
