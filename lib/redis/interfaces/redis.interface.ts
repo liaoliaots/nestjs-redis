@@ -20,9 +20,4 @@ export interface RedisHealthCheckOptions {
      * The namespace of redis client, this client will execute health check.
      */
     namespace: ClientNamespace;
-
-    /**
-     * The amount of time in ms for ping check.
-     */
-    timeout?: number;
 }

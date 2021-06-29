@@ -138,11 +138,9 @@ describe('redisClientsProvider', () => {
 
         beforeAll(async () => {
             const options: RedisModuleOptions = {
-                defaultOptions: {
-                    port: testConfig.master.port
-                },
                 config: {
                     host: testConfig.master.host,
+                    port: testConfig.master.port,
                     password: testConfig.master.password,
                     db: 1
                 }
