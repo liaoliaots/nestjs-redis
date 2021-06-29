@@ -335,7 +335,7 @@ export class AppController {
 
 And then send a GET request to **/app**, if redis is in a healthy state, you will get:
 
-```JSON
+```TypeScript
 {
     status: 'ok',
     info: {
@@ -601,7 +601,7 @@ export class AppController {
 
 And then send a GET request to **/app**, if redis is in a healthy state, you will get:
 
-```JSON
+```TypeScript
 {
     status: 'ok',
     info: {
