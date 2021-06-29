@@ -83,10 +83,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
         }
 
         if (options.config) {
-            clients.set(
-                options.config.namespace ?? DEFAULT_REDIS_CLIENT,
-                createClient({ ...options.defaultOptions, ...options.config })
-            );
+            clients.set(options.config.namespace ?? DEFAULT_REDIS_CLIENT, createClient(options.config));
 
             return clients;
         }
