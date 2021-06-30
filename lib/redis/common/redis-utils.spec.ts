@@ -16,9 +16,7 @@ describe(`${createClient.name}`, () => {
         test('should create client with URL', async () => {
             client = createClient({ url });
 
-            const res = await client.ping();
-
-            expect(res).toBe('PONG');
+            await expect(client.ping()).resolves.toBeDefined();
         });
 
         test('should create client with URL and options', async () => {
@@ -26,9 +24,7 @@ describe(`${createClient.name}`, () => {
 
             expect(client.status).toBe('wait');
 
-            const res = await client.ping();
-
-            expect(res).toBe('PONG');
+            await expect(client.ping()).resolves.toBeDefined();
         });
     });
 
@@ -36,9 +32,7 @@ describe(`${createClient.name}`, () => {
         test('should create clients with options', async () => {
             client = createClient({ ...testConfig.master });
 
-            const res = await client.ping();
-
-            expect(res).toBe('PONG');
+            await expect(client.ping()).resolves.toBeDefined();
         });
 
         test('should create clients without options', () => {
@@ -66,7 +60,7 @@ describe(`${quitClients.name}`, () => {
             const id = setTimeout(() => {
                 clearTimeout(id);
                 resolve();
-            }, 100);
+            }, 200);
         });
     };
 

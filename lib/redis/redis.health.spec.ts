@@ -17,7 +17,7 @@ describe(`${RedisHealthIndicator.name}`, () => {
     });
 
     beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
+        clients.set('client0', new IORedis({ ...testConfig.master }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService, RedisHealthIndicator]

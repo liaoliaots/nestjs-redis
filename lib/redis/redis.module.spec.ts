@@ -3,10 +3,10 @@ import { RedisModuleAsyncOptions, RedisModuleOptions } from './interfaces';
 
 describe(`${RedisModule.forRoot.name}`, () => {
     test('should register the module with options', () => {
-        const options: RedisModuleOptions = {};
+        const redisModuleOptions: RedisModuleOptions = {};
 
-        expect(RedisModule.forRoot(options).module).toBe(RedisModule);
-        expect(RedisModule.forRoot(options).imports).toHaveLength(1);
+        expect(RedisModule.forRoot(redisModuleOptions).module).toBe(RedisModule);
+        expect(RedisModule.forRoot(redisModuleOptions).imports).toHaveLength(1);
     });
 
     test('should register the module without options', () => {

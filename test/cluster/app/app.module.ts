@@ -14,19 +14,11 @@ import { testConfig } from '../../../jest-env';
                 {
                     namespace: 'client0',
                     nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-                    options: {
-                        redisOptions: {
-                            password: testConfig.cluster1.password
-                        }
-                    }
+                    options: { redisOptions: { password: testConfig.cluster1.password } }
                 },
                 {
                     nodes: [{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }],
-                    options: {
-                        redisOptions: {
-                            password: testConfig.cluster4.password
-                        }
-                    }
+                    options: { redisOptions: { password: testConfig.cluster4.password } }
                 }
             ]
         })
