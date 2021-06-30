@@ -14,7 +14,13 @@
         "cluster",
         "ioredis",
         "health",
-        "nestjs"
+        "check",
+        "nestjs",
+        "nest",
+        "nodejs",
+        "node",
+        "javascript",
+        "typescript"
     ],
     "scripts": {
         "prepare": "husky install",

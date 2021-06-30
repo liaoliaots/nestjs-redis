@@ -14,34 +14,32 @@
 
 -   Supports **redis** and **cluster**
 -   Supports health check
--   Supports single or multiple clients
+-   Supports specify single or multiple clients
 -   Supports inject a client directly or get a client via namespace
 
 ## Documentation
 
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
--   [Redis](#redis)
--   [Cluster](#cluster)
+-   [**Redis**](#redis)
+-   [**Cluster**](#cluster)
 -   [Examples](#examples)
 -   [Package dependency overview](#package-dependency-overview)
 
 ## Test coverage
 
-| Statements                                                                      | Branches                                                              | Functions                                                                | Lines                                                                 |
-| ------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-94.66%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-87.5%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-87.69%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-94.43%25-brightgreen.svg) |
+| Statements                                                                      | Branches                                                              | Functions                                                               | Lines                                                                 |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-94.63%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-87.5%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-87.5%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-94.41%25-brightgreen.svg) |
 
 ## Install
 
-**NOTE:** This lib requires **nestjs 7**, **ioredis 4**, **@nestjs/terminus 7**.
-
-**NOTE:** Version 1 is deprecated, please use version **2**.
+**NOTE:** This lib requires **nestjs 7**, **ioredis 4**. And the version 1 of this lib is deprecated, please use version **2**.
 
 Install with npm
 
 ```sh
-npm install @liaoliaots/nestjs-redis ioredis @nestjs/terminus
+npm install --save @liaoliaots/nestjs-redis ioredis @nestjs/terminus
 ```
 
 ```sh
@@ -308,7 +306,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
-    imports: [TerminusModule, RedisModule.forRoot({ config: { host: 'localhost', port: 6380 } })]
+    imports: [RedisModule.forRoot({ config: { host: 'localhost', port: 6380 } }), TerminusModule]
 })
 export class AppModule {}
 ```
@@ -356,20 +354,20 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 
 #### RedisModuleOptions
 
-| Name                                                                                            | Type                             | Default value | Description                                                                                                                                                                                                                                                       |
-| ----------------------------------------------------------------------------------------------- | -------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient                                                                                     | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**: [details](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| [defaultOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object                           | undefined     | The default options for every client.                                                                                                                                                                                                                             |
-| config                                                                                          | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                               |
+| Name                                                                                            | Type                             | Default value | Description                                                                                                                                                                                                                                                            |
+| ----------------------------------------------------------------------------------------------- | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient                                                                                     | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**. [See details.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| [defaultOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object                           | undefined     | The default options for every client.                                                                                                                                                                                                                                  |
+| config                                                                                          | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                    |
 
 #### ClientOptions
 
-| Name                                                                                            | Type             | Default value     | Description                                                                                                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                       | string or symbol | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_REDIS_CLIENT** to reference the default value.                                                                 |
-| url                                                                                             | string           | undefined         | The URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) specifies connection options. |
-| onClientCreated                                                                                 | function         | undefined         | Once the client has been created, this function will be executed immediately.                                                                                                       |
-| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8) | object           | -                 | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options).                                                                          |
+| Name                                                                                                 | Type             | Default value     | Description                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------- | ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                            | string or symbol | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_REDIS_CLIENT** to reference the default value.                                                                 |
+| url                                                                                                  | string           | undefined         | The URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) specifies connection options. |
+| onClientCreated                                                                                      | function         | undefined         | Once the client has been created, this function will be executed immediately.                                                                                                       |
+| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object           | -                 | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8).                                                                               |
 
 #### RedisHealthCheckOptions
 
@@ -497,17 +495,17 @@ via decorator:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { Redis } from 'ioredis';
+import { Cluster } from 'ioredis';
 import { InjectCluster, DEFAULT_CLUSTER_CLIENT } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class AppService {
     constructor(
-        @InjectCluster() private readonly clientDefault: Redis,
+        @InjectCluster() private readonly clientDefault: Cluster,
         // or
         // @InjectCluster(DEFAULT_CLUSTER_CLIENT) private readonly clientDefault: Redis,
 
-        @InjectCluster('cache') private readonly clientCache: Redis
+        @InjectCluster('cache') private readonly clientCache: Cluster
     ) {}
 
     async set(): Promise<void> {
@@ -563,13 +561,13 @@ import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
     imports: [
-        TerminusModule,
         ClusterModule.forRoot({
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
                 options: { redisOptions: { password: 'your_password' } }
             }
-        })
+        }),
+        TerminusModule
     ]
 })
 export class AppModule {}
@@ -622,29 +620,25 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 
 #### ClusterModuleOptions
 
-| Name        | Type                             | Default value | Description                                                                                                                                                                                                                                                       |
-| ----------- | -------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**: [details](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| config      | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                               |
+| Name        | Type                             | Default value | Description                                                                                                                                                                                                                                                            |
+| ----------- | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**. [See details.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| config      | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                    |
 
 #### ClientOptions
 
-| Name                                                                                        | Type                             | Default value     | Description                                                                                                           |
-| ------------------------------------------------------------------------------------------- | -------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                   | string or symbol                 | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_CLUSTER_CLIENT** to reference the default value. |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | { port: number; host: string }[] | -                 | A list of nodes of the cluster.                                                                                       |
-| [options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30)    | object                           | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options).            |
-| onClientCreated                                                                             | function                         | undefined         | Once the client has been created, this function will be executed immediately.                                         |
+| Name                                                                                          | Type                             | Default value     | Description                                                                                                           |
+| --------------------------------------------------------------------------------------------- | -------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                     | string or symbol                 | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_CLUSTER_CLIENT** to reference the default value. |
+| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | { port: number; host: string }[] | -                 | A list of nodes of the cluster.                                                                                       |
+| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                           | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30).                 |
+| onClientCreated                                                                               | function                         | undefined         | Once the client has been created, this function will be executed immediately.                                         |
 
 #### ClusterHealthCheckOptions
 
 | Name      | Type             | Default value | Description                                                             |
 | --------- | ---------------- | ------------- | ----------------------------------------------------------------------- |
 | namespace | string or symbol | -             | The namespace of cluster client, this client will execute health check. |
-
-## Package dependency overview
-
-![](./dependency-graph.svg)
 
 ## Examples
 
@@ -662,7 +656,31 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
--   If your redis sentinel config like this:
+or
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [RedisModule.forRoot({ config: {} })]
+})
+export class AppModule {}
+```
+
+or
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [RedisModule.forRoot({ config: { namespace: 'cache' } })]
+})
+export class AppModule {}
+```
+
+-   If redis sentinel config is:
 
 ```TypeScript
 master 127.0.0.1 6380
@@ -711,19 +729,93 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 password: '123456'
             },
             config: [
-                // represent master node
+                // get master node from the sentinel group
                 { name: 'mymaster', role: 'master' },
-                // represent a random slave node, read-only by default
+                // get a random slave node from the sentinel group, read-only by default
                 { namespace: 'random slave', name: 'mymaster', role: 'slave' },
                 // represent a specific slave node, read-only by default
                 // you should override the default sentinels
-                { namespace: 'specific slave', host: 'localhost', port: 6381, password: '123456', sentinels: undefined }
+                { namespace: 'specific slave', host: 'localhost', port: 6381, sentinels: undefined }
             ]
         })
     ]
 })
 export class AppModule {}
 ```
+
+### Cluster
+
+-   If cluster config is:
+
+```TypeScript
+cluster 1:
+
+master1 127.0.0.1 16380
+requirepass 123456
+cluster-enabled yes
+cluster-config-file nodes-16380.conf
+appendonly yes
+
+master2 127.0.0.1 16381
+requirepass 123456
+cluster-enabled yes
+cluster-config-file nodes-16381.conf
+appendonly yes
+
+master3 127.0.0.1 16382
+requirepass 123456
+cluster-enabled yes
+cluster-config-file nodes-16382.conf
+appendonly yes
+
+cluster 2:
+
+master4 127.0.0.1 16383
+requirepass 654321
+cluster-enabled yes
+cluster-config-file nodes-16383.conf
+appendonly yes
+
+master5 127.0.0.1 16384
+requirepass 654321
+cluster-enabled yes
+cluster-config-file nodes-16384.conf
+appendonly yes
+
+master6 127.0.0.1 16385
+requirepass 654321
+cluster-enabled yes
+cluster-config-file nodes-16385.conf
+appendonly yes
+```
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        ClusterModule.forRoot({
+            config: [
+                {
+                    nodes: [{ host: 'localhost', port: 16380 }],
+                    options: { redisOptions: { password: '123456' } }
+                },
+                {
+                    namespace: 'cache',
+                    nodes: [{ host: 'localhost', port: 16383 }],
+                    options: { redisOptions: { password: '654321' } }
+                }
+            ]
+        })
+    ]
+})
+export class AppModule {}
+```
+
+## Package dependency overview
+
+![](./dependency-graph.svg)
 
 ## Author
 
