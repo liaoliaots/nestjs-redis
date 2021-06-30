@@ -81,96 +81,60 @@
  * redis-cli --cluster create 127.0.0.1:16383 127.0.0.1:16384 127.0.0.1:16385 -a 15194112589master
  */
 
-process.env.MASTER_HOST = '127.0.0.1';
-process.env.MASTER_PORT = '6380';
-process.env.MASTER_PASSWORD = '15194112589';
-process.env.SLAVE_1_HOST = '127.0.0.1';
-process.env.SLAVE_1_PORT = '6381';
-process.env.SLAVE_1_PASSWORD = '15194112589';
-process.env.SLAVE_2_HOST = '127.0.0.1';
-process.env.SLAVE_2_PORT = '6382';
-process.env.SLAVE_2_PASSWORD = '15194112589';
-process.env.SENTINEL_1_HOST = '127.0.0.1';
-process.env.SENTINEL_1_PORT = '7380';
-process.env.SENTINEL_1_PASSWORD = '15194112589sentinel';
-process.env.SENTINEL_2_HOST = '127.0.0.1';
-process.env.SENTINEL_2_PORT = '7381';
-process.env.SENTINEL_2_PASSWORD = '15194112589sentinel';
-
-process.env.CLUSTER_1_HOST = '127.0.0.1';
-process.env.CLUSTER_1_PORT = '16380';
-process.env.CLUSTER_1_PASSWORD = '15194112589master';
-process.env.CLUSTER_2_HOST = '127.0.0.1';
-process.env.CLUSTER_2_PORT = '16381';
-process.env.CLUSTER_2_PASSWORD = '15194112589master';
-process.env.CLUSTER_3_HOST = '127.0.0.1';
-process.env.CLUSTER_3_PORT = '16382';
-process.env.CLUSTER_3_PASSWORD = '15194112589master';
-
-process.env.CLUSTER_4_HOST = '127.0.0.1';
-process.env.CLUSTER_4_PORT = '16383';
-process.env.CLUSTER_4_PASSWORD = '15194112589master';
-process.env.CLUSTER_5_HOST = '127.0.0.1';
-process.env.CLUSTER_5_PORT = '16384';
-process.env.CLUSTER_5_PASSWORD = '15194112589master';
-process.env.CLUSTER_6_HOST = '127.0.0.1';
-process.env.CLUSTER_6_PORT = '16385';
-process.env.CLUSTER_6_PASSWORD = '15194112589master';
-
 export const testConfig: Record<string, { host: string; port: number; password: string }> = {
     master: {
-        host: process.env.MASTER_HOST,
-        port: Number.parseInt(process.env.MASTER_PORT, 10),
-        password: process.env.MASTER_PASSWORD
+        host: '127.0.0.1',
+        port: 6380,
+        password: '15194112589'
     },
     slave1: {
-        host: process.env.SLAVE_1_HOST,
-        port: Number.parseInt(process.env.SLAVE_1_PORT, 10),
-        password: process.env.SLAVE_1_PASSWORD
+        host: '127.0.0.1',
+        port: 6381,
+        password: '15194112589'
     },
     slave2: {
-        host: process.env.SLAVE_2_HOST,
-        port: Number.parseInt(process.env.SLAVE_2_PORT, 10),
-        password: process.env.SLAVE_2_PASSWORD
+        host: '127.0.0.1',
+        port: 6382,
+        password: '15194112589'
     },
     sentinel1: {
-        host: process.env.SENTINEL_1_HOST,
-        port: Number.parseInt(process.env.SENTINEL_1_PORT, 10),
-        password: process.env.SENTINEL_1_PASSWORD
+        host: '127.0.0.1',
+        port: 7380,
+        password: '15194112589sentinel'
     },
     sentinel2: {
-        host: process.env.SENTINEL_2_HOST,
-        port: Number.parseInt(process.env.SENTINEL_2_PORT, 10),
-        password: process.env.SENTINEL_2_PASSWORD
+        host: '127.0.0.1',
+        port: 7381,
+        password: '15194112589sentinel'
     },
     cluster1: {
-        host: process.env.CLUSTER_1_HOST,
-        port: Number.parseInt(process.env.CLUSTER_1_PORT, 10),
-        password: process.env.CLUSTER_1_PASSWORD
+        host: '127.0.0.1',
+        port: 16380,
+        password: '15194112589master'
     },
     cluster2: {
-        host: process.env.CLUSTER_2_HOST,
-        port: Number.parseInt(process.env.CLUSTER_2_PORT, 10),
-        password: process.env.CLUSTER_2_PASSWORD
+        host: '127.0.0.1',
+        port: 16381,
+        password: '15194112589master'
     },
     cluster3: {
-        host: process.env.CLUSTER_3_HOST,
-        port: Number.parseInt(process.env.CLUSTER_3_PORT, 10),
-        password: process.env.CLUSTER_3_PASSWORD
+        host: '127.0.0.1',
+        port: 16382,
+        password: '15194112589master'
     },
     cluster4: {
-        host: process.env.CLUSTER_4_HOST,
-        port: Number.parseInt(process.env.CLUSTER_4_PORT, 10),
-        password: process.env.CLUSTER_4_PASSWORD
+        host: '127.0.0.1',
+        port: 16383,
+        password: '15194112589master'
     },
     cluster5: {
-        host: process.env.CLUSTER_5_HOST,
-        port: Number.parseInt(process.env.CLUSTER_5_PORT, 10),
-        password: process.env.CLUSTER_5_PASSWORD
+        host: '127.0.0.1',
+        port: 16384,
+        password: '15194112589master'
     },
     cluster6: {
-        host: process.env.CLUSTER_6_HOST,
-        port: Number.parseInt(process.env.CLUSTER_6_PORT, 10),
-        password: process.env.CLUSTER_6_PASSWORD
+        host: '127.0.0.1',
+        port: 16385,
+        password: '15194112589master'
     }
 };
