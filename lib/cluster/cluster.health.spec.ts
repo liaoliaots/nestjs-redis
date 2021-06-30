@@ -20,9 +20,7 @@ describe(`${ClusterHealthIndicator.name}`, () => {
         clients.set(
             'client0',
             new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
-                redisOptions: {
-                    password: testConfig.cluster1.password
-                }
+                redisOptions: { password: testConfig.cluster1.password }
             })
         );
 

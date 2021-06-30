@@ -33,25 +33,19 @@ describe(`${RedisService.name}`, () => {
     test('should get a client with namespace', async () => {
         const client = redisService.getClient('client0');
 
-        const res = await client.ping();
-
-        expect(res).toBe('PONG');
+        await expect(client.ping()).resolves.toBeDefined();
     });
 
     test('should get default client with namespace', async () => {
         const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
 
-        const res = await client.ping();
-
-        expect(res).toBe('PONG');
+        await expect(client.ping()).resolves.toBeDefined();
     });
 
     test('should get default client without namespace', async () => {
         const client = redisService.getClient();
 
-        const res = await client.ping();
-
-        expect(res).toBe('PONG');
+        await expect(client.ping()).resolves.toBeDefined();
     });
 
     test('should throw an error when getting a client with an unknown namespace', () => {

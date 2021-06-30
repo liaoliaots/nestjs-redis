@@ -13,16 +13,10 @@ describe(`${createClient.name}`, () => {
     test('should create clients with options', async () => {
         client = createClient({
             nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-            options: {
-                redisOptions: {
-                    password: testConfig.cluster1.password
-                }
-            }
+            options: { redisOptions: { password: testConfig.cluster1.password } }
         });
 
-        const res = await client.ping();
-
-        expect(res).toBe('PONG');
+        await expect(client.ping()).resolves.toBeDefined();
     });
 
     test('should call onClientCreated', () => {
@@ -30,11 +24,7 @@ describe(`${createClient.name}`, () => {
 
         client = createClient({
             nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-            options: {
-                redisOptions: {
-                    password: testConfig.cluster1.password
-                }
-            },
+            options: { redisOptions: { password: testConfig.cluster1.password } },
             onClientCreated: mockCreated
         });
 
@@ -51,7 +41,7 @@ describe(`${quitClients.name}`, () => {
             const id = setTimeout(() => {
                 clearTimeout(id);
                 resolve();
-            }, 100);
+            }, 200);
         });
     };
 
