@@ -6,6 +6,12 @@ describe('CONFIGURATION_MISSING', () => {
     });
 });
 
+describe('CLUSTER_STATE_FAIL', () => {
+    test('should get a string', () => {
+        expect(typeof CLUSTER_STATE_FAIL).toBe('string');
+    });
+});
+
 describe(`${CLIENT_NOT_FOUND.name}`, () => {
     test('should get a string that contains a specified string', () => {
         const namespace = 'client0';
@@ -13,13 +19,5 @@ describe(`${CLIENT_NOT_FOUND.name}`, () => {
         expect(CLIENT_NOT_FOUND(namespace)).toContain(namespace);
         expect(CLIENT_NOT_FOUND(namespace)).toContain('Redis');
         expect(CLIENT_NOT_FOUND(namespace, true)).toContain('Cluster');
-    });
-});
-
-describe(`${CLUSTER_STATE_FAIL.name}`, () => {
-    test('should get a string that contains a specified string', () => {
-        const namespace = 'client0';
-
-        expect(CLUSTER_STATE_FAIL(namespace)).toContain(namespace);
     });
 });
