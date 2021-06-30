@@ -4,9 +4,6 @@ jobs:
     release:
         name: Release
         runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
@@ -15,9 +12,11 @@ jobs:
                   check-latest: true
                   registry-url: https://registry.npmjs.org
             - name: Update npm
-              run: npm install -g npm@7.18.1
+              run: npm install -g npm@7.19.0
+            - name: Clear npm cache
+              run: npm cache clean --force
             - name: Install dependencies
-              run: npm install
+              run: npm ci
             - name: Build
               run: npm run build
             - name: Publish to npm
