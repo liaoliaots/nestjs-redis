@@ -10,6 +10,7 @@ export { ClusterService } from './cluster/cluster.service';
 export { InjectCluster } from './cluster/common';
 export { ClusterHealthIndicator } from './cluster/cluster.health';
 
+// * Types & Interfaces
 export { ClientNamespace } from './interfaces';
 export {
     RedisModuleOptions,
