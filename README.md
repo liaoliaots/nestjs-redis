@@ -819,7 +819,7 @@ export class AppModule {}
 
 ## Author
 
-👤 **LiaoLiao <yxiaosong002@gmail.com>**
+👤 **LiaoLiao**
 
 -   Website: https://github.com/liaoliaots
 -   Github: [@liaoliaots](https://github.com/liaoliaots)
@@ -836,7 +836,7 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2021 [LiaoLiao <yxiaosong002@gmail.com>](https://github.com/liaoliaots).
+Copyright © 2021 [LiaoLiao](https://github.com/liaoliaots).
 
 This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
 
