@@ -1,6 +1,6 @@
 import IORedis, { Redis } from 'ioredis';
 import { createClient, quitClients } from '.';
-import { testConfig } from '../../../jest-env';
+import { testConfig } from '../../../test/env';
 import { RedisClients } from '../interfaces';
 
 const url = `redis://:${testConfig.master.password}@${testConfig.master.host}:${testConfig.master.port}/0`;

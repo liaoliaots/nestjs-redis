@@ -5,7 +5,7 @@ import { CLUSTER_CLIENTS } from './cluster.constants';
 import { ClusterService } from './cluster.service';
 import { ClusterClients } from './interfaces';
 import { quitClients } from './common';
-import { testConfig } from '../../jest-env';
+import { testConfig } from '../../test/env';
 
 describe(`${ClusterHealthIndicator.name}`, () => {
     const clients: ClusterClients = new Map();

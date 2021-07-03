@@ -4,7 +4,7 @@ import { HealthController } from './controllers/health.controller';
 import { InjectController } from './controllers/inject.controller';
 import { ServiceController } from './controllers/service.controller';
 import { ClusterModule } from '../../../lib';
-import { testConfig } from '../../../jest-env';
+import { testConfig } from '../../env';
 
 @Module({
     imports: [

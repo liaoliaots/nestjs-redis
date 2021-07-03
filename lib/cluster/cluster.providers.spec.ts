@@ -11,7 +11,7 @@ import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, Clust
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
 import { namespaces, quitClients } from './common';
 import { ClusterService } from './cluster.service';
-import { testConfig } from '../../jest-env';
+import { testConfig } from '../../test/env';
 
 const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
 

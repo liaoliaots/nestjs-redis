@@ -6,6 +6,5 @@
         "^.+\\.(t|j)s$": "ts-jest"
     },
     "testEnvironment": "node",
-    "verbose": true,
-    "setupFiles": ["../jest-env.ts"]
+    "verbose": true
 }

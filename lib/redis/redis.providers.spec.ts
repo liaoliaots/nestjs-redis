@@ -11,7 +11,7 @@ import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModule
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { namespaces, quitClients } from './common';
 import { RedisService } from './redis.service';
-import { testConfig } from '../../jest-env';
+import { testConfig } from '../../test/env';
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions(): RedisModuleOptions {

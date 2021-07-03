@@ -1,6 +1,6 @@
 import IORedis, { Cluster } from 'ioredis';
 import { createClient, quitClients } from '.';
-import { testConfig } from '../../../jest-env';
+import { testConfig } from '../../../test/env';
 import { ClusterClients } from '../interfaces';
 
 describe(`${createClient.name}`, () => {
