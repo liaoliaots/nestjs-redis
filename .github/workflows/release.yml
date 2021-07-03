@@ -12,7 +12,7 @@ jobs:
                   check-latest: true
                   registry-url: https://registry.npmjs.org
             - name: Update npm
-              run: npm install -g npm@7.19.0
+              run: npm install -g npm@7.19.1
             - name: Clear npm cache
               run: npm cache clean --force
             - name: Install dependencies
