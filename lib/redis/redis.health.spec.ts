@@ -5,7 +5,7 @@ import { REDIS_CLIENTS } from './redis.constants';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { quitClients } from './common';
-import { testConfig } from '../../jest-env';
+import { testConfig } from '../../test/env';
 
 describe(`${RedisHealthIndicator.name}`, () => {
     const clients: RedisClients = new Map();

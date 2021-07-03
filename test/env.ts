@@ -34,6 +34,8 @@
  *
  * cluster config
  *
+ * cluster 1:
+ *
  * master1 127.0.0.1 16380
  * requirepass 15194112589master
  * cluster-enabled yes
@@ -56,6 +58,8 @@
  * sudo redis-server /etc/redis/16381.conf
  * sudo redis-server /etc/redis/16382.conf
  * redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 -a 15194112589master
+ *
+ * cluster 2:
  *
  * master4 127.0.0.1 16383
  * requirepass 15194112589master

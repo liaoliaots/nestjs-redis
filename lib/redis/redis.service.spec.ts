@@ -4,7 +4,7 @@ import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { quitClients } from './common';
-import { testConfig } from '../../jest-env';
+import { testConfig } from '../../test/env';
 
 describe(`${RedisService.name}`, () => {
     const clients: RedisClients = new Map();
