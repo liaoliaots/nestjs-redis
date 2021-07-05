@@ -5,6 +5,9 @@ import { createProviders, createAsyncProviders, createClusterClientProviders } f
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { ClusterHealthIndicator } from './cluster.health';
 import { quitClients } from './common';
+import { checkPackages } from '../utils';
+
+checkPackages(['ioredis', '@nestjs/terminus']);
 
 @Global()
 @Module({})

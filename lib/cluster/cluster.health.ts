@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import { ClusterService } from './cluster.service';
 import { ClusterHealthCheckOptions } from './interfaces';
-import { RedisError, CLUSTER_STATE_FAIL } from '../errors';
+import { RedisError, FAILED_CLUSTER_STATE } from '../errors';
 
 @Injectable()
 export class ClusterHealthIndicator extends HealthIndicator {
@@ -16,7 +16,7 @@ export class ClusterHealthIndicator extends HealthIndicator {
 
             const clusterInfo = (await client.cluster('info')) as string;
 
-            if (!clusterInfo.includes('cluster_state:ok')) throw new RedisError(CLUSTER_STATE_FAIL);
+            if (!clusterInfo.includes('cluster_state:ok')) throw new RedisError(FAILED_CLUSTER_STATE);
 
             await client.ping();
         } catch (err) {

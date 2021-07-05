@@ -2,7 +2,7 @@ import { Provider, FactoryProvider } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { RedisError, CONFIGURATION_MISSING } from '../errors';
+import { RedisError, MISSING_CONFIGURATION } from '../errors';
 import { createClient, namespaces } from './common';
 import { RedisService } from './redis.service';
 
@@ -17,7 +17,7 @@ export const createProviders = (options: RedisModuleOptions): Provider[] => {
 };
 
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
-    if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(CONFIGURATION_MISSING);
+    if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(MISSING_CONFIGURATION);
 
     if (options.useClass) {
         return [
