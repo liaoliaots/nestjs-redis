@@ -5,6 +5,9 @@ import { createProviders, createAsyncProviders, createRedisClientProviders } fro
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { RedisHealthIndicator } from './redis.health';
 import { quitClients } from './common';
+import { checkPackages } from '../utils';
+
+checkPackages(['ioredis', '@nestjs/terminus']);
 
 @Global()
 @Module({})

@@ -2,7 +2,7 @@ import { Provider, FactoryProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
-import { RedisError, CONFIGURATION_MISSING } from '../errors';
+import { RedisError, MISSING_CONFIGURATION } from '../errors';
 import { createClient, namespaces } from './common';
 import { ClusterService } from './cluster.service';
 
@@ -17,7 +17,7 @@ export const createProviders = (options: ClusterModuleOptions): Provider[] => {
 };
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
-    if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(CONFIGURATION_MISSING);
+    if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(MISSING_CONFIGURATION);
 
     if (options.useClass) {
         return [
