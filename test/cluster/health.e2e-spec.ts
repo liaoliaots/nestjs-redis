@@ -66,13 +66,13 @@ test('/health/with-unknown-namespace (GET)', async () => {
         error: {
             unknown: {
                 status: 'down',
-                message: CLIENT_NOT_FOUND('?', true)
+                message: CLIENT_NOT_FOUND('unknown', true)
             }
         },
         details: {
             unknown: {
                 status: 'down',
-                message: CLIENT_NOT_FOUND('?', true)
+                message: CLIENT_NOT_FOUND('unknown', true)
             }
         }
     });

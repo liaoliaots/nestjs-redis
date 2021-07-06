@@ -16,7 +16,7 @@ export class HealthController {
 
     @Get('with-unknown-namespace')
     healthCheckWithUnknownNamespace(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.cluster.isHealthy('unknown', { namespace: '?' })]);
+        return this.health.check([() => this.cluster.isHealthy('unknown', { namespace: 'unknown' })]);
     }
 
     @Get('with-disconnected-client')

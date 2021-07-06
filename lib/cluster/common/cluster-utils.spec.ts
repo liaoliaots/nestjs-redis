@@ -49,17 +49,13 @@ describe(`${quitClients.name}`, () => {
         clients.set(
             'client0',
             new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
-                redisOptions: {
-                    password: testConfig.cluster1.password
-                }
+                redisOptions: { password: testConfig.cluster1.password }
             })
         );
         clients.set(
             'client1',
             new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
-                redisOptions: {
-                    password: testConfig.cluster4.password
-                }
+                redisOptions: { password: testConfig.cluster4.password }
             })
         );
 

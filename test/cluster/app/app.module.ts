@@ -8,7 +8,6 @@ import { testConfig } from '../../env';
 
 @Module({
     imports: [
-        TerminusModule,
         ClusterModule.forRoot({
             config: [
                 {
@@ -21,7 +20,8 @@ import { testConfig } from '../../env';
                     options: { redisOptions: { password: testConfig.cluster4.password } }
                 }
             ]
-        })
+        }),
+        TerminusModule
     ],
     controllers: [HealthController, InjectController, ServiceController]
 })
