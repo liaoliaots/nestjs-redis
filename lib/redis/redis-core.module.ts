@@ -7,15 +7,15 @@ import { RedisHealthIndicator } from './redis.health';
 import { quitClients } from './common';
 import { checkPackages } from '../utils';
 
-checkPackages(['ioredis', '@nestjs/terminus']);
-
 @Global()
 @Module({})
 export class RedisCoreModule implements OnApplicationShutdown {
     constructor(
         @Inject(REDIS_OPTIONS) private readonly options: RedisModuleOptions,
         @Inject(REDIS_CLIENTS) private readonly clients: RedisClients
-    ) {}
+    ) {
+        checkPackages(['ioredis', '@nestjs/terminus']);
+    }
 
     static forRoot(options: RedisModuleOptions = {}): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
