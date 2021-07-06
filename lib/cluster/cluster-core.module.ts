@@ -7,15 +7,15 @@ import { ClusterHealthIndicator } from './cluster.health';
 import { quitClients } from './common';
 import { checkPackages } from '../utils';
 
-checkPackages(['ioredis', '@nestjs/terminus']);
-
 @Global()
 @Module({})
 export class ClusterCoreModule implements OnApplicationShutdown {
     constructor(
         @Inject(CLUSTER_OPTIONS) private readonly options: ClusterModuleOptions,
         @Inject(CLUSTER_CLIENTS) private readonly clients: ClusterClients
-    ) {}
+    ) {
+        checkPackages(['ioredis', '@nestjs/terminus']);
+    }
 
     static forRoot(options: ClusterModuleOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();

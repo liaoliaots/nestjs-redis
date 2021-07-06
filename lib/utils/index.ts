@@ -40,7 +40,7 @@ export const checkPackages = (names: string[]): string[] => {
     const missingDependencyNames = packages.filter(({ pkg }) => pkg === null).map(({ name }) => name);
 
     if (missingDependencyNames.length > 0) {
-        const logger = new Logger(checkPackages.name);
+        const logger = new Logger('CheckPackages');
 
         logger.error(MISSING_REQUIRED_DEPENDENCY(missingDependencyNames));
     }
