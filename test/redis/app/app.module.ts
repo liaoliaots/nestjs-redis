@@ -8,7 +8,6 @@ import { testConfig } from '../../env';
 
 @Module({
     imports: [
-        TerminusModule,
         RedisModule.forRoot({
             defaultOptions: {
                 sentinels: [
@@ -28,7 +27,8 @@ import { testConfig } from '../../env';
                 { namespace: 'client0', db: 0, name: 'mymaster', role: 'master' },
                 { db: 1, name: 'mymaster', role: 'slave' }
             ]
-        })
+        }),
+        TerminusModule
     ],
     controllers: [HealthController, InjectController, ServiceController]
 })

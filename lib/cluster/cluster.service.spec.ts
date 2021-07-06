@@ -36,7 +36,7 @@ describe(`${ClusterService.name}`, () => {
         clusterService = moduleRef.get<ClusterService>(ClusterService);
     });
 
-    test('the size of property clients should be equal to clients.size', () => {
+    test('the size should be equal to clients.size', () => {
         expect(clusterService.clients.size).toBe(clients.size);
     });
 

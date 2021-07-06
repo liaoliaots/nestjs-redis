@@ -26,7 +26,7 @@ describe(`${RedisService.name}`, () => {
         redisService = moduleRef.get<RedisService>(RedisService);
     });
 
-    test('the size of property clients should be equal to clients.size', () => {
+    test('the size should be equal to clients.size', () => {
         expect(redisService.clients.size).toBe(clients.size);
     });
 
