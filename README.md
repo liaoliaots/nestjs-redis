@@ -28,15 +28,15 @@
 
 ## Test coverage
 
-| Statements                                                                      | Branches                                                              | Functions                                                               | Lines                                                                 |
-| ------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-94.63%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-87.5%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-87.5%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-94.41%25-brightgreen.svg) |
+| Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                 |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-94.46%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-88.54%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-88.57%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-94.18%25-brightgreen.svg) |
 
 ## Install
 
 **NOTE:** This lib requires **nestjs 7**, **ioredis 4**. And the version 1 of this lib is deprecated, please use version **2**.
 
-Install with npm
+Install with npm:
 
 ```sh
 npm install --save @liaoliaots/nestjs-redis ioredis @nestjs/terminus
@@ -46,7 +46,7 @@ npm install --save @liaoliaots/nestjs-redis ioredis @nestjs/terminus
 npm install --save-dev @types/ioredis
 ```
 
-Install with yarn
+Install with yarn:
 
 ```sh
 yarn add @liaoliaots/nestjs-redis ioredis @nestjs/terminus
@@ -60,7 +60,9 @@ yarn add --dev @types/ioredis
 
 ### Usage
 
-**First**, register the RedisModule([global module](https://docs.nestjs.com/modules#global-modules)) in app.module.ts:
+**First**, register the RedisModule in app.module.ts:
+
+The RedisModule is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, the module is available everywhere.
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -109,7 +111,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 port: 6380,
 
                 // or with URL
-                // url: 'redis://:your_password@127.0.0.1:6380/0'
+                // url: 'redis://:your_password@localhost:6380/0'
             }
         })
     ]
@@ -131,14 +133,14 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             closeClient: true,
             config: [
                 {
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6380,
                     db: 0,
                     enableAutoPipelining: true
                 },
                 {
                     namespace: 'cache',
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6380,
                     db: 1,
                     enableAutoPipelining: true
@@ -163,7 +165,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         RedisModule.forRoot({
             closeClient: true,
             defaultOptions: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
                 enableAutoPipelining: true
             },
@@ -193,7 +195,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         RedisModule.forRoot({
             closeClient: true,
             defaultOptions: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
                 enableAutoPipelining: true
             },
@@ -377,7 +379,9 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 
 ## Cluster
 
-**First**, register the ClusterModule([global module](https://docs.nestjs.com/modules#global-modules)) in app.module.ts:
+**First**, register the ClusterModule in app.module.ts:
+
+The ClusterModule is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, the module is available everywhere.
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -682,30 +686,13 @@ export class AppModule {}
 
 -   If redis sentinel config is:
 
-```TypeScript
-master 127.0.0.1 6380
-requirepass 123456
-
-slave1 127.0.0.1 6381
-requirepass 123456
-slaveof 127.0.0.1 6380
-masterauth 123456
-
-slave2 127.0.0.1 6382
-requirepass 123456
-slaveof 127.0.0.1 6380
-masterauth 123456
-
-sentinel1 127.0.0.1 7380
-requirepass 654321
-sentinel monitor mymaster 127.0.0.1 6380 2
-sentinel auth-pass mymaster 123456
-
-sentinel2 127.0.0.1 7381
-requirepass 654321
-sentinel monitor mymaster 127.0.0.1 6380 2
-sentinel auth-pass mymaster 123456
-```
+| name                     | ip        | port | password |
+| ------------------------ | --------- | ---- | -------- |
+| master                   | localhost | 6380 | 123456   |
+| slave1                   | localhost | 6381 | 123456   |
+| slave2                   | localhost | 6382 | 123456   |
+| sentinel1 (**mymaster**) | localhost | 7380 | 654321   |
+| sentinel2 (**mymaster**) | localhost | 7381 | 654321   |
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -732,10 +719,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 // get master node from the sentinel group
                 { name: 'mymaster', role: 'master' },
                 // get a random slave node from the sentinel group, read-only by default
-                { namespace: 'random slave', name: 'mymaster', role: 'slave' },
-                // represent a specific slave node, read-only by default
-                // you should override the default sentinels
-                { namespace: 'specific slave', host: 'localhost', port: 6381, sentinels: undefined }
+                { namespace: 'random slave', name: 'mymaster', role: 'slave' }
             ]
         })
     ]
@@ -747,47 +731,21 @@ export class AppModule {}
 
 -   If cluster config is:
 
-```TypeScript
 cluster 1:
 
-master1 127.0.0.1 16380
-requirepass 123456
-cluster-enabled yes
-cluster-config-file nodes-16380.conf
-appendonly yes
-
-master2 127.0.0.1 16381
-requirepass 123456
-cluster-enabled yes
-cluster-config-file nodes-16381.conf
-appendonly yes
-
-master3 127.0.0.1 16382
-requirepass 123456
-cluster-enabled yes
-cluster-config-file nodes-16382.conf
-appendonly yes
+| name    | ip        | port  | password |
+| ------- | --------- | ----- | -------- |
+| master1 | localhost | 16380 | 123456   |
+| master2 | localhost | 16381 | 123456   |
+| master3 | localhost | 16382 | 123456   |
 
 cluster 2:
 
-master4 127.0.0.1 16383
-requirepass 654321
-cluster-enabled yes
-cluster-config-file nodes-16383.conf
-appendonly yes
-
-master5 127.0.0.1 16384
-requirepass 654321
-cluster-enabled yes
-cluster-config-file nodes-16384.conf
-appendonly yes
-
-master6 127.0.0.1 16385
-requirepass 654321
-cluster-enabled yes
-cluster-config-file nodes-16385.conf
-appendonly yes
-```
+| name    | ip        | port  | password |
+| ------- | --------- | ----- | -------- |
+| master1 | localhost | 16383 | 654321   |
+| master2 | localhost | 16384 | 654321   |
+| master3 | localhost | 16385 | 654321   |
 
 ```TypeScript
 import { Module } from '@nestjs/common';
