@@ -21,8 +21,8 @@
 
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
--   [**Redis**](#redis)
--   [**Cluster**](#cluster)
+-   [Redis](#redis)
+-   [Cluster](#cluster)
 -   [Examples](#examples)
 -   [Package dependency overview](#package-dependency-overview)
 
@@ -39,21 +39,21 @@
 Install with npm:
 
 ```sh
-npm install --save @liaoliaots/nestjs-redis ioredis @nestjs/terminus
+$ npm install --save @liaoliaots/nestjs-redis ioredis @nestjs/terminus
 ```
 
 ```sh
-npm install --save-dev @types/ioredis
+$ npm install --save-dev @types/ioredis
 ```
 
 Install with yarn:
 
 ```sh
-yarn add @liaoliaots/nestjs-redis ioredis @nestjs/terminus
+$ yarn add @liaoliaots/nestjs-redis ioredis @nestjs/terminus
 ```
 
 ```sh
-yarn add --dev @types/ioredis
+$ yarn add --dev @types/ioredis
 ```
 
 ## Redis
