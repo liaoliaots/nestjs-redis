@@ -28,7 +28,6 @@ module.exports = {
     ignorePatterns: ['.eslintrc.js', 'dist/*'],
     reportUnusedDisableDirectives: true,
     rules: {
-        'tsdoc/syntax': 'warn',
-        '@typescript-eslint/explicit-function-return-type': 'error'
+        'tsdoc/syntax': 'warn'
     }
 };
