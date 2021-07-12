@@ -7,7 +7,6 @@
         "allowSyntheticDefaultImports": true,
         "target": "ES2017",
         "lib": ["ES2021", "DOM"],
-        "sourceMap": false,
         "outDir": "./dist",
         "baseUrl": "./",
         "esModuleInterop": true,
