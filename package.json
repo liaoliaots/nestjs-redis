@@ -47,7 +47,7 @@
         "@nestjs/testing": "8.0.1",
         "@types/ioredis": "4.26.5",
         "@types/jest": "26.0.24",
-        "@types/node": "16.3.1",
+        "@types/node": "14.17.5",
         "@typescript-eslint/eslint-plugin": "4.28.2",
         "@typescript-eslint/parser": "4.28.2",
         "eslint": "7.30.0",
