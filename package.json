@@ -101,8 +101,7 @@
         ]
     },
     "engines": {
-        "node": "14.x",
-        "npm": "7.x"
+        "npm": "6.x || 7.x"
     },
     "commitlint": {
         "extends": [
