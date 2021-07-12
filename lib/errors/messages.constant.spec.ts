@@ -1,4 +1,4 @@
-import { CLIENT_NOT_FOUND, MISSING_CONFIGURATION, FAILED_CLUSTER_STATE, MISSING_REQUIRED_DEPENDENCY } from '.';
+import { CLIENT_NOT_FOUND, MISSING_CONFIGURATION, FAILED_CLUSTER_STATE } from '.';
 
 describe('MISSING_CONFIGURATION', () => {
     test('should get a string', () => {
@@ -17,18 +17,7 @@ describe(`${CLIENT_NOT_FOUND.name}`, () => {
         const namespace = 'client0';
 
         expect(CLIENT_NOT_FOUND(namespace)).toContain(namespace);
-        expect(CLIENT_NOT_FOUND(namespace)).toContain('Redis');
-        expect(CLIENT_NOT_FOUND(namespace, true)).toContain('Cluster');
-    });
-});
-
-describe(`${MISSING_REQUIRED_DEPENDENCY.name}`, () => {
-    test('should get a string that contains a specified string', () => {
-        expect(MISSING_REQUIRED_DEPENDENCY(['ioredis'])).toContain(
-            'The "ioredis" package is missing. Please, make sure to install the library ($ npm install --save ioredis)'
-        );
-        expect(MISSING_REQUIRED_DEPENDENCY(['ioredis', '@nestjs/terminus'])).toContain(
-            'The "ioredis", "@nestjs/terminus" packages are missing. Please, make sure to install the libraries ($ npm install --save ioredis @nestjs/terminus)'
-        );
+        expect(CLIENT_NOT_FOUND(namespace)).toContain('redis');
+        expect(CLIENT_NOT_FOUND(namespace, true)).toContain('cluster');
     });
 });
