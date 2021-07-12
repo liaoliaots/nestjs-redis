@@ -1,6 +1,7 @@
 module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
+        ecmaVersion: 2021,
         sourceType: 'module',
         ecmaFeatures: {
             impliedStrict: true
@@ -10,8 +11,6 @@ module.exports = {
     plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
         'eslint:recommended',
-        'plugin:import/errors',
-        'plugin:import/typescript',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
@@ -24,11 +23,12 @@ module.exports = {
     env: {
         node: true,
         jest: true,
-        es2020: true
+        es2021: true
     },
     ignorePatterns: ['.eslintrc.js', 'dist/*'],
     reportUnusedDisableDirectives: true,
     rules: {
-        'tsdoc/syntax': 'warn'
+        'tsdoc/syntax': 'warn',
+        '@typescript-eslint/explicit-function-return-type': 'error'
     }
 };
