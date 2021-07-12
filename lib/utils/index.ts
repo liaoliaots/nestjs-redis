@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { ConsoleLogger } from '@nestjs/common';
 import { MISSING_REQUIRED_DEPENDENCY } from '../errors';
 
 /**
@@ -40,7 +40,7 @@ export const checkPackages = (names: string[]): string[] => {
     const missingDependencyNames = packages.filter(({ pkg }) => pkg === null).map(({ name }) => name);
 
     if (missingDependencyNames.length > 0) {
-        const logger = new Logger('CheckPackages');
+        const logger = new ConsoleLogger('CheckPackages');
 
         logger.error(MISSING_REQUIRED_DEPENDENCY(missingDependencyNames));
     }

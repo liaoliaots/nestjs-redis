@@ -47,7 +47,8 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
     if (options.useClass) {
         return {
             provide: REDIS_OPTIONS,
-            useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
+            useFactory: async (optionsFactory: RedisOptionsFactory): Promise<RedisModuleOptions> =>
+                await optionsFactory.createRedisOptions(),
             inject: [options.useClass]
         };
     }
@@ -55,7 +56,8 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
     if (options.useExisting) {
         return {
             provide: REDIS_OPTIONS,
-            useFactory: async (optionsFactory: RedisOptionsFactory) => await optionsFactory.createRedisOptions(),
+            useFactory: async (optionsFactory: RedisOptionsFactory): Promise<RedisModuleOptions> =>
+                await optionsFactory.createRedisOptions(),
             inject: [options.useExisting]
         };
     }

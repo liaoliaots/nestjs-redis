@@ -47,7 +47,8 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
     if (options.useClass) {
         return {
             provide: CLUSTER_OPTIONS,
-            useFactory: async (optionsFactory: ClusterOptionsFactory) => await optionsFactory.createClusterOptions(),
+            useFactory: async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
+                await optionsFactory.createClusterOptions(),
             inject: [options.useClass]
         };
     }
@@ -55,7 +56,8 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
     if (options.useExisting) {
         return {
             provide: CLUSTER_OPTIONS,
-            useFactory: async (optionsFactory: ClusterOptionsFactory) => await optionsFactory.createClusterOptions(),
+            useFactory: async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
+                await optionsFactory.createClusterOptions(),
             inject: [options.useExisting]
         };
     }
