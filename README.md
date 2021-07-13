@@ -1,6 +1,7 @@
 # Welcome to nestjs-redis 👋
 
 [![npm (tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/next?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis/v/3.0.0-next.2)
 ![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -22,9 +23,16 @@
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
 -   [Redis](#redis)
+    -   [Usage](#redis-usage)
+    -   [Health check](#redis-health-check)
+    -   [Options](#redis-options)
 -   [Cluster](#cluster)
+    -   [Usage](#cluster-usage)
+    -   [Health check](#cluster-health-check)
+    -   [Options](#cluster-options)
 -   [Examples](#examples)
 -   [Package dependency overview](#package-dependency-overview)
+-   [Todo](#todo)
 
 ## Test coverage
 
@@ -60,7 +68,7 @@ $ yarn add --dev @types/ioredis
 
 ## Redis
 
-### Usage
+<h3 id="redis-usage">Usage</h3>
 
 **First**, register the RedisModule in app.module.ts:
 
@@ -300,7 +308,7 @@ export class AppService {
 }
 ```
 
-### Health check
+<h3 id="redis-health-check">Health check</h3>
 
 **First**, register the [TerminusModule](https://docs.nestjs.com/recipes/terminus) in app.module.ts:
 
@@ -354,7 +362,7 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 }
 ```
 
-### Options
+<h3 id="redis-options">Options</h3>
 
 #### RedisModuleOptions
 
@@ -380,6 +388,8 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 | namespace | string or symbol | -             | The namespace of redis client, this client will execute health check. |
 
 ## Cluster
+
+<h3 id="cluster-usage">Usage</h3>
 
 **First**, register the ClusterModule in app.module.ts:
 
@@ -556,7 +566,7 @@ export class AppService {
 
 ```
 
-### Health check
+<h3 id="cluster-health-check">Health check</h3>
 
 **First**, register the [TerminusModule](https://docs.nestjs.com/recipes/terminus) in app.module.ts:
 
@@ -622,7 +632,7 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 }
 ```
 
-### Options
+<h3 id="cluster-options">Options</h3>
 
 #### ClusterModuleOptions
 
@@ -776,6 +786,10 @@ export class AppModule {}
 ## Package dependency overview
 
 ![](./dependency-graph.svg)
+
+## Todo
+
+-   Load `@nestjs/terminus` lazily
 
 ## Author
 
