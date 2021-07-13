@@ -31,6 +31,10 @@
     -   [Health check](#cluster-health-check)
     -   [Options](#cluster-options)
 -   [Examples](#examples)
+    -   [Redis](#examples-redis)
+        -   [default](#examples-default)
+        -   [sentinel](#examples-sentinel)
+    -   [Cluster](#examples-cluster)
 -   [Package dependency overview](#package-dependency-overview)
 -   [Todo](#todo)
 
@@ -370,7 +374,7 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 | ----------------------------------------------------------------------------------------------- | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | closeClient                                                                                     | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**. [See details.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
 | [defaultOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object                           | undefined     | The default options for every client.                                                                                                                                                                                                                                  |
-| config                                                                                          | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                    |
+| config                                                                                          | ClientOptions or ClientOptions[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                    |
 
 #### ClientOptions
 
@@ -639,7 +643,7 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 | Name        | Type                             | Default value | Description                                                                                                                                                                                                                                                            |
 | ----------- | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | closeClient | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**. [See details.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| config      | ClientOptions or ClientOptions[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                    |
+| config      | ClientOptions or ClientOptions[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                    |
 
 #### ClientOptions
 
@@ -658,9 +662,9 @@ And then send a GET request to **/app**, if redis is in a healthy state, you wil
 
 ## Examples
 
-### Redis
+<h3 id="examples-redis">Redis</h3>
 
--   If your redis server has no password, the host is localhost, and the port is 6379:
+-   If your redis server has no password, the host is localhost, and the port is 6379: <span id="examples-default"></span>
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -696,7 +700,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
--   If redis sentinel config is:
+-   If redis sentinel config is: <span id="examples-sentinel"></span>
 
 | name                     | ip        | port | password |
 | ------------------------ | --------- | ---- | -------- |
@@ -739,7 +743,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-### Cluster
+<h3 id="examples-cluster">Cluster</h3>
 
 -   If cluster config is:
 
