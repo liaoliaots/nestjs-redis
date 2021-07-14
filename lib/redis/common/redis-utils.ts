@@ -13,6 +13,12 @@ export const createClient = (clientOptions: ClientOptions): Redis => {
 
 export const quitClients = (clients: RedisClients): void => {
     clients.forEach(client => {
-        if (client.status !== 'end') void client.quit();
+        if (client.status === 'ready') {
+            client.quit().catch(() => ({}));
+
+            return;
+        }
+
+        client.disconnect();
     });
 };
