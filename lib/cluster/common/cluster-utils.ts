@@ -13,6 +13,12 @@ export const createClient = (clientOptions: ClientOptions): Cluster => {
 
 export const quitClients = (clients: ClusterClients): void => {
     clients.forEach(client => {
-        if (client.status !== 'end') void client.quit();
+        if (client.status === 'ready') {
+            client.quit().catch(() => ({}));
+
+            return;
+        }
+
+        client.disconnect();
     });
 };
