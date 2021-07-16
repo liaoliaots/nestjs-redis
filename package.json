@@ -6,7 +6,9 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "health-checks.d.ts",
+        "health-checks.js"
     ],
     "license": "MIT",
     "keywords": [
