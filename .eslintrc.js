@@ -25,7 +25,7 @@ module.exports = {
         jest: true,
         es2021: true
     },
-    ignorePatterns: ['.eslintrc.js', 'dist/*'],
+    ignorePatterns: ['dist/*', '.eslintrc.js', 'health-checks.d.ts', 'health-checks.js', 'health-checks.ts'],
     reportUnusedDisableDirectives: true,
     rules: {
         'tsdoc/syntax': 'warn'
