@@ -3,7 +3,8 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './controllers/health.controller';
 import { InjectController } from './controllers/inject.controller';
 import { ServiceController } from './controllers/service.controller';
-import { RedisModule } from '../../../lib';
+import { RedisModule } from '@/index';
+import { RedisHealthModule } from '@/health';
 import { testConfig } from '../../env';
 
 @Module({
@@ -28,7 +29,8 @@ import { testConfig } from '../../env';
                 { db: 1, name: 'mymaster', role: 'slave' }
             ]
         }),
-        TerminusModule
+        TerminusModule,
+        RedisHealthModule
     ],
     controllers: [HealthController, InjectController, ServiceController]
 })

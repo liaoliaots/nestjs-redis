@@ -6,5 +6,8 @@
         "^.+\\.(t|j)s$": "ts-jest"
     },
     "testEnvironment": "node",
-    "verbose": true
+    "verbose": true,
+    "moduleNameMapper": {
+        "@/(.*)": ["<rootDir>/../lib/$1"]
+    }
 }

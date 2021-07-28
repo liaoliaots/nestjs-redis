@@ -3,7 +3,6 @@ import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify
 import { AppModule } from './app/app.module';
 import { RedisClients } from '../../lib/redis/interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from '../../lib/redis/redis.constants';
-import { CLIENT_NOT_FOUND } from '../../lib/errors';
 import { quitClients } from '../../lib/redis/common';
 
 let clients: RedisClients;
@@ -51,28 +50,6 @@ test('/health (GET)', async () => {
             },
             default: {
                 status: 'up'
-            }
-        }
-    });
-});
-
-test('/health/with-unknown-namespace (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/health/with-unknown-namespace' });
-
-    expect(res.statusCode).toBe(503);
-    expect(JSON.parse(res.payload)).toEqual({
-        status: 'error',
-        info: {},
-        error: {
-            unknown: {
-                status: 'down',
-                message: CLIENT_NOT_FOUND('unknown')
-            }
-        },
-        details: {
-            unknown: {
-                status: 'down',
-                message: CLIENT_NOT_FOUND('unknown')
             }
         }
     });

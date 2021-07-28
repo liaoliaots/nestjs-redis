@@ -85,7 +85,7 @@
  * redis-cli --cluster create 127.0.0.1:16383 127.0.0.1:16384 127.0.0.1:16385 -a 15194112589master
  */
 
-export const testConfig: Record<string, { host: string; port: number; password: string }> = {
+export const testConfig = {
     master: {
         host: '127.0.0.1',
         port: 6380,

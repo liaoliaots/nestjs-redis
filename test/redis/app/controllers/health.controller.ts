@@ -1,26 +1,28 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
-import { RedisHealthIndicator, DEFAULT_REDIS_CLIENT } from '../../../../lib';
+import { Redis } from 'ioredis';
+import { RedisHealthIndicator } from '@/health';
+import { InjectRedis } from '@/index';
 
 @Controller('health')
 export class HealthController {
-    constructor(private readonly health: HealthCheckService, private readonly redis: RedisHealthIndicator) {}
+    constructor(
+        @InjectRedis('client0') private readonly client0: Redis,
+        @InjectRedis() private readonly clientDefault: Redis,
+        private readonly health: HealthCheckService,
+        private readonly redis: RedisHealthIndicator
+    ) {}
 
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redis.isHealthy('client0', { namespace: 'client0' }),
-            () => this.redis.isHealthy('default', { namespace: DEFAULT_REDIS_CLIENT })
+            () => this.redis.check('client0', { client: this.client0 }),
+            () => this.redis.check('default', { client: this.clientDefault })
         ]);
-    }
-
-    @Get('with-unknown-namespace')
-    healthCheckWithUnknownNamespace(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.isHealthy('unknown', { namespace: 'unknown' })]);
     }
 
     @Get('with-disconnected-client')
     healthCheckWithDisconnect(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.isHealthy('default', { namespace: DEFAULT_REDIS_CLIENT })]);
+        return this.health.check([() => this.redis.check('default', { client: this.clientDefault })]);
     }
 }

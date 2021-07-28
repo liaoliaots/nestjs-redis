@@ -21,7 +21,7 @@ export interface ClientOptions {
     /**
      * Once the client has been created, this function will be executed immediately.
      *
-     * @param client - The client.
+     * @param client - The client
      */
     onClientCreated?: (client: Cluster) => void;
 }

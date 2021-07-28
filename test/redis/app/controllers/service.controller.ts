@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { RedisService } from '../../../../lib';
+import { RedisService } from '@/index';
 
 @Controller('service')
 export class ServiceController {

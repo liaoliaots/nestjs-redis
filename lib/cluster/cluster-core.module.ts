@@ -3,7 +3,6 @@ import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from 
 import { ClusterService } from './cluster.service';
 import { createProviders, createAsyncProviders, createClusterClientProviders } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
-import { ClusterHealthIndicator } from './cluster.health';
 import { quitClients } from './common';
 
 @Global()
@@ -16,34 +15,24 @@ export class ClusterCoreModule implements OnApplicationShutdown {
 
     static forRoot(options: ClusterModuleOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
-        const providers: Provider[] = [
-            ...createProviders(options),
-            ClusterService,
-            ClusterHealthIndicator,
-            ...clusterClientProviders
-        ];
+        const providers: Provider[] = [...createProviders(options), ClusterService, ...clusterClientProviders];
 
         return {
             module: ClusterCoreModule,
             providers,
-            exports: [ClusterService, ClusterHealthIndicator, ...clusterClientProviders]
+            exports: [ClusterService, ...clusterClientProviders]
         };
     }
 
     static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
-        const providers: Provider[] = [
-            ...createAsyncProviders(options),
-            ClusterService,
-            ClusterHealthIndicator,
-            ...clusterClientProviders
-        ];
+        const providers: Provider[] = [...createAsyncProviders(options), ClusterService, ...clusterClientProviders];
 
         return {
             module: ClusterCoreModule,
             imports: options.imports,
             providers,
-            exports: [ClusterService, ClusterHealthIndicator, ...clusterClientProviders]
+            exports: [ClusterService, ...clusterClientProviders]
         };
     }
 
