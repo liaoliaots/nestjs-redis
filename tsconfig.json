@@ -11,7 +11,10 @@
         "baseUrl": "./",
         "esModuleInterop": true,
         "importHelpers": true,
-        "strict": true
+        "strict": true,
+        "paths": {
+            "@/*": ["lib/*"]
+        }
     },
     "include": ["lib", "test"]
 }

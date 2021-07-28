@@ -14,10 +14,3 @@ export interface RedisClientsService {
      */
     getClient: (namespace: ClientNamespace) => Redis;
 }
-
-export interface RedisHealthCheckOptions {
-    /**
-     * The namespace of redis client, this client will execute health check.
-     */
-    namespace: ClientNamespace;
-}

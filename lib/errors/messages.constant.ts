@@ -1,6 +1,8 @@
-export const MISSING_CONFIGURATION = `Configuration is missing, you must provide one of useFactory, useClass, or useExisting`;
+export const MISSING_CONFIGURATION = `Configuration is missing, you must provide one of useFactory, useClass, or useExisting.`;
 
-export const FAILED_CLUSTER_STATE = `Info cluster is not on OK state`;
+export const FAILED_CLUSTER_STATE = `Info cluster is not on OK state.`;
+
+export const CLIENT_NOT_FOUND_FOR_HEALTH = `The client-provider is not found in the application context.`;
 
 export const CLIENT_NOT_FOUND = (namespace: string, isCluster = false): string =>
-    `The client-provider ${namespace} of ${isCluster ? 'cluster' : 'redis'} not found in the application context`;
+    `The ${isCluster ? 'cluster' : 'redis'} client-provider '${namespace}' is not found in the application context.`;

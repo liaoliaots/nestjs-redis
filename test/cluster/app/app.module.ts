@@ -5,6 +5,7 @@ import { InjectController } from './controllers/inject.controller';
 import { ServiceController } from './controllers/service.controller';
 import { ClusterModule } from '../../../lib';
 import { testConfig } from '../../env';
+import { RedisHealthModule } from '@/health';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { testConfig } from '../../env';
                 }
             ]
         }),
-        TerminusModule
+        TerminusModule,
+        RedisHealthModule
     ],
     controllers: [HealthController, InjectController, ServiceController]
 })

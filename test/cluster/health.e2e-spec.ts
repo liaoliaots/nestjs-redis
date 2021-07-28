@@ -3,7 +3,6 @@ import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify
 import { AppModule } from './app/app.module';
 import { ClusterClients } from '../../lib/cluster/interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from '../../lib/cluster/cluster.constants';
-import { CLIENT_NOT_FOUND } from '../../lib/errors';
 import { quitClients } from '../../lib/cluster/common';
 
 let clients: ClusterClients;
@@ -51,28 +50,6 @@ test('/health (GET)', async () => {
             },
             default: {
                 status: 'up'
-            }
-        }
-    });
-});
-
-test('/health/with-unknown-namespace (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/health/with-unknown-namespace' });
-
-    expect(res.statusCode).toBe(503);
-    expect(JSON.parse(res.payload)).toEqual({
-        status: 'error',
-        info: {},
-        error: {
-            unknown: {
-                status: 'down',
-                message: CLIENT_NOT_FOUND('unknown', true)
-            }
-        },
-        details: {
-            unknown: {
-                status: 'down',
-                message: CLIENT_NOT_FOUND('unknown', true)
             }
         }
     });
