@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
 import { ClientOptions, RedisClients } from '../interfaces';
 
@@ -12,9 +13,13 @@ export const createClient = (clientOptions: ClientOptions): Redis => {
 };
 
 export const quitClients = (clients: RedisClients): void => {
+    const logger = new Logger('RedisModule');
+
     clients.forEach(client => {
         if (client.status === 'ready') {
-            client.quit().catch(() => ({}));
+            client.quit().catch(error => {
+                if (error instanceof Error) logger.error(error.message);
+            });
 
             return;
         }

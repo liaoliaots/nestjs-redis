@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
 import { ClientOptions, ClusterClients } from '../interfaces';
 
@@ -12,9 +13,13 @@ export const createClient = (clientOptions: ClientOptions): Cluster => {
 };
 
 export const quitClients = (clients: ClusterClients): void => {
+    const logger = new Logger('ClusterModule');
+
     clients.forEach(client => {
         if (client.status === 'ready') {
-            client.quit().catch(() => ({}));
+            client.quit().catch(error => {
+                if (error instanceof Error) logger.error(error.message);
+            });
 
             return;
         }

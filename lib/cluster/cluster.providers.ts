@@ -1,4 +1,4 @@
-import { Provider, FactoryProvider } from '@nestjs/common';
+import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
@@ -6,15 +6,10 @@ import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 import { createClient, namespaces } from './common';
 import { ClusterService } from './cluster.service';
 
-export const createProviders = (options: ClusterModuleOptions): Provider[] => {
-    return [
-        {
-            provide: CLUSTER_OPTIONS,
-            useValue: options
-        },
-        clusterClientsProvider
-    ];
-};
+export const createProviders = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
+    provide: CLUSTER_OPTIONS,
+    useValue: options
+});
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
     if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(MISSING_CONFIGURATION);
@@ -25,12 +20,11 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
                 provide: options.useClass,
                 useClass: options.useClass
             },
-            createAsyncOptionsProvider(options),
-            clusterClientsProvider
+            createAsyncOptionsProvider(options)
         ];
     }
 
-    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options), clusterClientsProvider];
+    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options)];
 
     return [];
 };
