@@ -3,5 +3,7 @@ export class RedisError extends Error {
         super(message);
 
         this.name = RedisError.name;
+
+        Error.captureStackTrace(this, this.constructor);
     }
 }

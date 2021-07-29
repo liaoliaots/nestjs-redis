@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { ClientNamespace } from '../../interfaces';
+import { ClientNamespace } from '@/interfaces';
 import { DEFAULT_REDIS_CLIENT } from '../redis.constants';
 
 export const namespaces: ClientNamespace[] = [];

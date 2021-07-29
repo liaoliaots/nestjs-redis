@@ -2,7 +2,7 @@ import { Provider, FactoryProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
-import { RedisError, MISSING_CONFIGURATION } from '../errors';
+import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 import { createClient, namespaces } from './common';
 import { ClusterService } from './cluster.service';
 

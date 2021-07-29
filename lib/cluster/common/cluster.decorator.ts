@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { ClientNamespace } from '../../interfaces';
+import { ClientNamespace } from '@/interfaces';
 import { DEFAULT_CLUSTER_CLIENT } from '../cluster.constants';
 
 export const namespaces: ClientNamespace[] = [];

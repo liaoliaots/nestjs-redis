@@ -2,9 +2,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
 import { RedisClients, RedisClientsService } from './interfaces';
-import { RedisError, CLIENT_NOT_FOUND } from '../errors';
-import { parseNamespace } from '../utils';
-import { ClientNamespace } from '../interfaces';
+import { RedisError, CLIENT_NOT_FOUND } from '@/errors';
+import { parseNamespace } from '@/utils';
+import { ClientNamespace } from '@/interfaces';
 
 @Injectable()
 export class RedisService implements RedisClientsService {

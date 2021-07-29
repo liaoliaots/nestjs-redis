@@ -1,6 +1,6 @@
 import { Type, ModuleMetadata } from '@nestjs/common';
 import { RedisOptions, Redis } from 'ioredis';
-import { ClientNamespace } from '../../interfaces';
+import { ClientNamespace } from '@/interfaces';
 
 export interface ClientOptions extends RedisOptions {
     /**
@@ -19,7 +19,7 @@ export interface ClientOptions extends RedisOptions {
     /**
      * Once the client has been created, this function will be executed immediately.
      *
-     * @param client - The client
+     * @param client - The newly created client of redis
      */
     onClientCreated?: (client: Redis) => void;
 }
@@ -33,7 +33,7 @@ export interface RedisModuleOptions {
     closeClient?: boolean;
 
     /**
-     * The default options for every client.
+     * The default options for each client.
      */
     defaultOptions?: RedisOptions;
 
