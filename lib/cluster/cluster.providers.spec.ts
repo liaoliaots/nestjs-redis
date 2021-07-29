@@ -22,19 +22,22 @@ class ClusterConfigService implements ClusterOptionsFactory {
 }
 
 describe(`${createProviders.name}`, () => {
-    test('should have 2 members in the result array', () => {
-        expect(createProviders(clusterModuleOptions)).toHaveLength(2);
+    test('should work correctly', () => {
+        expect(createProviders(clusterModuleOptions)).toEqual({
+            provide: CLUSTER_OPTIONS,
+            useValue: clusterModuleOptions
+        });
     });
 });
 
 describe(`${createAsyncProviders.name}`, () => {
     test('if provide useFactory or useExisting, the result array should have 2 members', () => {
-        expect(createAsyncProviders({ useFactory: () => clusterModuleOptions, inject: [] })).toHaveLength(2);
-        expect(createAsyncProviders({ useExisting: ClusterConfigService })).toHaveLength(2);
+        expect(createAsyncProviders({ useFactory: () => clusterModuleOptions, inject: [] })).toHaveLength(1);
+        expect(createAsyncProviders({ useExisting: ClusterConfigService })).toHaveLength(1);
     });
 
     test('if provide useClass, the result array should have 3 members', () => {
-        expect(createAsyncProviders({ useClass: ClusterConfigService })).toHaveLength(3);
+        expect(createAsyncProviders({ useClass: ClusterConfigService })).toHaveLength(2);
     });
 
     test('should throw an error without options', () => {

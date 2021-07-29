@@ -20,19 +20,22 @@ class RedisConfigService implements RedisOptionsFactory {
 }
 
 describe(`${createProviders.name}`, () => {
-    test('should have 2 members in the result array', () => {
-        expect(createProviders({})).toHaveLength(2);
+    test('should work correctly', () => {
+        expect(createProviders({})).toEqual({
+            provide: REDIS_OPTIONS,
+            useValue: {}
+        });
     });
 });
 
 describe(`${createAsyncProviders.name}`, () => {
     test('if provide useFactory or useExisting, the result array should have 2 members', () => {
-        expect(createAsyncProviders({ useFactory: () => ({}), inject: [] })).toHaveLength(2);
-        expect(createAsyncProviders({ useExisting: RedisConfigService })).toHaveLength(2);
+        expect(createAsyncProviders({ useFactory: () => ({}), inject: [] })).toHaveLength(1);
+        expect(createAsyncProviders({ useExisting: RedisConfigService })).toHaveLength(1);
     });
 
     test('if provide useClass, the result array should have 3 members', () => {
-        expect(createAsyncProviders({ useClass: RedisConfigService })).toHaveLength(3);
+        expect(createAsyncProviders({ useClass: RedisConfigService })).toHaveLength(2);
     });
 
     test('should throw an error without options', () => {

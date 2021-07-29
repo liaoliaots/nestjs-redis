@@ -1,7 +1,12 @@
 import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from './interfaces';
 import { ClusterService } from './cluster.service';
-import { createProviders, createAsyncProviders, createClusterClientProviders } from './cluster.providers';
+import {
+    createProviders,
+    createAsyncProviders,
+    createClusterClientProviders,
+    clusterClientsProvider
+} from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { quitClients } from './common';
 
@@ -15,7 +20,12 @@ export class ClusterCoreModule implements OnApplicationShutdown {
 
     static forRoot(options: ClusterModuleOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
-        const providers: Provider[] = [...createProviders(options), ClusterService, ...clusterClientProviders];
+        const providers: Provider[] = [
+            createProviders(options),
+            clusterClientsProvider,
+            ClusterService,
+            ...clusterClientProviders
+        ];
 
         return {
             module: ClusterCoreModule,
@@ -26,7 +36,12 @@ export class ClusterCoreModule implements OnApplicationShutdown {
 
     static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
-        const providers: Provider[] = [...createAsyncProviders(options), ClusterService, ...clusterClientProviders];
+        const providers: Provider[] = [
+            ...createAsyncProviders(options),
+            clusterClientsProvider,
+            ClusterService,
+            ...clusterClientProviders
+        ];
 
         return {
             module: ClusterCoreModule,

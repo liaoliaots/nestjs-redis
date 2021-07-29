@@ -1,7 +1,12 @@
 import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
 import { RedisService } from './redis.service';
-import { createProviders, createAsyncProviders, createRedisClientProviders } from './redis.providers';
+import {
+    createProviders,
+    createAsyncProviders,
+    createRedisClientProviders,
+    redisClientsProvider
+} from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { quitClients } from './common';
 
@@ -15,7 +20,12 @@ export class RedisCoreModule implements OnApplicationShutdown {
 
     static forRoot(options: RedisModuleOptions = {}): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
-        const providers: Provider[] = [...createProviders(options), RedisService, ...redisClientProviders];
+        const providers: Provider[] = [
+            createProviders(options),
+            redisClientsProvider,
+            RedisService,
+            ...redisClientProviders
+        ];
 
         return {
             module: RedisCoreModule,
@@ -26,7 +36,12 @@ export class RedisCoreModule implements OnApplicationShutdown {
 
     static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
-        const providers: Provider[] = [...createAsyncProviders(options), RedisService, ...redisClientProviders];
+        const providers: Provider[] = [
+            ...createAsyncProviders(options),
+            redisClientsProvider,
+            RedisService,
+            ...redisClientProviders
+        ];
 
         return {
             module: RedisCoreModule,
