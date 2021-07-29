@@ -8,7 +8,7 @@ import {
     createClusterClientProviders
 } from './cluster.providers';
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
-import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
+import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { namespaces, quitClients } from './common';
 import { ClusterService } from './cluster.service';
 import { testConfig } from '../../test/env';
@@ -117,7 +117,7 @@ describe('clusterClientsProvider', () => {
         });
 
         test('should get default client with namespace', async () => {
-            const client = clusterService.getClient(DEFAULT_CLUSTER_CLIENT);
+            const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
 
             await expect(client.ping()).resolves.toBeDefined();
         });
@@ -153,7 +153,7 @@ describe('clusterClientsProvider', () => {
         });
 
         test('should get default client with namespace', async () => {
-            const client = clusterService.getClient(DEFAULT_CLUSTER_CLIENT);
+            const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
 
             await expect(client.ping()).resolves.toBeDefined();
         });

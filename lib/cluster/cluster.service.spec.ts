@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import IORedis from 'ioredis';
 import { ClusterService } from './cluster.service';
 import { ClusterClients } from './interfaces';
-import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
+import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { quitClients } from './common';
 import { testConfig } from '../../test/env';
 
@@ -23,7 +23,7 @@ describe(`${ClusterService.name}`, () => {
             })
         );
         clients.set(
-            DEFAULT_CLUSTER_CLIENT,
+            DEFAULT_CLUSTER_NAMESPACE,
             new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
                 redisOptions: { password: testConfig.cluster4.password }
             })
@@ -47,7 +47,7 @@ describe(`${ClusterService.name}`, () => {
     });
 
     test('should get default client with namespace', async () => {
-        const client = clusterService.getClient(DEFAULT_CLUSTER_CLIENT);
+        const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
 
         await expect(client.ping()).resolves.toBeDefined();
     });

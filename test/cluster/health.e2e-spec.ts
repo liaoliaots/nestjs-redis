@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './app/app.module';
 import { ClusterClients } from '../../lib/cluster/interfaces';
-import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from '../../lib/cluster/cluster.constants';
+import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from '../../lib/cluster/cluster.constants';
 import { quitClients } from '../../lib/cluster/common';
 
 let clients: ClusterClients;
@@ -57,7 +57,7 @@ test('/health (GET)', async () => {
 
 describe('disconnect', () => {
     beforeEach(async () => {
-        await clients.get(DEFAULT_CLUSTER_CLIENT)?.quit();
+        await clients.get(DEFAULT_CLUSTER_NAMESPACE)?.quit();
     });
 
     test('/health/with-disconnected-client (GET)', async () => {

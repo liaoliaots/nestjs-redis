@@ -1,12 +1,12 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { InjectCluster, namespaces } from '.';
-import { DEFAULT_CLUSTER_CLIENT } from '../cluster.constants';
+import { DEFAULT_CLUSTER_NAMESPACE } from '../cluster.constants';
 
 describe(`${InjectCluster.name}`, () => {
     const _name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
     const _gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'cute' };
-    const _default: ValueProvider<string> = { provide: DEFAULT_CLUSTER_CLIENT, useValue: 'default' };
+    const _default: ValueProvider<string> = { provide: DEFAULT_CLUSTER_NAMESPACE, useValue: 'default' };
 
     @Injectable()
     class TestName {
@@ -22,7 +22,7 @@ describe(`${InjectCluster.name}`, () => {
     }
     @Injectable()
     class TestDefaultWithNamespace {
-        constructor(@InjectCluster(DEFAULT_CLUSTER_CLIENT) public readonly value: string) {}
+        constructor(@InjectCluster(DEFAULT_CLUSTER_NAMESPACE) public readonly value: string) {}
     }
 
     let testName: TestName;
