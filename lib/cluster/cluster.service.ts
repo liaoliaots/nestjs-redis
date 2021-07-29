@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Cluster } from 'ioredis';
-import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
+import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { ClusterClients, ClusterClientsService } from './interfaces';
 import { RedisError, CLIENT_NOT_FOUND } from '@/errors';
 import { parseNamespace } from '@/utils';
@@ -14,7 +14,7 @@ export class ClusterService implements ClusterClientsService {
         return this.clusterClients;
     }
 
-    getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_CLIENT): Cluster {
+    getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);
 
         if (!client) throw new RedisError(CLIENT_NOT_FOUND(parseNamespace(namespace), false));

@@ -8,7 +8,7 @@ import {
     createRedisClientProviders
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { namespaces, quitClients } from './common';
 import { RedisService } from './redis.service';
 import { testConfig } from '../../test/env';
@@ -120,7 +120,7 @@ describe('redisClientsProvider', () => {
         });
 
         test('should get default client with namespace', async () => {
-            const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
 
             await expect(client.ping()).resolves.toBeDefined();
         });
@@ -157,7 +157,7 @@ describe('redisClientsProvider', () => {
         });
 
         test('should get default client with namespace', async () => {
-            const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
 
             await expect(client.ping()).resolves.toBeDefined();
         });
@@ -186,7 +186,7 @@ describe('redisClientsProvider', () => {
         });
 
         test('should get default client with namespace', () => {
-            const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
 
             expect(client).toBeInstanceOf(IORedis);
         });

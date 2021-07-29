@@ -1,7 +1,7 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
-import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
+import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 import { createClient, namespaces } from './common';
 import { ClusterService } from './cluster.service';
@@ -68,12 +68,14 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
         const clients: ClusterClients = new Map();
 
         if (Array.isArray(options.config)) {
-            options.config.forEach(item => clients.set(item.namespace ?? DEFAULT_CLUSTER_CLIENT, createClient(item)));
+            options.config.forEach(item =>
+                clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item))
+            );
 
             return clients;
         }
 
-        clients.set(options.config.namespace ?? DEFAULT_CLUSTER_CLIENT, createClient(options.config));
+        clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
 
         return clients;
     },

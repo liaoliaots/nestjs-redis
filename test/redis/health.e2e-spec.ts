@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { AppModule } from './app/app.module';
 import { RedisClients } from '../../lib/redis/interfaces';
-import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from '../../lib/redis/redis.constants';
+import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from '../../lib/redis/redis.constants';
 import { quitClients } from '../../lib/redis/common';
 
 let clients: RedisClients;
@@ -57,7 +57,7 @@ test('/health (GET)', async () => {
 
 describe('disconnect', () => {
     beforeEach(async () => {
-        await clients.get(DEFAULT_REDIS_CLIENT)?.quit();
+        await clients.get(DEFAULT_REDIS_NAMESPACE)?.quit();
     });
 
     test('/health/with-disconnected-client (GET)', async () => {

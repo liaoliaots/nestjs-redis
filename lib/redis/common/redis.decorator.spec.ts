@@ -1,12 +1,12 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { InjectRedis, namespaces } from '.';
-import { DEFAULT_REDIS_CLIENT } from '../redis.constants';
+import { DEFAULT_REDIS_NAMESPACE } from '../redis.constants';
 
 describe(`${InjectRedis.name}`, () => {
     const _name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
     const _gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'cute' };
-    const _default: ValueProvider<string> = { provide: DEFAULT_REDIS_CLIENT, useValue: 'default' };
+    const _default: ValueProvider<string> = { provide: DEFAULT_REDIS_NAMESPACE, useValue: 'default' };
 
     @Injectable()
     class TestName {
@@ -22,7 +22,7 @@ describe(`${InjectRedis.name}`, () => {
     }
     @Injectable()
     class TestDefaultWithNamespace {
-        constructor(@InjectRedis(DEFAULT_REDIS_CLIENT) public readonly value: string) {}
+        constructor(@InjectRedis(DEFAULT_REDIS_NAMESPACE) public readonly value: string) {}
     }
 
     let testName: TestName;

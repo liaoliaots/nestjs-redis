@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
-import { REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
+import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { quitClients } from './common';
 import { testConfig } from '../../test/env';
 
@@ -17,7 +17,7 @@ describe(`${RedisService.name}`, () => {
 
     beforeAll(async () => {
         clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
-        clients.set(DEFAULT_REDIS_CLIENT, new IORedis({ ...testConfig.master, db: 1 }));
+        clients.set(DEFAULT_REDIS_NAMESPACE, new IORedis({ ...testConfig.master, db: 1 }));
 
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService]
@@ -37,7 +37,7 @@ describe(`${RedisService.name}`, () => {
     });
 
     test('should get default client with namespace', async () => {
-        const client = redisService.getClient(DEFAULT_REDIS_CLIENT);
+        const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
 
         await expect(client.ping()).resolves.toBeDefined();
     });
