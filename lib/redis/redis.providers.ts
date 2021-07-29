@@ -2,7 +2,7 @@ import { Provider, FactoryProvider } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_CLIENT } from './redis.constants';
-import { RedisError, MISSING_CONFIGURATION } from '../errors';
+import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 import { createClient, namespaces } from './common';
 import { RedisService } from './redis.service';
 

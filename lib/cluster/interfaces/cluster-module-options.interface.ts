@@ -1,6 +1,6 @@
 import { Type, ModuleMetadata } from '@nestjs/common';
 import { ClusterNode, ClusterOptions, Cluster } from 'ioredis';
-import { ClientNamespace } from '../../interfaces';
+import { ClientNamespace } from '@/interfaces';
 
 export interface ClientOptions {
     /**
@@ -14,14 +14,14 @@ export interface ClientOptions {
     nodes: ClusterNode[];
 
     /**
-     * The cluster options.
+     * The options of the cluster.
      */
     options?: ClusterOptions;
 
     /**
      * Once the client has been created, this function will be executed immediately.
      *
-     * @param client - The client
+     * @param client - The newly created client of cluster
      */
     onClientCreated?: (client: Cluster) => void;
 }

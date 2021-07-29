@@ -2,9 +2,9 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_CLIENT } from './cluster.constants';
 import { ClusterClients, ClusterClientsService } from './interfaces';
-import { RedisError, CLIENT_NOT_FOUND } from '../errors';
-import { parseNamespace } from '../utils';
-import { ClientNamespace } from '../interfaces';
+import { RedisError, CLIENT_NOT_FOUND } from '@/errors';
+import { parseNamespace } from '@/utils';
+import { ClientNamespace } from '@/interfaces';
 
 @Injectable()
 export class ClusterService implements ClusterClientsService {
