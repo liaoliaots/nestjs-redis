@@ -33,11 +33,11 @@
         "publish:next": "npm publish --tag next",
         "test": "jest",
         "test:cov": "jest --coverage",
-        "test:e2e": "jest --config ./test/jest-e2e.json",
+        "test:e2e": "jest --config test/jest-e2e.json",
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme",
-        "madge": "madge --image ./dependency-graph.svg dist/index.js",
-        "madge:health": "madge --image ./dependency-graph-health.svg health.js"
+        "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js",
+        "madge:health": "madge --image docs/latest/dependency-graph-health.svg health.js"
     },
     "dependencies": {
         "tslib": "^2.3.0"
