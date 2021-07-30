@@ -6,12 +6,13 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "target": "ES2017",
-        "lib": ["ES2021", "DOM"],
+        "lib": ["ES2021"],
         "outDir": "./dist",
         "baseUrl": "./",
         "esModuleInterop": true,
         "importHelpers": true,
         "strict": true,
+        "skipLibCheck": true,
         "paths": {
             "@/*": ["lib/*"]
         }
