@@ -23,6 +23,7 @@
     "dependencies": {
         "@liaoliaots/nestjs-redis": "3.0.0-next.4",
         "@nestjs/common": "8.0.5",
+        "@nestjs/config": "1.0.1",
         "@nestjs/core": "8.0.5",
         "@nestjs/platform-express": "8.0.5",
         "ioredis": "4.27.6",
