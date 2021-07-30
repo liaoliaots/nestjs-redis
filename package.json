@@ -79,6 +79,11 @@
         "@nestjs/terminus": "^8.0.0-next.0",
         "ioredis": "4.x"
     },
+    "peerDependenciesMeta": {
+        "@nestjs/terminus": {
+            "optional": true
+        }
+    },
     "jest": {
         "moduleFileExtensions": [
             "js",
