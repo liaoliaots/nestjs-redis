@@ -1,10 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { redisConfig } from './common/config';
+import { CatsModule } from './modules/cats/cats.module';
 
 @Module({
-    imports: [],
-    controllers: [AppController],
-    providers: [AppService]
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            cache: true,
+            load: [redisConfig]
+        }),
+        RedisModule.forRootAsync({
+            useFactory: (redis: ConfigType<typeof redisConfig>) => {
+                return {
+                    closeClient: true,
+                    config: {
+                        ...redis
+                    }
+                };
+            },
+            inject: [redisConfig.KEY]
+        }),
+        CatsModule
+    ]
 })
 export class AppModule {}
