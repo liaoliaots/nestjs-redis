@@ -16,13 +16,13 @@ export class HealthController {
     @Get()
     healthCheck(): Promise<HealthCheckResult> {
         return this.health.check([
-            () => this.redis.check('client0', { client: this.client0 }),
-            () => this.redis.check('default', { client: this.clientDefault })
+            () => this.redis.checkHealth('client0', { client: this.client0 }),
+            () => this.redis.checkHealth('default', { client: this.clientDefault })
         ]);
     }
 
     @Get('with-disconnected-client')
     healthCheckWithDisconnect(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.check('default', { client: this.clientDefault })]);
+        return this.health.check([() => this.redis.checkHealth('default', { client: this.clientDefault })]);
     }
 }

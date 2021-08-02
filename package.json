@@ -62,6 +62,7 @@
         "eslint-plugin-tsdoc": "0.2.14",
         "husky": "7.0.1",
         "ioredis": "4.27.7",
+        "ioredis-mock": "5.6.0",
         "istanbul-badges-readme": "1.4.0",
         "jest": "27.0.6",
         "lint-staged": "11.1.1",

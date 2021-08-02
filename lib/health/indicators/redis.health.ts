@@ -13,38 +13,43 @@ export interface RedisCheckOptions {
 @Injectable({ scope: Scope.TRANSIENT })
 export class RedisHealthIndicator extends HealthIndicator {
     /**
-     * Checks a redis connection.
+     * Checks a connection.
      *
      * @param key - The key which will be used for the result object
      * @param options - The options for check
      *
      * @example
      * ```
-     * const client = new Redis({ host: 'localhost', port: 6380 });
-     * redisHealthIndicator.check('redis', { client });
+     * const client = new IORedis({ host: 'localhost', port: 6380 });
+     * redisHealthIndicator.checkHealth('redis', { client });
      * ```
      *
      * @example
      * ```
-     * const client = new Redis.Cluster([{ host: 'localhost', port: 16380 }]);
-     * redisHealthIndicator.check('cluster', { client });
+     * const client = new IORedis.Cluster([{ host: 'localhost', port: 16380 }]);
+     * redisHealthIndicator.checkHealth('cluster', { client });
      * ```
      */
-    async check(key: string, options: RedisCheckOptions): Promise<HealthIndicatorResult> {
+    async checkHealth(key: string, options: RedisCheckOptions): Promise<HealthIndicatorResult> {
         let isHealthy = false;
 
         try {
             if (!options.client) throw new RedisError(CLIENT_NOT_FOUND_FOR_HEALTH);
 
-            if (options.client instanceof IORedis) await options.client.ping();
-
-            if (options.client instanceof IORedis.Cluster) {
+            // * is redis
+            if (options.client instanceof IORedis) {
+                await options.client.ping();
+            }
+            // * is cluster
+            else {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 const clusterInfo = await options.client.cluster('info');
 
                 if (clusterInfo && typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new RedisError(FAILED_CLUSTER_STATE);
-                } else throw new RedisError(CANNOT_BE_READ);
+                } else {
+                    throw new RedisError(CANNOT_BE_READ);
+                }
             }
 
             isHealthy = true;
