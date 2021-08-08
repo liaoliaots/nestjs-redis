@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { redisConfig } from './common/config';
-import { CatsModule } from './modules/cats/cats.module';
+import { CatsModule } from './cats/cats.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            cache: true,
             load: [redisConfig]
         }),
         RedisModule.forRootAsync({
