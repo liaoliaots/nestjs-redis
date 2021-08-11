@@ -36,6 +36,7 @@ describe('CatsService', () => {
             expect(cats).toHaveLength(2);
             expect(get.mock.calls).toHaveLength(1);
             expect(set.mock.calls).toHaveLength(1);
+            expect(set.mock.calls[0][1]).toBe(JSON.stringify(cats));
 
             cats = await service.findAll();
             expect(cats).toHaveLength(2);
