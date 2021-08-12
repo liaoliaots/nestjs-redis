@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
 import * as IORedis from 'ioredis';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -15,7 +15,7 @@ describe('CatsService', () => {
         redis = new IORedis();
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: DEFAULT_REDIS_NAMESPACE, useValue: redis }, CatsService]
+            providers: [{ provide: DEFAULT_REDIS_CLIENT, useValue: redis }, CatsService]
         }).compile();
 
         service = module.get<CatsService>(CatsService);
