@@ -1,24 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+import { DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
 import { FastifyInstance } from 'fastify';
+import { Redis } from 'ioredis';
 import { AppModule } from '../src/app.module';
 
-const testCatName = 'Test Cat 3';
+const testCatName3 = 'Test Cat 3';
 
-describe('Cats', () => {
+describe('CatsController (e2e)', () => {
     let app: NestFastifyApplication;
+    let redisClientDefault: Redis;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [AppModule]
         }).compile();
 
+        redisClientDefault = module.get<Redis>(DEFAULT_REDIS_CLIENT, { strict: false });
         app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+
+        await redisClientDefault.flushdb();
         await app.init();
         await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
     });
 
     afterAll(async () => {
+        await redisClientDefault.flushdb();
         await app.close();
     });
 
@@ -29,9 +36,9 @@ describe('Cats', () => {
                     method: 'GET',
                     url: '/cats'
                 })
-                .then(res => {
-                    expect(res.statusCode).toEqual(200);
-                    expect(JSON.parse(res.payload)).toEqual([
+                .then(response => {
+                    expect(response.statusCode).toEqual(200);
+                    expect(JSON.parse(response.payload)).toEqual([
                         {
                             id: 1,
                             name: 'Test Cat 1',
@@ -55,13 +62,13 @@ describe('Cats', () => {
                 .inject({
                     method: 'POST',
                     url: '/cats',
-                    payload: { name: testCatName, age: 3, breed: 'Test Breed 3' }
+                    payload: { name: testCatName3, age: 3, breed: 'Test Breed 3' }
                 })
-                .then(res => {
-                    expect(res.statusCode).toEqual(201);
-                    expect(JSON.parse(res.payload)).toEqual({
+                .then(response => {
+                    expect(response.statusCode).toEqual(201);
+                    expect(JSON.parse(response.payload)).toEqual({
                         id: 3,
-                        name: testCatName,
+                        name: testCatName3,
                         age: 3,
                         breed: 'Test Breed 3'
                     });

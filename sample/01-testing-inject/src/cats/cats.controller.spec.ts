@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
 
-const testCat3 = 'Test Cat 3';
+const testCatName3 = 'Test Cat 3';
 
 describe('CatsController', () => {
     let controller: CatsController;
@@ -28,7 +28,9 @@ describe('CatsController', () => {
                                 breed: 'Test Breed 2'
                             }
                         ]),
-                        create: jest.fn().mockResolvedValue({ id: 3, name: testCat3, age: 3, breed: 'Test Breed 3' })
+                        create: jest
+                            .fn()
+                            .mockResolvedValue({ id: 3, name: testCatName3, age: 3, breed: 'Test Breed 3' })
                     }
                 }
             ]
@@ -52,9 +54,9 @@ describe('CatsController', () => {
 
     describe('create', () => {
         test('should create a cat', async () => {
-            const newCat = await controller.create({ name: testCat3, age: 3, breed: 'Test Breed 3' });
+            const newCat = await controller.create({ name: testCatName3, age: 3, breed: 'Test Breed 3' });
             expect(newCat.id).toBe(3);
-            expect(newCat.name).toBe(testCat3);
+            expect(newCat.name).toBe(testCatName3);
         });
     });
 });
