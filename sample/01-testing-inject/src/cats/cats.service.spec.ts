@@ -55,7 +55,6 @@ describe('CatsService', () => {
                 breed: 'Test Breed 3'
             };
             const newCat = await service.create(createCatDto);
-
             expect(newCat).toEqual({ id: 3, ...createCatDto });
             expect(del.mock.calls).toHaveLength(1);
         });
