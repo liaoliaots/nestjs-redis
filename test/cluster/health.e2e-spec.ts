@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+import { FastifyInstance } from 'fastify';
 import { AppModule } from './app/app.module';
 import { ClusterClients } from '../../lib/cluster/interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from '../../lib/cluster/cluster.constants';
@@ -11,7 +12,6 @@ let app: NestFastifyApplication;
 
 afterAll(async () => {
     quitClients(clients);
-
     await app.close();
 });
 
@@ -19,14 +19,11 @@ beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [AppModule]
     }).compile();
-
     clients = moduleRef.get<ClusterClients>(CLUSTER_CLIENTS);
-
     app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
     await app.init();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    await app.getHttpAdapter().getInstance().ready();
+    await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
 });
 
 test('/health (GET)', async () => {

@@ -39,9 +39,9 @@
 
 ## Test coverage
 
-| Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                 |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-92.47%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-88.64%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-84.85%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-92.67%25-brightgreen.svg) |
+| Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-92.86%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-84.31%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-84.13%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-93.1%25-brightgreen.svg) |
 
 ## Install
 
