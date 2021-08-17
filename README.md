@@ -20,6 +20,8 @@
 
 ## Documentation
 
+_For the legacy V2 or V3@next documentation, [click here](./docs/v2/README.md)._
+
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
 -   [Redis](#redis)
