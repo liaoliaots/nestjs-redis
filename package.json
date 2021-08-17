@@ -36,8 +36,8 @@
         "test:e2e": "jest --config test/jest-e2e.json",
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme",
-        "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js",
-        "madge:health": "madge --image docs/latest/dependency-graph-health.svg health.js"
+        "madge": "madge --image docs/v3/dependency-graph.svg dist/index.js",
+        "madge:health": "madge --image docs/v3/dependency-graph-health.svg health.js"
     },
     "dependencies": {
         "tslib": "2.3.1"
@@ -51,10 +51,10 @@
         "@nestjs/terminus": "8.0.0-next.7",
         "@nestjs/testing": "8.0.6",
         "@types/ioredis": "4.26.7",
-        "@types/jest": "26.0.24",
+        "@types/jest": "27.0.1",
         "@types/node": "14.17.9",
-        "@typescript-eslint/eslint-plugin": "4.29.1",
-        "@typescript-eslint/parser": "4.29.1",
+        "@typescript-eslint/eslint-plugin": "4.29.2",
+        "@typescript-eslint/parser": "4.29.2",
         "eslint": "7.32.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-jest": "24.4.0",
@@ -69,7 +69,7 @@
         "lint-staged": "11.1.2",
         "prettier": "2.3.2",
         "rimraf": "3.0.2",
-        "ts-jest": "27.0.4",
+        "ts-jest": "27.0.5",
         "tsc-alias": "1.3.9",
         "typescript": "4.3.5"
     },
