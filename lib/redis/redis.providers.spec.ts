@@ -77,8 +77,8 @@ describe('redisClientsProvider', () => {
 
         let redisService: RedisService;
 
-        afterAll(() => {
-            quitClients(clients);
+        afterAll(async () => {
+            await quitClients(clients);
         });
 
         beforeAll(async () => {
@@ -131,8 +131,8 @@ describe('redisClientsProvider', () => {
 
         let redisService: RedisService;
 
-        afterAll(() => {
-            quitClients(clients);
+        afterAll(async () => {
+            await quitClients(clients);
         });
 
         beforeAll(async () => {
@@ -168,8 +168,8 @@ describe('redisClientsProvider', () => {
 
         let redisService: RedisService;
 
-        afterAll(() => {
-            quitClients(clients);
+        afterAll(async () => {
+            await quitClients(clients);
         });
 
         beforeAll(async () => {
@@ -199,8 +199,8 @@ describe(`${createRedisClientProviders.name}`, () => {
     let client0: Redis;
     let client1: Redis;
 
-    afterAll(() => {
-        quitClients(clients);
+    afterAll(async () => {
+        await quitClients(clients);
     });
 
     beforeAll(async () => {

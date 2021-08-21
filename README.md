@@ -43,7 +43,7 @@ _For the legacy V2 or V3@next documentation, [click here](./docs/v2/README.md)._
 
 | Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                |
 | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-92.86%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-84.31%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-84.13%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-93.1%25-brightgreen.svg) |
+| ![Statements](https://img.shields.io/badge/statements-91.92%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-82.69%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-82.81%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-91.1%25-brightgreen.svg) |
 
 ## Install
 

@@ -1,4 +1,4 @@
-import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
+import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject, Logger } from '@nestjs/common';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
 import { RedisService } from './redis.service';
 import {
@@ -13,6 +13,8 @@ import { quitClients } from './common';
 @Global()
 @Module({})
 export class RedisCoreModule implements OnApplicationShutdown {
+    private readonly logger = new Logger('RedisModule');
+
     constructor(
         @Inject(REDIS_OPTIONS) private readonly options: RedisModuleOptions,
         @Inject(REDIS_CLIENTS) private readonly clients: RedisClients
@@ -51,7 +53,17 @@ export class RedisCoreModule implements OnApplicationShutdown {
         };
     }
 
-    onApplicationShutdown(): void {
-        if (this.options.closeClient) quitClients(this.clients);
+    async onApplicationShutdown(): Promise<void> {
+        if (this.options.closeClient) {
+            const results = await quitClients(this.clients);
+
+            results
+                .filter(result => result.status === 'rejected')
+                .forEach(error => {
+                    if (error.status === 'rejected' && error.reason instanceof Error) {
+                        this.logger.error(error.reason.message);
+                    }
+                });
+        }
     }
 }

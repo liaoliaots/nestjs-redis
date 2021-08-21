@@ -11,8 +11,8 @@ describe(`${RedisService.name}`, () => {
 
     let redisService: RedisService;
 
-    afterAll(() => {
-        quitClients(clients);
+    afterAll(async () => {
+        await quitClients(clients);
     });
 
     beforeAll(async () => {
