@@ -5,14 +5,7 @@ import { testConfig } from '../../test/env';
 
 describe('RedisCoreModule', () => {
     describe('forRoot', () => {
-        test('should register the module with options', () => {
-            const options: RedisModuleOptions = {};
-            expect(RedisCoreModule.forRoot(options).module).toBe(RedisCoreModule);
-            expect(RedisCoreModule.forRoot(options).providers?.length).toBeGreaterThanOrEqual(3);
-            expect(RedisCoreModule.forRoot(options).exports?.length).toBeGreaterThanOrEqual(1);
-        });
-
-        test('should register the module without options', () => {
+        test('should return a dynamic module', () => {
             expect(RedisCoreModule.forRoot().module).toBe(RedisCoreModule);
             expect(RedisCoreModule.forRoot().providers?.length).toBeGreaterThanOrEqual(3);
             expect(RedisCoreModule.forRoot().exports?.length).toBeGreaterThanOrEqual(1);
