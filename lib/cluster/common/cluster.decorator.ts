@@ -5,7 +5,7 @@ import { DEFAULT_CLUSTER_NAMESPACE } from '../cluster.constants';
 export const namespaces: ClientNamespace[] = [];
 
 export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): ReturnType<typeof Inject> => {
-    namespaces.push(namespace);
+    if (!namespaces.includes(namespace)) namespaces.push(namespace);
 
     return Inject(namespace);
 };
