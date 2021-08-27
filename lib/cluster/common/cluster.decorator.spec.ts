@@ -46,7 +46,7 @@ describe('InjectCluster', () => {
     });
 
     test('should have 4 members in array namespaces', () => {
-        expect(namespaces).toHaveLength(4);
+        expect(namespaces).toHaveLength(3);
         expect(namespaces).toContain(name.provide);
         expect(namespaces).toContain(gender.provide);
         expect(namespaces).toContain(age.provide);

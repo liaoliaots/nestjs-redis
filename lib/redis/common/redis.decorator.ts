@@ -5,7 +5,7 @@ import { DEFAULT_REDIS_NAMESPACE } from '../redis.constants';
 export const namespaces: ClientNamespace[] = [];
 
 export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): ReturnType<typeof Inject> => {
-    namespaces.push(namespace);
+    if (!namespaces.includes(namespace)) namespaces.push(namespace);
 
     return Inject(namespace);
 };
