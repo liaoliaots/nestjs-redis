@@ -71,10 +71,21 @@ $ yarn add @liaoliaots/nestjs-redis@2 ioredis @nestjs/terminus@7
 $ yarn add --dev @types/ioredis
 ```
 
+## TODO
+
+-   [ ] add prefix for DI token
+-   [ ] use promise catch for quitting client
+-   [ ] use mocked redis for unit testing
+-   [ ] add github actions for unit testing
+-   [ ] refactor providers
+
 ## Package dependency overview
 
-![](./docs/latest/dependency-graph.svg)
-![](./docs/latest/dependency-graph-health.svg)
+![](./docs/v3/dependency-graph.svg)
+
+### health
+
+![](./docs/v3/dependency-graph-health.svg)
 
 ## Author
 
