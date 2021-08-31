@@ -53,7 +53,7 @@
         "@types/ioredis": "4.27.0",
         "@types/jest": "27.0.1",
         "@types/node": "14.17.12",
-        "@typescript-eslint/eslint-plugin": "4.29.3",
+        "@typescript-eslint/eslint-plugin": "4.30.0",
         "@typescript-eslint/parser": "4.29.3",
         "eslint": "7.32.0",
         "eslint-config-prettier": "8.3.0",
