@@ -1,7 +1,10 @@
-name: release
-on: workflow_dispatch
+name: unit-testing
+on:
+    pull_request:
+        branches:
+            - main
 jobs:
-    release:
+    testing:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
@@ -10,11 +13,7 @@ jobs:
                   node-version: '14'
                   cache: 'npm'
                   check-latest: true
-                  registry-url: 'https://registry.npmjs.org'
             - run: npm install -g npm@latest
             - run: npm cache clean --force
             - run: npm ci
-            - run: npm run build
-            - run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - run: npm run test
