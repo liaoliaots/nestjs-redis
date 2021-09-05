@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
-import { ClientOptions, RedisClients } from '../interfaces';
+import { RedisClientOptions, RedisClients } from '../interfaces';
 import { LOGGER_CONTEXT } from '../redis.constants';
 
-export const createClient = (clientOptions: ClientOptions): Redis => {
+export const createClient = (clientOptions: RedisClientOptions): Redis => {
     const { url, onClientCreated, ...redisOptions } = clientOptions;
 
     const client = url ? new IORedis(url, redisOptions) : new IORedis(redisOptions);

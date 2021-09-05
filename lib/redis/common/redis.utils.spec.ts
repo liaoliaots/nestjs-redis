@@ -1,6 +1,6 @@
 import IORedis, { Redis } from 'ioredis';
 import { createClient, quitClients } from './redis.utils';
-import { RedisClients, ClientOptions } from '../interfaces';
+import { RedisClients, RedisClientOptions } from '../interfaces';
 
 jest.mock('ioredis');
 const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
@@ -30,7 +30,7 @@ describe('createClient', () => {
 
     describe('with options', () => {
         test('should create a client with options', () => {
-            const options: ClientOptions = { host: '127.0.0.1', port: 6380 };
+            const options: RedisClientOptions = { host: '127.0.0.1', port: 6380 };
             const client = createClient(options);
             expect(MockIORedis).toHaveBeenCalledTimes(1);
             expect(MockIORedis).toHaveBeenCalledWith(options);

@@ -14,11 +14,11 @@ export {
     RedisModuleOptions,
     RedisModuleAsyncOptions,
     RedisOptionsFactory,
-    ClientOptions as RedisClientOptions
+    RedisClientOptions
 } from './redis/interfaces';
 export {
     ClusterModuleOptions,
     ClusterModuleAsyncOptions,
     ClusterOptionsFactory,
-    ClientOptions as ClientClientOptions
+    ClusterClientOptions
 } from './cluster/interfaces';

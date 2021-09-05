@@ -1,11 +1,9 @@
-import IORedis, { Cluster, ClusterNode, ClusterOptions } from 'ioredis';
+import IORedis, { Cluster } from 'ioredis';
 import { createClient, quitClients } from './cluster.utils';
-import { ClusterClients } from '../interfaces';
+import { ClusterClients, ClusterClientOptions } from '../interfaces';
 
 jest.mock('ioredis');
 const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
-
-const nodes: ClusterNode[] = [{ host: '127.0.0.1', port: 16380 }];
 
 beforeEach(() => {
     MockCluster.mockReset();
@@ -13,19 +11,22 @@ beforeEach(() => {
 
 describe('createClient', () => {
     test('should create a client with options', () => {
-        const options: ClusterOptions = { redisOptions: { password: 'clusterpassword1' } };
-        const client = createClient({ nodes, options });
+        const options: ClusterClientOptions = {
+            nodes: [{ host: '127.0.0.1', port: 16380 }],
+            options: { redisOptions: { password: '' } }
+        };
+        const client = createClient(options);
         expect(MockCluster).toHaveBeenCalledTimes(1);
-        expect(MockCluster).toHaveBeenCalledWith(nodes, options);
+        expect(MockCluster).toHaveBeenCalledWith(options.nodes, options.options);
         expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should call onClientCreated', () => {
         const mockOnClientCreated = jest.fn();
 
-        const client = createClient({ nodes, onClientCreated: mockOnClientCreated });
+        const client = createClient({ nodes: [], onClientCreated: mockOnClientCreated });
         expect(MockCluster).toHaveBeenCalledTimes(1);
-        expect(MockCluster).toHaveBeenCalledWith(nodes, undefined);
+        expect(MockCluster).toHaveBeenCalledWith([], undefined);
         expect(client).toBeInstanceOf(IORedis.Cluster);
         expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
         expect(mockOnClientCreated).toHaveBeenCalledWith(client);
@@ -38,8 +39,8 @@ describe('quitClients', () => {
     let clients: ClusterClients;
 
     beforeEach(() => {
-        client1 = new IORedis.Cluster(nodes);
-        client2 = new IORedis.Cluster(nodes);
+        client1 = new IORedis.Cluster([]);
+        client2 = new IORedis.Cluster([]);
         clients = new Map();
         clients.set('client1', client1);
         clients.set('client2', client2);
