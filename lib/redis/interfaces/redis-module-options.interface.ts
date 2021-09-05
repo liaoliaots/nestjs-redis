@@ -2,12 +2,11 @@ import { Type, ModuleMetadata } from '@nestjs/common';
 import { RedisOptions, Redis } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
-export interface ClientOptions extends RedisOptions {
+export interface RedisClientOptions extends RedisOptions {
     /**
      * The name of the client, and must be unique.
      */
     namespace?: ClientNamespace;
-
     /**
      * The URL specifies connection options.
      *
@@ -15,11 +14,10 @@ export interface ClientOptions extends RedisOptions {
      * - rediss:// https://www.iana.org/assignments/uri-schemes/prov/rediss
      */
     url?: string;
-
     /**
-     * Once the client has been created, this function will be executed immediately.
+     * This function will be executed as soon as the client is created.
      *
-     * @param client - The newly created client of redis
+     * @param client - The new client
      */
     onClientCreated?: (client: Redis) => void;
 }
@@ -31,16 +29,14 @@ export interface RedisModuleOptions {
      * Default: false
      */
     closeClient?: boolean;
-
     /**
-     * The default options for each client.
+     * The common options for each client.
      */
-    defaultOptions?: RedisOptions;
-
+    commonOptions?: RedisOptions;
     /**
      * Specify single or multiple clients.
      */
-    config?: ClientOptions | ClientOptions[];
+    config?: RedisClientOptions | RedisClientOptions[];
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

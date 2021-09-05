@@ -2,26 +2,23 @@ import { Type, ModuleMetadata } from '@nestjs/common';
 import { ClusterNode, ClusterOptions, Cluster } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
-export interface ClientOptions {
+export interface ClusterClientOptions {
     /**
      * The name of the client, and must be unique.
      */
     namespace?: ClientNamespace;
-
     /**
      * A list of nodes of the cluster.
      */
     nodes: ClusterNode[];
-
     /**
      * The options of the cluster.
      */
     options?: ClusterOptions;
-
     /**
-     * Once the client has been created, this function will be executed immediately.
+     * This function will be executed as soon as the client is created.
      *
-     * @param client - The newly created client of cluster
+     * @param client - The new client
      */
     onClientCreated?: (client: Cluster) => void;
 }
@@ -33,11 +30,10 @@ export interface ClusterModuleOptions {
      * Default: false
      */
     closeClient?: boolean;
-
     /**
      * Specify single or multiple clients.
      */
-    config: ClientOptions | ClientOptions[];
+    config: ClusterClientOptions | ClusterClientOptions[];
 }
 
 export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

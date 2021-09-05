@@ -1,9 +1,9 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
-import { ClientOptions, ClusterClients } from '../interfaces';
+import { ClusterClientOptions, ClusterClients } from '../interfaces';
 import { LOGGER_CONTEXT } from '../cluster.constants';
 
-export const createClient = (clientOptions: ClientOptions): Cluster => {
+export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
     const { nodes, options, onClientCreated } = clientOptions;
 
     const client = new IORedis.Cluster(nodes, options);

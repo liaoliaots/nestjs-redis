@@ -69,7 +69,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
             options.config.forEach(item =>
                 clients.set(
                     item.namespace ?? DEFAULT_REDIS_NAMESPACE,
-                    createClient({ ...options.defaultOptions, ...item })
+                    createClient({ ...options.commonOptions, ...item })
                 )
             );
             return clients;
