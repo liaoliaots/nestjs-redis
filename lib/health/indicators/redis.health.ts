@@ -1,4 +1,4 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisError, CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
@@ -10,7 +10,7 @@ export interface RedisCheckOptions {
     client: Redis | Cluster;
 }
 
-@Injectable({ scope: Scope.TRANSIENT })
+@Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
     /**
      * Checks a redis or cluster connection.
@@ -20,13 +20,17 @@ export class RedisHealthIndicator extends HealthIndicator {
      *
      * @example
      * ```
-     * const client = new IORedis({ host: 'localhost', port: 6380 });
+     * import IORedis from 'ioredis';
+     *
+     * const client = new IORedis({ host: '127.0.0.1', port: 6380 });
      * indicator.checkHealth('redis', { client });
      * ```
      *
      * @example
      * ```
-     * const client = new IORedis.Cluster([{ host: 'localhost', port: 16380 }]);
+     * import IORedis from 'ioredis';
+     *
+     * const client = new IORedis.Cluster([{ host: '127.0.0.1', port: 16380 }]);
      * indicator.checkHealth('cluster', { client });
      * ```
      */

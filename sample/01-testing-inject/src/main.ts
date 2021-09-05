@@ -9,5 +9,4 @@ const bootstrap = async () => {
 
     await app.listen(3000);
 };
-
 void bootstrap();

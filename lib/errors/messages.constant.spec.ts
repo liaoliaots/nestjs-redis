@@ -35,6 +35,7 @@ describe('CLIENT_NOT_FOUND', () => {
         const namespace = 'client';
         expect(CLIENT_NOT_FOUND(namespace)).toContain(namespace);
         expect(CLIENT_NOT_FOUND(namespace)).toContain('redis');
+        expect(CLIENT_NOT_FOUND(namespace, false)).toContain(namespace);
         expect(CLIENT_NOT_FOUND(namespace, false)).toContain('cluster');
     });
 });

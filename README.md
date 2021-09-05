@@ -41,9 +41,9 @@ _For the legacy V2 or V3@next documentation, [click here](./docs/v2/README.md)._
 
 ## Test coverage
 
-| Statements                                                                      | Branches                                                               | Functions                                                                | Lines                                                                |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-91.92%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-82.69%25-yellow.svg) | ![Functions](https://img.shields.io/badge/functions-82.81%25-yellow.svg) | ![Lines](https://img.shields.io/badge/lines-91.1%25-brightgreen.svg) |
+| Statements                                                                    | Branches                                                                  | Functions                                                                   | Lines                                                               |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg) |
 
 ## Install
 
@@ -73,19 +73,20 @@ $ yarn add --dev @types/ioredis
 
 ## TODO
 
--   [ ] add prefix for DI token
--   [ ] use promise catch for quitting client
--   [ ] use mocked redis for unit testing
+-   [x] add prefix for DI token
+-   [x] use promise catch for quitting client
+-   [x] update unit test
+-   [ ] update e2e test
 -   [ ] add github actions for unit testing
--   [ ] refactor providers
+-   [x] refactor providers
+-   [ ] update docs
+-   [x] delete test/env.ts
+-   [x] move health barrel files to health folder
+-   [ ] select db
 
 ## Package dependency overview
 
 ![](./docs/v3/dependency-graph.svg)
-
-### health
-
-![](./docs/v3/dependency-graph-health.svg)
 
 ## Author
 

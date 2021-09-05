@@ -1,54 +1,67 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { InjectCluster, namespaces } from './cluster.decorator';
-import { DEFAULT_CLUSTER_NAMESPACE } from '../cluster.constants';
+import { Test, TestingModule } from '@nestjs/testing';
+import { InjectCluster, namespaces, getClusterToken } from './cluster.decorator';
+import { DEFAULT_CLUSTER_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../cluster.constants';
+import { ClientNamespace } from '@/interfaces';
+
+describe('namespaces', () => {
+    test('should be an instance of the map', () => {
+        expect(namespaces).toBeInstanceOf(Map);
+    });
+});
+
+describe('getClusterToken', () => {
+    test('should work correctly', () => {
+        const namespace1 = Symbol('default-client');
+        const namespace2 = 'cache-client';
+        expect(getClusterToken(namespace1)).toBe(namespace1);
+        expect(getClusterToken(namespace2)).toBe(`${DECORATOR_DI_TOKEN_PREFIX}:${namespace2}`);
+    });
+});
 
 describe('InjectCluster', () => {
-    const name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
-    const gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'female' };
-    const age: ValueProvider<string> = { provide: DEFAULT_CLUSTER_NAMESPACE, useValue: '26' };
+    const nameNamespace: ClientNamespace = 'name';
+    const genderNamespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE;
+    const name: ValueProvider<string> = { provide: getClusterToken(nameNamespace), useValue: 'liaoliao' };
+    const gender: ValueProvider<string> = { provide: getClusterToken(genderNamespace), useValue: 'female' };
 
     @Injectable()
     class TestName {
-        constructor(@InjectCluster(name.provide as string) public readonly value: string) {}
+        constructor(
+            @InjectCluster(nameNamespace) public readonly value1: string,
+            @InjectCluster(nameNamespace) public readonly value2: string
+        ) {}
     }
     @Injectable()
     class TestGender {
-        constructor(@InjectCluster(gender.provide as symbol) public readonly value: string) {}
-    }
-    @Injectable()
-    class TestAge {
         constructor(
-            @InjectCluster(age.provide as symbol) public readonly value1: string,
+            @InjectCluster(genderNamespace) public readonly value1: string,
             @InjectCluster() public readonly value2: string
         ) {}
     }
 
     let testName: TestName;
     let testGender: TestGender;
-    let testAge: TestAge;
 
-    beforeAll(async () => {
-        const moduleRef = await Test.createTestingModule({
-            providers: [name, gender, age, TestName, TestGender, TestAge]
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [name, gender, TestName, TestGender]
         }).compile();
 
-        testName = moduleRef.get<TestName>(TestName);
-        testGender = moduleRef.get<TestGender>(TestGender);
-        testAge = moduleRef.get<TestAge>(TestAge);
+        testName = module.get<TestName>(TestName);
+        testGender = module.get<TestGender>(TestGender);
     });
 
     test('should work correctly', () => {
-        expect(testName.value).toBe(name.useValue);
-        expect(testGender.value).toBe(gender.useValue);
-        expect(testAge.value1).toBe(age.useValue);
-        expect(testAge.value2).toBe(age.useValue);
+        expect(testName.value1).toBe(name.useValue);
+        expect(testName.value2).toBe(name.useValue);
+        expect(testGender.value1).toBe(gender.useValue);
+        expect(testGender.value2).toBe(gender.useValue);
     });
 
-    test('should have 4 members in array namespaces', () => {
-        expect(namespaces).toHaveLength(3);
-        expect(namespaces).toContain(name.provide);
-        expect(namespaces).toContain(gender.provide);
-        expect(namespaces).toContain(age.provide);
+    test('should have 2 members in namespaces map', () => {
+        expect(namespaces.size).toBe(2);
+        expect(namespaces.has(nameNamespace)).toBe(true);
+        expect(namespaces.has(genderNamespace)).toBe(true);
     });
 });

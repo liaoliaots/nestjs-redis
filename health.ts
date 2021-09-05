@@ -1,1 +1,1 @@
-export * from './lib/health';
+export * from './health';

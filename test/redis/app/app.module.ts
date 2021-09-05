@@ -5,28 +5,14 @@ import { InjectController } from './controllers/inject.controller';
 import { ServiceController } from './controllers/service.controller';
 import { RedisModule } from '@/index';
 import { RedisHealthModule } from '@/health';
-import { testConfig } from '../../env';
 
 @Module({
     imports: [
         RedisModule.forRoot({
-            defaultOptions: {
-                sentinels: [
-                    {
-                        host: testConfig.sentinel1.host,
-                        port: testConfig.sentinel1.port
-                    },
-                    {
-                        host: testConfig.sentinel2.host,
-                        port: testConfig.sentinel2.port
-                    }
-                ],
-                sentinelPassword: testConfig.sentinel1.password,
-                password: testConfig.master.password
-            },
+            closeClient: true,
             config: [
-                { namespace: 'client0', db: 0, name: 'mymaster', role: 'master' },
-                { db: 1, name: 'mymaster', role: 'slave' }
+                { host: '127.0.0.1', port: 6380, password: 'masterpassword1' },
+                { namespace: 'client0', host: '127.0.0.1', port: 6381, password: 'masterpassword2' }
             ]
         }),
         TerminusModule,

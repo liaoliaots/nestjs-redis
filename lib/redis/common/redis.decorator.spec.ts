@@ -1,54 +1,67 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { InjectRedis, namespaces } from './redis.decorator';
-import { DEFAULT_REDIS_NAMESPACE } from '../redis.constants';
+import { Test, TestingModule } from '@nestjs/testing';
+import { InjectRedis, namespaces, getRedisToken } from './redis.decorator';
+import { DEFAULT_REDIS_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../redis.constants';
+import { ClientNamespace } from '@/interfaces';
+
+describe('namespaces', () => {
+    test('should be an instance of the map', () => {
+        expect(namespaces).toBeInstanceOf(Map);
+    });
+});
+
+describe('getRedisToken', () => {
+    test('should work correctly', () => {
+        const namespace1 = Symbol('default-client');
+        const namespace2 = 'cache-client';
+        expect(getRedisToken(namespace1)).toBe(namespace1);
+        expect(getRedisToken(namespace2)).toBe(`${DECORATOR_DI_TOKEN_PREFIX}:${namespace2}`);
+    });
+});
 
 describe('InjectRedis', () => {
-    const name: ValueProvider<string> = { provide: 'name', useValue: 'liaoliao' };
-    const gender: ValueProvider<string> = { provide: Symbol('gender'), useValue: 'female' };
-    const age: ValueProvider<string> = { provide: DEFAULT_REDIS_NAMESPACE, useValue: '26' };
+    const nameNamespace: ClientNamespace = 'name';
+    const genderNamespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE;
+    const name: ValueProvider<string> = { provide: getRedisToken(nameNamespace), useValue: 'liaoliao' };
+    const gender: ValueProvider<string> = { provide: getRedisToken(genderNamespace), useValue: 'female' };
 
     @Injectable()
     class TestName {
-        constructor(@InjectRedis(name.provide as string) public readonly value: string) {}
+        constructor(
+            @InjectRedis(nameNamespace) public readonly value1: string,
+            @InjectRedis(nameNamespace) public readonly value2: string
+        ) {}
     }
     @Injectable()
     class TestGender {
-        constructor(@InjectRedis(gender.provide as symbol) public readonly value: string) {}
-    }
-    @Injectable()
-    class TestAge {
         constructor(
-            @InjectRedis(age.provide as symbol) public readonly value1: string,
+            @InjectRedis(genderNamespace) public readonly value1: string,
             @InjectRedis() public readonly value2: string
         ) {}
     }
 
     let testName: TestName;
     let testGender: TestGender;
-    let testAge: TestAge;
 
-    beforeAll(async () => {
-        const moduleRef = await Test.createTestingModule({
-            providers: [name, gender, age, TestName, TestGender, TestAge]
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [name, gender, TestName, TestGender]
         }).compile();
 
-        testName = moduleRef.get<TestName>(TestName);
-        testGender = moduleRef.get<TestGender>(TestGender);
-        testAge = moduleRef.get<TestAge>(TestAge);
+        testName = module.get<TestName>(TestName);
+        testGender = module.get<TestGender>(TestGender);
     });
 
     test('should work correctly', () => {
-        expect(testName.value).toBe(name.useValue);
-        expect(testGender.value).toBe(gender.useValue);
-        expect(testAge.value1).toBe(age.useValue);
-        expect(testAge.value2).toBe(age.useValue);
+        expect(testName.value1).toBe(name.useValue);
+        expect(testName.value2).toBe(name.useValue);
+        expect(testGender.value1).toBe(gender.useValue);
+        expect(testGender.value2).toBe(gender.useValue);
     });
 
-    test('should have 4 members in array namespaces', () => {
-        expect(namespaces).toHaveLength(3);
-        expect(namespaces).toContain(name.provide);
-        expect(namespaces).toContain(gender.provide);
-        expect(namespaces).toContain(age.provide);
+    test('should have 2 members in namespaces map', () => {
+        expect(namespaces.size).toBe(2);
+        expect(namespaces.has(nameNamespace)).toBe(true);
+        expect(namespaces.has(genderNamespace)).toBe(true);
     });
 });

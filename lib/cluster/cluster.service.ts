@@ -16,9 +16,7 @@ export class ClusterService implements ClusterClientsService {
 
     getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);
-
         if (!client) throw new RedisError(CLIENT_NOT_FOUND(parseNamespace(namespace), false));
-
         return client;
     }
 }

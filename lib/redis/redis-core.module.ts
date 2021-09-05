@@ -1,20 +1,19 @@
-import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject, Logger } from '@nestjs/common';
+import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
 import { RedisService } from './redis.service';
 import {
-    createProviders,
+    createOptionsProvider,
     createAsyncProviders,
     createRedisClientProviders,
     redisClientsProvider
 } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { quitClients } from './common';
+import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 
 @Global()
 @Module({})
 export class RedisCoreModule implements OnApplicationShutdown {
-    private readonly logger = new Logger('RedisModule');
-
     constructor(
         @Inject(REDIS_OPTIONS) private readonly options: RedisModuleOptions,
         @Inject(REDIS_CLIENTS) private readonly clients: RedisClients
@@ -23,7 +22,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
     static forRoot(options: RedisModuleOptions = {}): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
         const providers: Provider[] = [
-            createProviders(options),
+            createOptionsProvider(options),
             redisClientsProvider,
             RedisService,
             ...redisClientProviders
@@ -36,7 +35,11 @@ export class RedisCoreModule implements OnApplicationShutdown {
         };
     }
 
-    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: RedisModuleAsyncOptions = {}): DynamicModule {
+        if (!options.useFactory && !options.useClass && !options.useExisting) {
+            throw new RedisError(MISSING_CONFIGURATION);
+        }
+
         const redisClientProviders = createRedisClientProviders();
         const providers: Provider[] = [
             ...createAsyncProviders(options),
@@ -53,17 +56,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
         };
     }
 
-    async onApplicationShutdown(): Promise<void> {
-        if (this.options.closeClient) {
-            const results = await quitClients(this.clients);
-
-            results
-                .filter(result => result.status === 'rejected')
-                .forEach(error => {
-                    if (error.status === 'rejected' && error.reason instanceof Error) {
-                        this.logger.error(error.reason.message);
-                    }
-                });
-        }
+    onApplicationShutdown(): void {
+        if (this.options.closeClient) quitClients(this.clients);
     }
 }

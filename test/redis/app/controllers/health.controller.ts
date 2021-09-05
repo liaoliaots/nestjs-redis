@@ -7,8 +7,8 @@ import { InjectRedis } from '@/index';
 @Controller('health')
 export class HealthController {
     constructor(
-        @InjectRedis('client0') private readonly client0: Redis,
-        @InjectRedis() private readonly clientDefault: Redis,
+        @InjectRedis() private readonly client0: Redis,
+        @InjectRedis('client1') private readonly clientDefault: Redis,
         private readonly health: HealthCheckService,
         private readonly redis: RedisHealthIndicator
     ) {}

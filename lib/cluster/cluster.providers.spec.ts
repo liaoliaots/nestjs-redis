@@ -1,60 +1,64 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Cluster } from 'ioredis';
 import {
-    createProviders,
+    createOptionsProvider,
     createAsyncProviders,
     createAsyncOptionsProvider,
     clusterClientsProvider,
-    createClusterClientProviders
+    createClusterClientProviders,
+    createAsyncOptions
 } from './cluster.providers';
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
-import { namespaces, quitClients } from './common';
+import { namespaces } from './common';
 import { ClusterService } from './cluster.service';
-import { testConfig } from '../../test/env';
 
-const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
+jest.mock('ioredis');
 
 class ClusterConfigService implements ClusterOptionsFactory {
     createClusterOptions(): ClusterModuleOptions {
-        return clusterModuleOptions;
+        return { config: { nodes: [] } };
     }
 }
+const clusterOptions: ClusterModuleOptions = { config: { nodes: [] } };
 
-describe(`${createProviders.name}`, () => {
+describe('createOptionsProvider', () => {
     test('should work correctly', () => {
-        expect(createProviders(clusterModuleOptions)).toEqual({
+        expect(createOptionsProvider(clusterOptions)).toEqual({
             provide: CLUSTER_OPTIONS,
-            useValue: clusterModuleOptions
+            useValue: clusterOptions
         });
     });
 });
 
-describe(`${createAsyncProviders.name}`, () => {
-    test('if provide useFactory or useExisting, the result array should have 2 members', () => {
-        expect(createAsyncProviders({ useFactory: () => clusterModuleOptions, inject: [] })).toHaveLength(1);
-        expect(createAsyncProviders({ useExisting: ClusterConfigService })).toHaveLength(1);
-    });
-
-    test('if provide useClass, the result array should have 3 members', () => {
+describe('createAsyncProviders', () => {
+    test('should work correctly', () => {
+        expect(createAsyncProviders({ useFactory: () => clusterOptions, inject: [] })).toHaveLength(1);
         expect(createAsyncProviders({ useClass: ClusterConfigService })).toHaveLength(2);
-    });
-
-    test('should throw an error without options', () => {
-        expect(() => createAsyncProviders({})).toThrow();
+        expect(createAsyncProviders({ useExisting: ClusterConfigService })).toHaveLength(1);
+        expect(createAsyncProviders({})).toHaveLength(0);
     });
 });
 
-describe(`${createAsyncOptionsProvider.name}`, () => {
-    test('should create provider with useFactory', () => {
-        const options: ClusterModuleAsyncOptions = { useFactory: () => clusterModuleOptions, inject: ['DIToken'] };
+describe('createAsyncOptions', () => {
+    test('should work correctly', async () => {
+        const clusterConfigService: ClusterOptionsFactory = {
+            createClusterOptions() {
+                return { config: { nodes: [] } };
+            }
+        };
+        await expect(createAsyncOptions(clusterConfigService)).resolves.toEqual({ config: { nodes: [] } });
+    });
+});
 
+describe('createAsyncOptionsProvider', () => {
+    test('should create provider with useFactory', () => {
+        const options: ClusterModuleAsyncOptions = { useFactory: () => clusterOptions, inject: ['token'] };
         expect(createAsyncOptionsProvider(options)).toEqual({ provide: CLUSTER_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {
         const options: ClusterModuleAsyncOptions = { useClass: ClusterConfigService };
-
         expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', CLUSTER_OPTIONS);
         expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
         expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [ClusterConfigService]);
@@ -62,7 +66,6 @@ describe(`${createAsyncOptionsProvider.name}`, () => {
 
     test('should create provider with useExisting', () => {
         const options: ClusterModuleAsyncOptions = { useExisting: ClusterConfigService };
-
         expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', CLUSTER_OPTIONS);
         expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
         expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [ClusterConfigService]);
@@ -76,117 +79,115 @@ describe(`${createAsyncOptionsProvider.name}`, () => {
 describe('clusterClientsProvider', () => {
     describe('with multiple clients', () => {
         let clients: ClusterClients;
+        let service: ClusterService;
 
-        let clusterService: ClusterService;
-
-        afterAll(() => {
-            quitClients(clients);
-        });
-
-        beforeAll(async () => {
+        beforeEach(async () => {
             const options: ClusterModuleOptions = {
                 config: [
                     {
-                        namespace: 'client0',
-                        nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-                        options: { redisOptions: { password: testConfig.cluster1.password } }
+                        nodes: []
                     },
                     {
-                        nodes: [{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }],
-                        options: { redisOptions: { password: testConfig.cluster4.password } }
+                        namespace: 'client1',
+                        nodes: []
                     }
                 ]
             };
 
-            const moduleRef = await Test.createTestingModule({
+            const module: TestingModule = await Test.createTestingModule({
                 providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
             }).compile();
 
-            clients = moduleRef.get<ClusterClients>(CLUSTER_CLIENTS);
-            clusterService = moduleRef.get<ClusterService>(ClusterService);
+            clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
+            service = module.get<ClusterService>(ClusterService);
         });
 
         test('should have 2 members', () => {
             expect(clients.size).toBe(2);
         });
 
-        test('should get a client with namespace', async () => {
-            const client = clusterService.getClient('client0');
-
-            await expect(client.ping()).resolves.toBeDefined();
-        });
-
-        test('should get default client with namespace', async () => {
-            const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
-
-            await expect(client.ping()).resolves.toBeDefined();
+        test('should work correctly', () => {
+            let client: Cluster;
+            client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+            expect(client).toBeInstanceOf(IORedis.Cluster);
+            client = service.getClient('client1');
+            expect(client).toBeInstanceOf(IORedis.Cluster);
         });
     });
 
-    describe('with single client', () => {
+    describe('with a single client and no namespace', () => {
         let clients: ClusterClients;
+        let service: ClusterService;
 
-        let clusterService: ClusterService;
-
-        afterAll(() => {
-            quitClients(clients);
-        });
-
-        beforeAll(async () => {
+        beforeEach(async () => {
             const options: ClusterModuleOptions = {
                 config: {
-                    nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-                    options: { redisOptions: { password: testConfig.cluster1.password } }
+                    nodes: []
                 }
             };
 
-            const moduleRef = await Test.createTestingModule({
+            const module: TestingModule = await Test.createTestingModule({
                 providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
             }).compile();
 
-            clients = moduleRef.get<ClusterClients>(CLUSTER_CLIENTS);
-            clusterService = moduleRef.get<ClusterService>(ClusterService);
+            clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
+            service = module.get<ClusterService>(ClusterService);
         });
 
         test('should have 1 member', () => {
             expect(clients.size).toBe(1);
         });
 
-        test('should get default client with namespace', async () => {
-            const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        test('should work correctly', () => {
+            const client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+            expect(client).toBeInstanceOf(IORedis.Cluster);
+        });
+    });
 
-            await expect(client.ping()).resolves.toBeDefined();
+    describe('with a single client and namespace', () => {
+        let clients: ClusterClients;
+        let service: ClusterService;
+
+        beforeEach(async () => {
+            const options: ClusterModuleOptions = {
+                config: {
+                    namespace: 'client1',
+                    nodes: []
+                }
+            };
+
+            const module: TestingModule = await Test.createTestingModule({
+                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
+            }).compile();
+
+            clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
+            service = module.get<ClusterService>(ClusterService);
+        });
+
+        test('should have 1 member', () => {
+            expect(clients.size).toBe(1);
+        });
+
+        test('should work correctly', () => {
+            const client = service.getClient('client1');
+            expect(client).toBeInstanceOf(IORedis.Cluster);
         });
     });
 });
 
-describe(`${createClusterClientProviders.name}`, () => {
-    const clients: ClusterClients = new Map();
-
-    let client0: Cluster;
+describe('createClusterClientProviders', () => {
+    let clients: ClusterClients;
     let client1: Cluster;
+    let client2: Cluster;
 
-    afterAll(() => {
-        quitClients(clients);
-    });
+    beforeEach(async () => {
+        clients = new Map();
+        clients.set('client1', new IORedis.Cluster([]));
+        clients.set('client2', new IORedis.Cluster([]));
+        namespaces.set('client1', 'client1');
+        namespaces.set('client2', 'client2');
 
-    beforeAll(async () => {
-        namespaces.push(...['client0', 'client1']);
-
-        clients.set(
-            'client0',
-            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
-                redisOptions: { password: testConfig.cluster1.password }
-            })
-        );
-        clients.set(
-            'client1',
-            new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
-                redisOptions: { password: testConfig.cluster4.password }
-            })
-        );
-
-        const moduleRef = await Test.createTestingModule({
+        const module: TestingModule = await Test.createTestingModule({
             providers: [
                 { provide: CLUSTER_CLIENTS, useValue: clients },
                 ClusterService,
@@ -194,15 +195,12 @@ describe(`${createClusterClientProviders.name}`, () => {
             ]
         }).compile();
 
-        client0 = moduleRef.get<Cluster>('client0');
-        client1 = moduleRef.get<Cluster>('client1');
+        client1 = module.get<Cluster>('client1');
+        client2 = module.get<Cluster>('client2');
     });
 
-    test('client0 should work correctly', async () => {
-        await expect(client0.ping()).resolves.toBeDefined();
-    });
-
-    test('client1 should work correctly', async () => {
-        await expect(client1.ping()).resolves.toBeDefined();
+    test('should work correctly', () => {
+        expect(client1).toBeInstanceOf(IORedis.Cluster);
+        expect(client2).toBeInstanceOf(IORedis.Cluster);
     });
 });

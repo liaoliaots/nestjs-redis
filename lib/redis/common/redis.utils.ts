@@ -1,5 +1,7 @@
+import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
 import { ClientOptions, RedisClients } from '../interfaces';
+import { LOGGER_CONTEXT } from '../redis.constants';
 
 export const createClient = (clientOptions: ClientOptions): Redis => {
     const { url, onClientCreated, ...redisOptions } = clientOptions;
@@ -10,17 +12,17 @@ export const createClient = (clientOptions: ClientOptions): Redis => {
     return client;
 };
 
-export const quitClients = (clients: RedisClients): Promise<PromiseSettledResult<'OK'>[]> => {
-    const promises: Promise<'OK'>[] = [];
+export const quitClients = (clients: RedisClients): void => {
+    const logger = new Logger(LOGGER_CONTEXT);
 
     clients.forEach(client => {
         if (client.status === 'ready') {
-            promises.push(client.quit());
+            client.quit().catch(reason => {
+                if (reason instanceof Error) logger.error(reason.message);
+            });
             return;
         }
 
         client.disconnect();
     });
-
-    return Promise.allSettled(promises);
 };

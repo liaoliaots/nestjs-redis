@@ -2,13 +2,14 @@ import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject 
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from './interfaces';
 import { ClusterService } from './cluster.service';
 import {
-    createProviders,
+    createOptionsProvider,
     createAsyncProviders,
     createClusterClientProviders,
     clusterClientsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { quitClients } from './common';
+import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 
 @Global()
 @Module({})
@@ -21,7 +22,7 @@ export class ClusterCoreModule implements OnApplicationShutdown {
     static forRoot(options: ClusterModuleOptions): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
         const providers: Provider[] = [
-            createProviders(options),
+            createOptionsProvider(options),
             clusterClientsProvider,
             ClusterService,
             ...clusterClientProviders
@@ -34,7 +35,11 @@ export class ClusterCoreModule implements OnApplicationShutdown {
         };
     }
 
-    static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: ClusterModuleAsyncOptions = {}): DynamicModule {
+        if (!options.useFactory && !options.useClass && !options.useExisting) {
+            throw new RedisError(MISSING_CONFIGURATION);
+        }
+
         const clusterClientProviders = createClusterClientProviders();
         const providers: Provider[] = [
             ...createAsyncProviders(options),

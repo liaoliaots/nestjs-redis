@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
+import { DEFAULT_REDIS_NAMESPACE, getRedisToken } from '@liaoliaots/nestjs-redis';
 import { FastifyInstance } from 'fastify';
 import { Redis } from 'ioredis';
 import { AppModule } from '../src/app.module';
@@ -9,23 +9,23 @@ const testCatName3 = 'Test Cat 3';
 
 describe('CatsController (e2e)', () => {
     let app: NestFastifyApplication;
-    let redisClientDefault: Redis;
+    let defaultClient: Redis;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [AppModule]
         }).compile();
 
-        redisClientDefault = module.get<Redis>(DEFAULT_REDIS_CLIENT, { strict: false });
+        defaultClient = module.get<Redis>(getRedisToken(DEFAULT_REDIS_NAMESPACE), { strict: false });
         app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
-        await redisClientDefault.flushdb();
+        await defaultClient.flushdb();
         await app.init();
         await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
     });
 
     afterAll(async () => {
-        await redisClientDefault.flushdb();
+        await defaultClient.flushdb();
         await app.close();
     });
 

@@ -2,18 +2,15 @@ import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
-import { RedisError, MISSING_CONFIGURATION } from '@/errors';
 import { createClient, namespaces } from './common';
 import { ClusterService } from './cluster.service';
 
-export const createProviders = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
+export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
     provide: CLUSTER_OPTIONS,
     useValue: options
 });
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
-    if (!options.useFactory && !options.useClass && !options.useExisting) throw new RedisError(MISSING_CONFIGURATION);
-
     if (options.useClass) {
         return [
             {
@@ -29,6 +26,9 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
     return [];
 };
 
+export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
+    await optionsFactory.createClusterOptions();
+
 export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): Provider => {
     if (options.useFactory) {
         return {
@@ -41,8 +41,7 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
     if (options.useClass) {
         return {
             provide: CLUSTER_OPTIONS,
-            useFactory: async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
-                await optionsFactory.createClusterOptions(),
+            useFactory: createAsyncOptions,
             inject: [options.useClass]
         };
     }
@@ -50,8 +49,7 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
     if (options.useExisting) {
         return {
             provide: CLUSTER_OPTIONS,
-            useFactory: async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
-                await optionsFactory.createClusterOptions(),
+            useFactory: createAsyncOptions,
             inject: [options.useExisting]
         };
     }
@@ -71,12 +69,10 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
             options.config.forEach(item =>
                 clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item))
             );
-
             return clients;
         }
 
         clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
-
         return clients;
     },
     inject: [CLUSTER_OPTIONS]
@@ -84,14 +80,12 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
 
 export const createClusterClientProviders = (): FactoryProvider<Cluster>[] => {
     const providers: FactoryProvider<Cluster>[] = [];
-
-    namespaces.forEach(namespace => {
+    namespaces.forEach((token, namespace) => {
         providers.push({
-            provide: namespace,
+            provide: token,
             useFactory: (clusterService: ClusterService) => clusterService.getClient(namespace),
             inject: [ClusterService]
         });
     });
-
     return providers;
 };
