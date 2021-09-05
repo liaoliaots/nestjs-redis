@@ -1,76 +1,71 @@
-import IORedis, { Cluster } from 'ioredis';
-import { createClient, quitClients } from '.';
-import { testConfig } from '../../../test/env';
+import IORedis, { Cluster, ClusterNode, ClusterOptions } from 'ioredis';
+import { createClient, quitClients } from './cluster.utils';
 import { ClusterClients } from '../interfaces';
 
-describe(`${createClient.name}`, () => {
-    let client: Cluster;
+jest.mock('ioredis');
+const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
 
-    afterEach(async () => {
-        await client.quit();
-    });
+const nodes: ClusterNode[] = [{ host: '127.0.0.1', port: 16380 }];
 
-    test('should create clients with options', async () => {
-        client = createClient({
-            nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-            options: { redisOptions: { password: testConfig.cluster1.password } }
-        });
+beforeEach(() => {
+    MockCluster.mockReset();
+});
 
-        await expect(client.ping()).resolves.toBeDefined();
+describe('createClient', () => {
+    test('should create a client with options', () => {
+        const options: ClusterOptions = { redisOptions: { password: 'clusterpassword1' } };
+        const client = createClient({ nodes, options });
+        expect(MockCluster).toHaveBeenCalledTimes(1);
+        expect(MockCluster).toHaveBeenCalledWith(nodes, options);
+        expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should call onClientCreated', () => {
-        const mockCreated = jest.fn((client: Cluster) => client);
+        const mockOnClientCreated = jest.fn();
 
-        client = createClient({
-            nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-            options: { redisOptions: { password: testConfig.cluster1.password } },
-            onClientCreated: mockCreated
-        });
-
-        expect(mockCreated.mock.calls).toHaveLength(1);
-        expect(mockCreated.mock.results[0].value).toBeInstanceOf(IORedis.Cluster);
+        const client = createClient({ nodes, onClientCreated: mockOnClientCreated });
+        expect(MockCluster).toHaveBeenCalledTimes(1);
+        expect(MockCluster).toHaveBeenCalledWith(nodes, undefined);
+        expect(client).toBeInstanceOf(IORedis.Cluster);
+        expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
+        expect(mockOnClientCreated).toHaveBeenCalledWith(client);
     });
 });
 
-describe(`${quitClients.name}`, () => {
-    const clients: ClusterClients = new Map();
+describe('quitClients', () => {
+    let client1: Cluster;
+    let client2: Cluster;
+    let clients: ClusterClients;
 
-    const timeout = () => {
-        return new Promise<void>(resolve => {
-            const id = setTimeout(() => {
-                clearTimeout(id);
-                resolve();
-            }, 200);
-        });
-    };
-
-    beforeAll(async () => {
-        clients.set(
-            'client0',
-            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
-                redisOptions: { password: testConfig.cluster1.password }
-            })
-        );
-        clients.set(
-            'client1',
-            new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
-                redisOptions: { password: testConfig.cluster4.password }
-            })
-        );
-
-        await timeout();
+    beforeEach(() => {
+        client1 = new IORedis.Cluster(nodes);
+        client2 = new IORedis.Cluster(nodes);
+        clients = new Map();
+        clients.set('client1', client1);
+        clients.set('client2', client2);
     });
 
-    test('the state should be ready', () => {
-        clients.forEach(client => expect(client.status).toBe('ready'));
-    });
+    test('when the status is ready', () => {
+        Reflect.defineProperty(client1, 'status', { value: 'ready' });
+        Reflect.defineProperty(client2, 'status', { value: 'ready' });
 
-    test('the state should be end', async () => {
+        const mockClient1Quit = jest.spyOn(client1, 'quit').mockRejectedValue(new Error('a redis error'));
+        const mockClient2Quit = jest.spyOn(client2, 'quit').mockRejectedValue('');
+
         quitClients(clients);
+        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
+        expect(mockClient2Quit).toHaveBeenCalledTimes(1);
+    });
 
-        await timeout();
+    test('when the status is ready and end', () => {
+        Reflect.defineProperty(client1, 'status', { value: 'ready' });
+        Reflect.defineProperty(client2, 'status', { value: 'end' });
 
-        clients.forEach(client => expect(client.status).toBe('end'));
+        const mockClient1Quit = jest.spyOn(client1, 'quit').mockResolvedValue('OK');
+        const mockClient2Disconnect = jest.spyOn(client2, 'disconnect');
+
+        quitClients(clients);
+        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
+        expect(mockClient2Disconnect).toHaveBeenCalledTimes(1);
     });
 });

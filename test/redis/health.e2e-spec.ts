@@ -10,8 +10,7 @@ let clients: RedisClients;
 let app: NestFastifyApplication;
 
 afterAll(async () => {
-    await quitClients(clients);
-
+    quitClients(clients);
     await app.close();
 });
 

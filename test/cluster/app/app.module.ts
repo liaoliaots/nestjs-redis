@@ -4,7 +4,6 @@ import { HealthController } from './controllers/health.controller';
 import { InjectController } from './controllers/inject.controller';
 import { ServiceController } from './controllers/service.controller';
 import { ClusterModule } from '../../../lib';
-import { testConfig } from '../../env';
 import { RedisHealthModule } from '@/health';
 
 @Module({
@@ -13,12 +12,12 @@ import { RedisHealthModule } from '@/health';
             config: [
                 {
                     namespace: 'client0',
-                    nodes: [{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }],
-                    options: { redisOptions: { password: testConfig.cluster1.password } }
+                    nodes: [{ host: '127.0.0.1', port: 16380 }],
+                    options: { redisOptions: { password: 'clusterpassword1' } }
                 },
                 {
-                    nodes: [{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }],
-                    options: { redisOptions: { password: testConfig.cluster4.password } }
+                    nodes: [{ host: '127.0.0.1', port: 16480 }],
+                    options: { redisOptions: { password: 'clusterpassword2' } }
                 }
             ]
         }),

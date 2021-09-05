@@ -16,9 +16,7 @@ export class RedisService implements RedisClientsService {
 
     getClient(namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): Redis {
         const client = this.redisClients.get(namespace);
-
         if (!client) throw new RedisError(CLIENT_NOT_FOUND(parseNamespace(namespace)));
-
         return client;
     }
 }

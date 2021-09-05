@@ -1,64 +1,49 @@
-import { Test } from '@nestjs/testing';
-import IORedis from 'ioredis';
+import { Test, TestingModule } from '@nestjs/testing';
+import IORedis, { ClusterNode } from 'ioredis';
 import { ClusterService } from './cluster.service';
 import { ClusterClients } from './interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
-import { quitClients } from './common';
-import { testConfig } from '../../test/env';
 
-describe(`${ClusterService.name}`, () => {
-    const clients: ClusterClients = new Map();
+jest.mock('ioredis');
 
-    let clusterService: ClusterService;
+const nodes: ClusterNode[] = [{ host: '127.0.0.1', port: 16380 }];
 
-    afterAll(() => {
-        quitClients(clients);
-    });
+describe('ClusterService', () => {
+    let clients: ClusterClients;
+    let service: ClusterService;
 
-    beforeAll(async () => {
-        clients.set(
-            'client0',
-            new IORedis.Cluster([{ host: testConfig.cluster1.host, port: testConfig.cluster1.port }], {
-                redisOptions: { password: testConfig.cluster1.password }
-            })
-        );
-        clients.set(
-            DEFAULT_CLUSTER_NAMESPACE,
-            new IORedis.Cluster([{ host: testConfig.cluster4.host, port: testConfig.cluster4.port }], {
-                redisOptions: { password: testConfig.cluster4.password }
-            })
-        );
+    beforeEach(async () => {
+        clients = new Map();
+        clients.set(DEFAULT_CLUSTER_NAMESPACE, new IORedis.Cluster(nodes));
+        clients.set('client1', new IORedis.Cluster(nodes));
 
-        const moduleRef = await Test.createTestingModule({
+        const module: TestingModule = await Test.createTestingModule({
             providers: [{ provide: CLUSTER_CLIENTS, useValue: clients }, ClusterService]
         }).compile();
 
-        clusterService = moduleRef.get<ClusterService>(ClusterService);
+        service = module.get<ClusterService>(ClusterService);
     });
 
-    test('the size should be equal to clients.size', () => {
-        expect(clusterService.clients.size).toBe(clients.size);
+    test('should have 2 members', () => {
+        expect(service.clients.size).toBe(2);
     });
 
-    test('should get a client with namespace', async () => {
-        const client = clusterService.getClient('client0');
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get a client with namespace', () => {
+        const client = service.getClient('client1');
+        expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
-    test('should get default client with namespace', async () => {
-        const client = clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get default client with namespace', () => {
+        const client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
-    test('should get default client without namespace', async () => {
-        const client = clusterService.getClient();
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get default client without namespace', () => {
+        const client = service.getClient();
+        expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should throw an error when getting a client with an unknown namespace', () => {
-        expect(() => clusterService.getClient('')).toThrow();
+        expect(() => service.getClient('')).toThrow();
     });
 });

@@ -1,20 +1,21 @@
 import { ClusterModule } from './cluster.module';
-import { ClusterModuleAsyncOptions, ClusterModuleOptions } from './interfaces';
+import { ClusterModuleAsyncOptions } from './interfaces';
 
-const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
-
-describe(`${ClusterModule.forRoot.name}`, () => {
-    test('should register the module with options', () => {
-        expect(ClusterModule.forRoot(clusterModuleOptions).module).toBe(ClusterModule);
-        expect(ClusterModule.forRoot(clusterModuleOptions).imports).toHaveLength(1);
+describe('ClusterModule', () => {
+    describe('forRoot', () => {
+        test('should work correctly', () => {
+            const module = ClusterModule.forRoot({ config: { nodes: [] } });
+            expect(module.module).toBe(ClusterModule);
+            expect(module.imports?.length).toBe(1);
+        });
     });
-});
 
-describe(`${ClusterModule.forRootAsync.name}`, () => {
-    const options: ClusterModuleAsyncOptions = { imports: [], useFactory: () => clusterModuleOptions, inject: [] };
-
-    test('should register the async module with async options', () => {
-        expect(ClusterModule.forRootAsync(options).module).toBe(ClusterModule);
-        expect(ClusterModule.forRootAsync(options).imports).toHaveLength(1);
+    describe('forRootAsync', () => {
+        test('should work correctly', () => {
+            const options: ClusterModuleAsyncOptions = { useFactory: () => ({ config: { nodes: [] } }), inject: [] };
+            const module = ClusterModule.forRootAsync(options);
+            expect(module.module).toBe(ClusterModule);
+            expect(module.imports?.length).toBe(1);
+        });
     });
 });

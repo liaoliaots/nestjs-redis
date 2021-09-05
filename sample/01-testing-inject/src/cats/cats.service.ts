@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
-import { Cat } from './models/cat';
+import { Cat } from './cat.model';
 import { CreateCatDto } from './dto/create-cat.dto';
 
 @Injectable()
@@ -11,14 +11,13 @@ export class CatsService {
         new Cat(2, 'Test Cat 2', 2, 'Test Breed 2')
     ];
 
-    constructor(@InjectRedis() private readonly redisClient: Redis) {}
+    constructor(@InjectRedis() private readonly defaultClient: Redis) {}
 
     async findAll(): Promise<Cat[]> {
-        const cats = await this.redisClient.get('cats');
+        const cats = await this.defaultClient.get('cats');
         if (cats) return JSON.parse(cats) as Cat[];
 
-        await this.redisClient.set('cats', JSON.stringify(this.cats));
-
+        await this.defaultClient.set('cats', JSON.stringify(this.cats));
         return this.cats;
     }
 
@@ -26,8 +25,7 @@ export class CatsService {
         const newCat = { id: this.cats[this.cats.length - 1].id + 1, ...cat };
         this.cats.push(newCat);
 
-        await this.redisClient.del('cats');
-
+        await this.defaultClient.del('cats');
         return newCat;
     }
 }

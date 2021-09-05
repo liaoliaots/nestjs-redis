@@ -11,7 +11,6 @@ let app: NestFastifyApplication;
 
 afterAll(async () => {
     quitClients(clients);
-
     await app.close();
 });
 

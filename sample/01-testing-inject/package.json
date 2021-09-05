@@ -22,14 +22,12 @@
         "test:clear": "jest --clearCache"
     },
     "dependencies": {
-        "@liaoliaots/nestjs-redis": "3.0.0-next.3",
+        "@liaoliaots/nestjs-redis": "3.0.0",
         "@nestjs/common": "8.0.6",
-        "@nestjs/config": "1.0.1",
         "@nestjs/core": "8.0.6",
         "@nestjs/platform-fastify": "8.0.6",
-        "@nestjs/terminus": "8.0.0",
         "fastify": "3.20.2",
-        "ioredis": "4.27.8",
+        "ioredis": "4.27.9",
         "reflect-metadata": "0.1.13",
         "rimraf": "3.0.2",
         "rxjs": "7.3.0"
@@ -38,15 +36,15 @@
         "@nestjs/cli": "8.1.1",
         "@nestjs/schematics": "8.0.3",
         "@nestjs/testing": "8.0.6",
-        "@types/ioredis": "4.27.0",
+        "@types/ioredis": "4.27.1",
         "@types/jest": "27.0.1",
-        "@types/node": "14.17.12",
-        "@typescript-eslint/eslint-plugin": "4.29.3",
-        "@typescript-eslint/parser": "4.29.3",
+        "@types/node": "14.17.14",
+        "@typescript-eslint/eslint-plugin": "4.30.0",
+        "@typescript-eslint/parser": "4.30.0",
         "eslint": "7.32.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-jest": "24.4.0",
-        "eslint-plugin-prettier": "3.4.1",
+        "eslint-plugin-prettier": "4.0.0",
         "ioredis-mock": "5.6.0",
         "jest": "27.1.0",
         "prettier": "2.3.2",
@@ -54,7 +52,7 @@
         "ts-loader": "9.2.5",
         "ts-node": "10.2.1",
         "tsconfig-paths": "3.11.0",
-        "typescript": "4.3.5"
+        "typescript": "4.4.2"
     },
     "jest": {
         "moduleFileExtensions": [

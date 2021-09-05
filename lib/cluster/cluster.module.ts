@@ -17,7 +17,7 @@ export class ClusterModule {
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options?: ClusterModuleAsyncOptions): DynamicModule {
         return {
             module: ClusterModule,
             imports: [ClusterCoreModule.forRootAsync(options)]

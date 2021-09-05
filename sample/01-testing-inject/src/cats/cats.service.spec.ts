@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DEFAULT_REDIS_CLIENT } from '@liaoliaots/nestjs-redis';
-import * as IORedis from 'ioredis';
-import { CatsService } from './cats.service';
+import { getRedisToken, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import IORedis, { Redis } from 'ioredis';
 import { CreateCatDto } from './dto/create-cat.dto';
+import { CatsService } from './cats.service';
+import { Cat } from './cat.model';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('ioredis', () => require('ioredis-mock/jest'));
+jest.mock('ioredis');
 
 describe('CatsService', () => {
     let service: CatsService;
-    let redis: IORedis.Redis;
+    let defaultClient: Redis;
 
     beforeEach(async () => {
-        redis = new IORedis();
+        defaultClient = new IORedis();
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: DEFAULT_REDIS_CLIENT, useValue: redis }, CatsService]
+            providers: [{ provide: getRedisToken(DEFAULT_REDIS_NAMESPACE), useValue: defaultClient }, CatsService]
         }).compile();
 
         service = module.get<CatsService>(CatsService);
@@ -27,10 +27,10 @@ describe('CatsService', () => {
 
     describe('findAll', () => {
         test('should return an array of cats', async () => {
-            const get = jest.spyOn(redis, 'get');
-            const set = jest.spyOn(redis, 'set');
+            const get = jest.spyOn(defaultClient, 'get').mockResolvedValue(null);
+            const set = jest.spyOn(defaultClient, 'set');
 
-            let cats;
+            let cats: Cat[];
 
             cats = await service.findAll();
             expect(cats).toHaveLength(2);
@@ -38,6 +38,7 @@ describe('CatsService', () => {
             expect(set.mock.calls).toHaveLength(1);
             expect(set.mock.calls[0][1]).toBe(JSON.stringify(cats));
 
+            get.mockResolvedValue(JSON.stringify(cats));
             cats = await service.findAll();
             expect(cats).toHaveLength(2);
             expect(get.mock.calls).toHaveLength(2);
@@ -47,7 +48,7 @@ describe('CatsService', () => {
 
     describe('create', () => {
         test('should create a cat', async () => {
-            const del = jest.spyOn(redis, 'del');
+            const del = jest.spyOn(defaultClient, 'del');
 
             const createCatDto: CreateCatDto = {
                 name: 'Test Cat 3',

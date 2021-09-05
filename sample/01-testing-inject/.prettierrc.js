@@ -12,5 +12,6 @@ module.exports = {
     arrowParens: 'avoid',
     proseWrap: 'preserve',
     htmlWhitespaceSensitivity: 'strict',
-    vueIndentScriptAndStyle: true
+    vueIndentScriptAndStyle: true,
+    endOfLine: 'auto'
 };

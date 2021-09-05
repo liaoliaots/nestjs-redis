@@ -8,7 +8,7 @@ describe('RedisHealthModule', () => {
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({ imports: [RedisHealthModule] }).compile();
 
-        indicator = await module.resolve<RedisHealthIndicator>(RedisHealthIndicator);
+        indicator = module.get<RedisHealthIndicator>(RedisHealthIndicator);
     });
 
     test('should be defined', () => {

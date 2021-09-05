@@ -1,54 +1,47 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import IORedis from 'ioredis';
 import { RedisService } from './redis.service';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
-import { quitClients } from './common';
-import { testConfig } from '../../test/env';
 
-describe(`${RedisService.name}`, () => {
-    const clients: RedisClients = new Map();
+jest.mock('ioredis');
 
-    let redisService: RedisService;
+describe('RedisService', () => {
+    let clients: RedisClients;
+    let service: RedisService;
 
-    afterAll(async () => {
-        await quitClients(clients);
-    });
+    beforeEach(async () => {
+        clients = new Map();
+        clients.set(DEFAULT_REDIS_NAMESPACE, new IORedis());
+        clients.set('client1', new IORedis());
 
-    beforeAll(async () => {
-        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
-        clients.set(DEFAULT_REDIS_NAMESPACE, new IORedis({ ...testConfig.master, db: 1 }));
-
-        const moduleRef = await Test.createTestingModule({
+        const module: TestingModule = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService]
         }).compile();
 
-        redisService = moduleRef.get<RedisService>(RedisService);
+        service = module.get<RedisService>(RedisService);
     });
 
-    test('the size should be equal to clients.size', () => {
-        expect(redisService.clients.size).toBe(clients.size);
+    test('should have 2 members', () => {
+        expect(service.clients.size).toBe(2);
     });
 
-    test('should get a client with namespace', async () => {
-        const client = redisService.getClient('client0');
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get a client with namespace', () => {
+        const client = service.getClient('client1');
+        expect(client).toBeInstanceOf(IORedis);
     });
 
-    test('should get default client with namespace', async () => {
-        const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get default client with namespace', () => {
+        const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+        expect(client).toBeInstanceOf(IORedis);
     });
 
-    test('should get default client without namespace', async () => {
-        const client = redisService.getClient();
-
-        await expect(client.ping()).resolves.toBeDefined();
+    test('should get default client without namespace', () => {
+        const client = service.getClient();
+        expect(client).toBeInstanceOf(IORedis);
     });
 
     test('should throw an error when getting a client with an unknown namespace', () => {
-        expect(() => redisService.getClient('')).toThrow();
+        expect(() => service.getClient('')).toThrow();
     });
 });

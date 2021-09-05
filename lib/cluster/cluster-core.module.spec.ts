@@ -1,23 +1,54 @@
 import { ClusterCoreModule } from './cluster-core.module';
-import { ClusterModuleAsyncOptions, ClusterModuleOptions } from './interfaces';
+import { ClusterModuleAsyncOptions } from './interfaces';
+import { quitClients } from './common';
 
-const clusterModuleOptions: ClusterModuleOptions = { config: { nodes: [] } };
+jest.mock('./common');
+const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
 
-describe(`${ClusterCoreModule.forRoot.name}`, () => {
-    test('should register the module with options', () => {
-        expect(ClusterCoreModule.forRoot(clusterModuleOptions).module).toBe(ClusterCoreModule);
-        expect(ClusterCoreModule.forRoot(clusterModuleOptions).providers?.length).toBeGreaterThanOrEqual(3);
-        expect(ClusterCoreModule.forRoot(clusterModuleOptions).exports?.length).toBeGreaterThanOrEqual(1);
-    });
+beforeEach(() => {
+    mockQuitClients.mockReset();
 });
 
-describe(`${ClusterCoreModule.forRootAsync.name}`, () => {
-    const options: ClusterModuleAsyncOptions = { imports: [], useFactory: () => clusterModuleOptions, inject: [] };
+describe('ClusterCoreModule', () => {
+    describe('forRoot', () => {
+        test('should work correctly', () => {
+            const module = ClusterCoreModule.forRoot({ config: { nodes: [] } });
+            expect(module.module).toBe(ClusterCoreModule);
+            expect(module.providers?.length).toBeGreaterThanOrEqual(3);
+            expect(module.exports?.length).toBeGreaterThanOrEqual(1);
+        });
+    });
 
-    test('should register the async module with async options', () => {
-        expect(ClusterCoreModule.forRootAsync(options).module).toBe(ClusterCoreModule);
-        expect(ClusterCoreModule.forRootAsync(options).imports).toHaveLength(0);
-        expect(ClusterCoreModule.forRootAsync(options).providers?.length).toBeGreaterThanOrEqual(3);
-        expect(ClusterCoreModule.forRootAsync(options).exports?.length).toBeGreaterThanOrEqual(1);
+    describe('forRootAsync', () => {
+        test('should work correctly', () => {
+            const options: ClusterModuleAsyncOptions = {
+                imports: [],
+                useFactory: () => ({ config: { nodes: [] } }),
+                inject: []
+            };
+            const module = ClusterCoreModule.forRootAsync(options);
+            expect(module.module).toBe(ClusterCoreModule);
+            expect(module.imports?.length).toBe(0);
+            expect(module.providers?.length).toBeGreaterThanOrEqual(3);
+            expect(module.exports?.length).toBeGreaterThanOrEqual(1);
+        });
+
+        test('should throw an error', () => {
+            expect(() => ClusterCoreModule.forRootAsync()).toThrow();
+        });
+    });
+
+    describe('onApplicationShutdown', () => {
+        test('should call quitClients', () => {
+            const module = new ClusterCoreModule({ closeClient: true, config: { nodes: [] } }, new Map());
+            module.onApplicationShutdown();
+            expect(mockQuitClients).toHaveBeenCalledTimes(1);
+        });
+
+        test('should not call quitClients', () => {
+            const module = new ClusterCoreModule({ closeClient: false, config: { nodes: [] } }, new Map());
+            module.onApplicationShutdown();
+            expect(mockQuitClients).toHaveBeenCalledTimes(0);
+        });
     });
 });

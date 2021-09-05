@@ -1,17 +1,19 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Redis } from 'ioredis';
 import {
-    createProviders,
+    createOptionsProvider,
     createAsyncProviders,
     createAsyncOptionsProvider,
     redisClientsProvider,
-    createRedisClientProviders
+    createRedisClientProviders,
+    createAsyncOptions
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
-import { namespaces, quitClients } from './common';
+import { namespaces } from './common';
 import { RedisService } from './redis.service';
-import { testConfig } from '../../test/env';
+
+jest.mock('ioredis');
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions(): RedisModuleOptions {
@@ -19,40 +21,43 @@ class RedisConfigService implements RedisOptionsFactory {
     }
 }
 
-describe(`${createProviders.name}`, () => {
+describe('createOptionsProvider', () => {
     test('should work correctly', () => {
-        expect(createProviders({})).toEqual({
+        expect(createOptionsProvider({})).toEqual({
             provide: REDIS_OPTIONS,
             useValue: {}
         });
     });
 });
 
-describe(`${createAsyncProviders.name}`, () => {
-    test('if provide useFactory or useExisting, the result array should have 2 members', () => {
+describe('createAsyncProviders', () => {
+    test('should work correctly', () => {
         expect(createAsyncProviders({ useFactory: () => ({}), inject: [] })).toHaveLength(1);
-        expect(createAsyncProviders({ useExisting: RedisConfigService })).toHaveLength(1);
-    });
-
-    test('if provide useClass, the result array should have 3 members', () => {
         expect(createAsyncProviders({ useClass: RedisConfigService })).toHaveLength(2);
-    });
-
-    test('should throw an error without options', () => {
-        expect(() => createAsyncProviders({})).toThrow();
+        expect(createAsyncProviders({ useExisting: RedisConfigService })).toHaveLength(1);
+        expect(createAsyncProviders({})).toHaveLength(0);
     });
 });
 
-describe(`${createAsyncOptionsProvider.name}`, () => {
-    test('should create provider with useFactory', () => {
-        const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['DIToken'] };
+describe('createAsyncOptions', () => {
+    test('should work correctly', async () => {
+        const redisConfigService: RedisOptionsFactory = {
+            createRedisOptions() {
+                return { closeClient: true };
+            }
+        };
+        await expect(createAsyncOptions(redisConfigService)).resolves.toEqual({ closeClient: true });
+    });
+});
 
+describe('createAsyncOptionsProvider', () => {
+    test('should create provider with useFactory', () => {
+        const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['token'] };
         expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {
         const options: RedisModuleAsyncOptions = { useClass: RedisConfigService };
-
         expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
         expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
         expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
@@ -60,7 +65,6 @@ describe(`${createAsyncOptionsProvider.name}`, () => {
 
     test('should create provider with useExisting', () => {
         const options: RedisModuleAsyncOptions = { useExisting: RedisConfigService };
-
         expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
         expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
         expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
@@ -74,154 +78,151 @@ describe(`${createAsyncOptionsProvider.name}`, () => {
 describe('redisClientsProvider', () => {
     describe('with multiple clients', () => {
         let clients: RedisClients;
+        let service: RedisService;
 
-        let redisService: RedisService;
-
-        afterAll(async () => {
-            await quitClients(clients);
-        });
-
-        beforeAll(async () => {
+        beforeEach(async () => {
             const options: RedisModuleOptions = {
-                defaultOptions: {
-                    port: testConfig.master.port
-                },
                 config: [
                     {
-                        host: testConfig.master.host,
-                        password: testConfig.master.password,
-                        namespace: 'client0',
-                        db: 0
+                        host: '127.0.0.1',
+                        port: 6380
                     },
                     {
-                        host: testConfig.master.host,
-                        password: testConfig.master.password,
-                        db: 1
+                        namespace: 'client1',
+                        host: '127.0.0.1',
+                        port: 6381
                     }
                 ]
             };
 
-            const moduleRef = await Test.createTestingModule({
+            const module: TestingModule = await Test.createTestingModule({
                 providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
             }).compile();
 
-            clients = moduleRef.get<RedisClients>(REDIS_CLIENTS);
-            redisService = moduleRef.get<RedisService>(RedisService);
+            clients = module.get<RedisClients>(REDIS_CLIENTS);
+            service = module.get<RedisService>(RedisService);
         });
 
         test('should have 2 members', () => {
             expect(clients.size).toBe(2);
         });
 
-        test('should get a client with namespace', async () => {
-            const client = redisService.getClient('client0');
-
-            await expect(client.ping()).resolves.toBeDefined();
-        });
-
-        test('should get default client with namespace', async () => {
-            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
-
-            await expect(client.ping()).resolves.toBeDefined();
+        test('should work correctly', () => {
+            let client: Redis;
+            client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+            expect(client).toBeInstanceOf(IORedis);
+            client = service.getClient('client1');
+            expect(client).toBeInstanceOf(IORedis);
         });
     });
 
-    describe('with single client', () => {
+    describe('with a single client and no namespace', () => {
         let clients: RedisClients;
+        let service: RedisService;
 
-        let redisService: RedisService;
-
-        afterAll(async () => {
-            await quitClients(clients);
-        });
-
-        beforeAll(async () => {
+        beforeEach(async () => {
             const options: RedisModuleOptions = {
                 config: {
-                    host: testConfig.master.host,
-                    port: testConfig.master.port,
-                    password: testConfig.master.password
+                    host: '127.0.0.1',
+                    port: 6380
                 }
             };
 
-            const moduleRef = await Test.createTestingModule({
+            const module: TestingModule = await Test.createTestingModule({
                 providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
             }).compile();
 
-            clients = moduleRef.get<RedisClients>(REDIS_CLIENTS);
-            redisService = moduleRef.get<RedisService>(RedisService);
+            clients = module.get<RedisClients>(REDIS_CLIENTS);
+            service = module.get<RedisService>(RedisService);
         });
 
         test('should have 1 member', () => {
             expect(clients.size).toBe(1);
         });
 
-        test('should get default client with namespace', async () => {
-            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
+        test('should work correctly', () => {
+            const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+            expect(client).toBeInstanceOf(IORedis);
+        });
+    });
 
-            await expect(client.ping()).resolves.toBeDefined();
+    describe('with a single client and namespace', () => {
+        let clients: RedisClients;
+        let service: RedisService;
+
+        beforeEach(async () => {
+            const options: RedisModuleOptions = {
+                config: {
+                    namespace: 'client1',
+                    host: '127.0.0.1',
+                    port: 6380
+                }
+            };
+
+            const module: TestingModule = await Test.createTestingModule({
+                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
+            }).compile();
+
+            clients = module.get<RedisClients>(REDIS_CLIENTS);
+            service = module.get<RedisService>(RedisService);
+        });
+
+        test('should have 1 member', () => {
+            expect(clients.size).toBe(1);
+        });
+
+        test('should work correctly', () => {
+            const client = service.getClient('client1');
+            expect(client).toBeInstanceOf(IORedis);
         });
     });
 
     describe('without options', () => {
         let clients: RedisClients;
+        let service: RedisService;
 
-        let redisService: RedisService;
-
-        afterAll(async () => {
-            await quitClients(clients);
-        });
-
-        beforeAll(async () => {
-            const moduleRef = await Test.createTestingModule({
+        beforeEach(async () => {
+            const module: TestingModule = await Test.createTestingModule({
                 providers: [{ provide: REDIS_OPTIONS, useValue: {} }, redisClientsProvider, RedisService]
             }).compile();
 
-            clients = moduleRef.get<RedisClients>(REDIS_CLIENTS);
-            redisService = moduleRef.get<RedisService>(RedisService);
+            clients = module.get<RedisClients>(REDIS_CLIENTS);
+            service = module.get<RedisService>(RedisService);
         });
 
         test('should have 1 member', () => {
             expect(clients.size).toBe(1);
         });
 
-        test('should get default client with namespace', () => {
-            const client = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
-
+        test('should work correctly', () => {
+            const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis);
         });
     });
 });
 
-describe(`${createRedisClientProviders.name}`, () => {
-    const clients: RedisClients = new Map();
-
-    let client0: Redis;
+describe('createRedisClientProviders', () => {
+    let clients: RedisClients;
     let client1: Redis;
+    let client2: Redis;
 
-    afterAll(async () => {
-        await quitClients(clients);
-    });
+    beforeEach(async () => {
+        clients = new Map();
+        clients.set('client1', new IORedis());
+        clients.set('client2', new IORedis());
+        namespaces.set('client1', 'client1');
+        namespaces.set('client2', 'client2');
 
-    beforeAll(async () => {
-        namespaces.push(...['client0', 'client1']);
-
-        clients.set('client0', new IORedis({ ...testConfig.master, db: 0 }));
-        clients.set('client1', new IORedis({ ...testConfig.master, db: 1 }));
-
-        const moduleRef = await Test.createTestingModule({
+        const module: TestingModule = await Test.createTestingModule({
             providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService, ...createRedisClientProviders()]
         }).compile();
 
-        client0 = moduleRef.get<Redis>('client0');
-        client1 = moduleRef.get<Redis>('client1');
+        client1 = module.get<Redis>('client1');
+        client2 = module.get<Redis>('client2');
     });
 
-    test('client0 should work correctly', async () => {
-        await expect(client0.ping()).resolves.toBeDefined();
-    });
-
-    test('client1 should work correctly', async () => {
-        await expect(client1.ping()).resolves.toBeDefined();
+    test('should work correctly', () => {
+        expect(client1).toBeInstanceOf(IORedis);
+        expect(client2).toBeInstanceOf(IORedis);
     });
 });
