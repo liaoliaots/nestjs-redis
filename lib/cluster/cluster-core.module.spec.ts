@@ -34,7 +34,7 @@ describe('ClusterCoreModule', () => {
         });
 
         test('should throw an error', () => {
-            expect(() => ClusterCoreModule.forRootAsync()).toThrow();
+            expect(() => ClusterCoreModule.forRootAsync({})).toThrow();
         });
     });
 

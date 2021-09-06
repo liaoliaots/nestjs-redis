@@ -17,7 +17,7 @@ export class RedisModule {
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(options?: RedisModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
         return {
             module: RedisModule,
             imports: [RedisCoreModule.forRootAsync(options)]

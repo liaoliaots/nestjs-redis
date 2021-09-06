@@ -35,7 +35,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
         };
     }
 
-    static forRootAsync(options: RedisModuleAsyncOptions = {}): DynamicModule {
+    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
             throw new RedisError(MISSING_CONFIGURATION);
         }
