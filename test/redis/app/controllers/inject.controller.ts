@@ -1,21 +1,21 @@
 import { Controller, Get } from '@nestjs/common';
 import { Redis } from 'ioredis';
-import { InjectRedis } from '@/index';
+import { InjectRedis } from '@/.';
 
 @Controller('inject')
 export class InjectController {
     constructor(
-        @InjectRedis('client0') private readonly client0: Redis,
-        @InjectRedis() private readonly clientDefault: Redis
+        @InjectRedis() private readonly clientDefault: Redis,
+        @InjectRedis('client1') private readonly client1: Redis
     ) {}
 
-    @Get('client0')
-    pingClient0(): Promise<string> {
-        return this.client0.ping();
+    @Get('clientDefault')
+    async pingClientDefault(): Promise<string> {
+        return await this.clientDefault.ping();
     }
 
-    @Get('default')
-    pingDefault(): Promise<string> {
-        return this.clientDefault.ping();
+    @Get('client1')
+    async pingClient1(): Promise<string> {
+        return await this.client1.ping();
     }
 }

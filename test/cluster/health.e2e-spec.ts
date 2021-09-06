@@ -1,79 +1,49 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { FastifyInstance } from 'fastify';
 import { AppModule } from './app/app.module';
-import { ClusterClients } from '../../lib/cluster/interfaces';
-import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from '../../lib/cluster/cluster.constants';
-import { quitClients } from '../../lib/cluster/common';
 
-let clients: ClusterClients;
+const timeout = () => new Promise(resolve => setTimeout(resolve, 50));
 
-let app: NestFastifyApplication;
+describe('HealthController (e2e)', () => {
+    let app: NestFastifyApplication;
 
-afterAll(async () => {
-    quitClients(clients);
-    await app.close();
-});
+    beforeAll(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            imports: [AppModule]
+        }).compile();
 
-beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-        imports: [AppModule]
-    }).compile();
-    clients = moduleRef.get<ClusterClients>(CLUSTER_CLIENTS);
-    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+        app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
-    await app.init();
-    await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
-});
-
-test('/health (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/health' });
-
-    expect(res.statusCode).toBe(200);
-    expect(JSON.parse(res.payload)).toEqual({
-        status: 'ok',
-        info: {
-            client0: {
-                status: 'up'
-            },
-            default: {
-                status: 'up'
-            }
-        },
-        error: {},
-        details: {
-            client0: {
-                status: 'up'
-            },
-            default: {
-                status: 'up'
-            }
-        }
-    });
-});
-
-describe('disconnect', () => {
-    beforeEach(async () => {
-        await clients.get(DEFAULT_CLUSTER_NAMESPACE)?.quit();
+        await app.init();
+        await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
+        await timeout();
     });
 
-    test('/health/with-disconnected-client (GET)', async () => {
-        const res = await app.inject({ method: 'GET', url: '/health/with-disconnected-client' });
+    afterAll(async () => {
+        await app.close();
+    });
 
-        expect(res.statusCode).toBe(503);
+    test('/health (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/health' });
+        expect(res.statusCode).toBe(200);
         expect(JSON.parse(res.payload)).toEqual({
-            status: 'error',
-            info: {},
-            error: {
-                default: {
-                    status: 'down',
-                    message: 'Connection is closed.'
+            status: 'ok',
+            info: {
+                clientDefault: {
+                    status: 'up'
+                },
+                client1: {
+                    status: 'up'
                 }
             },
+            error: {},
             details: {
-                default: {
-                    status: 'down',
-                    message: 'Connection is closed.'
+                clientDefault: {
+                    status: 'up'
+                },
+                client1: {
+                    status: 'up'
                 }
             }
         });

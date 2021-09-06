@@ -1,43 +1,35 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+import { FastifyInstance } from 'fastify';
 import { AppModule } from './app/app.module';
-import { RedisClients } from '../../lib/redis/interfaces';
-import { REDIS_CLIENTS } from '../../lib/redis/redis.constants';
-import { quitClients } from '../../lib/redis/common';
 
-let clients: RedisClients;
+describe('ServiceController (e2e)', () => {
+    let app: NestFastifyApplication;
 
-let app: NestFastifyApplication;
+    beforeAll(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            imports: [AppModule]
+        }).compile();
 
-afterAll(async () => {
-    quitClients(clients);
-    await app.close();
-});
+        app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
-beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-        imports: [AppModule]
-    }).compile();
+        await app.init();
+        await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
+    });
 
-    clients = moduleRef.get<RedisClients>(REDIS_CLIENTS);
+    afterAll(async () => {
+        await app.close();
+    });
 
-    app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+    test('/service/clientDefault (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/service/clientDefault' });
+        expect(res.statusCode).toBe(200);
+        expect(res.payload).toBe('PONG');
+    });
 
-    await app.init();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    await app.getHttpAdapter().getInstance().ready();
-});
-
-test('/service/client0 (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/service/client0' });
-
-    expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
-});
-
-test('/service/default (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/service/default' });
-
-    expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
+    test('/service/client1 (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/service/client1' });
+        expect(res.statusCode).toBe(200);
+        expect(res.payload).toBe('PONG');
+    });
 });

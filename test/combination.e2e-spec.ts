@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Cluster, Redis } from 'ioredis';
-import { ClusterModule, RedisModule, InjectCluster, InjectRedis } from '@/.';
+import { ClusterModule, RedisModule, InjectCluster, InjectRedis, getClusterToken, getRedisToken } from '@/.';
 
 jest.mock('ioredis');
 
@@ -22,14 +22,12 @@ describe('combination', () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [
                 ClusterModule.forRoot({
-                    closeClient: true,
                     config: {
                         namespace: 'default',
                         nodes: []
                     }
                 }),
                 RedisModule.forRoot({
-                    closeClient: true,
                     config: {
                         namespace: 'default'
                     }
@@ -38,20 +36,15 @@ describe('combination', () => {
             providers: [TestCluster, TestRedis]
         }).compile();
 
-        clusterClient = module.get<Cluster>('default');
-        redisClient = module.get<Redis>('default');
-    });
-
-    afterAll(async () => {
-        await clusterClient.quit();
-        await redisClient.quit();
-    });
-
-    test('should be a redis instance', () => {
-        expect(redisClient).toBeInstanceOf(IORedis);
+        clusterClient = module.get<Cluster>(getClusterToken('default'));
+        redisClient = module.get<Redis>(getRedisToken('default'));
     });
 
     test('should be a cluster instance', () => {
         expect(clusterClient).toBeInstanceOf(IORedis.Cluster);
+    });
+
+    test('should be a redis instance', () => {
+        expect(redisClient).toBeInstanceOf(IORedis);
     });
 });

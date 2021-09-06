@@ -2,27 +2,22 @@ import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
 import { Redis } from 'ioredis';
 import { RedisHealthIndicator } from '@/health';
-import { InjectRedis } from '@/index';
+import { InjectRedis } from '@/.';
 
 @Controller('health')
 export class HealthController {
     constructor(
-        @InjectRedis() private readonly client0: Redis,
-        @InjectRedis('client1') private readonly clientDefault: Redis,
-        private readonly health: HealthCheckService,
-        private readonly redis: RedisHealthIndicator
+        @InjectRedis() private readonly clientDefault: Redis,
+        @InjectRedis('client1') private readonly client1: Redis,
+        private readonly healthCheckService: HealthCheckService,
+        private readonly redisHealthIndicator: RedisHealthIndicator
     ) {}
 
     @Get()
-    healthCheck(): Promise<HealthCheckResult> {
-        return this.health.check([
-            () => this.redis.checkHealth('client0', { client: this.client0 }),
-            () => this.redis.checkHealth('default', { client: this.clientDefault })
+    async healthCheck(): Promise<HealthCheckResult> {
+        return await this.healthCheckService.check([
+            () => this.redisHealthIndicator.checkHealth('clientDefault', { client: this.clientDefault }),
+            () => this.redisHealthIndicator.checkHealth('client1', { client: this.client1 })
         ]);
-    }
-
-    @Get('with-disconnected-client')
-    healthCheckWithDisconnect(): Promise<HealthCheckResult> {
-        return this.health.check([() => this.redis.checkHealth('default', { client: this.clientDefault })]);
     }
 }
