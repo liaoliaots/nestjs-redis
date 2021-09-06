@@ -35,7 +35,7 @@ export class ClusterCoreModule implements OnApplicationShutdown {
         };
     }
 
-    static forRootAsync(options: ClusterModuleAsyncOptions = {}): DynamicModule {
+    static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
             throw new RedisError(MISSING_CONFIGURATION);
         }

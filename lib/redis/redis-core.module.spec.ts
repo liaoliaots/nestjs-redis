@@ -30,7 +30,7 @@ describe('RedisCoreModule', () => {
         });
 
         test('should throw an error', () => {
-            expect(() => RedisCoreModule.forRootAsync()).toThrow();
+            expect(() => RedisCoreModule.forRootAsync({})).toThrow();
         });
     });
 
