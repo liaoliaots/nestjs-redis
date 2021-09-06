@@ -15,12 +15,12 @@ import { ClusterService } from './cluster.service';
 
 jest.mock('ioredis');
 
+const clusterOptions: ClusterModuleOptions = { config: { nodes: [] } };
 class ClusterConfigService implements ClusterOptionsFactory {
     createClusterOptions(): ClusterModuleOptions {
-        return { config: { nodes: [] } };
+        return clusterOptions;
     }
 }
-const clusterOptions: ClusterModuleOptions = { config: { nodes: [] } };
 
 describe('createOptionsProvider', () => {
     test('should work correctly', () => {
