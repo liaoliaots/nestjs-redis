@@ -1,7 +1,7 @@
-# Welcome to nestjs-redis 👋
+<h1 align="center">Welcome to @liaoliaots/nestjs-redis 👋</h1>
 
 [![npm (tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/next?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis/v/3.0.0-next.2)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/next?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis/v/3.0.0-next.3)
 ![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -14,29 +14,22 @@
 ## Features
 
 -   Supports **redis** and **cluster**
--   Supports health check
--   Supports specify single or multiple clients
--   Supports inject a client directly or get a client via namespace
+-   Supports health checks
+-   Can specify single or multiple clients
+-   Can inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
+-   Can get a redis/cluster client via `RedisService` and `ClusterService`
 
 ## Documentation
 
-_For the legacy V2 or V3@next documentation, [click here](./docs/v2/README.md)._
+_For the legacy V2 or V3@next documentation, [click here](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v2/README.md)._
 
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
--   [Redis](./docs/v3/redis.md)
-    -   [Usage](/docs/v3/redis.md#redis-usage)
-    -   [Health check](/docs/v3/redis.md#redis-health-check)
-    -   [Options](/docs/v3/redis.md#redis-options)
--   [Cluster](./docs/v3/cluster.md)
-    -   [Usage](./docs/v3/cluster.md#cluster-usage)
-    -   [Health check](./docs/v3/cluster.md#cluster-health-check)
-    -   [Options](./docs/v3/cluster.md#cluster-options)
--   [Examples](./docs/v3/examples.md)
-    -   [Redis](./docs/v3/examples.md)
-        -   [default](./docs/v3/examples.md#examples-redis)
-        -   [sentinel](./docs/v3/examples.md#examples-sentinel)
-    -   [Cluster](./docs/v3/cluster.md)
+-   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md)
+-   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
+-   [Health checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
+-   [Test a class](#test-a-class)
+-   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)
 -   [Package dependency overview](#package-dependency-overview)
 
 ## Test coverage
@@ -50,12 +43,12 @@ _For the legacy V2 or V3@next documentation, [click here](./docs/v2/README.md)._
 ### NestJS 8:
 
 ```sh
-$ npm install --save @liaoliaots/nestjs-redis@next ioredis @nestjs/terminus@next
+$ npm install --save @liaoliaots/nestjs-redis ioredis
 $ npm install --save-dev @types/ioredis
 ```
 
 ```sh
-$ yarn add @liaoliaots/nestjs-redis@next ioredis @nestjs/terminus@next
+$ yarn add @liaoliaots/nestjs-redis ioredis
 $ yarn add --dev @types/ioredis
 ```
 
@@ -71,35 +64,34 @@ $ yarn add @liaoliaots/nestjs-redis@2 ioredis @nestjs/terminus@7
 $ yarn add --dev @types/ioredis
 ```
 
+## Test a class
+
+This package exports `getRedisToken()` and `getClusterToken()` function that returns a internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+
+```TypeScript
+const module: TestingModule = await Test.createTestingModule({
+    providers: [{ provide: getRedisToken('your client namespace'), useValue: mockClient }, YourService]
+}).compile();
+```
+
 ## TODO
 
--   [x] add prefix for DI token
--   [x] use promise catch for quitting client
--   [x] update unit test
--   [ ] update e2e test
--   [ ] add github actions for unit testing
--   [x] refactor providers
 -   [ ] update docs
--   [x] delete test/env.ts
--   [x] move health barrel files to health folder
 -   [ ] select db
 
 ## Package dependency overview
 
-![](./docs/v3/dependency-graph.svg)
+![](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/dependency-graph.svg)
 
 ## Author
 
 👤 **LiaoLiao**
 
--   Website: https://github.com/liaoliaots
 -   Github: [@liaoliaots](https://github.com/liaoliaots)
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
-
-Feel free to check [issues page](https://github.com/liaoliaots/nestjs-redis/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/liaoliaots/nestjs-redis/issues).
 
 ## Show your support
 
@@ -107,8 +99,7 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2021 [LiaoLiao](https://github.com/liaoliaots).
-
+Copyright © 2021 [LiaoLiao](https://github.com/liaoliaots).<br />
 This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
 
 ---
