@@ -1,12 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import IORedis, { ClusterNode } from 'ioredis';
+import IORedis from 'ioredis';
 import { ClusterService } from './cluster.service';
 import { ClusterClients } from './interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 
 jest.mock('ioredis');
-
-const nodes: ClusterNode[] = [{ host: '127.0.0.1', port: 16380 }];
 
 describe('ClusterService', () => {
     let clients: ClusterClients;
@@ -14,8 +12,8 @@ describe('ClusterService', () => {
 
     beforeEach(async () => {
         clients = new Map();
-        clients.set(DEFAULT_CLUSTER_NAMESPACE, new IORedis.Cluster(nodes));
-        clients.set('client1', new IORedis.Cluster(nodes));
+        clients.set(DEFAULT_CLUSTER_NAMESPACE, new IORedis.Cluster([]));
+        clients.set('client1', new IORedis.Cluster([]));
 
         const module: TestingModule = await Test.createTestingModule({
             providers: [{ provide: CLUSTER_CLIENTS, useValue: clients }, ClusterService]
