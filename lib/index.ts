@@ -2,7 +2,7 @@ export { RedisModule } from './redis/redis.module';
 export { DEFAULT_REDIS_NAMESPACE } from './redis/redis.constants';
 export { RedisService } from './redis/redis.service';
 export { InjectRedis, getRedisToken } from './redis/common';
-export { RedisHealthModule, RedisHealthIndicator } from './health/index';
+export { RedisHealthModule, RedisHealthIndicator } from './health';
 
 export { ClusterModule } from './cluster/cluster.module';
 export { DEFAULT_CLUSTER_NAMESPACE } from './cluster/cluster.constants';
