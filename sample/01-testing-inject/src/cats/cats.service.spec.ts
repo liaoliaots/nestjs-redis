@@ -3,19 +3,19 @@ import { getRedisToken, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis
 import IORedis, { Redis } from 'ioredis';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
-import { Cat } from './cat.model';
+import { Cat } from './models/cat';
 
 jest.mock('ioredis');
 
 describe('CatsService', () => {
     let service: CatsService;
-    let defaultClient: Redis;
+    let client: Redis;
 
     beforeEach(async () => {
-        defaultClient = new IORedis();
+        client = new IORedis();
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: getRedisToken(DEFAULT_REDIS_NAMESPACE), useValue: defaultClient }, CatsService]
+            providers: [{ provide: getRedisToken(DEFAULT_REDIS_NAMESPACE), useValue: client }, CatsService]
         }).compile();
 
         service = module.get<CatsService>(CatsService);
@@ -27,13 +27,14 @@ describe('CatsService', () => {
 
     describe('findAll', () => {
         test('should return an array of cats', async () => {
-            const get = jest.spyOn(defaultClient, 'get').mockResolvedValue(null);
-            const set = jest.spyOn(defaultClient, 'set');
+            const get = jest.spyOn(client, 'get').mockResolvedValue(null);
+            const set = jest.spyOn(client, 'set');
 
             let cats: Cat[];
 
             cats = await service.findAll();
             expect(cats).toHaveLength(2);
+            expect(cats[0]).toEqual({ id: 1, name: 'Test Cat 1', breed: 'Test Breed 1' });
             expect(get.mock.calls).toHaveLength(1);
             expect(set.mock.calls).toHaveLength(1);
             expect(set.mock.calls[0][1]).toBe(JSON.stringify(cats));
@@ -48,11 +49,10 @@ describe('CatsService', () => {
 
     describe('create', () => {
         test('should create a cat', async () => {
-            const del = jest.spyOn(defaultClient, 'del');
+            const del = jest.spyOn(client, 'del');
 
             const createCatDto: CreateCatDto = {
                 name: 'Test Cat 3',
-                age: 3,
                 breed: 'Test Breed 3'
             };
             const newCat = await service.create(createCatDto);

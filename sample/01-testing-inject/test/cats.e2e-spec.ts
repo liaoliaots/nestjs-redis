@@ -5,74 +5,65 @@ import { FastifyInstance } from 'fastify';
 import { Redis } from 'ioredis';
 import { AppModule } from '../src/app.module';
 
-const testCatName3 = 'Test Cat 3';
+const testCat3 = 'Test Cat 3';
 
 describe('CatsController (e2e)', () => {
     let app: NestFastifyApplication;
-    let defaultClient: Redis;
+    let client: Redis;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [AppModule]
         }).compile();
 
-        defaultClient = module.get<Redis>(getRedisToken(DEFAULT_REDIS_NAMESPACE), { strict: false });
+        client = module.get<Redis>(getRedisToken(DEFAULT_REDIS_NAMESPACE));
         app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
-        await defaultClient.flushdb();
         await app.init();
         await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
+        await client.flushdb();
     });
 
     afterAll(async () => {
-        await defaultClient.flushdb();
+        await client.flushdb();
         await app.close();
     });
 
     describe('/cats GET', () => {
-        test('should return an array of cats', () => {
-            return app
-                .inject({
-                    method: 'GET',
-                    url: '/cats'
-                })
-                .then(response => {
-                    expect(response.statusCode).toEqual(200);
-                    expect(JSON.parse(response.payload)).toEqual([
-                        {
-                            id: 1,
-                            name: 'Test Cat 1',
-                            age: 1,
-                            breed: 'Test Breed 1'
-                        },
-                        {
-                            id: 2,
-                            name: 'Test Cat 2',
-                            age: 2,
-                            breed: 'Test Breed 2'
-                        }
-                    ]);
-                });
+        test('should return an array of cats', async () => {
+            const res = await app.inject({
+                method: 'GET',
+                url: '/cats'
+            });
+            expect(res.statusCode).toEqual(200);
+            expect(JSON.parse(res.payload)).toEqual([
+                {
+                    id: 1,
+                    name: 'Test Cat 1',
+                    breed: 'Test Breed 1'
+                },
+                {
+                    id: 2,
+                    name: 'Test Cat 2',
+                    breed: 'Test Breed 2'
+                }
+            ]);
         });
     });
 
     describe('/cats POST', () => {
-        test('should create a cat', () => {
-            return app
-                .inject({
-                    method: 'POST',
-                    url: '/cats',
-                    payload: { name: testCatName3, age: 3, breed: 'Test Breed 3' }
-                })
-                .then(response => {
-                    expect(response.statusCode).toEqual(201);
-                    expect(JSON.parse(response.payload)).toEqual({
-                        id: 3,
-                        name: testCatName3,
-                        age: 3,
-                        breed: 'Test Breed 3'
-                    });
-                });
+        test('should create a cat', async () => {
+            const res = await app.inject({
+                method: 'POST',
+                url: '/cats',
+                payload: { name: testCat3, breed: 'Test Breed 3' }
+            });
+            expect(res.statusCode).toEqual(201);
+            expect(JSON.parse(res.payload)).toEqual({
+                id: 3,
+                name: testCat3,
+                breed: 'Test Breed 3'
+            });
         });
     });
 });
