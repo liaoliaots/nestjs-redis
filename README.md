@@ -27,7 +27,7 @@ _For the legacy V2 or V3@next documentation, [click here](https://github.com/lia
 -   [Install](#install)
 -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md)
 -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
--   [Health checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
+-   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
 -   [Test a class](#test-a-class)
 -   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)
 -   [Package dependency overview](#package-dependency-overview)
@@ -66,7 +66,7 @@ $ yarn add --dev @types/ioredis
 
 ## Test a class
 
-This package exports `getRedisToken()` and `getClusterToken()` function that returns a internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
 ```TypeScript
 const module: TestingModule = await Test.createTestingModule({
@@ -76,7 +76,6 @@ const module: TestingModule = await Test.createTestingModule({
 
 ## TODO
 
--   [ ] update docs
 -   [ ] select db
 
 ## Package dependency overview
