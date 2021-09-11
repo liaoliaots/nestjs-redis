@@ -27,9 +27,14 @@ _For the legacy V2 or V3@next documentation, [click here](https://github.com/lia
 -   [Install](#install)
 -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md)
 -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
--   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
+-   [Health Check](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
 -   [Test a class](#test-a-class)
 -   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)
+    -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#redis)
+        -   [Default](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#default)
+        -   [Sentinel](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#sentinel)
+    -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#cluster)
+        -   [Multiple Clients](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#multiple-clients)
 -   [Package dependency overview](#package-dependency-overview)
 
 ## Test coverage

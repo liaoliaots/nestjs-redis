@@ -7,7 +7,7 @@ networks:
                 - subnet: '172.19.0.0/16'
 services:
     redis-master-1:
-        image: 'bitnami/redis:6.2.5'
+        image: 'bitnami/redis:latest'
         environment:
             - 'REDIS_REPLICATION_MODE=master'
             - 'REDIS_PORT_NUMBER=6380'
@@ -17,7 +17,7 @@ services:
         ports:
             - '6380:6380'
     redis-master-2:
-        image: 'bitnami/redis:6.2.5'
+        image: 'bitnami/redis:latest'
         environment:
             - 'REDIS_REPLICATION_MODE=master'
             - 'REDIS_PORT_NUMBER=6381'
@@ -27,7 +27,7 @@ services:
         ports:
             - '6381:6381'
     redis-slave-1:
-        image: 'bitnami/redis:6.2.5'
+        image: 'bitnami/redis:latest'
         environment:
             - 'REDIS_REPLICATION_MODE=slave'
             - 'REDIS_PORT_NUMBER=6480'
@@ -35,6 +35,7 @@ services:
             - 'REDIS_MASTER_HOST=redis-master-1'
             - 'REDIS_MASTER_PORT_NUMBER=6380'
             - 'REDIS_MASTER_PASSWORD=masterpassword1'
+            - 'REDIS_REPLICA_PORT=6480'
         networks:
             - 'testing'
         ports:
@@ -42,7 +43,7 @@ services:
         depends_on:
             - 'redis-master-1'
     redis-slave-2:
-        image: 'bitnami/redis:6.2.5'
+        image: 'bitnami/redis:latest'
         environment:
             - 'REDIS_REPLICATION_MODE=slave'
             - 'REDIS_PORT_NUMBER=6481'
@@ -50,6 +51,7 @@ services:
             - 'REDIS_MASTER_HOST=redis-master-1'
             - 'REDIS_MASTER_PORT_NUMBER=6380'
             - 'REDIS_MASTER_PASSWORD=masterpassword1'
+            - 'REDIS_REPLICA_PORT=6481'
         networks:
             - 'testing'
         ports:
@@ -57,7 +59,7 @@ services:
         depends_on:
             - 'redis-master-1'
     redis-sentinel-1:
-        image: 'bitnami/redis-sentinel:6.2.5'
+        image: 'bitnami/redis-sentinel:latest'
         environment:
             - 'REDIS_SENTINEL_PORT_NUMBER=7380'
             - 'REDIS_SENTINEL_PASSWORD=sentinelpassword'
@@ -76,7 +78,7 @@ services:
             - 'redis-slave-1'
             - 'redis-slave-2'
     redis-sentinel-2:
-        image: 'bitnami/redis-sentinel:6.2.5'
+        image: 'bitnami/redis-sentinel:latest'
         environment:
             - 'REDIS_SENTINEL_PORT_NUMBER=7381'
             - 'REDIS_SENTINEL_PASSWORD=sentinelpassword'
@@ -95,11 +97,13 @@ services:
             - 'redis-slave-1'
             - 'redis-slave-2'
     cluster-1-master-1:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16380'
             - 'REDIS_PASSWORD=clusterpassword1'
             - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.20'
         networks:
             testing:
                 ipv4_address: '172.19.0.20'
@@ -107,11 +111,13 @@ services:
             - '16380:16380'
             - '26380:26380'
     cluster-1-master-2:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16381'
             - 'REDIS_PASSWORD=clusterpassword1'
             - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.21'
         networks:
             testing:
                 ipv4_address: '172.19.0.21'
@@ -119,11 +125,13 @@ services:
             - '16381:16381'
             - '26381:26381'
     cluster-1-master-3:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16382'
             - 'REDIS_PASSWORD=clusterpassword1'
             - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.22'
         networks:
             testing:
                 ipv4_address: '172.19.0.22'
@@ -131,11 +139,13 @@ services:
             - '16382:16382'
             - '26382:26382'
     cluster-2-master-1:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16480'
             - 'REDIS_PASSWORD=clusterpassword2'
             - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.30'
         networks:
             testing:
                 ipv4_address: '172.19.0.30'
@@ -143,11 +153,13 @@ services:
             - '16480:16480'
             - '26480:26480'
     cluster-2-master-2:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16481'
             - 'REDIS_PASSWORD=clusterpassword2'
             - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.31'
         networks:
             testing:
                 ipv4_address: '172.19.0.31'
@@ -155,11 +167,13 @@ services:
             - '16481:16481'
             - '26481:26481'
     cluster-2-master-3:
-        image: 'bitnami/redis-cluster:6.2.5'
+        image: 'bitnami/redis-cluster:latest'
         environment:
             - 'REDIS_PORT_NUMBER=16482'
             - 'REDIS_PASSWORD=clusterpassword2'
             - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
+            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.32'
         networks:
             testing:
                 ipv4_address: '172.19.0.32'
