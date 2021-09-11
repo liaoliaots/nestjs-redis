@@ -1,6 +1,6 @@
-## Health Checks
+# Health Checks
 
-### Usage
+## Usage
 
 **Firstly**, we need to install the required package:
 
@@ -11,14 +11,13 @@ $ npm install --save @nestjs/terminus
 **Secondly**, we need to import the `TerminusModule` and `RedisHealthModule` into our business module:
 
 ```TypeScript
-// Suppose we want to check health for redis and cluster, so we need to import the `ClusterModule` and `RedisModule`.
-
 import { Module } from '@nestjs/common';
 import { ClusterModule, RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisHealthModule } from '@liaoliaots/nestjs-redis/health'; // note the import path
 import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+// Suppose we want to check health for redis and cluster, so we need to import the `ClusterModule` and `RedisModule`.
 
 @Module({
     imports: [
@@ -40,11 +39,9 @@ import { AppService } from './app.service';
         TerminusModule,
         RedisHealthModule
     ],
-    controllers: [AppController],
-    providers: [AppService]
+    controllers: [AppController]
 })
 export class AppModule {}
-
 ```
 
 > HINT: Both `TerminusModule` and `RedisHealthModule` aren't global modules.
