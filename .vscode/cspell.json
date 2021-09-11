@@ -16,6 +16,7 @@
         "commitlint",
         "tsdoc",
         "env",
-        "npx"
+        "npx",
+        "mymaster"
     ]
 }
