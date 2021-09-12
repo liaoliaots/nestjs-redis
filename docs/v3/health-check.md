@@ -46,7 +46,7 @@ export class AppModule {}
 
 > HINT: Both `TerminusModule` and `RedisHealthModule` aren't global modules.
 
-**Thirdly**, let's create a health check:
+**Now** let's create a health check:
 
 ```TypeScript
 import { Controller, Get } from '@nestjs/common';

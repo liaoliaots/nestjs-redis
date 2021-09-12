@@ -52,8 +52,6 @@ export class AppModule {}
 
 > HINT: When using Sentinel in Master-Slave setup, if you want to set the passwords for Master and Slave nodes, consider having the same password for them ([#7292](https://github.com/redis/redis/issues/7292)).
 
-> INFO: Read more about sentinel [here](https://github.com/luin/ioredis#sentinel).
-
 ```TypeScript
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
@@ -88,9 +86,13 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
+> HINT: The `commonOptions` option works only with multiple clients.
+
+> INFO: Read more about sentinel [here](https://github.com/luin/ioredis#sentinel).
+
 ## Cluster
 
-<h3 id="multiple-clients">Multiple Clients</h3>
+### Multiple Clients
 
 cluster 1:
 
@@ -107,8 +109,6 @@ cluster 2:
 | master1 | 127.0.0.1 | 16480 | clusterpassword2 |
 | master2 | 127.0.0.1 | 16481 | clusterpassword2 |
 | master3 | 127.0.0.1 | 16482 | clusterpassword2 |
-
-> INFO: Read more about cluster [here](https://github.com/luin/ioredis#cluster).
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -135,3 +135,5 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 })
 export class AppModule {}
 ```
+
+> INFO: Read more about cluster [here](https://github.com/luin/ioredis#cluster).

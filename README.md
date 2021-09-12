@@ -11,13 +11,13 @@
 
 > Redis([ioredis](https://github.com/luin/ioredis)) module for NestJS framework
 
-## Features
+## Features 🚀
 
--   Supports **redis** and **cluster**
--   Supports health checks
--   Can specify single or multiple clients
--   Can inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
--   Can get a redis/cluster client via `RedisService` and `ClusterService`
+-   Support **redis** and **cluster**
+-   Support health check
+-   Specify single or multiple clients
+-   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
+-   Get a redis/cluster client via `RedisService` and `ClusterService`
 
 ## Documentation
 
@@ -26,6 +26,8 @@ _For the legacy V2 or V3@next documentation, [click here](https://github.com/lia
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
 -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md)
+    -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#usage)
+    -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#configuration)
 -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
 -   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
 -   [Test a class](#test-a-class)
