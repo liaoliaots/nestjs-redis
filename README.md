@@ -29,6 +29,8 @@ _For the legacy V2 or V3@next documentation, [click here](https://github.com/lia
     -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#usage)
     -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#configuration)
 -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
+    -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#usage)
+    -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#configuration)
 -   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
 -   [Test a class](#test-a-class)
 -   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)

@@ -60,9 +60,9 @@ export class AppService {
     private readonly defaultRedisClient: Redis;
 
     constructor(private readonly redisService: RedisService) {
-        this.defaultRedisClient = redisService.getClient();
+        this.defaultRedisClient = this.redisService.getClient();
         // or
-        // this.defaultRedisClient = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
+        // this.defaultRedisClient = this.redisService.getClient(DEFAULT_REDIS_NAMESPACE);
     }
 
     async ping(): Promise<string> {

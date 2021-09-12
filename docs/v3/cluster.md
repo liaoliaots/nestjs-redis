@@ -1,72 +1,8 @@
-## Cluster
+# Cluster
 
-<h3 id="cluster-usage">Usage</h3>
+## Usage
 
-**First**, register the ClusterModule in app.module.ts:
-
-The ClusterModule is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, the module is available everywhere.
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { ClusterModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [
-        ClusterModule.forRoot({
-            config: {
-                nodes: [{ host: 'localhost', port: 16380 }]
-            }
-        })
-    ]
-})
-export class AppModule {}
-```
-
-with async config:
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { ClusterModule } from '@liaoliaots/nestjs-redis';
-import { ConfigService, ConfigModule } from '@nestjs/config';
-
-@Module({
-    imports: [
-        ClusterModule.forRootAsync({
-            useFactory: (configService: ConfigService) => ({ config: configService.get('cluster') }),
-            inject: [ConfigService],
-            imports: [ConfigModule]
-
-            // useClass:
-
-            // useExisting:
-        })
-    ]
-})
-export class AppModule {}
-```
-
-with single client:
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { ClusterModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [
-        ClusterModule.forRoot({
-            config: {
-                nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'your_password' } }
-            }
-        })
-    ]
-})
-export class AppModule {}
-```
-
-with multiple clients:
-
-**NOTE:** If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
+**Firstly**, we need to import the `ClusterModule` into our root module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -76,39 +12,9 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
     imports: [
         ClusterModule.forRoot({
             closeClient: true,
-            config: [
-                {
-                    nodes: [{ host: 'localhost', port: 16380 }],
-                    options: { redisOptions: { password: 'your_password' } }
-                },
-                {
-                    namespace: 'cache',
-                    nodes: [{ host: 'localhost', port: 16383 }],
-                    options: { redisOptions: { password: 'your_password' } }
-                }
-            ]
-        })
-    ]
-})
-export class AppModule {}
-```
-
-with **onClientCreated**:
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { ClusterModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [
-        ClusterModule.forRoot({
             config: {
-                onClientCreated(client) {
-                    client.on('ready', () => {});
-                    client.on('error', err => {});
-                },
-                nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'your_password' } }
+                nodes: [{ host: '127.0.0.1', port: 16380 }],
+                options: { redisOptions: { password: 'clusterpassword1' } }
             }
         })
     ]
@@ -116,29 +22,27 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-**Next**, use cluster clients:
+> HINT: The `ClusterModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
+
+**Now** we can use cluster in two ways.
 
 via decorator:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
+import { InjectCluster, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Cluster } from 'ioredis';
-import { InjectCluster, DEFAULT_CLUSTER_CLIENT } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class AppService {
     constructor(
-        @InjectCluster() private readonly clientDefault: Cluster,
+        @InjectCluster() private readonly defaultClusterClient: Cluster
         // or
-        // @InjectCluster(DEFAULT_CLUSTER_CLIENT) private readonly clientDefault: Redis,
-
-        @InjectCluster('cache') private readonly clientCache: Cluster
+        // @InjectCluster(DEFAULT_CLUSTER_NAMESPACE) private readonly defaultClusterClient: Cluster
     ) {}
 
-    async set(): Promise<void> {
-        await this.clientDefault.set('foo', 'bar');
-
-        await this.clientCache.set('foo', 'bar');
+    async ping(): Promise<string> {
+        return await this.defaultClusterClient.ping();
     }
 }
 ```
@@ -147,122 +51,168 @@ via service:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
+import { ClusterService, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Cluster } from 'ioredis';
-import { DEFAULT_CLUSTER_CLIENT, ClusterService } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class AppService {
-    private clientDefault: Cluster;
-
-    private clientCache: Cluster;
-
-    private clients;
+    private readonly defaultClusterClient: Cluster;
 
     constructor(private readonly clusterService: ClusterService) {
-        this.clientDefault = this.clusterService.getClient();
+        this.defaultClusterClient = this.clusterService.getClient();
         // or
-        // this.clientDefault = this.clusterService.getClient(DEFAULT_CLUSTER_CLIENT);
-
-        this.clientCache = this.clusterService.getClient('cache');
-
-        this.clients = this.clusterService.clients; // get all clients
+        // this.defaultClusterClient = this.clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
     }
 
-    async set(): Promise<void> {
-        await this.clientDefault.set('foo', 'bar');
-
-        await this.clientCache.set('foo', 'bar');
+    async ping(): Promise<string> {
+        return await this.defaultClusterClient.ping();
     }
 }
-
 ```
 
-<h3 id="cluster-health-check">Health check</h3>
+## Configuration
 
-**First**, register the [TerminusModule](https://docs.nestjs.com/recipes/terminus) in app.module.ts:
+### ClusterModuleOptions
+
+| Name        | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                               |
+| ----------- | ------------------------------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [See details about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| config      | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                       |
+
+### ClientOptions
+
+| Name                                                                                          | Type                             | Default value                    | Description                                                                                                            |
+| --------------------------------------------------------------------------------------------- | -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                     | string or symbol                 | Symbol('default-cluster-client') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value. |
+| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | { host: string; port: number }[] | -                                | A list of nodes of the cluster.                                                                                        |
+| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                           | undefined                        | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30).                  |
+| onClientCreated                                                                               | function                         | undefined                        | This function will be executed as soon as the client is created.                                                       |
+
+### Asynchronous configuration
+
+via `useFactory`:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
-import { ClusterModule } from '@liaoliaots/nestjs-redis';
-import { TerminusModule } from '@nestjs/terminus';
+import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis';
+import { ConfigService, ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
-        ClusterModule.forRoot({
-            config: {
-                nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'your_password' } }
+        ClusterModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService): Promise<ClusterModuleOptions> => {
+                await somePromise();
+                return {
+                    closeClient: true,
+                    config: {
+                        nodes: [{ host: '127.0.0.1', port: 16380 }],
+                        options: { redisOptions: { password: 'clusterpassword1' } }
+                    }
+                };
             }
-        }),
-        TerminusModule
+        })
     ]
 })
 export class AppModule {}
 ```
 
-**Next**, use health check:
+via `useClass`:
 
 ```TypeScript
-import { Controller, Get } from '@nestjs/common';
-import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
-import { ClusterHealthIndicator, DEFAULT_CLUSTER_CLIENT } from '@liaoliaots/nestjs-redis';
+import { Module, Injectable } from '@nestjs/common';
+import { ClusterModule, ClusterOptionsFactory, ClusterModuleOptions } from '@liaoliaots/nestjs-redis';
 
-@Controller('app')
-export class AppController {
-    constructor(
-        private readonly health: HealthCheckService,
-        private readonly clusterIndicator: ClusterHealthIndicator
-    ) {}
-
-    @Get()
-    healthCheck(): Promise<HealthCheckResult> {
-        return this.health.check([
-            () => this.clusterIndicator.isHealthy('clientDefault', { namespace: DEFAULT_CLUSTER_CLIENT })
-        ]);
+@Injectable()
+export class ClusterConfigService implements ClusterOptionsFactory {
+    async createClusterOptions(): Promise<ClusterModuleOptions> {
+        await somePromise();
+        return {
+            closeClient: true,
+            config: {
+                nodes: [{ host: '127.0.0.1', port: 16380 }],
+                options: { redisOptions: { password: 'clusterpassword1' } }
+            }
+        };
     }
 }
 
+@Module({
+    imports: [
+        ClusterModule.forRootAsync({
+            useClass: ClusterConfigService
+        })
+    ]
+})
+export class AppModule {}
 ```
 
-And then send a GET request to **/app**, if redis is in a healthy state, you will get:
+### Single client
 
 ```TypeScript
-{
-    status: 'ok',
-    info: {
-        clientDefault: {
-            status: 'up'
-        }
-    },
-    error: {},
-    details: {
-        clientDefault: {
-            status: 'up'
-        }
-    }
-}
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        ClusterModule.forRoot({
+            config: {
+                nodes: [{ host: '127.0.0.1', port: 16380 }],
+                options: { redisOptions: { password: 'clusterpassword1' } }
+            }
+        })
+    ]
+})
+export class AppModule {}
 ```
 
-<h3 id="cluster-options">Options</h3>
+### Multiple clients
 
-#### ClusterModuleOptions
+```TypeScript
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
 
-| Name        | Type                             | Default value | Description                                                                                                                                                                                                                                                            |
-| ----------- | -------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient | boolean                          | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use **closeClient**, you must enable listeners by calling **enableShutdownHooks()**. [See details.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| config      | ClientOptions or ClientOptions[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                    |
+@Module({
+    imports: [
+        ClusterModule.forRoot({
+            config: [
+                {
+                    nodes: [{ host: '127.0.0.1', port: 16380 }],
+                    options: { redisOptions: { password: 'clusterpassword1' } }
+                },
+                {
+                    namespace: 'cluster2',
+                    nodes: [{ host: '127.0.0.1', port: 16480 }],
+                    options: { redisOptions: { password: 'clusterpassword2' } }
+                }
+            ]
+        })
+    ]
+})
+export class AppModule {}
+```
 
-#### ClientOptions
+> HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
-| Name                                                                                          | Type                             | Default value     | Description                                                                                                           |
-| --------------------------------------------------------------------------------------------- | -------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                     | string or symbol                 | Symbol('default') | The name of the client, and must be unique. You can import **DEFAULT_CLUSTER_CLIENT** to reference the default value. |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | { port: number; host: string }[] | -                 | A list of nodes of the cluster.                                                                                       |
-| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                           | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30).                 |
-| onClientCreated                                                                               | function                         | undefined         | Once the client has been created, this function will be executed immediately.                                         |
+### onClientCreated
 
-#### ClusterHealthCheckOptions
+```TypeScript
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
 
-| Name      | Type             | Default value | Description                                                             |
-| --------- | ---------------- | ------------- | ----------------------------------------------------------------------- |
-| namespace | string or symbol | -             | The namespace of cluster client, this client will execute health check. |
+@Module({
+    imports: [
+        ClusterModule.forRoot({
+            config: {
+                nodes: [{ host: '127.0.0.1', port: 16380 }],
+                options: { redisOptions: { password: 'clusterpassword1' } },
+                onClientCreated(client) {
+                    client.on('error', err => {});
+                }
+            }
+        })
+    ]
+})
+export class AppModule {}
+```
