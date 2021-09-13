@@ -1,9 +1,7 @@
 {
     "version": "0.2",
     "language": "en",
-    "minWordLength": 2,
     "allowCompoundWords": true,
-    "numSuggestions": 6,
     "words": [
         "liaoliao",
         "liaoliaots",
