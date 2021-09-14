@@ -81,12 +81,12 @@ export class AppService {
 
 ### ClientOptions
 
-| Name                                                                                          | Type                             | Default value                    | Description                                                                                                            |
-| --------------------------------------------------------------------------------------------- | -------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                     | string or symbol                 | Symbol('default-cluster-client') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value. |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | { host: string; port: number }[] | -                                | A list of nodes of the cluster.                                                                                        |
-| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                           | undefined                        | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30).                  |
-| onClientCreated                                                                               | function                         | undefined                        | This function will be executed as soon as the client is created.                                                       |
+| Name                                                                                          | Type                                               | Default value                    | Description                                                                                                            |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                     | string or symbol                                   | Symbol('default-cluster-client') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value. |
+| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | `{ host?: string; port?: number }[]` or `string[]` | -                                | A list of nodes of the cluster.                                                                                        |
+| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                                             | undefined                        | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30).                  |
+| onClientCreated                                                                               | function                                           | undefined                        | This function will be executed as soon as the client is created.                                                       |
 
 ### Asynchronous configuration
 
@@ -160,6 +160,9 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
             config: {
                 nodes: [{ host: '127.0.0.1', port: 16380 }],
                 options: { redisOptions: { password: 'clusterpassword1' } }
+
+                // or with URL
+                // nodes: ['redis://:clusterpassword1@127.0.0.1:16380']
             }
         })
     ]
@@ -193,9 +196,35 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
+with URL:
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        ClusterModule.forRoot({
+            config: [
+                {
+                    nodes: ['redis://:clusterpassword1@127.0.0.1:16380']
+                },
+                {
+                    namespace: 'cluster2',
+                    nodes: ['redis://:clusterpassword2@127.0.0.1:16480']
+                }
+            ]
+        })
+    ]
+})
+export class AppModule {}
+```
+
 > HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
 ### onClientCreated
+
+For example, we can listen to the error event of the cluster client.
 
 ```TypeScript
 import { Module } from '@nestjs/common';

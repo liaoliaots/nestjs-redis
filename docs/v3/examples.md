@@ -4,7 +4,7 @@
 
 ### Default
 
-If the redis server does **not** have a password, the host is **localhost** and the port is **6379**:
+If the redis server does **not** have a password, the host is **127.0.0.1** and the port is **6379**:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -16,7 +16,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-or
+... or
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -28,7 +28,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-or
+... or
 
 ```TypeScript
 import { Module } from '@nestjs/common';

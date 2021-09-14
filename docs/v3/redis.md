@@ -203,6 +203,30 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
+with URL:
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        RedisModule.forRoot({
+            config: [
+                {
+                    url: 'redis://:masterpassword1@127.0.0.1:6380/0'
+                },
+                {
+                    namespace: 'master2',
+                    url: 'redis://:masterpassword2@127.0.0.1:6381/0'
+                }
+            ]
+        })
+    ]
+})
+export class AppModule {}
+```
+
 > HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
 ### commonOptions
@@ -273,6 +297,8 @@ export class AppModule {}
 ```
 
 ### onClientCreated
+
+For example, we can listen to the error event of the redis client.
 
 ```TypeScript
 import { Module } from '@nestjs/common';

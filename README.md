@@ -18,6 +18,7 @@
 -   Specify single or multiple clients
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
 -   Get a redis/cluster client via `RedisService` and `ClusterService`
+-   Easy to test via `getRedisToken()` and `getClusterToken()`
 
 ## Documentation
 
@@ -32,13 +33,13 @@ _For the legacy V2 or V3@next documentation, [click here](https://github.com/lia
     -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#usage)
     -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#configuration)
 -   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
--   [Test a class](#test-a-class)
 -   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)
     -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#redis)
         -   [Default](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#default)
         -   [Sentinel](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#sentinel)
     -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#cluster)
         -   [Multiple Clients](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#multiple-clients)
+-   [Test a class](#test-a-class)
 -   [Package dependency overview](#package-dependency-overview)
 
 ## Test coverage
@@ -78,8 +79,14 @@ $ yarn add --dev @types/ioredis
 This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
 ```TypeScript
+// redis
 const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getRedisToken('your client namespace'), useValue: mockClient }, YourService]
+    providers: [{ provide: getRedisToken('your namespace'), useValue: mockClient }, YourService]
+}).compile();
+
+// cluster
+const module: TestingModule = await Test.createTestingModule({
+    providers: [{ provide: getClusterToken('your namespace'), useValue: mockClient }, YourService]
 }).compile();
 ```
 
