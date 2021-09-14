@@ -1,7 +1,7 @@
 version: '3.9'
 networks:
     testing:
-        driver: bridge
+        driver: 'bridge'
         ipam:
             config:
                 - subnet: '172.19.0.0/16'
