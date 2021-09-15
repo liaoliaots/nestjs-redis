@@ -34,6 +34,12 @@ export interface RedisModuleOptions {
      */
     commonOptions?: RedisOptions;
     /**
+     * If `true`, will show a message when the client is ready.
+     *
+     * Default: false
+     */
+    readyLog?: boolean;
+    /**
      * Specify single or multiple clients.
      */
     config?: RedisClientOptions | RedisClientOptions[];

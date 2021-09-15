@@ -2,7 +2,7 @@ import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
-import { createClient, namespaces } from './common';
+import { createClient, namespaces, displayReadyLog } from './common';
 import { ClusterService } from './cluster.service';
 
 export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
@@ -65,14 +65,16 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
     useFactory: (options: ClusterModuleOptions) => {
         const clients: ClusterClients = new Map();
 
-        if (Array.isArray(options.config)) {
+        if (Array.isArray(options.config) /* multiple */) {
             options.config.forEach(item =>
                 clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item))
             );
-            return clients;
+        } /* single */ else {
+            clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
         }
 
-        clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
+        if (options.readyLog) displayReadyLog(clients);
+
         return clients;
     },
     inject: [CLUSTER_OPTIONS]

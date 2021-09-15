@@ -1,5 +1,6 @@
+import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
-import { createClient, quitClients } from './redis.utils';
+import { createClient, quitClients, logger, displayReadyLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
 
 jest.mock('ioredis');
@@ -7,6 +8,35 @@ const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
 
 beforeEach(() => {
     MockIORedis.mockReset();
+});
+
+describe('logger', () => {
+    test('should be an instance of Logger', () => {
+        expect(logger).toBeInstanceOf(Logger);
+    });
+});
+
+describe('displayReadyLog', () => {
+    let client: Redis;
+    let clients: RedisClients;
+
+    beforeEach(() => {
+        client = new IORedis();
+        clients = new Map();
+        clients.set('client', client);
+    });
+
+    test('should work correctly', () => {
+        const mockOnce = jest
+            .spyOn(client, 'once')
+            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
+                listener();
+                return undefined as unknown as Redis;
+            });
+
+        displayReadyLog(clients);
+        expect(mockOnce).toHaveBeenCalledTimes(1);
+    });
 });
 
 describe('createClient', () => {

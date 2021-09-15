@@ -2,6 +2,9 @@ import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
 import { RedisClientOptions, RedisClients } from '../interfaces';
 import { LOGGER_CONTEXT } from '../redis.constants';
+import { parseNamespace } from '@/utils';
+
+export const logger = new Logger(LOGGER_CONTEXT);
 
 export const createClient = (clientOptions: RedisClientOptions): Redis => {
     const { url, onClientCreated, ...redisOptions } = clientOptions;
@@ -12,13 +15,19 @@ export const createClient = (clientOptions: RedisClientOptions): Redis => {
     return client;
 };
 
-export const quitClients = (clients: RedisClients): void => {
-    const logger = new Logger(LOGGER_CONTEXT);
+export const displayReadyLog = (clients: RedisClients): void => {
+    clients.forEach((client, namespace) => {
+        client.once('ready', () => {
+            logger.log(`${parseNamespace(namespace)}: Connected successfully to the server`);
+        });
+    });
+};
 
-    clients.forEach(client => {
+export const quitClients = (clients: RedisClients): void => {
+    clients.forEach((client, namespace) => {
         if (client.status === 'ready') {
             client.quit().catch(reason => {
-                if (reason instanceof Error) logger.error(reason.message);
+                if (reason instanceof Error) logger.error(`${parseNamespace(namespace)}: ${reason.message}`);
             });
             return;
         }

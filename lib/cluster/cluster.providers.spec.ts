@@ -10,10 +10,15 @@ import {
 } from './cluster.providers';
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
-import { namespaces } from './common';
+import { namespaces, displayReadyLog } from './common';
 import { ClusterService } from './cluster.service';
 
 jest.mock('ioredis');
+jest.mock('./common', () => ({
+    __esModule: true,
+    ...jest.requireActual('./common'),
+    displayReadyLog: jest.fn()
+}));
 
 const clusterOptions: ClusterModuleOptions = { config: { nodes: [] } };
 class ClusterConfigService implements ClusterOptionsFactory {
@@ -171,6 +176,40 @@ describe('clusterClientsProvider', () => {
         test('should work correctly', () => {
             const client = service.getClient('client1');
             expect(client).toBeInstanceOf(IORedis.Cluster);
+        });
+    });
+
+    describe('displayReadyLog', () => {
+        beforeEach(() => {
+            (displayReadyLog as jest.MockedFunction<typeof displayReadyLog>).mockReset();
+        });
+
+        test('multiple clients', () => {
+            const options: ClusterModuleOptions = {
+                readyLog: true,
+                config: [
+                    {
+                        nodes: []
+                    },
+                    {
+                        namespace: 'client1',
+                        nodes: []
+                    }
+                ]
+            };
+            clusterClientsProvider.useFactory(options);
+            expect(displayReadyLog).toHaveBeenCalledTimes(1);
+        });
+
+        test('single client', () => {
+            const options: ClusterModuleOptions = {
+                readyLog: true,
+                config: {
+                    nodes: []
+                }
+            };
+            clusterClientsProvider.useFactory(options);
+            expect(displayReadyLog).toHaveBeenCalledTimes(1);
         });
     });
 });
