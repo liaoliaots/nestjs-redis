@@ -1,5 +1,6 @@
+import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
-import { createClient, quitClients } from './cluster.utils';
+import { createClient, quitClients, logger, displayReadyLog } from './cluster.utils';
 import { ClusterClients, ClusterClientOptions } from '../interfaces';
 
 jest.mock('ioredis');
@@ -7,6 +8,35 @@ const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
 
 beforeEach(() => {
     MockCluster.mockReset();
+});
+
+describe('logger', () => {
+    test('should be an instance of Logger', () => {
+        expect(logger).toBeInstanceOf(Logger);
+    });
+});
+
+describe('displayReadyLog', () => {
+    let client: Cluster;
+    let clients: ClusterClients;
+
+    beforeEach(() => {
+        client = new IORedis.Cluster([]);
+        clients = new Map();
+        clients.set('client', client);
+    });
+
+    test('should work correctly', () => {
+        const mockOnce = jest
+            .spyOn(client, 'once')
+            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
+                listener();
+                return undefined as unknown as Cluster;
+            });
+
+        displayReadyLog(clients);
+        expect(mockOnce).toHaveBeenCalledTimes(1);
+    });
 });
 
 describe('createClient', () => {

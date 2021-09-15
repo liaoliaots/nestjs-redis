@@ -31,6 +31,12 @@ export interface ClusterModuleOptions {
      */
     closeClient?: boolean;
     /**
+     * If `true`, will show a message when the client is ready.
+     *
+     * Default: false
+     */
+    readyLog?: boolean;
+    /**
      * Specify single or multiple clients.
      */
     config: ClusterClientOptions | ClusterClientOptions[];

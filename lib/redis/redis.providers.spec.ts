@@ -10,10 +10,15 @@ import {
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
-import { namespaces } from './common';
+import { namespaces, displayReadyLog } from './common';
 import { RedisService } from './redis.service';
 
 jest.mock('ioredis');
+jest.mock('./common', () => ({
+    __esModule: true,
+    ...jest.requireActual('./common'),
+    displayReadyLog: jest.fn()
+}));
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions(): RedisModuleOptions {
@@ -197,6 +202,48 @@ describe('redisClientsProvider', () => {
         test('should work correctly', () => {
             const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis);
+        });
+    });
+
+    describe('displayReadyLog', () => {
+        beforeEach(() => {
+            (displayReadyLog as jest.MockedFunction<typeof displayReadyLog>).mockReset();
+        });
+
+        test('multiple clients', () => {
+            const options: RedisModuleOptions = {
+                readyLog: true,
+                config: [
+                    {
+                        host: '127.0.0.1',
+                        port: 6380
+                    },
+                    {
+                        namespace: 'client1',
+                        host: '127.0.0.1',
+                        port: 6381
+                    }
+                ]
+            };
+            redisClientsProvider.useFactory(options);
+            expect(displayReadyLog).toHaveBeenCalledTimes(1);
+        });
+
+        test('single client', () => {
+            const options: RedisModuleOptions = {
+                readyLog: true,
+                config: {
+                    host: '127.0.0.1',
+                    port: 6380
+                }
+            };
+            redisClientsProvider.useFactory(options);
+            expect(displayReadyLog).toHaveBeenCalledTimes(1);
+        });
+
+        test('without options', () => {
+            redisClientsProvider.useFactory({ readyLog: true });
+            expect(displayReadyLog).toHaveBeenCalledTimes(1);
         });
     });
 });
