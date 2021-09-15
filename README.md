@@ -6,10 +6,12 @@
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
+[![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml)
+[![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/unit-testing.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/unit-testing.yml)
 
-> Redis([ioredis](https://github.com/luin/ioredis)) module for NestJS framework
+> Redis([ioredis](https://github.com/luin/ioredis)) module for NestJS framework.
 
 ## Features 🚀
 
@@ -22,23 +24,23 @@
 
 ## Documentation
 
-_For the legacy V2 or V3@next documentation, [click here](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v2/README.md)._
+_For the legacy V2 or V3@next documentation, [click here](docs/v2/README.md)._
 
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
--   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md)
-    -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#usage)
-    -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/redis.md#configuration)
--   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md)
-    -   [Usage](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#usage)
-    -   [Configuration](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/cluster.md#configuration)
--   [Health Checks](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/health-check.md)
--   [Examples](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md)
-    -   [Redis](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#redis)
-        -   [Default](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#default)
-        -   [Sentinel](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#sentinel)
-    -   [Cluster](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#cluster)
-        -   [Multiple Clients](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/examples.md#multiple-clients)
+-   [Redis](docs/v3/redis.md)
+    -   [Usage](docs/v3/redis.md#usage)
+    -   [Configuration](docs/v3/redis.md#configuration)
+-   [Cluster](docs/v3/cluster.md)
+    -   [Usage](docs/v3/cluster.md#usage)
+    -   [Configuration](docs/v3/cluster.md#configuration)
+-   [Health Checks](docs/v3/health-checks.md)
+-   [Examples](docs/v3/examples.md)
+    -   [Redis](docs/v3/examples.md#redis)
+        -   [Default](docs/v3/examples.md#default)
+        -   [Sentinel](docs/v3/examples.md#sentinel)
+    -   [Cluster](docs/v3/examples.md#cluster)
+        -   [Multiple Clients](docs/v3/examples.md#multiple-clients)
 -   [Test a class](#test-a-class)
 -   [Package dependency overview](#package-dependency-overview)
 
@@ -78,15 +80,19 @@ $ yarn add --dev @types/ioredis
 
 This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
-```TypeScript
-// redis
-const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getRedisToken('your namespace'), useValue: mockClient }, YourService]
-}).compile();
+### Redis
 
-// cluster
+```TypeScript
 const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getClusterToken('your namespace'), useValue: mockClient }, YourService]
+    providers: [{ provide: getRedisToken('namespace'), useValue: mockClient }, YourService]
+}).compile();
+```
+
+### Cluster
+
+```TypeScript
+const module: TestingModule = await Test.createTestingModule({
+    providers: [{ provide: getClusterToken('namespace'), useValue: mockClient }, YourService]
 }).compile();
 ```
 
@@ -96,7 +102,7 @@ const module: TestingModule = await Test.createTestingModule({
 
 ## Package dependency overview
 
-![](https://github.com/liaoliaots/nestjs-redis/blob/main/docs/v3/dependency-graph.svg)
+![](docs/v3/dependency-graph.svg)
 
 ## Author
 
@@ -116,7 +122,3 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2021 [LiaoLiao](https://github.com/liaoliaots).<br />
 This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
