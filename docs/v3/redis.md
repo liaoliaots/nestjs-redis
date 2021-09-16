@@ -75,12 +75,12 @@ export class AppService {
 
 ### RedisModuleOptions
 
-| Name          | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                               |
-| ------------- | ------------------------------------ | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient   | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [See details about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| commonOptions | object                               | undefined     | The common options for each client.                                                                                                                                                                                                                                                                       |
-| readyLog      | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                  |
-| config        | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                       |
+| Name          | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                             |
+| ------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient   | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| commonOptions | object                               | undefined     | The common options for each client.                                                                                                                                                                                                                                                                     |
+| readyLog      | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
+| config        | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
 
 ### ClientOptions
 
@@ -107,6 +107,7 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
             inject: [ConfigService],
             useFactory: async (configService: ConfigService): Promise<RedisModuleOptions> => {
                 await somePromise();
+
                 return {
                     closeClient: true,
                     config: {
@@ -132,6 +133,7 @@ import { RedisModule, RedisOptionsFactory, RedisModuleOptions } from '@liaoliaot
 export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         await somePromise();
+
         return {
             closeClient: true,
             config: {
@@ -151,6 +153,34 @@ export class RedisConfigService implements RedisOptionsFactory {
     ]
 })
 export class AppModule {}
+```
+
+### readyLog
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        RedisModule.forRoot({
+            readyLog: true,
+            config: {
+                namespace: 'default',
+                host: '127.0.0.1',
+                port: 6380,
+                password: 'masterpassword1'
+            }
+        })
+    ]
+})
+export class AppModule {}
+```
+
+The `RedisModule` will display a message when the server reports that it is ready to receive commands.
+
+```sh
+[Nest] 17581  - 09/16/2021, 6:03:35 PM     LOG [RedisModule] default: Connected successfully to the server
 ```
 
 ### Single client

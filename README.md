@@ -80,19 +80,9 @@ $ yarn add --dev @types/ioredis
 
 This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
-### Redis
-
 ```TypeScript
 const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getRedisToken('namespace'), useValue: mockClient }, YourService]
-}).compile();
-```
-
-### Cluster
-
-```TypeScript
-const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getClusterToken('namespace'), useValue: mockClient }, YourService]
+    providers: [{ provide: getRedisToken('your namespace'), useValue: mockClient }, YourService]
 }).compile();
 ```
 
