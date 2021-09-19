@@ -19,10 +19,10 @@ export class CatsService {
     }
 
     async create(cat: CreateCatDto): Promise<Cat> {
+        await this.client.del('cats');
+
         const newCat = { id: this.cats[this.cats.length - 1].id + 1, ...cat };
         this.cats.push(newCat);
-
-        await this.client.del('cats');
         return newCat;
     }
 }

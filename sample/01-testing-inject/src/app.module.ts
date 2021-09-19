@@ -6,10 +6,11 @@ import { CatsModule } from './cats/cats.module';
     imports: [
         RedisModule.forRoot({
             closeClient: true,
+            readyLog: true,
             config: {
                 host: '127.0.0.1',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redispassword'
             }
         }),
         CatsModule

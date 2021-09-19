@@ -40,7 +40,7 @@ describe('CatsController', () => {
     });
 
     describe('findAll', () => {
-        test('should return an array of cats', async () => {
+        test('should get the list of cats', async () => {
             const cats = await controller.findAll();
             expect(cats).toHaveLength(2);
             expect(cats[0].id).toBe(1);
@@ -49,7 +49,7 @@ describe('CatsController', () => {
     });
 
     describe('create', () => {
-        test('should create a cat', async () => {
+        test('should return a new cat', async () => {
             const newCat = await controller.create({ name: testCat3, breed: 'Test Breed 3' });
             expect(newCat.id).toBe(3);
             expect(newCat.name).toBe(testCat3);
