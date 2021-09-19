@@ -1,4 +1,4 @@
-export const MISSING_CONFIGURATION = `Configuration is missing, you must provide one of useFactory, useClass, useExisting.`;
+export const MISSING_CONFIGURATION = `The asynchronous configuration is missing, you must provide one of useFactory, useClass, and useExisting.`;
 
 export const FAILED_CLUSTER_STATE = `Info cluster is not on OK state.`;
 
