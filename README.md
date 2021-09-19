@@ -5,11 +5,11 @@
 ![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
+[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 [![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml)
-[![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/unit-testing.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/unit-testing.yml)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
+![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis)
 
 > Redis([ioredis](https://github.com/luin/ioredis)) module for NestJS framework.
 
@@ -85,6 +85,8 @@ const module: TestingModule = await Test.createTestingModule({
     providers: [{ provide: getRedisToken('your namespace'), useValue: mockClient }, YourService]
 }).compile();
 ```
+
+A working example is available [here](sample/01-testing-inject/README.md).
 
 ## TODO
 

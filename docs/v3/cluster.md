@@ -76,7 +76,7 @@ export class AppService {
 
 | Name        | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                             |
 | ----------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| closeClient | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
 | readyLog    | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
 | config      | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
 
@@ -149,6 +149,15 @@ export class ClusterConfigService implements ClusterOptionsFactory {
     ]
 })
 export class AppModule {}
+```
+
+... or via `useExisting`, if you wish to use an existing configuration provider imported from a different module.
+
+```TypeScript
+ClusterModule.forRootAsync({
+    imports: [ConfigModule],
+    useExisting: ConfigService
+})
 ```
 
 ### readyLog
