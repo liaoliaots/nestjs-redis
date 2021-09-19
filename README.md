@@ -86,7 +86,7 @@ const module: TestingModule = await Test.createTestingModule({
 }).compile();
 ```
 
-A working example is available [here](sample/01-testing-inject/README.md).
+A working example is available [here](sample/01-testing-inject).
 
 ## TODO
 
