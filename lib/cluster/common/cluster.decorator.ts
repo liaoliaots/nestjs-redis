@@ -5,6 +5,11 @@ import { isString, isSymbol } from '@/utils';
 
 export const namespaces = new Map<ClientNamespace, ClientNamespace>();
 
+/**
+ * Decorator that marks a constructor parameter as a cluster client.
+ *
+ * @param namespace - The name of the client
+ */
 export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): ReturnType<typeof Inject> => {
     if (isString(namespace)) {
         const token = getClusterToken(namespace);
@@ -16,6 +21,11 @@ export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMES
     return Inject(namespace);
 };
 
+/**
+ * Gets an internal injection token.
+ *
+ * @param namespace  - The name of the client
+ */
 export const getClusterToken = (namespace: ClientNamespace): ClientNamespace => {
     if (isSymbol(namespace)) return namespace;
     return `${DECORATOR_DI_TOKEN_PREFIX}:${namespace}`;

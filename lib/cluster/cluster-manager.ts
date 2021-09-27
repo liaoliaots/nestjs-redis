@@ -11,7 +11,7 @@ export class ClusterManager {
     constructor(@Inject(CLUSTER_CLIENTS) private readonly clusterClients: ClusterClients) {}
 
     /**
-     * Returns all cluster clients as a read-only map.
+     * Gets all cluster clients as a read-only map.
      */
     get clients(): ReadonlyMap<ClientNamespace, Cluster> {
         return this.clusterClients;
