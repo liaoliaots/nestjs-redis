@@ -11,7 +11,7 @@ export class RedisManager {
     constructor(@Inject(REDIS_CLIENTS) private readonly redisClients: RedisClients) {}
 
     /**
-     * Returns all redis clients as a read-only map.
+     * Gets all redis clients as a read-only map.
      */
     get clients(): ReadonlyMap<ClientNamespace, Redis> {
         return this.redisClients;
