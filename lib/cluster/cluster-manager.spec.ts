@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import IORedis from 'ioredis';
-import { ClusterService } from './cluster.service';
+import { ClusterManager } from './cluster-manager';
 import { ClusterClients } from './interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 
@@ -8,7 +8,7 @@ jest.mock('ioredis');
 
 describe('ClusterService', () => {
     let clients: ClusterClients;
-    let service: ClusterService;
+    let manager: ClusterManager;
 
     beforeEach(async () => {
         clients = new Map();
@@ -16,32 +16,32 @@ describe('ClusterService', () => {
         clients.set('client1', new IORedis.Cluster([]));
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: CLUSTER_CLIENTS, useValue: clients }, ClusterService]
+            providers: [{ provide: CLUSTER_CLIENTS, useValue: clients }, ClusterManager]
         }).compile();
 
-        service = module.get<ClusterService>(ClusterService);
+        manager = module.get<ClusterManager>(ClusterManager);
     });
 
     test('should have 2 members', () => {
-        expect(service.clients.size).toBe(2);
+        expect(manager.clients.size).toBe(2);
     });
 
     test('should get a client with namespace', () => {
-        const client = service.getClient('client1');
+        const client = manager.getClient('client1');
         expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should get default client with namespace', () => {
-        const client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        const client = manager.getClient(DEFAULT_CLUSTER_NAMESPACE);
         expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should get default client without namespace', () => {
-        const client = service.getClient();
+        const client = manager.getClient();
         expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
     test('should throw an error when getting a client with an unknown namespace', () => {
-        expect(() => service.getClient('')).toThrow();
+        expect(() => manager.getClient('')).toThrow();
     });
 });

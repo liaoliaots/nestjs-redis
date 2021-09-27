@@ -1,6 +1,6 @@
 import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
-import { RedisService } from './redis.service';
+import { RedisManager } from './redis-manager';
 import {
     createOptionsProvider,
     createAsyncProviders,
@@ -24,14 +24,14 @@ export class RedisCoreModule implements OnApplicationShutdown {
         const providers: Provider[] = [
             createOptionsProvider(options),
             redisClientsProvider,
-            RedisService,
+            RedisManager,
             ...redisClientProviders
         ];
 
         return {
             module: RedisCoreModule,
             providers,
-            exports: [RedisService, ...redisClientProviders]
+            exports: [RedisManager, ...redisClientProviders]
         };
     }
 
@@ -44,7 +44,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
         const providers: Provider[] = [
             ...createAsyncProviders(options),
             redisClientsProvider,
-            RedisService,
+            RedisManager,
             ...redisClientProviders
         ];
 
@@ -52,7 +52,7 @@ export class RedisCoreModule implements OnApplicationShutdown {
             module: RedisCoreModule,
             imports: options.imports,
             providers,
-            exports: [RedisService, ...redisClientProviders]
+            exports: [RedisManager, ...redisClientProviders]
         };
     }
 

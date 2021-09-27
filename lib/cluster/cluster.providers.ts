@@ -3,7 +3,7 @@ import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
-import { ClusterService } from './cluster.service';
+import { ClusterManager } from './cluster-manager';
 
 export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
     provide: CLUSTER_OPTIONS,
@@ -85,8 +85,8 @@ export const createClusterClientProviders = (): FactoryProvider<Cluster>[] => {
     namespaces.forEach((token, namespace) => {
         providers.push({
             provide: token,
-            useFactory: (clusterService: ClusterService) => clusterService.getClient(namespace),
-            inject: [ClusterService]
+            useFactory: (clusterManager: ClusterManager) => clusterManager.getClient(namespace),
+            inject: [ClusterManager]
         });
     });
     return providers;
