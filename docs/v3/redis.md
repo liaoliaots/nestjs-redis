@@ -48,21 +48,21 @@ export class AppService {
 }
 ```
 
-via service:
+via manager:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { RedisManager, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class AppService {
     private readonly defaultRedisClient: Redis;
 
-    constructor(private readonly redisService: RedisService) {
-        this.defaultRedisClient = this.redisService.getClient();
+    constructor(private readonly redisManager: RedisManager) {
+        this.defaultRedisClient = this.redisManager.getClient();
         // or
-        // this.defaultRedisClient = this.redisService.getClient(DEFAULT_REDIS_NAMESPACE);
+        // this.defaultRedisClient = this.redisManager.getClient(DEFAULT_REDIS_NAMESPACE);
     }
 
     async ping(): Promise<string> {

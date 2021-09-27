@@ -47,21 +47,21 @@ export class AppService {
 }
 ```
 
-via service:
+via manager:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { ClusterService, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { ClusterManager, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Cluster } from 'ioredis';
 
 @Injectable()
 export class AppService {
     private readonly defaultClusterClient: Cluster;
 
-    constructor(private readonly clusterService: ClusterService) {
-        this.defaultClusterClient = this.clusterService.getClient();
+    constructor(private readonly clusterManager: ClusterManager) {
+        this.defaultClusterClient = this.clusterManager.getClient();
         // or
-        // this.defaultClusterClient = this.clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        // this.defaultClusterClient = this.clusterManager.getClient(DEFAULT_CLUSTER_NAMESPACE);
     }
 
     async ping(): Promise<string> {
