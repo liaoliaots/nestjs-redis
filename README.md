@@ -1,7 +1,10 @@
-<h1 align="center">Welcome to @liaoliaots/nestjs-redis 👋</h1>
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
+
+<p align="center">Redis(<a href="https://github.com/luin/ioredis" target="blank">ioredis</a>) module for NestJS framework.</p>
 
 [![npm (tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/next?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis/v/3.0.0-next.3)
 ![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -9,9 +12,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 [![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
-![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis)
-
-> Redis([ioredis](https://github.com/luin/ioredis)) module for NestJS framework.
+![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis)
 
 ## Features 🚀
 
@@ -19,7 +20,7 @@
 -   Support health check
 -   Specify single or multiple clients
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
--   Get a redis/cluster client via `RedisService` and `ClusterService`
+-   Get a redis/cluster client via `RedisManager` and `ClusterManager`
 -   Easy to test via `getRedisToken()` and `getClusterToken()`
 
 ## Documentation
@@ -29,11 +30,7 @@ _For the legacy V2 or V3@next documentation, [click here](docs/v2/README.md)._
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
 -   [Redis](docs/v3/redis.md)
-    -   [Usage](docs/v3/redis.md#usage)
-    -   [Configuration](docs/v3/redis.md#configuration)
 -   [Cluster](docs/v3/cluster.md)
-    -   [Usage](docs/v3/cluster.md#usage)
-    -   [Configuration](docs/v3/cluster.md#configuration)
 -   [Health Checks](docs/v3/health-checks.md)
 -   [Examples](docs/v3/examples.md)
     -   [Redis](docs/v3/examples.md#redis)
@@ -87,10 +84,6 @@ const module: TestingModule = await Test.createTestingModule({
 ```
 
 A working example is available [here](sample/01-testing-inject).
-
-## TODO
-
--   [ ] select db
 
 ## Package dependency overview
 
