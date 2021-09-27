@@ -11,7 +11,7 @@ import {
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { namespaces, displayReadyLog } from './common';
-import { RedisService } from './redis.service';
+import { RedisManager } from './redis-manager';
 
 jest.mock('ioredis');
 jest.mock('./common', () => ({
@@ -83,7 +83,7 @@ describe('createAsyncOptionsProvider', () => {
 describe('redisClientsProvider', () => {
     describe('with multiple clients', () => {
         let clients: RedisClients;
-        let service: RedisService;
+        let manager: RedisManager;
 
         beforeEach(async () => {
             const options: RedisModuleOptions = {
@@ -101,11 +101,11 @@ describe('redisClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
+                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
             }).compile();
 
             clients = module.get<RedisClients>(REDIS_CLIENTS);
-            service = module.get<RedisService>(RedisService);
+            manager = module.get<RedisManager>(RedisManager);
         });
 
         test('should have 2 members', () => {
@@ -114,16 +114,16 @@ describe('redisClientsProvider', () => {
 
         test('should work correctly', () => {
             let client: Redis;
-            client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+            client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis);
-            client = service.getClient('client1');
+            client = manager.getClient('client1');
             expect(client).toBeInstanceOf(IORedis);
         });
     });
 
     describe('with a single client and no namespace', () => {
         let clients: RedisClients;
-        let service: RedisService;
+        let manager: RedisManager;
 
         beforeEach(async () => {
             const options: RedisModuleOptions = {
@@ -134,11 +134,11 @@ describe('redisClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
+                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
             }).compile();
 
             clients = module.get<RedisClients>(REDIS_CLIENTS);
-            service = module.get<RedisService>(RedisService);
+            manager = module.get<RedisManager>(RedisManager);
         });
 
         test('should have 1 member', () => {
@@ -146,14 +146,14 @@ describe('redisClientsProvider', () => {
         });
 
         test('should work correctly', () => {
-            const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+            const client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis);
         });
     });
 
     describe('with a single client and namespace', () => {
         let clients: RedisClients;
-        let service: RedisService;
+        let manager: RedisManager;
 
         beforeEach(async () => {
             const options: RedisModuleOptions = {
@@ -165,11 +165,11 @@ describe('redisClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisService]
+                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
             }).compile();
 
             clients = module.get<RedisClients>(REDIS_CLIENTS);
-            service = module.get<RedisService>(RedisService);
+            manager = module.get<RedisManager>(RedisManager);
         });
 
         test('should have 1 member', () => {
@@ -177,22 +177,22 @@ describe('redisClientsProvider', () => {
         });
 
         test('should work correctly', () => {
-            const client = service.getClient('client1');
+            const client = manager.getClient('client1');
             expect(client).toBeInstanceOf(IORedis);
         });
     });
 
     describe('without options', () => {
         let clients: RedisClients;
-        let service: RedisService;
+        let manager: RedisManager;
 
         beforeEach(async () => {
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: {} }, redisClientsProvider, RedisService]
+                providers: [{ provide: REDIS_OPTIONS, useValue: {} }, redisClientsProvider, RedisManager]
             }).compile();
 
             clients = module.get<RedisClients>(REDIS_CLIENTS);
-            service = module.get<RedisService>(RedisService);
+            manager = module.get<RedisManager>(RedisManager);
         });
 
         test('should have 1 member', () => {
@@ -200,7 +200,7 @@ describe('redisClientsProvider', () => {
         });
 
         test('should work correctly', () => {
-            const client = service.getClient(DEFAULT_REDIS_NAMESPACE);
+            const client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis);
         });
     });
@@ -261,7 +261,7 @@ describe('createRedisClientProviders', () => {
         namespaces.set('client2', 'client2');
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisService, ...createRedisClientProviders()]
+            providers: [{ provide: REDIS_CLIENTS, useValue: clients }, RedisManager, ...createRedisClientProviders()]
         }).compile();
 
         client1 = module.get<Redis>('client1');

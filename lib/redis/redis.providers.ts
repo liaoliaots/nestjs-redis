@@ -3,7 +3,7 @@ import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
-import { RedisService } from './redis.service';
+import { RedisManager } from './redis-manager';
 
 export const createOptionsProvider = (options: RedisModuleOptions): ValueProvider<RedisModuleOptions> => ({
     provide: REDIS_OPTIONS,
@@ -88,8 +88,8 @@ export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
     namespaces.forEach((token, namespace) => {
         providers.push({
             provide: token,
-            useFactory: (redisService: RedisService) => redisService.getClient(namespace),
-            inject: [RedisService]
+            useFactory: (redisManager: RedisManager) => redisManager.getClient(namespace),
+            inject: [RedisManager]
         });
     });
     return providers;

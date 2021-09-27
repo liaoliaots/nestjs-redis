@@ -11,7 +11,7 @@ import {
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { namespaces, displayReadyLog } from './common';
-import { ClusterService } from './cluster.service';
+import { ClusterManager } from './cluster-manager';
 
 jest.mock('ioredis');
 jest.mock('./common', () => ({
@@ -84,7 +84,7 @@ describe('createAsyncOptionsProvider', () => {
 describe('clusterClientsProvider', () => {
     describe('with multiple clients', () => {
         let clients: ClusterClients;
-        let service: ClusterService;
+        let manager: ClusterManager;
 
         beforeEach(async () => {
             const options: ClusterModuleOptions = {
@@ -100,11 +100,11 @@ describe('clusterClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
+                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterManager]
             }).compile();
 
             clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
-            service = module.get<ClusterService>(ClusterService);
+            manager = module.get<ClusterManager>(ClusterManager);
         });
 
         test('should have 2 members', () => {
@@ -113,16 +113,16 @@ describe('clusterClientsProvider', () => {
 
         test('should work correctly', () => {
             let client: Cluster;
-            client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+            client = manager.getClient(DEFAULT_CLUSTER_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis.Cluster);
-            client = service.getClient('client1');
+            client = manager.getClient('client1');
             expect(client).toBeInstanceOf(IORedis.Cluster);
         });
     });
 
     describe('with a single client and no namespace', () => {
         let clients: ClusterClients;
-        let service: ClusterService;
+        let manager: ClusterManager;
 
         beforeEach(async () => {
             const options: ClusterModuleOptions = {
@@ -132,11 +132,11 @@ describe('clusterClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
+                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterManager]
             }).compile();
 
             clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
-            service = module.get<ClusterService>(ClusterService);
+            manager = module.get<ClusterManager>(ClusterManager);
         });
 
         test('should have 1 member', () => {
@@ -144,14 +144,14 @@ describe('clusterClientsProvider', () => {
         });
 
         test('should work correctly', () => {
-            const client = service.getClient(DEFAULT_CLUSTER_NAMESPACE);
+            const client = manager.getClient(DEFAULT_CLUSTER_NAMESPACE);
             expect(client).toBeInstanceOf(IORedis.Cluster);
         });
     });
 
     describe('with a single client and namespace', () => {
         let clients: ClusterClients;
-        let service: ClusterService;
+        let manager: ClusterManager;
 
         beforeEach(async () => {
             const options: ClusterModuleOptions = {
@@ -162,11 +162,11 @@ describe('clusterClientsProvider', () => {
             };
 
             const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterService]
+                providers: [{ provide: CLUSTER_OPTIONS, useValue: options }, clusterClientsProvider, ClusterManager]
             }).compile();
 
             clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
-            service = module.get<ClusterService>(ClusterService);
+            manager = module.get<ClusterManager>(ClusterManager);
         });
 
         test('should have 1 member', () => {
@@ -174,7 +174,7 @@ describe('clusterClientsProvider', () => {
         });
 
         test('should work correctly', () => {
-            const client = service.getClient('client1');
+            const client = manager.getClient('client1');
             expect(client).toBeInstanceOf(IORedis.Cluster);
         });
     });
@@ -229,7 +229,7 @@ describe('createClusterClientProviders', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 { provide: CLUSTER_CLIENTS, useValue: clients },
-                ClusterService,
+                ClusterManager,
                 ...createClusterClientProviders()
             ]
         }).compile();

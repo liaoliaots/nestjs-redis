@@ -1,6 +1,6 @@
 import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from './interfaces';
-import { ClusterService } from './cluster.service';
+import { ClusterManager } from './cluster-manager';
 import {
     createOptionsProvider,
     createAsyncProviders,
@@ -24,14 +24,14 @@ export class ClusterCoreModule implements OnApplicationShutdown {
         const providers: Provider[] = [
             createOptionsProvider(options),
             clusterClientsProvider,
-            ClusterService,
+            ClusterManager,
             ...clusterClientProviders
         ];
 
         return {
             module: ClusterCoreModule,
             providers,
-            exports: [ClusterService, ...clusterClientProviders]
+            exports: [ClusterManager, ...clusterClientProviders]
         };
     }
 
@@ -44,7 +44,7 @@ export class ClusterCoreModule implements OnApplicationShutdown {
         const providers: Provider[] = [
             ...createAsyncProviders(options),
             clusterClientsProvider,
-            ClusterService,
+            ClusterManager,
             ...clusterClientProviders
         ];
 
@@ -52,7 +52,7 @@ export class ClusterCoreModule implements OnApplicationShutdown {
             module: ClusterCoreModule,
             imports: options.imports,
             providers,
-            exports: [ClusterService, ...clusterClientProviders]
+            exports: [ClusterManager, ...clusterClientProviders]
         };
     }
 
