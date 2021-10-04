@@ -10,16 +10,20 @@
 ![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge)
 [![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 
-[![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml)
+<p align="center">
+<a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml">
+<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg" />
+</a>
+</p>
 
 ## Features 🚀
 
 -   Support **redis** and **cluster**
 -   Support health check
--   Specify single or multiple clients
+-   Specify multiple clients
+-   Easy to test
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
 -   Get a redis/cluster client via `RedisManager` and `ClusterManager`
--   Easy to test via `getRedisToken()` and `getClusterToken()`
 
 ## Documentation
 
