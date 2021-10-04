@@ -6,6 +6,7 @@
 
 [![npm (tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
 ![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
+[![Coverage Status](https://coveralls.io/repos/github/liaoliaots/nestjs-redis/badge.svg?branch=main)](https://coveralls.io/github/liaoliaots/nestjs-redis?branch=main)
 [![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
