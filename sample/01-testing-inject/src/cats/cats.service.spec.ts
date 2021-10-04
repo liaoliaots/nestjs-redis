@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRedisToken, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import IORedis, { Redis } from 'ioredis';
-import { CreateCatDto } from './dto/create-cat.dto';
+import { CreateCatDto } from './create-cat.dto';
 import { CatsService } from './cats.service';
-import { Cat } from './models/cat';
+import { Cat } from './cat';
 
 jest.mock('ioredis');
 

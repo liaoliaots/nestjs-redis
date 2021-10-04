@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
-import { Cat } from './models/cat';
-import { CreateCatDto } from './dto/create-cat.dto';
+import { Cat } from './cat';
+import { CreateCatDto } from './create-cat.dto';
 
 @Injectable()
 export class CatsService {
