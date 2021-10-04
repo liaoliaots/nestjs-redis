@@ -1,19 +1,16 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
 <p align="center">Redis(<a href="https://github.com/luin/ioredis" target="blank">ioredis</a>) module for NestJS framework.</p>
 
-[![npm (tag)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=flat-square)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
-![npm](https://img.shields.io/npm/dw/@liaoliaots/nestjs-redis?style=flat-square)
-[![Coverage Status](https://coveralls.io/repos/github/liaoliaots/nestjs-redis/badge.svg?branch=main)](https://coveralls.io/github/liaoliaots/nestjs-redis?branch=main)
-[![GitHub](https://img.shields.io/github/license/liaoliaots/nestjs-redis?style=flat-square)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
+[![npm (scoped)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
+[![NPM](https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
+![npm](https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge)
+![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge)
+[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
+
 [![workflow](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg)](https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/liaoliaots/nestjs-redis/graphs/commit-activity)
-![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis)
 
 ## Features 🚀
 
