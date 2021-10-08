@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import IORedis, { Redis, Cluster } from 'ioredis';
-import { RedisError, CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
+import { RedisError } from 'redis-errors';
+import { CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
 
 export interface RedisCheckOptions {
     /**
@@ -13,7 +14,7 @@ export interface RedisCheckOptions {
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
     /**
-     * Checks a redis or cluster connection.
+     * Checks a redis/cluster connection.
      *
      * @param key - The key which will be used for the result object
      * @param options - The options for check

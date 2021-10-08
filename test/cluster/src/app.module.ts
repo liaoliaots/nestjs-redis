@@ -4,7 +4,7 @@ import { ClusterModule } from '@/.';
 import { RedisHealthModule } from '@/health';
 import { HealthController } from './controllers/health.controller';
 import { InjectController } from './controllers/inject.controller';
-import { ServiceController } from './controllers/service.controller';
+import { ManagerController } from './controllers/manager.controller';
 
 @Module({
     imports: [
@@ -29,6 +29,6 @@ import { ServiceController } from './controllers/service.controller';
         TerminusModule,
         RedisHealthModule
     ],
-    controllers: [HealthController, InjectController, ServiceController]
+    controllers: [HealthController, InjectController, ManagerController]
 })
 export class AppModule {}

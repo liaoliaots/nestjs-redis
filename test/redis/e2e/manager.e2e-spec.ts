@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { FastifyInstance } from 'fastify';
-import { AppModule } from './app/app.module';
+import { AppModule } from '../src/app.module';
 
-describe('ServiceController (e2e)', () => {
+describe('ManagerController (e2e)', () => {
     let app: NestFastifyApplication;
 
     beforeAll(async () => {
@@ -21,14 +21,14 @@ describe('ServiceController (e2e)', () => {
         await app.close();
     });
 
-    test('/service/clientDefault (GET)', async () => {
-        const res = await app.inject({ method: 'GET', url: '/service/clientDefault' });
+    test('/manager (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/manager' });
         expect(res.statusCode).toBe(200);
         expect(res.payload).toBe('PONG');
     });
 
-    test('/service/client1 (GET)', async () => {
-        const res = await app.inject({ method: 'GET', url: '/service/client1' });
+    test('/manager/client1 (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/manager/client1' });
         expect(res.statusCode).toBe(200);
         expect(res.payload).toBe('PONG');
     });

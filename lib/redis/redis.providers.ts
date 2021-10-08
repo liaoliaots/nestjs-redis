@@ -4,10 +4,11 @@ import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, Redis
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
 import { RedisManager } from './redis-manager';
+import { defaultRedisModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: RedisModuleOptions): ValueProvider<RedisModuleOptions> => ({
     provide: REDIS_OPTIONS,
-    useValue: options
+    useValue: { ...defaultRedisModuleOptions, ...options }
 });
 
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
@@ -26,8 +27,10 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
     return [];
 };
 
-export const createAsyncOptions = async (optionsFactory: RedisOptionsFactory): Promise<RedisModuleOptions> =>
-    await optionsFactory.createRedisOptions();
+export const createAsyncOptions = async (optionsFactory: RedisOptionsFactory): Promise<RedisModuleOptions> => {
+    const options = await optionsFactory.createRedisOptions();
+    return { ...defaultRedisModuleOptions, ...options };
+};
 
 export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Provider => {
     if (options.useFactory) {

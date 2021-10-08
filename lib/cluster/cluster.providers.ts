@@ -4,10 +4,11 @@ import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory,
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
+import { defaultClusterModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
     provide: CLUSTER_OPTIONS,
-    useValue: options
+    useValue: { ...defaultClusterModuleOptions, ...options }
 });
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
@@ -26,8 +27,10 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
     return [];
 };
 
-export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> =>
-    await optionsFactory.createClusterOptions();
+export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> => {
+    const options = await optionsFactory.createClusterOptions();
+    return { ...defaultClusterModuleOptions, ...options };
+};
 
 export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): Provider => {
     if (options.useFactory) {

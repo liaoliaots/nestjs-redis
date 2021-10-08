@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { FastifyInstance } from 'fastify';
-import { AppModule } from './app/app.module';
-
-const timeout = () => new Promise(resolve => setTimeout(resolve, 50));
+import { AppModule } from '../src/app.module';
+import { timeout } from '../../helpers';
 
 describe('HealthController (e2e)', () => {
     let app: NestFastifyApplication;
@@ -17,7 +16,7 @@ describe('HealthController (e2e)', () => {
 
         await app.init();
         await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
-        await timeout();
+        await timeout(100);
     });
 
     afterAll(async () => {
@@ -30,7 +29,7 @@ describe('HealthController (e2e)', () => {
         expect(JSON.parse(res.payload)).toEqual({
             status: 'ok',
             info: {
-                clientDefault: {
+                default: {
                     status: 'up'
                 },
                 client1: {
@@ -39,7 +38,7 @@ describe('HealthController (e2e)', () => {
             },
             error: {},
             details: {
-                clientDefault: {
+                default: {
                     status: 'up'
                 },
                 client1: {

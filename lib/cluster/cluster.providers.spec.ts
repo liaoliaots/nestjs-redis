@@ -12,8 +12,8 @@ import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, Clust
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
+import { defaultClusterModuleOptions } from './default-options';
 
-jest.mock('ioredis');
 jest.mock('./common', () => ({
     __esModule: true,
     ...jest.requireActual('./common'),
@@ -31,7 +31,7 @@ describe('createOptionsProvider', () => {
     test('should work correctly', () => {
         expect(createOptionsProvider(clusterOptions)).toEqual({
             provide: CLUSTER_OPTIONS,
-            useValue: clusterOptions
+            useValue: { ...defaultClusterModuleOptions, ...clusterOptions }
         });
     });
 });
@@ -52,7 +52,10 @@ describe('createAsyncOptions', () => {
                 return { config: { nodes: [] } };
             }
         };
-        await expect(createAsyncOptions(clusterConfigService)).resolves.toEqual({ config: { nodes: [] } });
+        await expect(createAsyncOptions(clusterConfigService)).resolves.toEqual({
+            ...defaultClusterModuleOptions,
+            config: { nodes: [] }
+        });
     });
 });
 

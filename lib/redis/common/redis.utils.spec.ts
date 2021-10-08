@@ -3,7 +3,6 @@ import IORedis, { Redis } from 'ioredis';
 import { createClient, quitClients, logger, displayReadyLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
 
-jest.mock('ioredis');
 const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
 
 beforeEach(() => {

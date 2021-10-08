@@ -5,13 +5,13 @@ import { InjectRedis } from '@/.';
 @Controller('inject')
 export class InjectController {
     constructor(
-        @InjectRedis() private readonly clientDefault: Redis,
+        @InjectRedis() private readonly defaultClient: Redis,
         @InjectRedis('client1') private readonly client1: Redis
     ) {}
 
-    @Get('clientDefault')
-    async pingClientDefault(): Promise<string> {
-        return await this.clientDefault.ping();
+    @Get()
+    async pingDefault(): Promise<string> {
+        return await this.defaultClient.ping();
     }
 
     @Get('client1')

@@ -3,7 +3,6 @@ import IORedis, { Cluster } from 'ioredis';
 import { createClient, quitClients, logger, displayReadyLog } from './cluster.utils';
 import { ClusterClients, ClusterClientOptions } from '../interfaces';
 
-jest.mock('ioredis');
 const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
 
 beforeEach(() => {
