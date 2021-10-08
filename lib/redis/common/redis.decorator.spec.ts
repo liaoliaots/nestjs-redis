@@ -1,7 +1,7 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { InjectRedis, namespaces, getRedisToken } from './redis.decorator';
-import { DEFAULT_REDIS_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../redis.constants';
+import { DEFAULT_REDIS_NAMESPACE, REDIS_MODULE_ID } from '../redis.constants';
 import { ClientNamespace } from '@/interfaces';
 
 describe('namespaces', () => {
@@ -15,7 +15,7 @@ describe('getRedisToken', () => {
         const namespace1 = Symbol('default-client');
         const namespace2 = 'cache-client';
         expect(getRedisToken(namespace1)).toBe(namespace1);
-        expect(getRedisToken(namespace2)).toBe(`${DECORATOR_DI_TOKEN_PREFIX}:${namespace2}`);
+        expect(getRedisToken(namespace2)).toBe(`${REDIS_MODULE_ID}:${namespace2}`);
     });
 });
 

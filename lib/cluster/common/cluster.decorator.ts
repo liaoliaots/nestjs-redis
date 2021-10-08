@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { DEFAULT_CLUSTER_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../cluster.constants';
+import { DEFAULT_CLUSTER_NAMESPACE, CLUSTER_MODULE_ID } from '../cluster.constants';
 import { ClientNamespace } from '@/interfaces';
 import { isString, isSymbol } from '@/utils';
 
@@ -28,5 +28,5 @@ export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMES
  */
 export const getClusterToken = (namespace: ClientNamespace): ClientNamespace => {
     if (isSymbol(namespace)) return namespace;
-    return `${DECORATOR_DI_TOKEN_PREFIX}:${namespace}`;
+    return `${CLUSTER_MODULE_ID}:${namespace}`;
 };
