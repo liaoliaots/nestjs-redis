@@ -1,4 +1,4 @@
-import { Type, ModuleMetadata } from '@nestjs/common';
+import { Type, ModuleMetadata, Provider } from '@nestjs/common';
 import { ClusterNode, ClusterOptions, Cluster } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
@@ -49,6 +49,7 @@ export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports
     useFactory?: (...args: any[]) => ClusterModuleOptions | Promise<ClusterModuleOptions>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inject?: any[];
+    extraProviders?: Provider[];
 }
 
 export interface ClusterOptionsFactory {

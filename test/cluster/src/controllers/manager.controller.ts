@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { ClusterManager } from '@/.';
 
-@Controller('service')
-export class ServiceController {
+@Controller('manager')
+export class ManagerController {
     constructor(private readonly clusterManager: ClusterManager) {}
 
-    @Get('clientDefault')
-    async pingClientDefault(): Promise<string> {
+    @Get()
+    async pingDefault(): Promise<string> {
         return await this.clusterManager.getClient().ping();
     }
 

@@ -4,9 +4,7 @@ import { RedisManager } from './redis-manager';
 import { RedisClients } from './interfaces';
 import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 
-jest.mock('ioredis');
-
-describe('RedisService', () => {
+describe('RedisManager', () => {
     let clients: RedisClients;
     let manager: RedisManager;
 

@@ -1,7 +1,7 @@
 import { Injectable, ValueProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { InjectCluster, namespaces, getClusterToken } from './cluster.decorator';
-import { DEFAULT_CLUSTER_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../cluster.constants';
+import { DEFAULT_CLUSTER_NAMESPACE, CLUSTER_MODULE_ID } from '../cluster.constants';
 import { ClientNamespace } from '@/interfaces';
 
 describe('namespaces', () => {
@@ -15,7 +15,7 @@ describe('getClusterToken', () => {
         const namespace1 = Symbol('default-client');
         const namespace2 = 'cache-client';
         expect(getClusterToken(namespace1)).toBe(namespace1);
-        expect(getClusterToken(namespace2)).toBe(`${DECORATOR_DI_TOKEN_PREFIX}:${namespace2}`);
+        expect(getClusterToken(namespace2)).toBe(`${CLUSTER_MODULE_ID}:${namespace2}`);
     });
 });
 

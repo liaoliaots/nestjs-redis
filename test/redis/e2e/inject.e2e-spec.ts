@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { FastifyInstance } from 'fastify';
-import { AppModule } from './app/app.module';
+import { AppModule } from '../src/app.module';
 
 describe('InjectController (e2e)', () => {
     let app: NestFastifyApplication;
@@ -21,8 +21,8 @@ describe('InjectController (e2e)', () => {
         await app.close();
     });
 
-    test('/inject/clientDefault (GET)', async () => {
-        const res = await app.inject({ method: 'GET', url: '/inject/clientDefault' });
+    test('/inject (GET)', async () => {
+        const res = await app.inject({ method: 'GET', url: '/inject' });
         expect(res.statusCode).toBe(200);
         expect(res.payload).toBe('PONG');
     });

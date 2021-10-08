@@ -3,8 +3,6 @@ import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisHealthIndicator } from './redis.health';
 import { FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
 
-jest.mock('ioredis');
-
 describe('RedisHealthIndicator', () => {
     let redisClient: Redis;
     let clusterClient: Cluster;

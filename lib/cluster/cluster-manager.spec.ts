@@ -4,9 +4,7 @@ import { ClusterManager } from './cluster-manager';
 import { ClusterClients } from './interfaces';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 
-jest.mock('ioredis');
-
-describe('ClusterService', () => {
+describe('ClusterManager', () => {
     let clients: ClusterClients;
     let manager: ClusterManager;
 

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { DEFAULT_REDIS_NAMESPACE, DECORATOR_DI_TOKEN_PREFIX } from '../redis.constants';
+import { DEFAULT_REDIS_NAMESPACE, REDIS_MODULE_ID } from '../redis.constants';
 import { ClientNamespace } from '@/interfaces';
 import { isString, isSymbol } from '@/utils';
 
@@ -28,5 +28,5 @@ export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE
  */
 export const getRedisToken = (namespace: ClientNamespace): ClientNamespace => {
     if (isSymbol(namespace)) return namespace;
-    return `${DECORATOR_DI_TOKEN_PREFIX}:${namespace}`;
+    return `${REDIS_MODULE_ID}:${namespace}`;
 };

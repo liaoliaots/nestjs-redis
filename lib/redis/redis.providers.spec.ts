@@ -12,8 +12,8 @@ import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModule
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { namespaces, displayReadyLog } from './common';
 import { RedisManager } from './redis-manager';
+import { defaultRedisModuleOptions } from './default-options';
 
-jest.mock('ioredis');
 jest.mock('./common', () => ({
     __esModule: true,
     ...jest.requireActual('./common'),
@@ -30,7 +30,7 @@ describe('createOptionsProvider', () => {
     test('should work correctly', () => {
         expect(createOptionsProvider({})).toEqual({
             provide: REDIS_OPTIONS,
-            useValue: {}
+            useValue: { ...defaultRedisModuleOptions }
         });
     });
 });
@@ -51,7 +51,10 @@ describe('createAsyncOptions', () => {
                 return { closeClient: true };
             }
         };
-        await expect(createAsyncOptions(redisConfigService)).resolves.toEqual({ closeClient: true });
+        await expect(createAsyncOptions(redisConfigService)).resolves.toEqual({
+            ...defaultRedisModuleOptions,
+            closeClient: true
+        });
     });
 });
 

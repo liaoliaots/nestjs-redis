@@ -1,10 +1,11 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
 import { RedisClientOptions, RedisClients } from '../interfaces';
-import { LOGGER_CONTEXT } from '../redis.constants';
+import { REDIS_MODULE_ID, RedisStatus } from '../redis.constants';
 import { parseNamespace } from '@/utils';
+import { ClientNamespace } from '@/interfaces';
 
-export const logger = new Logger(LOGGER_CONTEXT);
+export const logger = new Logger(REDIS_MODULE_ID);
 
 export const createClient = (clientOptions: RedisClientOptions): Redis => {
     const { url, onClientCreated, ...redisOptions } = clientOptions;
@@ -17,21 +18,38 @@ export const createClient = (clientOptions: RedisClientOptions): Redis => {
 
 export const displayReadyLog = (clients: RedisClients): void => {
     clients.forEach((client, namespace) => {
-        client.once('ready', () => {
+        client.once(RedisStatus.READY, () => {
             logger.log(`${parseNamespace(namespace)}: Connected successfully to the server`);
         });
     });
 };
 
-export const quitClients = (clients: RedisClients): void => {
+export const quitClients = (
+    clients: RedisClients
+): Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]> => {
+    const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
-        if (client.status === 'ready') {
-            client.quit().catch(reason => {
-                if (reason instanceof Error) logger.error(`${parseNamespace(namespace)}: ${reason.message}`);
-            });
+        if (client.status === RedisStatus.READY) {
+            promises.push(Promise.allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
 
         client.disconnect();
+    });
+
+    return Promise.all(promises);
+};
+
+export const readPromiseSettledResults = (
+    results: [PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]
+): void => {
+    results.forEach(([namespaceResult, quitResult]) => {
+        if (
+            namespaceResult.status === 'fulfilled' &&
+            quitResult.status === 'rejected' &&
+            quitResult.reason instanceof Error
+        ) {
+            logger.error(`${parseNamespace(namespaceResult.value)}: ${quitResult.reason.message}`);
+        }
     });
 };

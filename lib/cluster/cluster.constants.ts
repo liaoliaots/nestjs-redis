@@ -4,6 +4,15 @@ export const CLUSTER_CLIENTS = Symbol();
 
 export const DEFAULT_CLUSTER_NAMESPACE = Symbol('default');
 
-export const DECORATOR_DI_TOKEN_PREFIX = 'ClusterClients';
+export const CLUSTER_MODULE_ID = 'ClusterModule';
 
-export const LOGGER_CONTEXT = 'ClusterModule';
+export enum ClusterStatus {
+    END = 'end',
+    CLOSE = 'close',
+    WAIT = 'wait',
+    CONNECTING = 'connecting',
+    CONNECT = 'connect',
+    READY = 'ready',
+    RECONNECTING = 'reconnecting',
+    DISCONNECTING = 'disconnecting'
+}

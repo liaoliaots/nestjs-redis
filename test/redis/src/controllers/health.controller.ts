@@ -7,17 +7,17 @@ import { InjectRedis } from '@/.';
 @Controller('health')
 export class HealthController {
     constructor(
-        @InjectRedis() private readonly clientDefault: Redis,
+        @InjectRedis() private readonly defaultClient: Redis,
         @InjectRedis('client1') private readonly client1: Redis,
-        private readonly healthCheckService: HealthCheckService,
-        private readonly redisHealthIndicator: RedisHealthIndicator
+        private readonly health: HealthCheckService,
+        private readonly redis: RedisHealthIndicator
     ) {}
 
     @Get()
     async healthCheck(): Promise<HealthCheckResult> {
-        return await this.healthCheckService.check([
-            () => this.redisHealthIndicator.checkHealth('clientDefault', { client: this.clientDefault }),
-            () => this.redisHealthIndicator.checkHealth('client1', { client: this.client1 })
+        return await this.health.check([
+            () => this.redis.checkHealth('default', { client: this.defaultClient }),
+            () => this.redis.checkHealth('client1', { client: this.client1 })
         ]);
     }
 }

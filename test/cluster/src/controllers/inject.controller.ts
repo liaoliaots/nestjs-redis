@@ -5,13 +5,13 @@ import { InjectCluster } from '@/.';
 @Controller('inject')
 export class InjectController {
     constructor(
-        @InjectCluster() private readonly clientDefault: Cluster,
+        @InjectCluster() private readonly defaultClient: Cluster,
         @InjectCluster('client1') private readonly client1: Cluster
     ) {}
 
-    @Get('clientDefault')
-    async pingClientDefault(): Promise<string> {
-        return await this.clientDefault.ping();
+    @Get()
+    async pingDefault(): Promise<string> {
+        return await this.defaultClient.ping();
     }
 
     @Get('client1')

@@ -1,6 +1,6 @@
 {
     "name": "@liaoliaots/nestjs-redis",
-    "version": "4.0.1",
+    "version": "4.1.0",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao",
     "main": "dist/index.js",
@@ -82,6 +82,9 @@
         "@nestjs/terminus": {
             "optional": true
         }
+    },
+    "engines": {
+        "node": ">= 10.13.0"
     },
     "jest": {
         "moduleFileExtensions": [
