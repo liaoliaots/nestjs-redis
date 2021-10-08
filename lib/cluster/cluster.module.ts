@@ -52,7 +52,8 @@ export class ClusterModule implements OnApplicationShutdown {
             ...createAsyncProviders(options),
             clusterClientsProvider,
             ClusterManager,
-            ...clusterClientProviders
+            ...clusterClientProviders,
+            ...(options.extraProviders ?? [])
         ];
 
         return {

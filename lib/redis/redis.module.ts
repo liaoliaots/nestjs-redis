@@ -52,7 +52,8 @@ export class RedisModule implements OnApplicationShutdown {
             ...createAsyncProviders(options),
             redisClientsProvider,
             RedisManager,
-            ...redisClientProviders
+            ...redisClientProviders,
+            ...(options.extraProviders ?? [])
         ];
 
         return {

@@ -1,4 +1,4 @@
-import { Type, ModuleMetadata } from '@nestjs/common';
+import { Type, ModuleMetadata, Provider } from '@nestjs/common';
 import { RedisOptions, Redis } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
@@ -52,6 +52,7 @@ export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'>
     useFactory?: (...args: any[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inject?: any[];
+    extraProviders?: Provider[];
 }
 
 export interface RedisOptionsFactory {
