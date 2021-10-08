@@ -9,7 +9,7 @@ import {
     clusterClientsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
-import { quitClients } from './common';
+import { quitClients, readPromiseSettledResults } from './common';
 import { MISSING_CONFIGURATION } from '@/errors';
 
 @Global()
@@ -64,7 +64,10 @@ export class ClusterModule implements OnApplicationShutdown {
         };
     }
 
-    onApplicationShutdown(): void {
-        if (this.options.closeClient) quitClients(this.clients);
+    async onApplicationShutdown(): Promise<void> {
+        if (this.options.closeClient) {
+            const result = await quitClients(this.clients);
+            readPromiseSettledResults(result);
+        }
     }
 }

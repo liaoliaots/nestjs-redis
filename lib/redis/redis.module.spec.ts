@@ -21,12 +21,27 @@ describe('RedisCoreModule', () => {
 
     describe('forRootAsync', () => {
         test('should work correctly', () => {
-            const options: RedisModuleAsyncOptions = { imports: [], useFactory: () => ({}), inject: [] };
+            const options: RedisModuleAsyncOptions = {
+                imports: [],
+                useFactory: () => ({}),
+                inject: []
+            };
             const module = RedisModule.forRootAsync(options);
             expect(module.module).toBe(RedisModule);
             expect(module.imports?.length).toBe(0);
             expect(module.providers?.length).toBeGreaterThanOrEqual(3);
             expect(module.exports?.length).toBeGreaterThanOrEqual(1);
+        });
+
+        test('should work correctly with extraProviders', () => {
+            const options: RedisModuleAsyncOptions = {
+                imports: [],
+                useFactory: () => ({}),
+                inject: [],
+                extraProviders: [{ provide: '', useValue: '' }]
+            };
+            const module = RedisModule.forRootAsync(options);
+            expect(module.providers?.length).toBeGreaterThanOrEqual(4);
         });
 
         test('should throw an error', () => {
@@ -35,15 +50,15 @@ describe('RedisCoreModule', () => {
     });
 
     describe('onApplicationShutdown', () => {
-        test('should call quitClients', () => {
+        test('should call quitClients', async () => {
             const module = new RedisModule({ closeClient: true }, new Map());
-            module.onApplicationShutdown();
+            await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(1);
         });
 
-        test('should not call quitClients', () => {
+        test('should not call quitClients', async () => {
             const module = new RedisModule({ closeClient: false }, new Map());
-            module.onApplicationShutdown();
+            await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(0);
         });
     });

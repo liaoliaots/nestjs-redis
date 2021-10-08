@@ -111,7 +111,10 @@
             "@/(.*)": [
                 "<rootDir>/$1"
             ]
-        }
+        },
+        "coverageReporters": [
+            "json-summary"
+        ]
     },
     "commitlint": {
         "extends": [

@@ -33,21 +33,32 @@ describe('ClusterCoreModule', () => {
             expect(module.exports?.length).toBeGreaterThanOrEqual(1);
         });
 
+        test('should work correctly with extraProviders', () => {
+            const options: ClusterModuleAsyncOptions = {
+                imports: [],
+                useFactory: () => ({ config: { nodes: [] } }),
+                inject: [],
+                extraProviders: [{ provide: '', useValue: '' }]
+            };
+            const module = ClusterModule.forRootAsync(options);
+            expect(module.providers?.length).toBeGreaterThanOrEqual(4);
+        });
+
         test('should throw an error', () => {
             expect(() => ClusterModule.forRootAsync({})).toThrow();
         });
     });
 
     describe('onApplicationShutdown', () => {
-        test('should call quitClients', () => {
+        test('should call quitClients', async () => {
             const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
-            module.onApplicationShutdown();
+            await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(1);
         });
 
-        test('should not call quitClients', () => {
+        test('should not call quitClients', async () => {
             const module = new ClusterModule({ closeClient: false, config: { nodes: [] } }, new Map());
-            module.onApplicationShutdown();
+            await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(0);
         });
     });

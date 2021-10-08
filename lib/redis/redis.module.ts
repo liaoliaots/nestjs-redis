@@ -9,7 +9,7 @@ import {
     redisClientsProvider
 } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
-import { quitClients } from './common';
+import { quitClients, readPromiseSettledResults } from './common';
 import { MISSING_CONFIGURATION } from '@/errors';
 
 @Global()
@@ -64,7 +64,10 @@ export class RedisModule implements OnApplicationShutdown {
         };
     }
 
-    onApplicationShutdown(): void {
-        if (this.options.closeClient) quitClients(this.clients);
+    async onApplicationShutdown(): Promise<void> {
+        if (this.options.closeClient) {
+            const result = await quitClients(this.clients);
+            readPromiseSettledResults(result);
+        }
     }
 }
