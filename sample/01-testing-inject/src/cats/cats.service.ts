@@ -8,7 +8,7 @@ import { CreateCatDto } from './create-cat.dto';
 export class CatsService {
     private readonly cats: Cat[] = [new Cat(1, 'Test Cat 1', 'Test Breed 1'), new Cat(2, 'Test Cat 2', 'Test Breed 2')];
 
-    constructor(@InjectRedis() private readonly client: Redis) {}
+    constructor(@InjectRedis('default') private readonly client: Redis) {}
 
     async findAll(): Promise<Cat[]> {
         const cats = await this.client.get('cats');

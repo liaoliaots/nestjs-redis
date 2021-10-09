@@ -1,21 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRedisToken, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
-import IORedis, { Redis } from 'ioredis';
+import { getRedisToken } from '@liaoliaots/nestjs-redis';
 import { CreateCatDto } from './create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './cat';
 
-jest.mock('ioredis');
-
 describe('CatsService', () => {
     let service: CatsService;
-    let client: Redis;
+    let get: jest.Mock;
+    let set: jest.Mock;
+    let del: jest.Mock;
 
     beforeEach(async () => {
-        client = new IORedis();
-
+        get = jest.fn();
+        set = jest.fn();
+        del = jest.fn();
         const module: TestingModule = await Test.createTestingModule({
-            providers: [{ provide: getRedisToken(DEFAULT_REDIS_NAMESPACE), useValue: client }, CatsService]
+            providers: [
+                CatsService,
+                {
+                    provide: getRedisToken('default'),
+                    useValue: {
+                        get,
+                        set,
+                        del
+                    }
+                }
+            ]
         }).compile();
 
         service = module.get<CatsService>(CatsService);
@@ -27,10 +37,9 @@ describe('CatsService', () => {
 
     describe('findAll', () => {
         test('should return the array of cats', async () => {
-            const get = jest.spyOn(client, 'get').mockResolvedValue(null);
-            const set = jest.spyOn(client, 'set');
-
             let cats: Cat[];
+
+            get.mockResolvedValue(null);
             cats = await service.findAll();
             expect(cats).toHaveLength(2);
             expect(cats[0]).toEqual({ id: 1, name: 'Test Cat 1', breed: 'Test Breed 1' });
@@ -48,8 +57,6 @@ describe('CatsService', () => {
 
     describe('create', () => {
         test('should create the cat', async () => {
-            const del = jest.spyOn(client, 'del');
-
             const createCatDto: CreateCatDto = {
                 name: 'Test Cat 3',
                 breed: 'Test Breed 3'

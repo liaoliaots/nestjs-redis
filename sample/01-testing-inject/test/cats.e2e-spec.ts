@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { DEFAULT_REDIS_NAMESPACE, getRedisToken } from '@liaoliaots/nestjs-redis';
+import { getRedisToken } from '@liaoliaots/nestjs-redis';
 import { FastifyInstance, LightMyRequestResponse } from 'fastify';
 import { Redis } from 'ioredis';
 import { AppModule } from '../src/app.module';
@@ -15,7 +15,7 @@ describe('CatsController (e2e)', () => {
             imports: [AppModule]
         }).compile();
 
-        client = module.get<Redis>(getRedisToken(DEFAULT_REDIS_NAMESPACE));
+        client = module.get<Redis>(getRedisToken('default'));
         app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
 
         await app.init();
