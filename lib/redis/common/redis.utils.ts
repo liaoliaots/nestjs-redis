@@ -4,6 +4,7 @@ import { RedisClientOptions, RedisClients } from '../interfaces';
 import { REDIS_MODULE_ID, RedisStatus } from '../redis.constants';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
+import { CONNECTED_SUCCESSFULLY } from '@/messages';
 
 export const logger = new Logger(REDIS_MODULE_ID);
 
@@ -19,7 +20,7 @@ export const createClient = (clientOptions: RedisClientOptions): Redis => {
 export const displayReadyLog = (clients: RedisClients): void => {
     clients.forEach((client, namespace) => {
         client.once(RedisStatus.READY, () => {
-            logger.log(`${parseNamespace(namespace)}: Connected successfully to the server`);
+            logger.log(`${parseNamespace(namespace)}: ${CONNECTED_SUCCESSFULLY}`);
         });
     });
 };

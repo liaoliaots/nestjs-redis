@@ -10,7 +10,7 @@ import {
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { quitClients, readPromiseSettledResults } from './common';
-import { MISSING_CONFIGURATION } from '@/errors';
+import { MISSING_CONFIGURATION } from '@/messages';
 
 @Global()
 @Module({})

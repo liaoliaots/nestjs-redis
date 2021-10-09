@@ -3,7 +3,7 @@ import { Cluster } from 'ioredis';
 import { RedisError } from 'redis-errors';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { ClusterClients } from './interfaces';
-import { CLIENT_NOT_FOUND } from '@/errors';
+import { CLIENT_NOT_FOUND } from '@/messages';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 

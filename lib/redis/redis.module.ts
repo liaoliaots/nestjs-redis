@@ -10,7 +10,7 @@ import {
 } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { quitClients, readPromiseSettledResults } from './common';
-import { MISSING_CONFIGURATION } from '@/errors';
+import { MISSING_CONFIGURATION } from '@/messages';
 
 @Global()
 @Module({})

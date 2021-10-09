@@ -3,8 +3,9 @@ import {
     MISSING_CONFIGURATION,
     FAILED_CLUSTER_STATE,
     CANNOT_BE_READ,
-    CLIENT_NOT_FOUND_FOR_HEALTH
-} from './messages.constant';
+    CLIENT_NOT_FOUND_FOR_HEALTH,
+    CONNECTED_SUCCESSFULLY
+} from '.';
 
 describe('MISSING_CONFIGURATION', () => {
     test('should be a string', () => {
@@ -27,6 +28,12 @@ describe('CANNOT_BE_READ', () => {
 describe('CLIENT_NOT_FOUND_FOR_HEALTH', () => {
     test('should be a string', () => {
         expect(typeof CLIENT_NOT_FOUND_FOR_HEALTH).toBe('string');
+    });
+});
+
+describe('CONNECTED_SUCCESSFULLY', () => {
+    test('should be a string', () => {
+        expect(typeof CONNECTED_SUCCESSFULLY).toBe('string');
     });
 });
 
