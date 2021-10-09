@@ -151,6 +151,42 @@ export class ClusterConfigService implements ClusterOptionsFactory {
 export class AppModule {}
 ```
 
+via `extraProviders`:
+
+```TypeScript
+// just a simple example
+
+import { Module, ValueProvider } from '@nestjs/common';
+import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis';
+
+const MyOptionsSymbol = Symbol('options');
+const MyOptionsProvider: ValueProvider<ClusterModuleOptions> = {
+    provide: MyOptionsSymbol,
+    useValue: {
+        closeClient: true,
+        readyLog: true,
+        config: {
+            namespace: 'default',
+            nodes: [{ host: '127.0.0.1', port: 16380 }],
+            options: { redisOptions: { password: 'clusterpassword1' } }
+        }
+    }
+};
+
+@Module({
+    imports: [
+        ClusterModule.forRootAsync({
+            useFactory(options: ClusterModuleOptions) {
+                return options;
+            },
+            inject: [MyOptionsSymbol],
+            extraProviders: [MyOptionsProvider]
+        })
+    ]
+})
+export class AppModule {}
+```
+
 ... or via `useExisting`, if you wish to use an existing configuration provider imported from a different module.
 
 ```TypeScript
