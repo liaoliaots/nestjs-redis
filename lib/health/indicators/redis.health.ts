@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisError } from 'redis-errors';
-import { CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
+import { CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/messages';
 
 export interface RedisCheckOptions {
     /**

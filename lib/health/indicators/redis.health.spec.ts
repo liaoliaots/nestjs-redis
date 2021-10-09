@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisHealthIndicator } from './redis.health';
-import { FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/errors';
+import { FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/messages';
 
 describe('RedisHealthIndicator', () => {
     let redisClient: Redis;

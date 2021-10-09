@@ -4,6 +4,7 @@ import { ClusterClientOptions, ClusterClients } from '../interfaces';
 import { CLUSTER_MODULE_ID, ClusterStatus } from '../cluster.constants';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
+import { CONNECTED_SUCCESSFULLY } from '@/messages';
 
 export const logger = new Logger(CLUSTER_MODULE_ID);
 
@@ -19,7 +20,7 @@ export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
 export const displayReadyLog = (clients: ClusterClients): void => {
     clients.forEach((client, namespace) => {
         client.once(ClusterStatus.READY, () => {
-            logger.log(`${parseNamespace(namespace)}: Connected successfully to the server`);
+            logger.log(`${parseNamespace(namespace)}: ${CONNECTED_SUCCESSFULLY}`);
         });
     });
 };
