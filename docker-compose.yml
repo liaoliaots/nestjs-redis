@@ -12,6 +12,7 @@ services:
             - 'REDIS_REPLICATION_MODE=master'
             - 'REDIS_PORT_NUMBER=6380'
             - 'REDIS_PASSWORD=masterpassword1'
+            - 'REDIS_REPLICA_PORT=6380'
         networks:
             - 'testing'
         ports:
