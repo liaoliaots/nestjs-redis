@@ -71,6 +71,47 @@ export class AppService {
 }
 ```
 
+### Use with other libraries that depend on redis
+
+For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { RedisModule, RedisManager } from '@liaoliaots/nestjs-redis';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
+
+@Module({
+    imports: [
+        RedisModule.forRoot({
+            closeClient: true,
+            readyLog: true,
+            config: {
+                namespace: 'default',
+                host: '127.0.0.1',
+                port: 6380,
+                password: 'masterpassword1'
+            }
+        }),
+        ThrottlerModule.forRootAsync({
+            useFactory(redisManager: RedisManager) {
+                const redis = redisManager.getClient('default');
+                return { ttl: 60, limit: 10, storage: new ThrottlerStorageRedisService(redis) };
+            },
+            inject: [RedisManager]
+        })
+    ],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard
+        }
+    ]
+})
+export class AppModule {}
+```
+
 ## Configuration
 
 ### RedisModuleOptions
