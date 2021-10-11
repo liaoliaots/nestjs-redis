@@ -3,17 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Cluster, Redis } from 'ioredis';
 import { ClusterModule, RedisModule, InjectCluster, InjectRedis, getClusterToken, getRedisToken } from '@/.';
 
-jest.mock('ioredis', () => {
-    const mockIORedis = jest.createMockFromModule<{ default: Redis }>('ioredis/built/redis').default;
-    Reflect.defineProperty(mockIORedis, 'Cluster', {
-        enumerable: true,
-        value: jest.createMockFromModule<{ default: Cluster }>('ioredis/built/cluster').default
-    });
-    return {
-        __esModule: true,
-        default: mockIORedis
-    };
-});
+jest.mock('ioredis');
 
 describe('combination', () => {
     let clusterClient: Cluster;

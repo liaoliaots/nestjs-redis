@@ -15,15 +15,16 @@ jest.mock('@nestjs/common', () => ({
 }));
 
 const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
-const MockLogger = Logger as jest.MockedClass<typeof Logger>;
 
 beforeEach(() => {
     MockIORedis.mockReset();
-    jest.spyOn(logger, 'log').mockReset();
-    jest.spyOn(logger, 'error').mockReset();
+    (logger.log as jest.Mock).mockReset();
+    (logger.error as jest.Mock).mockReset();
 });
 
 describe('logger', () => {
+    const MockLogger = Logger as jest.MockedClass<typeof Logger>;
+
     afterEach(() => {
         MockLogger.mockReset();
     });
