@@ -1,5 +1,7 @@
 export const REDIS_OPTIONS = Symbol();
 
+export const REDIS_WRAPPER_OPTIONS = Symbol();
+
 export const REDIS_CLIENTS = Symbol();
 
 export const DEFAULT_REDIS_NAMESPACE = Symbol('default');
@@ -13,5 +15,6 @@ export enum RedisStatus {
     END = 'end',
     WAIT = 'wait',
     RECONNECTING = 'reconnecting',
-    CLOSE = 'close'
+    CLOSE = 'close',
+    MONITORING = 'monitoring'
 }

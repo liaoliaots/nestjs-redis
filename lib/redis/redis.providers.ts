@@ -1,7 +1,7 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_WRAPPER_OPTIONS } from './redis.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
@@ -12,6 +12,19 @@ export const createOptionsProvider = (options: RedisModuleOptions): ValueProvide
 });
 
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
+    if (options.useFactory) {
+        return [
+            {
+                provide: REDIS_OPTIONS,
+                useFactory(options: RedisModuleOptions) {
+                    return { ...defaultRedisModuleOptions, ...options };
+                },
+                inject: [REDIS_WRAPPER_OPTIONS]
+            },
+            createAsyncOptionsProvider(options)
+        ];
+    }
+
     if (options.useClass) {
         return [
             {
@@ -22,7 +35,7 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
         ];
     }
 
-    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options)];
+    if (options.useExisting) return [createAsyncOptionsProvider(options)];
 
     return [];
 };
@@ -35,7 +48,7 @@ export const createAsyncOptions = async (optionsFactory: RedisOptionsFactory): P
 export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Provider => {
     if (options.useFactory) {
         return {
-            provide: REDIS_OPTIONS,
+            provide: REDIS_WRAPPER_OPTIONS,
             useFactory: options.useFactory,
             inject: options.inject
         };
