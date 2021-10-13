@@ -1,7 +1,12 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
-import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
+import {
+    CLUSTER_OPTIONS,
+    CLUSTER_CLIENTS,
+    DEFAULT_CLUSTER_NAMESPACE,
+    CLUSTER_WRAPPER_OPTIONS
+} from './cluster.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
 import { defaultClusterModuleOptions } from './default-options';
@@ -12,6 +17,19 @@ export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvi
 });
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
+    if (options.useFactory) {
+        return [
+            {
+                provide: CLUSTER_OPTIONS,
+                useFactory(options: ClusterModuleOptions) {
+                    return { ...defaultClusterModuleOptions, ...options };
+                },
+                inject: [CLUSTER_WRAPPER_OPTIONS]
+            },
+            createAsyncOptionsProvider(options)
+        ];
+    }
+
     if (options.useClass) {
         return [
             {
@@ -22,7 +40,7 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
         ];
     }
 
-    if (options.useFactory || options.useExisting) return [createAsyncOptionsProvider(options)];
+    if (options.useExisting) return [createAsyncOptionsProvider(options)];
 
     return [];
 };
@@ -35,7 +53,7 @@ export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory):
 export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): Provider => {
     if (options.useFactory) {
         return {
-            provide: CLUSTER_OPTIONS,
+            provide: CLUSTER_WRAPPER_OPTIONS,
             useFactory: options.useFactory,
             inject: options.inject
         };

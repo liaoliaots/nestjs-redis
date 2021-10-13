@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { ClusterModule } from '@/.';
+import { ClusterModule, ClusterModuleOptions } from '@/.';
 import { RedisHealthModule } from '@/health';
 import { HealthController } from './controllers/health.controller';
 import { InjectController } from './controllers/inject.controller';
@@ -9,7 +9,7 @@ import { ManagerController } from './controllers/manager.controller';
 @Module({
     imports: [
         ClusterModule.forRootAsync({
-            useFactory() {
+            useFactory(): ClusterModuleOptions {
                 return {
                     closeClient: true,
                     config: [

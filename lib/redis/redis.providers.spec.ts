@@ -1,3 +1,4 @@
+import { FactoryProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Redis } from 'ioredis';
 import {
@@ -9,7 +10,7 @@ import {
     createAsyncOptions
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_WRAPPER_OPTIONS } from './redis.constants';
 import { namespaces, displayReadyLog } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
@@ -36,11 +37,38 @@ describe('createOptionsProvider', () => {
 });
 
 describe('createAsyncProviders', () => {
-    test('should work correctly', () => {
-        expect(createAsyncProviders({ useFactory: () => ({}), inject: [] })).toHaveLength(1);
-        expect(createAsyncProviders({ useClass: RedisConfigService })).toHaveLength(2);
-        expect(createAsyncProviders({ useExisting: RedisConfigService })).toHaveLength(1);
-        expect(createAsyncProviders({})).toHaveLength(0);
+    test('should create providers with useFactory', () => {
+        const result = createAsyncProviders({ useFactory: () => ({}), inject: [] });
+        expect(result).toHaveLength(2);
+        expect(result[0]).toHaveProperty('provide', REDIS_OPTIONS);
+        expect(result[0]).toHaveProperty('inject', [REDIS_WRAPPER_OPTIONS]);
+        expect((result[0] as FactoryProvider).useFactory({ closeClient: true })).toEqual({
+            ...defaultRedisModuleOptions,
+            closeClient: true
+        });
+        expect(result[1]).toHaveProperty('provide', REDIS_WRAPPER_OPTIONS);
+        expect(result[1]).toHaveProperty('inject', []);
+    });
+
+    test('should create providers with useClass', () => {
+        const result = createAsyncProviders({ useClass: RedisConfigService });
+        expect(result).toHaveLength(2);
+        expect(result[0]).toHaveProperty('provide', RedisConfigService);
+        expect(result[0]).toHaveProperty('useClass', RedisConfigService);
+        expect(result[1]).toHaveProperty('provide', REDIS_OPTIONS);
+        expect(result[1]).toHaveProperty('inject', [RedisConfigService]);
+    });
+
+    test('should create providers with useExisting', () => {
+        const result = createAsyncProviders({ useExisting: RedisConfigService });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toHaveProperty('provide', REDIS_OPTIONS);
+        expect(result[0]).toHaveProperty('inject', [RedisConfigService]);
+    });
+
+    test('should create providers without options', () => {
+        const result = createAsyncProviders({});
+        expect(result).toHaveLength(0);
     });
 });
 
@@ -61,7 +89,7 @@ describe('createAsyncOptions', () => {
 describe('createAsyncOptionsProvider', () => {
     test('should create provider with useFactory', () => {
         const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['token'] };
-        expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_OPTIONS, ...options });
+        expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_WRAPPER_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {

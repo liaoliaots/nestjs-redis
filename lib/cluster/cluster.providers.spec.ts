@@ -1,3 +1,4 @@
+import { FactoryProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import IORedis, { Cluster } from 'ioredis';
 import {
@@ -9,7 +10,12 @@ import {
     createAsyncOptions
 } from './cluster.providers';
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
-import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
+import {
+    CLUSTER_OPTIONS,
+    CLUSTER_CLIENTS,
+    DEFAULT_CLUSTER_NAMESPACE,
+    CLUSTER_WRAPPER_OPTIONS
+} from './cluster.constants';
 import { namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
 import { defaultClusterModuleOptions } from './default-options';
@@ -37,11 +43,38 @@ describe('createOptionsProvider', () => {
 });
 
 describe('createAsyncProviders', () => {
-    test('should work correctly', () => {
-        expect(createAsyncProviders({ useFactory: () => clusterOptions, inject: [] })).toHaveLength(1);
-        expect(createAsyncProviders({ useClass: ClusterConfigService })).toHaveLength(2);
-        expect(createAsyncProviders({ useExisting: ClusterConfigService })).toHaveLength(1);
-        expect(createAsyncProviders({})).toHaveLength(0);
+    test('should create providers with useFactory', () => {
+        const result = createAsyncProviders({ useFactory: () => clusterOptions, inject: [] });
+        expect(result).toHaveLength(2);
+        expect(result[0]).toHaveProperty('provide', CLUSTER_OPTIONS);
+        expect(result[0]).toHaveProperty('inject', [CLUSTER_WRAPPER_OPTIONS]);
+        expect((result[0] as FactoryProvider).useFactory({ closeClient: true })).toEqual({
+            ...defaultClusterModuleOptions,
+            closeClient: true
+        });
+        expect(result[1]).toHaveProperty('provide', CLUSTER_WRAPPER_OPTIONS);
+        expect(result[1]).toHaveProperty('inject', []);
+    });
+
+    test('should create providers with useClass', () => {
+        const result = createAsyncProviders({ useClass: ClusterConfigService });
+        expect(result).toHaveLength(2);
+        expect(result[0]).toHaveProperty('provide', ClusterConfigService);
+        expect(result[0]).toHaveProperty('useClass', ClusterConfigService);
+        expect(result[1]).toHaveProperty('provide', CLUSTER_OPTIONS);
+        expect(result[1]).toHaveProperty('inject', [ClusterConfigService]);
+    });
+
+    test('should create providers with useExisting', () => {
+        const result = createAsyncProviders({ useExisting: ClusterConfigService });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toHaveProperty('provide', CLUSTER_OPTIONS);
+        expect(result[0]).toHaveProperty('inject', [ClusterConfigService]);
+    });
+
+    test('should create providers without options', () => {
+        const result = createAsyncProviders({});
+        expect(result).toHaveLength(0);
     });
 });
 
@@ -62,7 +95,7 @@ describe('createAsyncOptions', () => {
 describe('createAsyncOptionsProvider', () => {
     test('should create provider with useFactory', () => {
         const options: ClusterModuleAsyncOptions = { useFactory: () => clusterOptions, inject: ['token'] };
-        expect(createAsyncOptionsProvider(options)).toEqual({ provide: CLUSTER_OPTIONS, ...options });
+        expect(createAsyncOptionsProvider(options)).toEqual({ provide: CLUSTER_WRAPPER_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {
