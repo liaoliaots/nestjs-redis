@@ -90,7 +90,7 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
             options.config.forEach(item =>
                 clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item))
             );
-        } /* single */ else {
+        } else if (options.config /* single */) {
             clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
         }
 
