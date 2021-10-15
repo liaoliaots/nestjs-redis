@@ -1,25 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Injectable, Module } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
 import IORedis, { Cluster, Redis } from 'ioredis';
-import { ClusterModule, RedisModule, InjectCluster, InjectRedis, getClusterToken, getRedisToken } from '@/.';
+import { ClusterModule, RedisModule, InjectCluster, InjectRedis } from '@/.';
 
 jest.mock('ioredis');
 
-describe('combination', () => {
+describe('global', () => {
     let clusterClient: Cluster;
     let redisClient: Redis;
 
     @Injectable()
     class TestCluster {
-        constructor(@InjectCluster('default') private readonly clusterClient: Cluster) {}
+        constructor(@InjectCluster('default') cluster: Cluster) {
+            clusterClient = cluster;
+        }
     }
     @Injectable()
     class TestRedis {
-        constructor(@InjectRedis('default') private readonly redisClient: Redis) {}
+        constructor(@InjectRedis('default') redis: Redis) {
+            redisClient = redis;
+        }
     }
+    @Module({
+        providers: [TestCluster, TestRedis]
+    })
+    class MyModule {}
 
     beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        await Test.createTestingModule({
             imports: [
                 ClusterModule.forRoot({
                     config: {
@@ -31,13 +39,10 @@ describe('combination', () => {
                     config: {
                         namespace: 'default'
                     }
-                })
-            ],
-            providers: [TestCluster, TestRedis]
+                }),
+                MyModule
+            ]
         }).compile();
-
-        clusterClient = module.get<Cluster>(getClusterToken('default'));
-        redisClient = module.get<Redis>(getRedisToken('default'));
     });
 
     test('should be a cluster instance', () => {
