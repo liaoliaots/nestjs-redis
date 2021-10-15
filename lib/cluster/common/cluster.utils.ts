@@ -34,23 +34,8 @@ export const quitClients = (
             promises.push(Promise.allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
-
         client.disconnect();
     });
 
     return Promise.all(promises);
-};
-
-export const readPromiseSettledResults = (
-    results: [PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]
-): void => {
-    results.forEach(([namespaceResult, quitResult]) => {
-        if (
-            namespaceResult.status === 'fulfilled' &&
-            quitResult.status === 'rejected' &&
-            quitResult.reason instanceof Error
-        ) {
-            logger.error(`${parseNamespace(namespaceResult.value)}: ${quitResult.reason.message}`);
-        }
-    });
 };

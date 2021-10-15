@@ -1,15 +1,16 @@
 import { RedisModule } from './redis.module';
 import { RedisModuleAsyncOptions } from './interfaces';
-import { quitClients } from './common';
+import { quitClients, logger } from './common';
 
 jest.mock('./common');
 const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
 
 beforeEach(() => {
     mockQuitClients.mockReset();
+    (logger.error as jest.Mock).mockReset();
 });
 
-describe('RedisCoreModule', () => {
+describe('RedisModule', () => {
     describe('forRoot', () => {
         test('should work correctly', () => {
             const module = RedisModule.forRoot();
@@ -35,9 +36,7 @@ describe('RedisCoreModule', () => {
 
         test('should work correctly with extraProviders', () => {
             const options: RedisModuleAsyncOptions = {
-                imports: [],
                 useFactory: () => ({}),
-                inject: [],
                 extraProviders: [{ provide: '', useValue: '' }]
             };
             const module = RedisModule.forRootAsync(options);
@@ -51,15 +50,47 @@ describe('RedisCoreModule', () => {
 
     describe('onApplicationShutdown', () => {
         test('should call quitClients', async () => {
+            mockQuitClients.mockResolvedValue([]);
+
             const module = new RedisModule({ closeClient: true }, new Map());
             await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(1);
         });
 
         test('should not call quitClients', async () => {
+            mockQuitClients.mockResolvedValue([]);
+
             const module = new RedisModule({ closeClient: false }, new Map());
             await module.onApplicationShutdown();
             expect(mockQuitClients).toHaveBeenCalledTimes(0);
+        });
+
+        test('should call logger.error', async () => {
+            const mockError = jest.spyOn(logger, 'error');
+            mockQuitClients.mockResolvedValue([
+                [
+                    { status: 'fulfilled', value: '' },
+                    { status: 'rejected', reason: new Error('') }
+                ]
+            ]);
+
+            const module = new RedisModule({ closeClient: true }, new Map());
+            await module.onApplicationShutdown();
+            expect(mockError).toHaveBeenCalledTimes(1);
+        });
+
+        test('should not call logger.error', async () => {
+            const mockError = jest.spyOn(logger, 'error');
+            mockQuitClients.mockResolvedValue([
+                [
+                    { status: 'fulfilled', value: '' },
+                    { status: 'fulfilled', value: 'OK' }
+                ]
+            ]);
+
+            const module = new RedisModule({ closeClient: true }, new Map());
+            await module.onApplicationShutdown();
+            expect(mockError).toHaveBeenCalledTimes(0);
         });
     });
 });

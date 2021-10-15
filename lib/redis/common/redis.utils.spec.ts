@@ -1,16 +1,14 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
-import { createClient, quitClients, logger, displayReadyLog, readPromiseSettledResults } from './redis.utils';
+import { createClient, quitClients, logger, displayReadyLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
 import { REDIS_MODULE_ID } from '../redis.constants';
-import { ClientNamespace } from '@/interfaces';
 
 jest.mock('@nestjs/common', () => ({
     __esModule: true,
     ...jest.requireActual('@nestjs/common'),
     Logger: jest.fn(() => ({
-        log: jest.fn(),
-        error: jest.fn()
+        log: jest.fn()
     }))
 }));
 
@@ -19,7 +17,6 @@ const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
 beforeEach(() => {
     MockIORedis.mockReset();
     (logger.log as jest.Mock).mockReset();
-    (logger.error as jest.Mock).mockReset();
 });
 
 describe('logger', () => {
@@ -33,31 +30,6 @@ describe('logger', () => {
         expect(logger).toBeDefined();
         expect(MockLogger).toHaveBeenCalledTimes(1);
         expect(MockLogger).toHaveBeenCalledWith(REDIS_MODULE_ID);
-    });
-});
-
-describe('displayReadyLog', () => {
-    let client: Redis;
-    let clients: RedisClients;
-
-    beforeEach(() => {
-        client = new IORedis();
-        clients = new Map();
-        clients.set('client', client);
-    });
-
-    test('should work correctly', () => {
-        const mockOnce = jest
-            .spyOn(client, 'once')
-            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
-                listener();
-                return undefined as unknown as Redis;
-            });
-        const mockLog = jest.spyOn(logger, 'log');
-
-        displayReadyLog(clients);
-        expect(mockOnce).toHaveBeenCalledTimes(1);
-        expect(mockLog).toHaveBeenCalledTimes(1);
     });
 });
 
@@ -99,6 +71,31 @@ describe('createClient', () => {
             expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
             expect(mockOnClientCreated).toHaveBeenCalledWith(client);
         });
+    });
+});
+
+describe('displayReadyLog', () => {
+    let client: Redis;
+    let clients: RedisClients;
+
+    beforeEach(() => {
+        client = new IORedis();
+        clients = new Map();
+        clients.set('client', client);
+    });
+
+    test('should work correctly', () => {
+        const mockOnce = jest
+            .spyOn(client, 'once')
+            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
+                listener();
+                return undefined as unknown as Redis;
+            });
+        const mockLog = jest.spyOn(logger, 'log');
+
+        displayReadyLog(clients);
+        expect(mockOnce).toHaveBeenCalledTimes(1);
+        expect(mockLog).toHaveBeenCalledTimes(1);
     });
 });
 
@@ -144,33 +141,5 @@ describe('quitClients', () => {
         expect(mockClient1Quit).toHaveBeenCalledTimes(1);
         expect(mockClient2Disconnect).toHaveBeenCalledTimes(1);
         expect(results).toHaveLength(1);
-    });
-});
-
-describe('readPromiseSettledResults', () => {
-    test('should call error', () => {
-        const mockError = jest.spyOn(logger, 'error');
-
-        const results: [PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][] = [
-            [
-                { status: 'fulfilled', value: 'client' },
-                { status: 'rejected', reason: new Error('a redis error') }
-            ]
-        ];
-        readPromiseSettledResults(results);
-        expect(mockError).toHaveBeenCalledTimes(1);
-    });
-
-    test('should not call error', () => {
-        const mockError = jest.spyOn(logger, 'error');
-
-        const results: [PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][] = [
-            [
-                { status: 'fulfilled', value: 'client' },
-                { status: 'fulfilled', value: 'OK' }
-            ]
-        ];
-        readPromiseSettledResults(results);
-        expect(mockError).toHaveBeenCalledTimes(0);
     });
 });

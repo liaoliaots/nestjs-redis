@@ -9,8 +9,9 @@ import {
     clusterClientsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
-import { quitClients, readPromiseSettledResults } from './common';
+import { quitClients, logger } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
+import { parseNamespace } from '@/utils';
 
 @Global()
 @Module({})
@@ -67,7 +68,11 @@ export class ClusterModule implements OnApplicationShutdown {
     async onApplicationShutdown(): Promise<void> {
         if (this.options.closeClient) {
             const result = await quitClients(this.clients);
-            readPromiseSettledResults(result);
+            result.forEach(([namespace, quit]) => {
+                if (namespace.status === 'fulfilled' && quit.status === 'rejected' && quit.reason instanceof Error) {
+                    logger.error(`${parseNamespace(namespace.value)}: ${quit.reason.message}`);
+                }
+            });
         }
     }
 }
