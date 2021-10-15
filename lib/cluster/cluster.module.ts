@@ -1,4 +1,4 @@
-import { Module, Global, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
+import { Module, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
 import { RedisError } from 'redis-errors';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from './interfaces';
 import { ClusterManager } from './cluster-manager';
@@ -13,7 +13,6 @@ import { quitClients, logger } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
 import { parseNamespace } from '@/utils';
 
-@Global()
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
     constructor(
@@ -34,6 +33,7 @@ export class ClusterModule implements OnApplicationShutdown {
         ];
 
         return {
+            global: true,
             module: ClusterModule,
             providers,
             exports: [ClusterManager, ...clusterClientProviders]
@@ -58,6 +58,7 @@ export class ClusterModule implements OnApplicationShutdown {
         ];
 
         return {
+            global: true,
             module: ClusterModule,
             imports: options.imports,
             providers,
