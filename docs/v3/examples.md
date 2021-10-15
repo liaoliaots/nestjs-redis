@@ -2,56 +2,6 @@
 
 ## Redis
 
-### Default
-
-If the redis server does **not** have a password, the host is **127.0.0.1** and the port is **6379**:
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot()]
-})
-export class AppModule {}
-```
-
-... or
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot({ closeClient: true })]
-})
-export class AppModule {}
-```
-
-... or
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot({ closeClient: true, config: { namespace: 'default' } })]
-})
-export class AppModule {}
-```
-
-... or
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot({ config: { host: '127.0.0.1', port: 6379 } })]
-})
-export class AppModule {}
-```
-
 ### Sentinel
 
 | name                     | ip        | port | password         |

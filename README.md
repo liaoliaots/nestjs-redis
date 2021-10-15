@@ -36,7 +36,6 @@ _For the legacy V2 or V3@next documentation, [click here](docs/v2/README.md)._
 -   [Health Checks](docs/v3/health-checks.md)
 -   [Examples](docs/v3/examples.md)
     -   [Redis](docs/v3/examples.md#redis)
-        -   [Default](docs/v3/examples.md#default)
         -   [Sentinel](docs/v3/examples.md#sentinel)
     -   [Cluster](docs/v3/examples.md#cluster)
         -   [Multiple Clients](docs/v3/examples.md#multiple-clients)
