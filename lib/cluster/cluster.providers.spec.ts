@@ -215,6 +215,22 @@ describe('clusterClientsProvider', () => {
         });
     });
 
+    describe('without options', () => {
+        let clients: ClusterClients;
+
+        beforeEach(async () => {
+            const module: TestingModule = await Test.createTestingModule({
+                providers: [{ provide: CLUSTER_OPTIONS, useValue: {} }, clusterClientsProvider, ClusterManager]
+            }).compile();
+
+            clients = module.get<ClusterClients>(CLUSTER_CLIENTS);
+        });
+
+        test('should have 1 member', () => {
+            expect(clients.size).toBe(0);
+        });
+    });
+
     describe('displayReadyLog', () => {
         beforeEach(() => {
             (displayReadyLog as jest.MockedFunction<typeof displayReadyLog>).mockReset();

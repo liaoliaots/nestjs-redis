@@ -90,7 +90,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
             );
         } else if (options.config /* single */) {
             clients.set(options.config.namespace ?? DEFAULT_REDIS_NAMESPACE, createClient(options.config));
-        } else clients.set(DEFAULT_REDIS_NAMESPACE, createClient({}));
+        }
 
         if (options.readyLog) displayReadyLog(clients);
 

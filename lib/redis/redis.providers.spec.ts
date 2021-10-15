@@ -215,7 +215,6 @@ describe('redisClientsProvider', () => {
 
     describe('without options', () => {
         let clients: RedisClients;
-        let manager: RedisManager;
 
         beforeEach(async () => {
             const module: TestingModule = await Test.createTestingModule({
@@ -223,16 +222,10 @@ describe('redisClientsProvider', () => {
             }).compile();
 
             clients = module.get<RedisClients>(REDIS_CLIENTS);
-            manager = module.get<RedisManager>(RedisManager);
         });
 
         test('should have 1 member', () => {
-            expect(clients.size).toBe(1);
-        });
-
-        test('should work correctly', () => {
-            const client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
-            expect(client).toBeInstanceOf(IORedis);
+            expect(clients.size).toBe(0);
         });
     });
 
