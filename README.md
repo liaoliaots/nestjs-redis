@@ -40,6 +40,7 @@ _For the legacy V2 or V3@next documentation, [click here](docs/v2/README.md)._
         -   [Sentinel](docs/v3/examples.md#sentinel)
     -   [Cluster](docs/v3/examples.md#cluster)
         -   [Multiple Clients](docs/v3/examples.md#multiple-clients)
+-   [Distributed locks](#distributed-locks)
 -   [Test a class](#test-a-class)
 -   [Package dependency overview](#package-dependency-overview)
 
@@ -74,6 +75,11 @@ $ npm install --save-dev @types/ioredis
 $ yarn add @liaoliaots/nestjs-redis@2 ioredis @nestjs/terminus@7
 $ yarn add --dev @types/ioredis
 ```
+
+## Distributed locks
+
+-   [redlock](https://github.com/mike-marcacci/node-redlock)
+-   [simple-redis-mutex](https://github.com/coligo-tech/simple-redis-mutex)
 
 ## Test a class
 
