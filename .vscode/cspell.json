@@ -15,6 +15,7 @@
         "tsdoc",
         "env",
         "npx",
-        "mymaster"
+        "mymaster",
+        "mutex"
     ]
 }
