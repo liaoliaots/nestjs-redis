@@ -45,8 +45,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-> HINT: The `commonOptions` option works only with multiple clients.
-
 > INFO: Read more about sentinel [here](https://github.com/luin/ioredis#sentinel).
 
 ## Cluster
