@@ -1,6 +1,6 @@
 {
     "name": "@liaoliaots/nestjs-redis",
-    "version": "5.0.0",
+    "version": "5.0.1",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao",
     "main": "dist/index.js",
@@ -34,7 +34,7 @@
         "test:e2e": "jest --config test/jest-e2e.json",
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme --style=\"flat-square\"",
-        "madge": "madge --image docs/v3/dependency-graph.svg dist/index.js health/index.js"
+        "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js health/index.js"
     },
     "dependencies": {
         "redis-errors": "1.2.0",

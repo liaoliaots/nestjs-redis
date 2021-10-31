@@ -2,44 +2,6 @@
 
 ## Redis
 
-### Default
-
-If the redis server does **not** have a password, the host is **127.0.0.1** and the port is **6379**:
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot()]
-})
-export class AppModule {}
-```
-
-... or
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot({ closeClient: true })]
-})
-export class AppModule {}
-```
-
-... or
-
-```TypeScript
-import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-
-@Module({
-    imports: [RedisModule.forRoot({ closeClient: true, config: { namespace: 'default' } })]
-})
-export class AppModule {}
-```
-
 ### Sentinel
 
 | name                     | ip        | port | password         |
@@ -60,7 +22,10 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     imports: [
         RedisModule.forRoot({
             closeClient: true,
-            commonOptions: {
+            config: {
+                namespace: 'master-client',
+                name: 'mymaster',
+                role: 'master',
                 sentinels: [
                     {
                         host: '127.0.0.1',
@@ -73,20 +38,12 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 ],
                 sentinelPassword: 'sentinelpassword',
                 password: 'masterpassword1'
-            },
-            config: [
-                // create a master from the sentinel group
-                { namespace: 'master node', name: 'mymaster', role: 'master' },
-                // create a random slave from the sentinel group
-                { namespace: 'slave node', name: 'mymaster', role: 'slave' }
-            ]
+            }
         })
     ]
 })
 export class AppModule {}
 ```
-
-> HINT: The `commonOptions` option works only with multiple clients.
 
 > INFO: Read more about sentinel [here](https://github.com/luin/ioredis#sentinel).
 

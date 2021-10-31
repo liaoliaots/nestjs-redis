@@ -21,27 +21,28 @@
 -   Support **redis** and **cluster**
 -   Support health check
 -   Specify multiple clients
--   Easy to test
--   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()` decorator
+-   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()`
 -   Get a redis/cluster client via `RedisManager` and `ClusterManager`
 
 ## Documentation
 
-_For the legacy V2 or V3@next documentation, [click here](docs/v2/README.md)._
-
 -   [Test coverage](#test-coverage)
 -   [Install](#install)
--   [Redis](docs/v3/redis.md)
--   [Cluster](docs/v3/cluster.md)
--   [Health Checks](docs/v3/health-checks.md)
--   [Examples](docs/v3/examples.md)
-    -   [Redis](docs/v3/examples.md#redis)
-        -   [Sentinel](docs/v3/examples.md#sentinel)
-    -   [Cluster](docs/v3/examples.md#cluster)
-        -   [Multiple Clients](docs/v3/examples.md#multiple-clients)
+-   [Redis](docs/latest/redis.md)
+-   [Cluster](docs/latest/cluster.md)
+-   [Health Checks](docs/latest/health-checks.md)
+-   [Examples](docs/latest/examples.md)
+    -   [Redis Sentinel](docs/latest/examples.md#sentinel)
+    -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
 -   [Distributed locks](#distributed-locks)
 -   [Test a class](#test-a-class)
 -   [Package dependency overview](#package-dependency-overview)
+
+_For the legacy V2 and V3@next documentation, [click here](docs/v2/README.md)._
+
+_For the legacy V3 documentation, [click here](docs/v3)._
+
+_For the legacy V4 documentation, [click here](docs/v4)._
 
 ## Test coverage
 
@@ -79,6 +80,7 @@ $ yarn add --dev @types/ioredis
 
 -   [redlock](https://github.com/mike-marcacci/node-redlock)
 -   [simple-redis-mutex](https://github.com/coligo-tech/simple-redis-mutex)
+-   [nestjs-simple-redis-lock](https://github.com/huangang/nestjs-simple-redis-lock)
 
 ## Test a class
 
@@ -91,10 +93,6 @@ const module: TestingModule = await Test.createTestingModule({
 ```
 
 A working example is available [here](sample/01-testing-inject).
-
-## Package dependency overview
-
-![](docs/v3/dependency-graph.svg)
 
 ## Author
 
@@ -112,5 +110,8 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2021 [LiaoLiao](https://github.com/liaoliaots).<br />
 This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
+
+## Package dependency overview
+
+![](docs/latest/dependency-graph.svg)
