@@ -47,21 +47,21 @@ export class AppService {
 }
 ```
 
-via service:
+via manager:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { ClusterService, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { ClusterManager, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Cluster } from 'ioredis';
 
 @Injectable()
 export class AppService {
     private readonly defaultClusterClient: Cluster;
 
-    constructor(private readonly clusterService: ClusterService) {
-        this.defaultClusterClient = this.clusterService.getClient();
+    constructor(private readonly clusterManager: ClusterManager) {
+        this.defaultClusterClient = this.clusterManager.getClient();
         // or
-        // this.defaultClusterClient = this.clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        // this.defaultClusterClient = this.clusterManager.getClient(DEFAULT_CLUSTER_NAMESPACE);
     }
 
     async ping(): Promise<string> {
@@ -78,16 +78,16 @@ export class AppService {
 | ----------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | closeClient | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
 | readyLog    | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
-| config      | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
+| config      | `ClientOptions` or `ClientOptions`[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
 
 ### ClientOptions
 
-| Name                                                                                          | Type                                               | Default value     | Description                                                                                                                                                            |
-| --------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                     | string or symbol                                   | Symbol('default') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value.                                                 |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | `{ host?: string; port?: number }[]` or `string[]` | -                 | A list of nodes of the cluster. The **first** argument of `new Cluster(startupNodes, options).`                                                                        |
-| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                                             | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30). The **second** argument of `new Cluster(startupNodes, options).` |
-| onClientCreated                                                                               | function                                           | undefined         | This function will be executed as soon as the client is created.                                                                                                       |
+| Name                                                                                          | Type                                                             | Default value     | Description                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                     | string or symbol                                                 | Symbol('default') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value.                                                 |
+| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | `{ host?: string; port?: number }[]` or `string[]` or `number[]` | undefined         | A list of nodes of the cluster. The **first** argument of `new Cluster(startupNodes, options).`                                                                        |
+| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                                                           | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30). The **second** argument of `new Cluster(startupNodes, options).` |
+| onClientCreated                                                                               | function                                                         | undefined         | This function will be executed as soon as the client is created.                                                                                                       |
 
 ### Asynchronous configuration
 
@@ -145,6 +145,42 @@ export class ClusterConfigService implements ClusterOptionsFactory {
     imports: [
         ClusterModule.forRootAsync({
             useClass: ClusterConfigService
+        })
+    ]
+})
+export class AppModule {}
+```
+
+via `extraProviders`:
+
+```TypeScript
+// just a simple example
+
+import { Module, ValueProvider } from '@nestjs/common';
+import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis';
+
+const MyOptionsSymbol = Symbol('options');
+const MyOptionsProvider: ValueProvider<ClusterModuleOptions> = {
+    provide: MyOptionsSymbol,
+    useValue: {
+        closeClient: true,
+        readyLog: true,
+        config: {
+            namespace: 'default',
+            nodes: [{ host: '127.0.0.1', port: 16380 }],
+            options: { redisOptions: { password: 'clusterpassword1' } }
+        }
+    }
+};
+
+@Module({
+    imports: [
+        ClusterModule.forRootAsync({
+            useFactory(options: ClusterModuleOptions) {
+                return options;
+            },
+            inject: [MyOptionsSymbol],
+            extraProviders: [MyOptionsProvider]
         })
     ]
 })

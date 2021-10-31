@@ -6,7 +6,7 @@ import { isString, isSymbol } from '@/utils';
 export const namespaces = new Map<ClientNamespace, ClientNamespace>();
 
 /**
- * Decorator that marks a constructor parameter as a cluster client.
+ * Decorator that injects a cluster client to the constructor parameter.
  *
  * @param namespace - The name of the client
  */
@@ -22,7 +22,7 @@ export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMES
 };
 
 /**
- * Gets an internal injection token.
+ * Generates an injection token for a cluster client.
  *
  * @param namespace  - The name of the client
  */

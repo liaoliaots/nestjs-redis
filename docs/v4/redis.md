@@ -48,21 +48,21 @@ export class AppService {
 }
 ```
 
-via service:
+via manager:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { RedisManager, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class AppService {
     private readonly defaultRedisClient: Redis;
 
-    constructor(private readonly redisService: RedisService) {
-        this.defaultRedisClient = this.redisService.getClient();
+    constructor(private readonly redisManager: RedisManager) {
+        this.defaultRedisClient = this.redisManager.getClient();
         // or
-        // this.defaultRedisClient = this.redisService.getClient(DEFAULT_REDIS_NAMESPACE);
+        // this.defaultRedisClient = this.redisManager.getClient(DEFAULT_REDIS_NAMESPACE);
     }
 
     async ping(): Promise<string> {
@@ -71,16 +71,57 @@ export class AppService {
 }
 ```
 
+### Use with other libraries that depend on redis
+
+For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
+
+```TypeScript
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { RedisModule, RedisManager } from '@liaoliaots/nestjs-redis';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
+
+@Module({
+    imports: [
+        RedisModule.forRoot({
+            closeClient: true,
+            readyLog: true,
+            config: {
+                namespace: 'default',
+                host: '127.0.0.1',
+                port: 6380,
+                password: 'masterpassword1'
+            }
+        }),
+        ThrottlerModule.forRootAsync({
+            useFactory(redisManager: RedisManager) {
+                const redis = redisManager.getClient('default');
+                return { ttl: 60, limit: 10, storage: new ThrottlerStorageRedisService(redis) };
+            },
+            inject: [RedisManager]
+        })
+    ],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard
+        }
+    ]
+})
+export class AppModule {}
+```
+
 ## Configuration
 
 ### RedisModuleOptions
 
-| Name          | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                             |
-| ------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient   | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| commonOptions | object                               | undefined     | The common options for each client.                                                                                                                                                                                                                                                                     |
-| readyLog      | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
-| config        | `ClientOptions` or `ClientOptions`[] | {}            | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
+| Name          | Type                                 | Default value                     | Description                                                                                                                                                                                                                                                                                             |
+| ------------- | ------------------------------------ | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| closeClient   | boolean                              | false                             | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| commonOptions | object                               | undefined                         | The common options for each client.                                                                                                                                                                                                                                                                     |
+| readyLog      | boolean                              | false                             | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
+| config        | `ClientOptions` or `ClientOptions`[] | { host: 'localhost', port: 6379 } | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
 
 ### ClientOptions
 
@@ -149,6 +190,43 @@ export class RedisConfigService implements RedisOptionsFactory {
     imports: [
         RedisModule.forRootAsync({
             useClass: RedisConfigService
+        })
+    ]
+})
+export class AppModule {}
+```
+
+via `extraProviders`:
+
+```TypeScript
+// just a simple example
+
+import { Module, ValueProvider } from '@nestjs/common';
+import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+
+const MyOptionsSymbol = Symbol('options');
+const MyOptionsProvider: ValueProvider<RedisModuleOptions> = {
+    provide: MyOptionsSymbol,
+    useValue: {
+        closeClient: true,
+        readyLog: true,
+        config: {
+            namespace: 'default',
+            host: '127.0.0.1',
+            port: 6380,
+            password: 'masterpassword1'
+        }
+    }
+};
+
+@Module({
+    imports: [
+        RedisModule.forRootAsync({
+            useFactory(options: RedisModuleOptions) {
+                return options;
+            },
+            inject: [MyOptionsSymbol],
+            extraProviders: [MyOptionsProvider]
         })
     ]
 })
