@@ -60,7 +60,7 @@
         "eslint-plugin-jest": "25.2.2",
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-tsdoc": "0.2.14",
-        "fastify": "3.22.0",
+        "fastify": "3.22.1",
         "husky": "7.0.4",
         "ioredis": "4.28.0",
         "istanbul-badges-readme": "1.6.0",
