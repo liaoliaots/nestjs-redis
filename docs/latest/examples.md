@@ -22,7 +22,10 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     imports: [
         RedisModule.forRoot({
             closeClient: true,
-            commonOptions: {
+            config: {
+                namespace: 'master-client',
+                name: 'mymaster',
+                role: 'master',
                 sentinels: [
                     {
                         host: '127.0.0.1',
@@ -35,13 +38,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                 ],
                 sentinelPassword: 'sentinelpassword',
                 password: 'masterpassword1'
-            },
-            config: [
-                // create a master from the sentinel group
-                { namespace: 'master node', name: 'mymaster', role: 'master' },
-                // create a random slave from the sentinel group
-                { namespace: 'slave node', name: 'mymaster', role: 'slave' }
-            ]
+            }
         })
     ]
 })
