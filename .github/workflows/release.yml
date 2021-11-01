@@ -12,7 +12,6 @@ jobs:
                   check-latest: true
                   registry-url: 'https://registry.npmjs.org'
             - run: npm install -g npm@latest
-            - run: npm cache clean --force
             - run: npm ci
             - run: npm run lint
             - run: npm run test

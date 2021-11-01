@@ -14,7 +14,6 @@ jobs:
                   cache: 'npm'
                   check-latest: true
             - run: npm install -g npm@latest
-            - run: npm cache clean --force
             - run: npm ci
             - run: npm run lint
             - run: npm run test
