@@ -52,7 +52,7 @@ _For the legacy V4 documentation, [click here](docs/v4)._
 
 ## Install
 
-### NestJS 8:
+**This package supports both nestjs 7.x and 8.x.**
 
 ```sh
 $ npm install --save @liaoliaots/nestjs-redis ioredis
@@ -61,18 +61,6 @@ $ npm install --save-dev @types/ioredis
 
 ```sh
 $ yarn add @liaoliaots/nestjs-redis ioredis
-$ yarn add --dev @types/ioredis
-```
-
-### NestJS 7:
-
-```sh
-$ npm install --save @liaoliaots/nestjs-redis@2 ioredis @nestjs/terminus@7
-$ npm install --save-dev @types/ioredis
-```
-
-```sh
-$ yarn add @liaoliaots/nestjs-redis@2 ioredis @nestjs/terminus@7
 $ yarn add --dev @types/ioredis
 ```
 
