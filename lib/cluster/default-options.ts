@@ -1,7 +1,7 @@
 import { ClusterModuleOptions } from './interfaces';
 
 export const defaultClusterModuleOptions: Partial<ClusterModuleOptions> = {
-    closeClient: false,
+    closeClient: true,
     readyLog: false,
     config: undefined
 };

@@ -71,6 +71,8 @@ export class AppService {
 }
 ```
 
+> HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
+
 ### Use with other libraries that depend on redis
 
 For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
@@ -118,7 +120,7 @@ export class AppModule {}
 
 | Name          | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                             |
 | ------------- | ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient   | boolean                              | false         | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| closeClient   | boolean                              | true          | If `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
 | commonOptions | object                               | undefined     | The common options for each client.                                                                                                                                                                                                                                                                     |
 | readyLog      | boolean                              | false         | If `true`, will show a message when the client is ready.                                                                                                                                                                                                                                                |
 | config        | `ClientOptions` or `ClientOptions`[] | undefined     | Specify single or multiple clients.                                                                                                                                                                                                                                                                     |
@@ -344,8 +346,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 })
 export class AppModule {}
 ```
-
-> HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
 ### commonOptions
 
