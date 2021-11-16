@@ -95,7 +95,7 @@ describe('quitClients', () => {
         clients.set('client2', client2);
     });
 
-    test('when the status is ready', async () => {
+    test('the status is ready', async () => {
         Reflect.defineProperty(client1, 'status', { value: 'ready' });
         Reflect.defineProperty(client2, 'status', { value: 'ready' });
 
@@ -113,7 +113,7 @@ describe('quitClients', () => {
         expect(results[1][1]).toEqual({ status: 'rejected', reason: '' });
     });
 
-    test('when the status is ready and end', async () => {
+    test('the status is ready and end', async () => {
         Reflect.defineProperty(client1, 'status', { value: 'ready' });
         Reflect.defineProperty(client2, 'status', { value: 'end' });
 

@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
+import allSettled, { PromiseResult } from 'promise.allsettled';
 import { ClusterClientOptions, ClusterClients } from '../interfaces';
 import { CLUSTER_MODULE_ID, ClusterStatus } from '../cluster.constants';
 import { parseNamespace } from '@/utils';
@@ -25,17 +26,17 @@ export const displayReadyLog = (clients: ClusterClients): void => {
     });
 };
 
-export const quitClients = (
+export const quitClients = async (
     clients: ClusterClients
-): Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]> => {
-    const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
+): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
+    const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
         if (client.status === ClusterStatus.READY) {
-            promises.push(Promise.allSettled([Promise.resolve(namespace), client.quit()]));
+            promises.push(allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
         client.disconnect();
     });
 
-    return Promise.all(promises);
+    return await Promise.all(promises);
 };
