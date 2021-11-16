@@ -44,7 +44,7 @@ describe('CatsController (e2e)', () => {
             url: '/cats',
             payload: createCatDto
         });
-        expect(newCat.statusCode).toEqual(201);
+        expect(newCat.statusCode).toBe(201);
         expect(JSON.parse(newCat.payload)).toEqual({
             id: 3,
             ...createCatDto
@@ -55,7 +55,7 @@ describe('CatsController (e2e)', () => {
             method: 'GET',
             url: '/cats'
         });
-        expect(cats.statusCode).toEqual(200);
+        expect(cats.statusCode).toBe(200);
         expect(JSON.parse(cats.payload)).toEqual([
             {
                 id: 1,
@@ -73,7 +73,7 @@ describe('CatsController (e2e)', () => {
             method: 'GET',
             url: '/cats'
         });
-        expect(cats.statusCode).toEqual(200);
+        expect(cats.statusCode).toBe(200);
         expect(JSON.parse(cats.payload)).toHaveLength(3);
     });
 });
