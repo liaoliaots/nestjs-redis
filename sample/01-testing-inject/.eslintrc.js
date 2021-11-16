@@ -1,12 +1,8 @@
 module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaVersion: 2021,
         sourceType: 'module',
-        ecmaFeatures: {
-            impliedStrict: true
-        },
-        project: './tsconfig.json'
+        project: 'tsconfig.json'
     },
     plugins: ['@typescript-eslint'],
     extends: [
@@ -22,7 +18,7 @@ module.exports = {
     env: {
         node: true,
         jest: true,
-        es2021: true
+        es2017: true
     },
     ignorePatterns: ['dist/*', '.eslintrc.js'],
     reportUnusedDisableDirectives: true,
