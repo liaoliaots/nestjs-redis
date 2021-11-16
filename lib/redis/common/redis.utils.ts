@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
+import allSettled, { PromiseResult } from 'promise.allsettled';
 import { RedisClientOptions, RedisClients } from '../interfaces';
 import { REDIS_MODULE_ID, RedisStatus } from '../redis.constants';
 import { parseNamespace } from '@/utils';
@@ -25,17 +26,17 @@ export const displayReadyLog = (clients: RedisClients): void => {
     });
 };
 
-export const quitClients = (
+export const quitClients = async (
     clients: RedisClients
-): Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]> => {
-    const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
+): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
+    const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
         if (client.status === RedisStatus.READY) {
-            promises.push(Promise.allSettled([Promise.resolve(namespace), client.quit()]));
+            promises.push(allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
         client.disconnect();
     });
 
-    return Promise.all(promises);
+    return await Promise.all(promises);
 };

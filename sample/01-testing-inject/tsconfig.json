@@ -7,12 +7,12 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "target": "ES2017",
-        "lib": ["ES2021"],
+        "lib": ["ES2017"],
         "sourceMap": true,
         "outDir": "./dist",
         "baseUrl": "./",
         "incremental": true,
-        "skipLibCheck": true,
+        "skipLibCheck": false,
         "strict": true
     }
 }

@@ -5,5 +5,5 @@ updates:
       schedule:
           interval: 'monthly'
           time: '00:00'
-          timezone: 'Asia/Shanghai'
+          timezone: 'UTC'
       open-pull-requests-limit: 999
