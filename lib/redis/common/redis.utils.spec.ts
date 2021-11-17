@@ -1,36 +1,11 @@
-import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
-import { createClient, quitClients, logger, displayReadyLog } from './redis.utils';
+import { createClient, quitClients, displayReadyLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
-import { REDIS_MODULE_ID } from '../redis.constants';
-
-jest.mock('@nestjs/common', () => ({
-    __esModule: true,
-    ...jest.requireActual('@nestjs/common'),
-    Logger: jest.fn(() => ({
-        log: jest.fn()
-    }))
-}));
 
 const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
 
 beforeEach(() => {
     MockIORedis.mockReset();
-    (logger.log as jest.Mock).mockReset();
-});
-
-describe('logger', () => {
-    const MockLogger = Logger as jest.MockedClass<typeof Logger>;
-
-    afterEach(() => {
-        MockLogger.mockReset();
-    });
-
-    test('should be defined', () => {
-        expect(logger).toBeDefined();
-        expect(MockLogger).toHaveBeenCalledTimes(1);
-        expect(MockLogger).toHaveBeenCalledWith(REDIS_MODULE_ID);
-    });
 });
 
 describe('createClient', () => {
@@ -91,11 +66,9 @@ describe('displayReadyLog', () => {
                 listener();
                 return undefined as unknown as Redis;
             });
-        const mockLog = jest.spyOn(logger, 'log');
 
         displayReadyLog(clients);
         expect(mockOnce).toHaveBeenCalledTimes(1);
-        expect(mockLog).toHaveBeenCalledTimes(1);
     });
 });
 

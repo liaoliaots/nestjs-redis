@@ -1,14 +1,16 @@
 import { RedisModule } from './redis.module';
 import { RedisModuleAsyncOptions } from './interfaces';
-import { quitClients, logger } from './common';
+import { quitClients } from './common';
+import { logger } from './redis-logger';
 
 jest.mock('./common');
 const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
 
-beforeEach(() => {
-    mockQuitClients.mockReset();
-    (logger.error as jest.Mock).mockReset();
-});
+jest.mock('./redis-logger', () => ({
+    logger: {
+        error: jest.fn()
+    }
+}));
 
 describe('RedisModule', () => {
     describe('forRoot', () => {
@@ -49,6 +51,11 @@ describe('RedisModule', () => {
     });
 
     describe('onApplicationShutdown', () => {
+        beforeEach(() => {
+            mockQuitClients.mockReset();
+            jest.spyOn(logger, 'error').mockReset();
+        });
+
         test('should call quitClients', async () => {
             mockQuitClients.mockResolvedValue([]);
 

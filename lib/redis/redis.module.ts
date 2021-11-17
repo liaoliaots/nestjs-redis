@@ -9,9 +9,10 @@ import {
     redisClientsProvider
 } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
-import { quitClients, logger } from './common';
+import { quitClients } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
 import { parseNamespace } from '@/utils';
+import { logger } from './redis-logger';
 
 @Module({})
 export class RedisModule implements OnApplicationShutdown {
