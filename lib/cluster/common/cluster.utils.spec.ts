@@ -1,36 +1,11 @@
-import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
-import { createClient, quitClients, logger, displayReadyLog } from './cluster.utils';
+import { createClient, quitClients, displayReadyLog } from './cluster.utils';
 import { ClusterClients, ClusterClientOptions } from '../interfaces';
-import { CLUSTER_MODULE_ID } from '../cluster.constants';
-
-jest.mock('@nestjs/common', () => ({
-    __esModule: true,
-    ...jest.requireActual('@nestjs/common'),
-    Logger: jest.fn(() => ({
-        log: jest.fn()
-    }))
-}));
 
 const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
 
 beforeEach(() => {
     MockCluster.mockReset();
-    (logger.log as jest.Mock).mockReset();
-});
-
-describe('logger', () => {
-    const MockLogger = Logger as jest.MockedClass<typeof Logger>;
-
-    afterEach(() => {
-        MockLogger.mockReset();
-    });
-
-    test('should be defined', () => {
-        expect(logger).toBeDefined();
-        expect(MockLogger).toHaveBeenCalledTimes(1);
-        expect(MockLogger).toHaveBeenCalledWith(CLUSTER_MODULE_ID);
-    });
 });
 
 describe('createClient', () => {
@@ -74,11 +49,9 @@ describe('displayReadyLog', () => {
                 listener();
                 return undefined as unknown as Cluster;
             });
-        const mockLog = jest.spyOn(logger, 'log');
 
         displayReadyLog(clients);
         expect(mockOnce).toHaveBeenCalledTimes(1);
-        expect(mockLog).toHaveBeenCalledTimes(1);
     });
 });
 

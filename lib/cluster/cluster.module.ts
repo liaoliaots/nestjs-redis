@@ -9,9 +9,10 @@ import {
     clusterClientsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
-import { quitClients, logger } from './common';
+import { quitClients } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
 import { parseNamespace } from '@/utils';
+import { logger } from './cluster-logger';
 
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
