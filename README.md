@@ -20,7 +20,7 @@
 
 -   Support **redis** and **cluster**
 -   Support health check
--   Specify multiple clients
+-   Support multiple clients
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()`
 -   Get a redis/cluster client via `RedisManager` and `ClusterManager`
 
@@ -37,12 +37,13 @@
 -   [Distributed locks](#distributed-locks)
 -   [Test a class](#test-a-class)
 -   [Package dependency overview](#package-dependency-overview)
+-   [TODO](#todo)
 
-_For the legacy V2 and V3@next documentation, [click here](docs/v2/README.md)._
+_legacy V2 and V3@next, [click here](docs/v2/README.md)._
 
-_For the legacy V3 documentation, [click here](docs/v3)._
+_legacy V3, [click here](docs/v3)._
 
-_For the legacy V4 documentation, [click here](docs/v4)._
+_legacy V4, [click here](docs/v4)._
 
 ## Test coverage
 
@@ -81,6 +82,10 @@ const module: TestingModule = await Test.createTestingModule({
 ```
 
 A working example is available [here](sample/01-testing-inject).
+
+## TODO
+
+1.  -   [ ] COMMAND: **SELECT**
 
 ## Author
 
