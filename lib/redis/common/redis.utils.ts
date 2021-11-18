@@ -1,13 +1,11 @@
-import { Logger } from '@nestjs/common';
 import IORedis, { Redis } from 'ioredis';
 import allSettled, { PromiseResult } from 'promise.allsettled';
 import { RedisClientOptions, RedisClients } from '../interfaces';
-import { REDIS_MODULE_ID, RedisStatus } from '../redis.constants';
+import { RedisStatus } from '../redis.constants';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { CONNECTED_SUCCESSFULLY } from '@/messages';
-
-export const logger = new Logger(REDIS_MODULE_ID);
+import { logger } from '../redis-logger';
 
 export const createClient = (clientOptions: RedisClientOptions): Redis => {
     const { url, onClientCreated, ...redisOptions } = clientOptions;

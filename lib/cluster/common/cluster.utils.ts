@@ -1,13 +1,11 @@
-import { Logger } from '@nestjs/common';
 import IORedis, { Cluster } from 'ioredis';
 import allSettled, { PromiseResult } from 'promise.allsettled';
 import { ClusterClientOptions, ClusterClients } from '../interfaces';
-import { CLUSTER_MODULE_ID, ClusterStatus } from '../cluster.constants';
+import { ClusterStatus } from '../cluster.constants';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { CONNECTED_SUCCESSFULLY } from '@/messages';
-
-export const logger = new Logger(CLUSTER_MODULE_ID);
+import { logger } from '../cluster-logger';
 
 export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
     const { nodes, options, onClientCreated } = clientOptions;

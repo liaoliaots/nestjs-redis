@@ -1,14 +1,16 @@
 import { ClusterModule } from './cluster.module';
 import { ClusterModuleAsyncOptions } from './interfaces';
-import { quitClients, logger } from './common';
+import { quitClients } from './common';
+import { logger } from './cluster-logger';
 
 jest.mock('./common');
 const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
 
-beforeEach(() => {
-    mockQuitClients.mockReset();
-    (logger.error as jest.Mock).mockReset();
-});
+jest.mock('./cluster-logger', () => ({
+    logger: {
+        error: jest.fn()
+    }
+}));
 
 describe('ClusterModule', () => {
     describe('forRoot', () => {
@@ -49,6 +51,11 @@ describe('ClusterModule', () => {
     });
 
     describe('onApplicationShutdown', () => {
+        beforeEach(() => {
+            mockQuitClients.mockReset();
+            jest.spyOn(logger, 'error').mockReset();
+        });
+
         test('should call quitClients', async () => {
             mockQuitClients.mockResolvedValue([]);
 

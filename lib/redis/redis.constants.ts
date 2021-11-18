@@ -1,6 +1,6 @@
 export const REDIS_OPTIONS = Symbol();
 
-export const REDIS_WRAPPER_OPTIONS = Symbol();
+export const REDIS_INTERNAL_OPTIONS = Symbol();
 
 export const REDIS_CLIENTS = Symbol();
 

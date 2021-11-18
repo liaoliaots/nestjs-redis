@@ -7,7 +7,7 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "target": "ES2017",
-        "lib": ["ES2017"],
+        "lib": ["ES2017", "DOM"],
         "sourceMap": true,
         "outDir": "./dist",
         "baseUrl": "./",

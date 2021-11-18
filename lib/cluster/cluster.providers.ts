@@ -5,7 +5,7 @@ import {
     CLUSTER_OPTIONS,
     CLUSTER_CLIENTS,
     DEFAULT_CLUSTER_NAMESPACE,
-    CLUSTER_WRAPPER_OPTIONS
+    CLUSTER_INTERNAL_OPTIONS
 } from './cluster.constants';
 import { createClient, namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
@@ -24,7 +24,7 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
                 useFactory(options: ClusterModuleOptions) {
                     return { ...defaultClusterModuleOptions, ...options };
                 },
-                inject: [CLUSTER_WRAPPER_OPTIONS]
+                inject: [CLUSTER_INTERNAL_OPTIONS]
             },
             createAsyncOptionsProvider(options)
         ];
@@ -53,7 +53,7 @@ export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory):
 export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): Provider => {
     if (options.useFactory) {
         return {
-            provide: CLUSTER_WRAPPER_OPTIONS,
+            provide: CLUSTER_INTERNAL_OPTIONS,
             useFactory: options.useFactory,
             inject: options.inject
         };

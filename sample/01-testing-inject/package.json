@@ -22,7 +22,7 @@
         "test:clear": "jest --clearCache"
     },
     "dependencies": {
-        "@liaoliaots/nestjs-redis": "5.1.0",
+        "@liaoliaots/nestjs-redis": "5.1.1",
         "@nestjs/common": "8.2.1",
         "@nestjs/core": "8.2.1",
         "@nestjs/platform-fastify": "8.2.1",
