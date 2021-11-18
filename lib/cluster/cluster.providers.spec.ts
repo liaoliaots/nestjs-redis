@@ -14,7 +14,7 @@ import {
     CLUSTER_OPTIONS,
     CLUSTER_CLIENTS,
     DEFAULT_CLUSTER_NAMESPACE,
-    CLUSTER_WRAPPER_OPTIONS
+    CLUSTER_INTERNAL_OPTIONS
 } from './cluster.constants';
 import { namespaces, displayReadyLog } from './common';
 import { ClusterManager } from './cluster-manager';
@@ -47,12 +47,12 @@ describe('createAsyncProviders', () => {
         const result = createAsyncProviders({ useFactory: () => clusterOptions, inject: [] });
         expect(result).toHaveLength(2);
         expect(result[0]).toHaveProperty('provide', CLUSTER_OPTIONS);
-        expect(result[0]).toHaveProperty('inject', [CLUSTER_WRAPPER_OPTIONS]);
+        expect(result[0]).toHaveProperty('inject', [CLUSTER_INTERNAL_OPTIONS]);
         expect((result[0] as FactoryProvider).useFactory({ closeClient: true })).toEqual({
             ...defaultClusterModuleOptions,
             closeClient: true
         });
-        expect(result[1]).toHaveProperty('provide', CLUSTER_WRAPPER_OPTIONS);
+        expect(result[1]).toHaveProperty('provide', CLUSTER_INTERNAL_OPTIONS);
         expect(result[1]).toHaveProperty('inject', []);
     });
 
@@ -95,7 +95,7 @@ describe('createAsyncOptions', () => {
 describe('createAsyncOptionsProvider', () => {
     test('should create provider with useFactory', () => {
         const options: ClusterModuleAsyncOptions = { useFactory: () => clusterOptions, inject: ['token'] };
-        expect(createAsyncOptionsProvider(options)).toEqual({ provide: CLUSTER_WRAPPER_OPTIONS, ...options });
+        expect(createAsyncOptionsProvider(options)).toEqual({ provide: CLUSTER_INTERNAL_OPTIONS, ...options });
     });
 
     test('should create provider with useClass', () => {
