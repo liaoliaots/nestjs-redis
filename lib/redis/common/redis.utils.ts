@@ -24,7 +24,7 @@ export const displayReadyLog = (clients: RedisClients): void => {
     });
 };
 
-export const quitClients = async (
+export const quitClients = (
     clients: RedisClients
 ): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
     const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
@@ -36,5 +36,5 @@ export const quitClients = async (
         client.disconnect();
     });
 
-    return await Promise.all(promises);
+    return Promise.all(promises);
 };

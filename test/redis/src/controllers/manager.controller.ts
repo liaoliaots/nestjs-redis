@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { RedisManager } from '@/.';
+import { RedisService } from '@/.';
 
 @Controller('manager')
 export class ManagerController {
-    constructor(private readonly redisManager: RedisManager) {}
+    constructor(private readonly redisManager: RedisService) {}
 
     @Get()
     async pingDefault(): Promise<string> {
