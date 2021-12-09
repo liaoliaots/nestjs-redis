@@ -22,7 +22,7 @@
 -   Support health check
 -   Support multiple clients
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()`
--   Get a redis/cluster client via `RedisManager` and `ClusterManager`
+-   Get a redis/cluster client via `RedisService` and `ClusterService`
 
 ## Documentation
 
