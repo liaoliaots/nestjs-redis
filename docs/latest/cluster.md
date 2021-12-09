@@ -24,7 +24,7 @@ export class AppModule {}
 
 > HINT: The `ClusterModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**Now** we can use cluster in two ways.
+**Now**, we can use cluster in two ways.
 
 via decorator:
 
@@ -36,36 +36,36 @@ import { Cluster } from 'ioredis';
 @Injectable()
 export class AppService {
     constructor(
-        @InjectCluster() private readonly defaultClusterClient: Cluster
+        @InjectCluster() private readonly cluster: Cluster
         // or
-        // @InjectCluster(DEFAULT_CLUSTER_NAMESPACE) private readonly defaultClusterClient: Cluster
+        // @InjectCluster(DEFAULT_CLUSTER_NAMESPACE) private readonly cluster: Cluster
     ) {}
 
     async ping(): Promise<string> {
-        return await this.defaultClusterClient.ping();
+        return await this.cluster.ping();
     }
 }
 ```
 
-via manager:
+via service:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { ClusterManager, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { ClusterService, DEFAULT_CLUSTER_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Cluster } from 'ioredis';
 
 @Injectable()
 export class AppService {
-    private readonly defaultClusterClient: Cluster;
+    private readonly cluster: Cluster;
 
-    constructor(private readonly clusterManager: ClusterManager) {
-        this.defaultClusterClient = this.clusterManager.getClient();
+    constructor(private readonly clusterService: ClusterService) {
+        this.cluster = this.clusterService.getClient();
         // or
-        // this.defaultClusterClient = this.clusterManager.getClient(DEFAULT_CLUSTER_NAMESPACE);
+        // this.cluster = this.clusterService.getClient(DEFAULT_CLUSTER_NAMESPACE);
     }
 
     async ping(): Promise<string> {
-        return await this.defaultClusterClient.ping();
+        return await this.cluster.ping();
     }
 }
 ```

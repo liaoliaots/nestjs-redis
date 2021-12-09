@@ -25,7 +25,7 @@ export class AppModule {}
 
 > HINT: The `RedisModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**Now** we can use redis in two ways.
+**Now**, we can use redis in two ways.
 
 via decorator:
 
@@ -37,36 +37,36 @@ import { Redis } from 'ioredis';
 @Injectable()
 export class AppService {
     constructor(
-        @InjectRedis() private readonly defaultRedisClient: Redis
+        @InjectRedis() private readonly redis: Redis
         // or
-        // @InjectRedis(DEFAULT_REDIS_NAMESPACE) private readonly defaultRedisClient: Redis
+        // @InjectRedis(DEFAULT_REDIS_NAMESPACE) private readonly redis: Redis
     ) {}
 
     async ping(): Promise<string> {
-        return await this.defaultRedisClient.ping();
+        return await this.redis.ping();
     }
 }
 ```
 
-via manager:
+via service:
 
 ```TypeScript
 import { Injectable } from '@nestjs/common';
-import { RedisManager, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class AppService {
-    private readonly defaultRedisClient: Redis;
+    private readonly redis: Redis;
 
-    constructor(private readonly redisManager: RedisManager) {
-        this.defaultRedisClient = this.redisManager.getClient();
+    constructor(private readonly redisService: RedisService) {
+        this.redis = this.redisService.getClient();
         // or
-        // this.defaultRedisClient = this.redisManager.getClient(DEFAULT_REDIS_NAMESPACE);
+        // this.redis = this.redisService.getClient(DEFAULT_REDIS_NAMESPACE);
     }
 
     async ping(): Promise<string> {
-        return await this.defaultRedisClient.ping();
+        return await this.redis.ping();
     }
 }
 ```
@@ -79,9 +79,8 @@ For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
-import { RedisModule, RedisManager } from '@liaoliaots/nestjs-redis';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 
 @Module({
@@ -97,18 +96,12 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
             }
         }),
         ThrottlerModule.forRootAsync({
-            useFactory(redisManager: RedisManager) {
-                const redis = redisManager.getClient('default');
+            useFactory(redisService: RedisService) {
+                const redis = redisService.getClient('default');
                 return { ttl: 60, limit: 10, storage: new ThrottlerStorageRedisService(redis) };
             },
-            inject: [RedisManager]
+            inject: [RedisService]
         })
-    ],
-    providers: [
-        {
-            provide: APP_GUARD,
-            useClass: ThrottlerGuard
-        }
     ]
 })
 export class AppModule {}

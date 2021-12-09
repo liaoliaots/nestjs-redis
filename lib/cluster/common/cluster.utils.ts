@@ -24,7 +24,7 @@ export const displayReadyLog = (clients: ClusterClients): void => {
     });
 };
 
-export const quitClients = async (
+export const quitClients = (
     clients: ClusterClients
 ): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
     const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
@@ -36,5 +36,5 @@ export const quitClients = async (
         client.disconnect();
     });
 
-    return await Promise.all(promises);
+    return Promise.all(promises);
 };

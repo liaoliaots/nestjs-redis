@@ -1,6 +1,6 @@
 import * as allExports from '.';
 
-test('should have 6 exports', () => {
+test('there should be 6 exports', () => {
     expect(Object.keys(allExports)).toHaveLength(6);
 });
 
