@@ -22,7 +22,7 @@
         "test:clear": "jest --clearCache"
     },
     "dependencies": {
-        "@liaoliaots/nestjs-redis": "5.1.1",
+        "@liaoliaots/nestjs-redis": "5.2.0",
         "@nestjs/common": "8.2.3",
         "@nestjs/core": "8.2.3",
         "@nestjs/platform-fastify": "8.2.3",
@@ -36,7 +36,7 @@
         "@nestjs/cli": "8.1.5",
         "@nestjs/schematics": "8.0.5",
         "@nestjs/testing": "8.2.3",
-        "@types/ioredis": "4.28.2",
+        "@types/ioredis": "4.28.3",
         "@types/jest": "27.0.3",
         "@types/node": "14.18.0",
         "@typescript-eslint/eslint-plugin": "4.33.0",
@@ -45,7 +45,7 @@
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-jest": "25.3.0",
         "eslint-plugin-prettier": "4.0.0",
-        "jest": "27.4.3",
+        "jest": "27.4.4",
         "prettier": "2.5.1",
         "ts-jest": "27.1.1",
         "ts-loader": "9.2.6",
