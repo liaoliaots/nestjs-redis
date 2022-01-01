@@ -53,7 +53,7 @@
         "@nestjs/testing": "8.2.3",
         "@types/ioredis": "4.28.2",
         "@types/jest": "27.0.3",
-        "@types/node": "14.18.0",
+        "@types/node": "17.0.5",
         "@types/redis-errors": "1.2.1",
         "@typescript-eslint/eslint-plugin": "4.33.0",
         "@typescript-eslint/parser": "4.33.0",
