@@ -67,7 +67,7 @@
         "husky": "7.0.4",
         "ioredis": "4.28.2",
         "istanbul-badges-readme": "1.8.1",
-        "jest": "27.4.3",
+        "jest": "27.4.5",
         "lint-staged": "12.1.2",
         "prettier": "2.5.1",
         "rimraf": "3.0.2",
