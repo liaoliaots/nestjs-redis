@@ -47,7 +47,7 @@
         "@commitlint/cli": "15.0.0",
         "@commitlint/config-conventional": "15.0.0",
         "@nestjs/common": "8.2.3",
-        "@nestjs/core": "8.2.3",
+        "@nestjs/core": "8.2.4",
         "@nestjs/platform-fastify": "8.2.3",
         "@nestjs/terminus": "8.0.3",
         "@nestjs/testing": "8.2.3",
