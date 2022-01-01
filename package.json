@@ -51,7 +51,7 @@
         "@nestjs/platform-fastify": "8.2.3",
         "@nestjs/terminus": "8.0.3",
         "@nestjs/testing": "8.2.3",
-        "@types/ioredis": "4.28.2",
+        "@types/ioredis": "4.28.5",
         "@types/jest": "27.0.3",
         "@types/node": "14.18.0",
         "@types/redis-errors": "1.2.1",
