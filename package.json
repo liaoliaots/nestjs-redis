@@ -68,7 +68,7 @@
         "ioredis": "4.28.2",
         "istanbul-badges-readme": "1.8.1",
         "jest": "27.4.3",
-        "lint-staged": "12.1.2",
+        "lint-staged": "12.1.4",
         "prettier": "2.5.1",
         "rimraf": "3.0.2",
         "ts-jest": "27.1.1",
