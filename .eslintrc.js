@@ -4,7 +4,7 @@ module.exports = {
         sourceType: 'module',
         project: 'tsconfig.json'
     },
-    plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
+    plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc', 'deprecation'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
@@ -12,6 +12,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:jest/recommended',
         'plugin:jest/style',
+        'plugin:promise/recommended',
         'plugin:prettier/recommended'
     ],
     root: true,
@@ -23,6 +24,7 @@ module.exports = {
     ignorePatterns: ['dist/*', 'health/*', '.eslintrc.js', 'health.ts'],
     reportUnusedDisableDirectives: true,
     rules: {
-        'tsdoc/syntax': 'warn'
+        'tsdoc/syntax': 'warn',
+        'deprecation/deprecation': 'warn'
     }
 };
