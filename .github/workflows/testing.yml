@@ -1,10 +1,10 @@
-name: unit-testing
+name: testing
 on:
     pull_request:
         branches:
             - main
 jobs:
-    testing:
+    unit:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
