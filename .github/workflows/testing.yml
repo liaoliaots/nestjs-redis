@@ -4,7 +4,7 @@ on:
         branches:
             - main
 jobs:
-    testing:
+    test:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
@@ -26,4 +26,4 @@ jobs:
             - run: npm run lint
             - run: npm run test
             - run: npm run test:e2e
-            - run: docker-compose down
+            - run: docker-compose down -v
