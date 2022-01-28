@@ -1,4 +1,4 @@
-# initiate the cluster:
+# Initialize clusters:
 # sudo docker compose exec cluster-1-master-1 redis-cli --cluster create 172.19.0.20:16380 172.19.0.21:16381 172.19.0.22:16382 --cluster-yes -a clusterpassword1
 # sudo docker compose exec cluster-2-master-1 redis-cli --cluster create 172.19.0.30:16480 172.19.0.31:16481 172.19.0.32:16482 --cluster-yes -a clusterpassword2
 

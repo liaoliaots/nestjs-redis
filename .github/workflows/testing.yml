@@ -1,0 +1,29 @@
+name: testing
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    test:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '14'
+                  architecture: 'x64'
+                  cache: 'npm'
+                  check-latest: true
+            - run: npm install -g npm@latest
+            - run: npm -v
+            - run: npm ci
+            - run: docker-compose version
+            - run: docker-compose up -d
+            - name: Initialize cluster 1
+              run: docker-compose exec -T cluster-1-master-1 redis-cli --cluster create 172.19.0.20:16380 172.19.0.21:16381 172.19.0.22:16382 --cluster-yes -a clusterpassword1
+            - name: Initialize cluster 2
+              run: docker-compose exec -T cluster-2-master-1 redis-cli --cluster create 172.19.0.30:16480 172.19.0.31:16481 172.19.0.32:16482 --cluster-yes -a clusterpassword2
+            - run: npm run lint
+            - run: npm run test
+            - run: npm run test:e2e
+            - run: docker-compose down -v
