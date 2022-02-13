@@ -1,187 +1,177 @@
 # Initialize clusters:
-# sudo docker compose exec cluster-1-master-1 redis-cli --cluster create 172.19.0.20:16380 172.19.0.21:16381 172.19.0.22:16382 --cluster-yes -a clusterpassword1
-# sudo docker compose exec cluster-2-master-1 redis-cli --cluster create 172.19.0.30:16480 172.19.0.31:16481 172.19.0.32:16482 --cluster-yes -a clusterpassword2
+# sudo docker compose exec cluster-1-master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
+# sudo docker compose exec cluster-2-master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
 
 version: '3.9'
 networks:
     testing:
-        driver: 'bridge'
+        driver: bridge
         ipam:
             config:
-                - subnet: '172.19.0.0/16'
+                - subnet: 172.28.0.0/16
 services:
-    redis-master-1:
-        image: 'bitnami/redis:latest'
-        environment:
-            - 'REDIS_REPLICATION_MODE=master'
-            - 'REDIS_PORT_NUMBER=6380'
-            - 'REDIS_PASSWORD=masterpassword1'
-            - 'REDIS_REPLICA_PORT=6380'
-        networks:
-            - 'testing'
-        ports:
-            - '6380:6380'
-    redis-master-2:
-        image: 'bitnami/redis:latest'
-        environment:
-            - 'REDIS_REPLICATION_MODE=master'
-            - 'REDIS_PORT_NUMBER=6381'
-            - 'REDIS_PASSWORD=masterpassword2'
-        networks:
-            - 'testing'
-        ports:
-            - '6381:6381'
-    redis-slave-1:
-        image: 'bitnami/redis:latest'
-        environment:
-            - 'REDIS_REPLICATION_MODE=slave'
-            - 'REDIS_PORT_NUMBER=6480'
-            - 'REDIS_PASSWORD=masterpassword1'
-            - 'REDIS_MASTER_HOST=redis-master-1'
-            - 'REDIS_MASTER_PORT_NUMBER=6380'
-            - 'REDIS_MASTER_PASSWORD=masterpassword1'
-            - 'REDIS_REPLICA_PORT=6480'
-        networks:
-            - 'testing'
-        ports:
-            - '6480:6480'
-        depends_on:
-            - 'redis-master-1'
-    redis-slave-2:
-        image: 'bitnami/redis:latest'
-        environment:
-            - 'REDIS_REPLICATION_MODE=slave'
-            - 'REDIS_PORT_NUMBER=6481'
-            - 'REDIS_PASSWORD=masterpassword1'
-            - 'REDIS_MASTER_HOST=redis-master-1'
-            - 'REDIS_MASTER_PORT_NUMBER=6380'
-            - 'REDIS_MASTER_PASSWORD=masterpassword1'
-            - 'REDIS_REPLICA_PORT=6481'
-        networks:
-            - 'testing'
-        ports:
-            - '6481:6481'
-        depends_on:
-            - 'redis-master-1'
-    redis-sentinel-1:
-        image: 'bitnami/redis-sentinel:latest'
-        environment:
-            - 'REDIS_SENTINEL_PORT_NUMBER=7380'
-            - 'REDIS_SENTINEL_PASSWORD=sentinelpassword'
-            - 'REDIS_MASTER_HOST=redis-master-1'
-            - 'REDIS_MASTER_PORT_NUMBER=6380'
-            - 'REDIS_MASTER_PASSWORD=masterpassword1'
-            - 'REDIS_MASTER_SET=mymaster'
-            - 'REDIS_SENTINEL_QUORUM=2'
-            - 'REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000'
-        networks:
-            - 'testing'
-        ports:
-            - '7380:7380'
-        depends_on:
-            - 'redis-master-1'
-            - 'redis-slave-1'
-            - 'redis-slave-2'
-    redis-sentinel-2:
-        image: 'bitnami/redis-sentinel:latest'
-        environment:
-            - 'REDIS_SENTINEL_PORT_NUMBER=7381'
-            - 'REDIS_SENTINEL_PASSWORD=sentinelpassword'
-            - 'REDIS_MASTER_HOST=redis-master-1'
-            - 'REDIS_MASTER_PORT_NUMBER=6380'
-            - 'REDIS_MASTER_PASSWORD=masterpassword1'
-            - 'REDIS_MASTER_SET=mymaster'
-            - 'REDIS_SENTINEL_QUORUM=2'
-            - 'REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000'
-        networks:
-            - 'testing'
-        ports:
-            - '7381:7381'
-        depends_on:
-            - 'redis-master-1'
-            - 'redis-slave-1'
-            - 'redis-slave-2'
     cluster-1-master-1:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16380'
-            - 'REDIS_PASSWORD=clusterpassword1'
-            - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.20'
-        networks:
-            testing:
-                ipv4_address: '172.19.0.20'
-        ports:
-            - '16380:16380'
-            - '26380:26380'
+            - REDIS_PORT_NUMBER=16380
+            - REDIS_PASSWORD=cluster1
+            - REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+            - REDISCLI_AUTH=cluster1
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
     cluster-1-master-2:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16381'
-            - 'REDIS_PASSWORD=clusterpassword1'
-            - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.21'
-        networks:
-            testing:
-                ipv4_address: '172.19.0.21'
-        ports:
-            - '16381:16381'
-            - '26381:26381'
+            - REDIS_PORT_NUMBER=16381
+            - REDIS_PASSWORD=cluster1
+            - REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
     cluster-1-master-3:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16382'
-            - 'REDIS_PASSWORD=clusterpassword1'
-            - 'REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.22'
-        networks:
-            testing:
-                ipv4_address: '172.19.0.22'
-        ports:
-            - '16382:16382'
-            - '26382:26382'
+            - REDIS_PORT_NUMBER=16382
+            - REDIS_PASSWORD=cluster1
+            - REDIS_NODES=cluster-1-master-1 cluster-1-master-2 cluster-1-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
+    # ████████╗░██████╗
+    # ╚══██╔══╝██╔════╝
+    # ░░░██║░░░╚█████╗░
+    # ░░░██║░░░░╚═══██╗
+    # ░░░██║░░░██████╔╝
+    # ░░░╚═╝░░░╚═════╝░
     cluster-2-master-1:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16480'
-            - 'REDIS_PASSWORD=clusterpassword2'
-            - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.30'
-        networks:
-            testing:
-                ipv4_address: '172.19.0.30'
-        ports:
-            - '16480:16480'
-            - '26480:26480'
+            - REDIS_PORT_NUMBER=16480
+            - REDIS_PASSWORD=cluster2
+            - REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+            - REDISCLI_AUTH=cluster2
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
     cluster-2-master-2:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16481'
-            - 'REDIS_PASSWORD=clusterpassword2'
-            - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.31'
-        networks:
-            testing:
-                ipv4_address: '172.19.0.31'
-        ports:
-            - '16481:16481'
-            - '26481:26481'
+            - REDIS_PORT_NUMBER=16481
+            - REDIS_PASSWORD=cluster2
+            - REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
     cluster-2-master-3:
-        image: 'bitnami/redis-cluster:latest'
+        image: bitnami/redis-cluster:latest
         environment:
-            - 'REDIS_PORT_NUMBER=16482'
-            - 'REDIS_PASSWORD=clusterpassword2'
-            - 'REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3'
-            - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
-            - 'REDIS_CLUSTER_ANNOUNCE_IP=172.19.0.32'
+            - REDIS_PORT_NUMBER=16482
+            - REDIS_PASSWORD=cluster2
+            - REDIS_NODES=cluster-2-master-1 cluster-2-master-2 cluster-2-master-3
+            - REDIS_CLUSTER_DYNAMIC_IPS=no
+            - REDIS_CLUSTER_ANNOUNCE_IP=127.0.0.1
+        network_mode: host
+        command: /opt/bitnami/scripts/redis-cluster/run.sh --maxmemory 100mb
+    # ████████╗░██████╗
+    # ╚══██╔══╝██╔════╝
+    # ░░░██║░░░╚█████╗░
+    # ░░░██║░░░░╚═══██╗
+    # ░░░██║░░░██████╔╝
+    # ░░░╚═╝░░░╚═════╝░
+    redis-master-1:
+        image: bitnami/redis:latest
+        environment:
+            - REDIS_PORT_NUMBER=6380
+            - REDIS_PASSWORD=redis1
         networks:
-            testing:
-                ipv4_address: '172.19.0.32'
+            - testing
         ports:
-            - '16482:16482'
-            - '26482:26482'
+            - '127.0.0.1:6380:6380'
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+    # ████████╗░██████╗
+    # ╚══██╔══╝██╔════╝
+    # ░░░██║░░░╚█████╗░
+    # ░░░██║░░░░╚═══██╗
+    # ░░░██║░░░██████╔╝
+    # ░░░╚═╝░░░╚═════╝░
+    redis-master-2:
+        image: bitnami/redis:latest
+        environment:
+            - REDIS_PORT_NUMBER=6381
+            - REDIS_PASSWORD=redis2
+            - REDIS_REPLICATION_MODE=master
+        networks:
+            - testing
+        ports:
+            - '127.0.0.1:6381:6381'
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+    redis-slave-1:
+        image: bitnami/redis:latest
+        environment:
+            - REDIS_PORT_NUMBER=6480
+            - REDIS_PASSWORD=redis2
+            - REDIS_REPLICATION_MODE=slave
+            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redis2
+            - REDIS_REPLICA_PORT=6480
+        networks:
+            - testing
+        ports:
+            - '127.0.0.1:6480:6480'
+        depends_on:
+            - redis-master-2
+    redis-slave-2:
+        image: bitnami/redis:latest
+        environment:
+            - REDIS_PORT_NUMBER=6481
+            - REDIS_PASSWORD=redis2
+            - REDIS_REPLICATION_MODE=slave
+            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redis2
+            - REDIS_REPLICA_PORT=6481
+        networks:
+            - testing
+        ports:
+            - '127.0.0.1:6481:6481'
+        depends_on:
+            - redis-master-2
+    redis-sentinel-1:
+        image: bitnami/redis-sentinel:latest
+        environment:
+            - REDIS_SENTINEL_PORT_NUMBER=7380
+            - REDIS_SENTINEL_PASSWORD=sentinel
+            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redis2
+        networks:
+            - testing
+        ports:
+            - '127.0.0.1:7380:7380'
+        depends_on:
+            - redis-master-2
+            - redis-slave-1
+            - redis-slave-2
+    redis-sentinel-2:
+        image: bitnami/redis-sentinel:latest
+        environment:
+            - REDIS_SENTINEL_PORT_NUMBER=7381
+            - REDIS_SENTINEL_PASSWORD=sentinel
+            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redis2
+        networks:
+            - testing
+        ports:
+            - '127.0.0.1:7381:7381'
+        depends_on:
+            - redis-master-2
+            - redis-slave-1
+            - redis-slave-2
