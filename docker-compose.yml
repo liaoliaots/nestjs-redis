@@ -108,7 +108,6 @@ services:
             - testing
         ports:
             - '127.0.0.1:6381:6381'
-        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
     redis-slave-1:
         image: bitnami/redis:latest
         environment:
