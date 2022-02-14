@@ -5,13 +5,12 @@ import { CatsModule } from './cats/cats.module';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
             readyLog: true,
             config: {
                 namespace: 'default',
                 host: '127.0.0.1',
                 port: 6380,
-                password: 'redispassword'
+                password: 'bitnami'
             }
         }),
         CatsModule

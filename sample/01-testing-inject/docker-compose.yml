@@ -1,15 +1,14 @@
 version: '3.9'
 networks:
     dev:
-        driver: 'bridge'
+        driver: bridge
 services:
     redis:
-        image: 'bitnami/redis:latest'
+        image: bitnami/redis:latest
         environment:
-            - 'REDIS_REPLICATION_MODE=master'
-            - 'REDIS_PORT_NUMBER=6380'
-            - 'REDIS_PASSWORD=redispassword'
+            - REDIS_PORT_NUMBER=6380
+            - REDIS_PASSWORD=bitnami
         networks:
-            - 'dev'
+            - dev
         ports:
             - '6380:6380'
