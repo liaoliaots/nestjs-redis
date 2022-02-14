@@ -6,9 +6,6 @@ version: '3.9'
 networks:
     testing:
         driver: bridge
-        ipam:
-            config:
-                - subnet: 172.28.0.0/16
 services:
     cluster-1-master-1:
         image: bitnami/redis-cluster:latest
@@ -84,11 +81,11 @@ services:
     # ░░░██║░░░░╚═══██╗
     # ░░░██║░░░██████╔╝
     # ░░░╚═╝░░░╚═════╝░
-    redis-master-1:
+    redis-main:
         image: bitnami/redis:latest
         environment:
             - REDIS_PORT_NUMBER=6380
-            - REDIS_PASSWORD=redis1
+            - REDIS_PASSWORD=redismain
         networks:
             - testing
         ports:
@@ -100,12 +97,13 @@ services:
     # ░░░██║░░░░╚═══██╗
     # ░░░██║░░░██████╔╝
     # ░░░╚═╝░░░╚═════╝░
-    redis-master-2:
+    redis-master:
         image: bitnami/redis:latest
         environment:
             - REDIS_PORT_NUMBER=6381
-            - REDIS_PASSWORD=redis2
+            - REDIS_PASSWORD=redismaster
             - REDIS_REPLICATION_MODE=master
+            - REDIS_REPLICA_PORT=6381
         networks:
             - testing
         ports:
@@ -115,48 +113,52 @@ services:
         image: bitnami/redis:latest
         environment:
             - REDIS_PORT_NUMBER=6480
-            - REDIS_PASSWORD=redis2
+            - REDIS_PASSWORD=redismaster
             - REDIS_REPLICATION_MODE=slave
-            - REDIS_MASTER_HOST=redis-master-2
-            - REDIS_MASTER_PORT_NUMBER=6381
-            - REDIS_MASTER_PASSWORD=redis2
             - REDIS_REPLICA_PORT=6480
+            - REDIS_MASTER_HOST=redis-master
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redismaster
         networks:
             - testing
         ports:
             - '127.0.0.1:6480:6480'
         depends_on:
-            - redis-master-2
+            - redis-master
     redis-slave-2:
         image: bitnami/redis:latest
         environment:
             - REDIS_PORT_NUMBER=6481
-            - REDIS_PASSWORD=redis2
+            - REDIS_PASSWORD=redismaster
             - REDIS_REPLICATION_MODE=slave
-            - REDIS_MASTER_HOST=redis-master-2
-            - REDIS_MASTER_PORT_NUMBER=6381
-            - REDIS_MASTER_PASSWORD=redis2
             - REDIS_REPLICA_PORT=6481
+            - REDIS_MASTER_HOST=redis-master
+            - REDIS_MASTER_PORT_NUMBER=6381
+            - REDIS_MASTER_PASSWORD=redismaster
         networks:
             - testing
         ports:
             - '127.0.0.1:6481:6481'
         depends_on:
-            - redis-master-2
+            - redis-master
     redis-sentinel-1:
         image: bitnami/redis-sentinel:latest
         environment:
             - REDIS_SENTINEL_PORT_NUMBER=7380
             - REDIS_SENTINEL_PASSWORD=sentinel
-            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_SENTINEL_QUORUM=2
+            - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+            - REDIS_SENTINEL_FAILOVER_TIMEOUT=5000
+            - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
+            - REDIS_MASTER_HOST=redis-master
             - REDIS_MASTER_PORT_NUMBER=6381
-            - REDIS_MASTER_PASSWORD=redis2
+            - REDIS_MASTER_PASSWORD=redismaster
         networks:
             - testing
         ports:
             - '127.0.0.1:7380:7380'
         depends_on:
-            - redis-master-2
+            - redis-master
             - redis-slave-1
             - redis-slave-2
     redis-sentinel-2:
@@ -164,14 +166,18 @@ services:
         environment:
             - REDIS_SENTINEL_PORT_NUMBER=7381
             - REDIS_SENTINEL_PASSWORD=sentinel
-            - REDIS_MASTER_HOST=redis-master-2
+            - REDIS_SENTINEL_QUORUM=2
+            - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+            - REDIS_SENTINEL_FAILOVER_TIMEOUT=5000
+            - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
+            - REDIS_MASTER_HOST=redis-master
             - REDIS_MASTER_PORT_NUMBER=6381
-            - REDIS_MASTER_PASSWORD=redis2
+            - REDIS_MASTER_PASSWORD=redismaster
         networks:
             - testing
         ports:
             - '127.0.0.1:7381:7381'
         depends_on:
-            - redis-master-2
+            - redis-master
             - redis-slave-1
             - redis-slave-2
