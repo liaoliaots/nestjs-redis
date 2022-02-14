@@ -8,7 +8,6 @@
 [![NPM](https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
 ![npm](https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge)
 ![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge)
-[![CodeFactor](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/liaoliaots/nestjs-redis)
 
 <p align="center">
 <a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml">
