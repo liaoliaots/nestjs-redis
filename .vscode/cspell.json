@@ -16,6 +16,7 @@
         "env",
         "npx",
         "mymaster",
-        "mutex"
+        "mutex",
+        "ioredis"
     ]
 }
