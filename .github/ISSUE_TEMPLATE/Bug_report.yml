@@ -8,11 +8,11 @@ body:
 
               If you are not sure that your issue is a bug, you could:
 
-              - read [ioredis documentation](https://github.com/luin/ioredis)
-              - read [redis documentation](https://redis.io/documentation)
-              - read [redis replication](https://redis.io/topics/replication)
-              - read [redis sentinel](https://redis.io/topics/sentinel)
-              - read [redis cluster](https://redis.io/topics/cluster-tutorial), [specification](https://redis.io/topics/cluster-spec)
+              - read the [ioredis](https://github.com/luin/ioredis) page
+              - read the [redis](https://redis.io/documentation) documentation
+              - read the [redis replication](https://redis.io/topics/replication) page
+              - read the [redis sentinel](https://redis.io/topics/sentinel) page
+              - read the [redis cluster](https://redis.io/topics/cluster-tutorial), [specification](https://redis.io/topics/cluster-spec)
 
               **NOTE:** You don't need to answer questions that you know that aren't relevant.
 
@@ -26,8 +26,6 @@ body:
           description: 'How the issue manifests?'
 
     - type: input
-      validations:
-          required: true
       attributes:
           label: 'Minimum reproduction code'
           description: '[Wtf is a minimum reproduction?](https://jmcdo29.github.io/wtf-is-a-minimum-reproduction)'
@@ -70,8 +68,7 @@ body:
       attributes:
           label: 'Packages versions'
           description: |
-              You could leave your whole `package.json` dependencies list here, or just indicate which version of `@nestjs/*` you are using
-              **Tip**: run _npx nest info_
+              You could leave your whole `package.json` dependencies list here
           value: |
               ```json
 
