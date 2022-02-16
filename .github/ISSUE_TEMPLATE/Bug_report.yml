@@ -8,11 +8,11 @@ body:
 
               If you are not sure that your issue is a bug, you could:
 
-              - read the [ioredis documentation](https://github.com/luin/ioredis) page
-              - read the [Redis Documentation](https://redis.io/documentation) page
-              - read the [Redis Replication](https://redis.io/topics/replication) page
-              - read the [Redis Sentinel](https://redis.io/topics/sentinel) page
-              - read the [Redis Cluster](https://redis.io/topics/cluster-tutorial), [Specification](https://redis.io/topics/cluster-spec) page
+              - read [ioredis documentation](https://github.com/luin/ioredis)
+              - read [redis documentation](https://redis.io/documentation)
+              - read [redis replication](https://redis.io/topics/replication)
+              - read [redis sentinel](https://redis.io/topics/sentinel)
+              - read [redis cluster](https://redis.io/topics/cluster-tutorial), [specification](https://redis.io/topics/cluster-spec)
 
               **NOTE:** You don't need to answer questions that you know that aren't relevant.
 
@@ -40,8 +40,8 @@ body:
               How the issue manifests?
               You could leave this blank if you already write this in your reproduction code
           placeholder: |
-              1. `npm ci`
-              2. `npm start:dev`
+              1. `npm install`
+              2. `npm run start:dev`
               3. See error...
 
     - type: textarea
