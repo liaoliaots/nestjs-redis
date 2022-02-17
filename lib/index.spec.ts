@@ -1,7 +1,7 @@
 import * as allExports from '.';
 
-test('there should be 14 exports', () => {
-    expect(Object.keys(allExports)).toHaveLength(14);
+test('there should be 12 exports', () => {
+    expect(Object.keys(allExports)).toHaveLength(12);
 });
 
 test('each of exports should be defined', () => {
