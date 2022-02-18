@@ -11,7 +11,7 @@ import {
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { quitClients } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
-import { parseNamespace } from '@/utils';
+import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './cluster-logger';
 
 @Module({})
@@ -71,7 +71,7 @@ export class ClusterModule implements OnApplicationShutdown {
         if (this.options.closeClient) {
             const result = await quitClients(this.clients);
             result.forEach(([namespace, quit]) => {
-                if (namespace.status === 'fulfilled' && quit.status === 'rejected' && quit.reason instanceof Error) {
+                if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
                     logger.error(`${parseNamespace(namespace.value)}: ${quit.reason.message}`);
                 }
             });
