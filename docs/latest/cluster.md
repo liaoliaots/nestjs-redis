@@ -2,7 +2,7 @@
 
 ## Usage
 
-**Firstly**, we need to import the `ClusterModule` into our root module:
+**1**, we need to import the `ClusterModule` into our root module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -24,7 +24,7 @@ export class AppModule {}
 
 > HINT: The `ClusterModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**Now**, we can use cluster in two ways.
+**2**, we can use cluster in two ways.
 
 via decorator:
 
@@ -320,3 +320,5 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 })
 export class AppModule {}
 ```
+
+### Non-global

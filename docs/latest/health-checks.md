@@ -2,13 +2,13 @@
 
 ## Usage
 
-**Firstly**, we need to install the required package:
+**1**, we need to install the required package:
 
 ```sh
 $ npm install --save @nestjs/terminus
 ```
 
-**Secondly**, we need to import the `TerminusModule` and `RedisHealthModule` into our business module:
+**2**, we need to import the `TerminusModule` and `RedisHealthModule` into our business module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -46,7 +46,7 @@ export class AppModule {}
 
 > HINT: Both `TerminusModule` and `RedisHealthModule` aren't global modules.
 
-**Now** let's create a health check:
+**3**, let's create a health check:
 
 ```TypeScript
 import { Controller, Get } from '@nestjs/common';

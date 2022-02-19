@@ -2,7 +2,7 @@
 
 ## Usage
 
-**Firstly**, we need to import the `RedisModule` into our root module:
+**1**, we need to import the `RedisModule` into our root module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -25,7 +25,7 @@ export class AppModule {}
 
 > HINT: The `RedisModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**Now**, we can use redis in two ways.
+**2**, we can use redis in two ways.
 
 via decorator:
 
@@ -431,3 +431,5 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 })
 export class AppModule {}
 ```
+
+### Non-global
