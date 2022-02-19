@@ -20,7 +20,7 @@ describe('getClusterToken', () => {
 });
 
 describe('InjectCluster', () => {
-    const nameNamespace: ClientNamespace = 'name';
+    const nameNamespace: ClientNamespace = Symbol('name');
     const genderNamespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE;
     const name: ValueProvider<string> = { provide: getClusterToken(nameNamespace), useValue: 'liaoliao' };
     const gender: ValueProvider<string> = { provide: getClusterToken(genderNamespace), useValue: 'female' };

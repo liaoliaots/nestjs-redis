@@ -4,18 +4,19 @@ import { quitClients } from './common';
 import { logger } from './redis-logger';
 
 jest.mock('./common');
-const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
-
 jest.mock('./redis-logger', () => ({
     logger: {
         error: jest.fn()
     }
 }));
 
+const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
+
 describe('RedisModule', () => {
     describe('forRoot', () => {
         test('should work correctly', () => {
             const module = RedisModule.forRoot();
+            expect(module.global).toBe(true);
             expect(module.module).toBe(RedisModule);
             expect(module.providers?.length).toBeGreaterThanOrEqual(3);
             expect(module.exports?.length).toBeGreaterThanOrEqual(1);
@@ -30,6 +31,7 @@ describe('RedisModule', () => {
                 inject: []
             };
             const module = RedisModule.forRootAsync(options);
+            expect(module.global).toBe(true);
             expect(module.module).toBe(RedisModule);
             expect(module.imports?.length).toBe(0);
             expect(module.providers?.length).toBeGreaterThanOrEqual(3);
