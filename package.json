@@ -26,8 +26,6 @@
         "prepare": "husky install",
         "prebuild": "rimraf dist",
         "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-        "publish:next": "npm publish --tag next",
-        "publish:local": "npm publish --registry http://localhost:4873/",
         "lint": "concurrently \"tsc -p tsconfig.json --noEmit\" \"eslint \"{lib,test}/**/*.ts\"\"",
         "test": "jest",
         "test:watch": "jest --watch",
