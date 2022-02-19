@@ -37,7 +37,7 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
 -   **Services**: Gets redis/cluster client via `RedisService` and `ClusterService`.
 
-## Test coverage
+## Test coverage 🧐
 
 | Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
 | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -81,8 +81,6 @@ $ yarn add --dev @types/ioredis
 ## Distributed locks
 
 -   [redlock](https://github.com/mike-marcacci/node-redlock)
--   [simple-redis-mutex](https://github.com/coligo-tech/simple-redis-mutex)
--   [nestjs-simple-redis-lock](https://github.com/huangang/nestjs-simple-redis-lock)
 
 ## Test a class
 
