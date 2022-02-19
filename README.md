@@ -1,13 +1,27 @@
 <p align="center">
-  <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+<a href="https://nestjs.com/" target="_blank">
+<img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" />
+</a>
 </p>
 
-<p align="center">Redis(<a href="https://github.com/luin/ioredis" target="blank">ioredis</a>) module for NestJS framework.</p>
+<p align="center">
+Redis(<a href="https://github.com/luin/ioredis" target="_blank">ioredis</a>) module for NestJS framework.
+</p>
 
-[![npm (scoped)](https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge)](https://www.npmjs.com/package/@liaoliaots/nestjs-redis)
-[![NPM](https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge)](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE)
-![npm](https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge)
-![Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge)
+<p align="center">
+<a href="https://www.npmjs.com/package/@liaoliaots/nestjs-redis" target="_blank">
+<img src="https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge" />
+</a>
+<a href="https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE" target="_blank">
+<img src="https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge" />
+</a>
+<a href="">
+<img src="https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge" />
+</a>
+<a href="">
+<img src="https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge" />
+</a>
+</p>
 
 <p align="center">
 <a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml">
