@@ -24,7 +24,7 @@ export class ClusterModule implements OnApplicationShutdown {
     /**
      * Registers the module synchronously.
      */
-    static forRoot(options: ClusterModuleOptions): DynamicModule {
+    static forRoot(options: ClusterModuleOptions, isGlobal = true): DynamicModule {
         const clusterClientProviders = createClusterClientProviders();
         const providers: Provider[] = [
             createOptionsProvider(options),
@@ -34,7 +34,7 @@ export class ClusterModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: ClusterModule,
             providers,
             exports: [ClusterManager, ...clusterClientProviders]
@@ -44,7 +44,7 @@ export class ClusterModule implements OnApplicationShutdown {
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(options: ClusterModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: ClusterModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
             throw new RedisError(MISSING_CONFIGURATION);
         }
@@ -59,7 +59,7 @@ export class ClusterModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: ClusterModule,
             imports: options.imports,
             providers,

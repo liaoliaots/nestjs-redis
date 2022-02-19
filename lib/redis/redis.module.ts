@@ -24,7 +24,7 @@ export class RedisModule implements OnApplicationShutdown {
     /**
      * Registers the module synchronously.
      */
-    static forRoot(options: RedisModuleOptions = {}): DynamicModule {
+    static forRoot(options: RedisModuleOptions = {}, isGlobal = true): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
         const providers: Provider[] = [
             createOptionsProvider(options),
@@ -34,7 +34,7 @@ export class RedisModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: RedisModule,
             providers,
             exports: [RedisManager, ...redisClientProviders]
@@ -44,7 +44,7 @@ export class RedisModule implements OnApplicationShutdown {
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: RedisModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
             throw new RedisError(MISSING_CONFIGURATION);
         }
@@ -59,7 +59,7 @@ export class RedisModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: RedisModule,
             imports: options.imports,
             providers,
