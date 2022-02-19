@@ -32,7 +32,7 @@ export class RedisHealthIndicator extends HealthIndicator {
      * ```
      * import IORedis from 'ioredis';
      *
-     * const client = new IORedis.Cluster([{ host: '127.0.0.1', port: 16380 }]);
+     * const client = new IORedis.Cluster([{ host: 'localhost', port: 16380 }]);
      * indicator.checkHealth('cluster', { client });
      * ```
      */
