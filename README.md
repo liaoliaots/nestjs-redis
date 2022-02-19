@@ -10,28 +10,28 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 <p align="center">
 <a href="https://www.npmjs.com/package/@liaoliaots/nestjs-redis">
-<img src="https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge" />
+<img src="https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge" alt="NPM Version" />
 </a>
 <a href="https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE">
-<img src="https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge" />
+<img src="https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge" alt="Package License" />
 </a>
 <a href="#">
-<img src="https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge" />
+<img src="https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge" alt="NPM Downloads" />
 </a>
 <a href="#">
-<img src="https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge" />
+<img src="https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge" alt="Package Vulnerabilities" />
 </a>
 </p>
 
 <p align="center">
-<a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml">
-<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/release.yml/badge.svg" />
+<a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml">
+<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml/badge.svg" />
 </a>
 </p>
 
 ## Features 🚀
 
--   Support **redis** and **cluster**
+-   **Both redis & ioredis clients are supported**:
 -   Support health check
 -   Support multiple clients
 -   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()`
