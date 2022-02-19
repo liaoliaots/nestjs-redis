@@ -31,15 +31,20 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 ## Features 🚀
 
--   **Both redis & ioredis clients are supported**:
--   Support health check
--   Support multiple clients
--   Inject a redis/cluster client via `@InjectRedis()` and `@InjectCluster()`
--   Get a redis/cluster client via `RedisService` and `ClusterService`
+-   **Both redis & cluster are supported**: You can also specify multiple clients.
+-   **Health**: Checks health of redis & cluster server.
+-   **Rigorously tested**: With 120+ tests and 100% code coverage.
+-   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
+-   **Services**: Gets redis/cluster client via `RedisService` and `ClusterService`.
+
+## Test coverage
+
+| Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
 
 ## Documentation
 
--   [Test coverage](#test-coverage)
 -   [Install](#install)
 -   [Redis](docs/latest/redis.md)
 -   [Cluster](docs/latest/cluster.md)
@@ -52,17 +57,12 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   [Package dependency overview](#package-dependency-overview)
 -   [TODO](#todo)
 
-_legacy V2 and V3@next, [click here](docs/v2/README.md)._
+### Deprecated
 
-_legacy V3, [click here](docs/v3)._
-
-_legacy V4, [click here](docs/v4)._
-
-## Test coverage
-
-| Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
+-   V2 and V3@next, [click here](docs/v2/README.md)
+-   V3@latest, [click here](docs/v3)
+-   V4, [click here](docs/v4)
+-   V5, [click here](docs/v5)
 
 ## Install
 
