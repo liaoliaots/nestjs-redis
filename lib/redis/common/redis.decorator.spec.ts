@@ -20,7 +20,7 @@ describe('getRedisToken', () => {
 });
 
 describe('InjectRedis', () => {
-    const nameNamespace: ClientNamespace = 'name';
+    const nameNamespace: ClientNamespace = Symbol('name');
     const genderNamespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE;
     const name: ValueProvider<string> = { provide: getRedisToken(nameNamespace), useValue: 'liaoliao' };
     const gender: ValueProvider<string> = { provide: getRedisToken(genderNamespace), useValue: 'female' };

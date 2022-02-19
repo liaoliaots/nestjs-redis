@@ -3,6 +3,7 @@ import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestj
 import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisError } from 'redis-errors';
 import { CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/messages';
+import { isError, isDirectInstanceOf } from '@/utils';
 
 export interface RedisCheckOptions {
     /**
@@ -23,7 +24,7 @@ export class RedisHealthIndicator extends HealthIndicator {
      * ```
      * import IORedis from 'ioredis';
      *
-     * const client = new IORedis({ host: '127.0.0.1', port: 6380 });
+     * const client = new IORedis({ host: 'localhost', port: 6379 });
      * indicator.checkHealth('redis', { client });
      * ```
      *
@@ -31,7 +32,7 @@ export class RedisHealthIndicator extends HealthIndicator {
      * ```
      * import IORedis from 'ioredis';
      *
-     * const client = new IORedis.Cluster([{ host: '127.0.0.1', port: 16380 }]);
+     * const client = new IORedis.Cluster([{ host: 'localhost', port: 16380 }]);
      * indicator.checkHealth('cluster', { client });
      * ```
      */
@@ -42,7 +43,7 @@ export class RedisHealthIndicator extends HealthIndicator {
             if (!options.client) throw new RedisError(CLIENT_NOT_FOUND_FOR_HEALTH);
 
             // * is redis
-            if (options.client instanceof IORedis) await options.client.ping();
+            if (isDirectInstanceOf(options.client, IORedis)) await options.client.ping();
             // * is cluster
             else {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -50,12 +51,14 @@ export class RedisHealthIndicator extends HealthIndicator {
 
                 if (clusterInfo && typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new RedisError(FAILED_CLUSTER_STATE);
-                } else throw new RedisError(CANNOT_BE_READ);
+                } else {
+                    throw new RedisError(CANNOT_BE_READ);
+                }
             }
 
             isHealthy = true;
         } catch (error) {
-            if (error instanceof Error) {
+            if (isError(error)) {
                 throw new HealthCheckError(error.message, this.getStatus(key, isHealthy, { message: error.message }));
             }
         }

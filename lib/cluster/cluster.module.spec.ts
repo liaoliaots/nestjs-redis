@@ -4,18 +4,19 @@ import { quitClients } from './common';
 import { logger } from './cluster-logger';
 
 jest.mock('./common');
-const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
-
 jest.mock('./cluster-logger', () => ({
     logger: {
         error: jest.fn()
     }
 }));
 
+const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
+
 describe('ClusterModule', () => {
     describe('forRoot', () => {
         test('should work correctly', () => {
             const module = ClusterModule.forRoot({ config: { nodes: [] } });
+            expect(module.global).toBe(true);
             expect(module.module).toBe(ClusterModule);
             expect(module.providers?.length).toBeGreaterThanOrEqual(3);
             expect(module.exports?.length).toBeGreaterThanOrEqual(1);
@@ -30,6 +31,7 @@ describe('ClusterModule', () => {
                 inject: []
             };
             const module = ClusterModule.forRootAsync(options);
+            expect(module.global).toBe(true);
             expect(module.module).toBe(ClusterModule);
             expect(module.imports?.length).toBe(0);
             expect(module.providers?.length).toBeGreaterThanOrEqual(3);

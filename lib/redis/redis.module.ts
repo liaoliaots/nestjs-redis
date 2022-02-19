@@ -11,7 +11,7 @@ import {
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
 import { quitClients } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
-import { parseNamespace } from '@/utils';
+import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './redis-logger';
 
 @Module({})
@@ -24,7 +24,7 @@ export class RedisModule implements OnApplicationShutdown {
     /**
      * Registers the module synchronously.
      */
-    static forRoot(options: RedisModuleOptions = {}): DynamicModule {
+    static forRoot(options: RedisModuleOptions = {}, isGlobal = true): DynamicModule {
         const redisClientProviders = createRedisClientProviders();
         const providers: Provider[] = [
             createOptionsProvider(options),
@@ -34,7 +34,7 @@ export class RedisModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: RedisModule,
             providers,
             exports: [RedisManager, ...redisClientProviders]
@@ -44,7 +44,7 @@ export class RedisModule implements OnApplicationShutdown {
     /**
      * Registers the module asynchronously.
      */
-    static forRootAsync(options: RedisModuleAsyncOptions): DynamicModule {
+    static forRootAsync(options: RedisModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
             throw new RedisError(MISSING_CONFIGURATION);
         }
@@ -59,7 +59,7 @@ export class RedisModule implements OnApplicationShutdown {
         ];
 
         return {
-            global: true,
+            global: isGlobal,
             module: RedisModule,
             imports: options.imports,
             providers,
@@ -71,7 +71,7 @@ export class RedisModule implements OnApplicationShutdown {
         if (this.options.closeClient) {
             const result = await quitClients(this.clients);
             result.forEach(([namespace, quit]) => {
-                if (namespace.status === 'fulfilled' && quit.status === 'rejected' && quit.reason instanceof Error) {
+                if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
                     logger.error(`${parseNamespace(namespace.value)}: ${quit.reason.message}`);
                 }
             });
