@@ -72,13 +72,13 @@ export class AppService {
 
 > HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
-### Use with other libraries that depend on redis
+### Use with other libraries
 
 For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
-import { RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
+import { RedisModule, RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 
@@ -87,15 +87,14 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
         RedisModule.forRoot({
             readyLog: true,
             config: {
-                namespace: 'default',
                 host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
             }
         }),
         ThrottlerModule.forRootAsync({
             useFactory(redisService: RedisService) {
-                const redis = redisService.getClient('default');
+                const redis = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
                 return { ttl: 60, limit: 10, storage: new ThrottlerStorageRedisService(redis) };
             },
             inject: [RedisService]
@@ -447,10 +446,10 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
                     password: 'redismain'
                 }
             },
-            false // <--- register inside the module scope
+            false // <-- register inside the module scope
         )
     ],
-    exports: [RedisModule] // re-export
+    exports: [RedisModule] // <-- re-export
 })
 export class SharedRedis {}
 ```
