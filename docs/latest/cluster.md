@@ -11,10 +11,9 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         ClusterModule.forRoot({
-            closeClient: true,
             config: {
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } }
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } }
             }
         })
     ]
@@ -84,12 +83,12 @@ export class AppService {
 
 ### ClientOptions
 
-| Name                                                                                          | Type                                                             | Default value     | Description                                                                                                                                                            |
-| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                     | string or symbol                                                 | Symbol('default') | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value.                                                 |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | `{ host?: string; port?: number }[]` or `string[]` or `number[]` | undefined         | A list of nodes of the cluster. The **first** argument of `new Cluster(startupNodes, options).`                                                                        |
-| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                                                           | undefined         | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30). The **second** argument of `new Cluster(startupNodes, options).` |
-| onClientCreated                                                                               | function                                                         | undefined         | This function will be executed as soon as the client is created.                                                                                                       |
+| Name                                                                                          | Type                                                             | Default value | Description                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                     | string or symbol                                                 | 'default'     | The name of the client, and must be unique. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value.                                                 |
+| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)   | `{ host?: string; port?: number }[]` or `string[]` or `number[]` | undefined     | A list of nodes of the cluster. The **first** argument of `new Cluster(startupNodes, options).`                                                                        |
+| [options](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options) | object                                                           | undefined     | The [cluster options](https://github.com/luin/ioredis/blob/master/lib/cluster/ClusterOptions.ts#L30). The **second** argument of `new Cluster(startupNodes, options).` |
+| onClientCreated                                                                               | function                                                         | undefined     | This function will be executed as soon as the client is created.                                                                                                       |
 
 ### Asynchronous configuration
 
@@ -109,10 +108,9 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
                 await somePromise();
 
                 return {
-                    closeClient: true,
                     config: {
-                        nodes: [{ host: '127.0.0.1', port: 16380 }],
-                        options: { redisOptions: { password: 'clusterpassword1' } }
+                        nodes: [{ host: 'localhost', port: 16380 }],
+                        options: { redisOptions: { password: 'cluster1' } }
                     }
                 };
             }
@@ -134,10 +132,9 @@ export class ClusterConfigService implements ClusterOptionsFactory {
         await somePromise();
 
         return {
-            closeClient: true,
             config: {
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } }
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } }
             }
         };
     }
@@ -165,12 +162,10 @@ const MyOptionsSymbol = Symbol('options');
 const MyOptionsProvider: ValueProvider<ClusterModuleOptions> = {
     provide: MyOptionsSymbol,
     useValue: {
-        closeClient: true,
         readyLog: true,
         config: {
-            namespace: 'default',
-            nodes: [{ host: '127.0.0.1', port: 16380 }],
-            options: { redisOptions: { password: 'clusterpassword1' } }
+            nodes: [{ host: 'localhost', port: 16380 }],
+            options: { redisOptions: { password: 'cluster1' } }
         }
     }
 };
@@ -209,9 +204,8 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             readyLog: true,
             config: {
-                namespace: 'default',
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } }
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } }
             }
         })
     ]
@@ -235,11 +229,11 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
     imports: [
         ClusterModule.forRoot({
             config: {
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } }
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } }
 
                 // or with URL
-                // nodes: ['redis://:clusterpassword1@127.0.0.1:16380']
+                // nodes: ['redis://:cluster1@localhost:16380']
             }
         })
     ]
@@ -258,13 +252,13 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             config: [
                 {
-                    nodes: [{ host: '127.0.0.1', port: 16380 }],
-                    options: { redisOptions: { password: 'clusterpassword1' } }
+                    nodes: [{ host: 'localhost', port: 16380 }],
+                    options: { redisOptions: { password: 'cluster1' } }
                 },
                 {
                     namespace: 'cluster2',
-                    nodes: [{ host: '127.0.0.1', port: 16480 }],
-                    options: { redisOptions: { password: 'clusterpassword2' } }
+                    nodes: [{ host: 'localhost', port: 16480 }],
+                    options: { redisOptions: { password: 'cluster2' } }
                 }
             ]
         })
@@ -284,11 +278,11 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             config: [
                 {
-                    nodes: ['redis://:clusterpassword1@127.0.0.1:16380']
+                    nodes: ['redis://:cluster1@localhost:16380']
                 },
                 {
                     namespace: 'cluster2',
-                    nodes: ['redis://:clusterpassword2@127.0.0.1:16480']
+                    nodes: ['redis://:cluster2@localhost:16480']
                 }
             ]
         })
@@ -309,8 +303,8 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
     imports: [
         ClusterModule.forRoot({
             config: {
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } },
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } },
                 onClientCreated(client) {
                     client.on('error', err => {});
                 }
@@ -322,3 +316,47 @@ export class AppModule {}
 ```
 
 ### Non-global
+
+By default, the `ClusterModule` is registered in the global scope, so `ClusterService` and `all cluster clients defined` are available everywhere.
+
+You can change the behavior by modifying `isGlobal` parameter:
+
+```TypeScript
+// shared-cluster.module.ts
+import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        ClusterModule.forRoot(
+            {
+                readyLog: true,
+                config: {
+                    nodes: [{ host: 'localhost', port: 16380 }],
+                    options: { redisOptions: { password: 'cluster1' } }
+                }
+            },
+            false
+        )
+    ],
+    exports: [ClusterModule]
+})
+export class SharedCluster {}
+```
+
+The next thing is import `SharedCluster` to the consumer module:
+
+```TypeScript
+// cats.module.ts
+import { Module } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { CatsController } from './cats.controller';
+import { SharedCluster } from '../shared-cluster.module';
+
+@Module({
+    imports: [SharedCluster],
+    providers: [CatsService],
+    controllers: [CatsController]
+})
+export class CatsModule {}
+```
