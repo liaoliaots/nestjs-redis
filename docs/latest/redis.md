@@ -11,11 +11,10 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
             config: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
             }
         })
     ]
@@ -86,11 +85,10 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
             readyLog: true,
             config: {
                 namespace: 'default',
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
                 password: 'masterpassword1'
             }
@@ -120,12 +118,12 @@ export class AppModule {}
 
 ### ClientOptions
 
-| Name                                                                                                 | Type             | Default value     | Description                                                                                                                                                                         |
-| ---------------------------------------------------------------------------------------------------- | ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                            | string or symbol | Symbol('default') | The name of the client, and must be unique. You can import `DEFAULT_REDIS_NAMESPACE` to reference the default value.                                                                |
-| url                                                                                                  | string           | undefined         | The URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) specifies connection options. |
-| onClientCreated                                                                                      | function         | undefined         | This function will be executed as soon as the client is created.                                                                                                                    |
-| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object           | -                 | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8).                                                                               |
+| Name                                                                                                 | Type             | Default value | Description                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------- | ---------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namespace                                                                                            | string or symbol | 'default'     | The name of the client, and must be unique. You can import `DEFAULT_REDIS_NAMESPACE` to reference the default value.                                                                |
+| url                                                                                                  | string           | undefined     | The URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) specifies connection options. |
+| onClientCreated                                                                                      | function         | undefined     | This function will be executed as soon as the client is created.                                                                                                                    |
+| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object           | -             | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8).                                                                               |
 
 ### Asynchronous configuration
 
@@ -145,11 +143,10 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
                 await somePromise();
 
                 return {
-                    closeClient: true,
                     config: {
-                        host: '127.0.0.1',
+                        host: 'localhost',
                         port: 6380,
-                        password: 'masterpassword1'
+                        password: 'redismain'
                     }
                 };
             }
@@ -171,11 +168,10 @@ export class RedisConfigService implements RedisOptionsFactory {
         await somePromise();
 
         return {
-            closeClient: true,
             config: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
             }
         };
     }
@@ -203,13 +199,11 @@ const MyOptionsSymbol = Symbol('options');
 const MyOptionsProvider: ValueProvider<RedisModuleOptions> = {
     provide: MyOptionsSymbol,
     useValue: {
-        closeClient: true,
         readyLog: true,
         config: {
-            namespace: 'default',
-            host: '127.0.0.1',
+            host: 'localhost',
             port: 6380,
-            password: 'masterpassword1'
+            password: 'redismain'
         }
     }
 };
@@ -248,10 +242,9 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         RedisModule.forRoot({
             readyLog: true,
             config: {
-                namespace: 'default',
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
             }
         })
     ]
@@ -275,12 +268,12 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     imports: [
         RedisModule.forRoot({
             config: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
 
                 // or with URL
-                // url: 'redis://:masterpassword1@127.0.0.1:6380/0'
+                // url: 'redis://:redismain@localhost:6380/0'
             }
         })
     ]
@@ -299,15 +292,15 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         RedisModule.forRoot({
             config: [
                 {
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6380,
-                    password: 'masterpassword1'
+                    password: 'redismain'
                 },
                 {
                     namespace: 'master2',
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6381,
-                    password: 'masterpassword2'
+                    password: 'redismaster'
                 }
             ]
         })
@@ -327,11 +320,11 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         RedisModule.forRoot({
             config: [
                 {
-                    url: 'redis://:masterpassword1@127.0.0.1:6380/0'
+                    url: 'redis://:redismain@localhost:6380/0'
                 },
                 {
                     namespace: 'master2',
-                    url: 'redis://:masterpassword2@127.0.0.1:6381/0'
+                    url: 'redis://:redismaster@localhost:6381/0'
                 }
             ]
         })
@@ -358,15 +351,15 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             },
             config: [
                 {
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6380,
-                    password: 'masterpassword1'
+                    password: 'redismain'
                 },
                 {
                     namespace: 'master2',
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6381,
-                    password: 'masterpassword2'
+                    password: 'redismaster'
                 }
             ]
         })
@@ -389,15 +382,15 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             },
             config: [
                 {
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6380,
-                    password: 'masterpassword1'
+                    password: 'redismain'
                 },
                 {
                     namespace: 'master2',
-                    host: '127.0.0.1',
+                    host: 'localhost',
                     port: 6381,
-                    password: 'masterpassword2',
+                    password: 'redismaster',
                     enableAutoPipelining: false
                 }
             ]
@@ -419,9 +412,9 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     imports: [
         RedisModule.forRoot({
             config: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1',
+                password: 'redismain',
                 onClientCreated(client) {
                     client.on('error', err => {});
                 }
@@ -433,3 +426,48 @@ export class AppModule {}
 ```
 
 ### Non-global
+
+By default, the `RedisModule` is registered in the global scope, so `RedisService` and `all redis clients defined` are available everywhere.
+
+You can change the behavior by modifying `isGlobal` parameter:
+
+```TypeScript
+// shared-redis.module.ts
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+
+@Module({
+    imports: [
+        RedisModule.forRoot(
+            {
+                readyLog: true,
+                config: {
+                    host: 'localhost',
+                    port: 6380,
+                    password: 'redismain'
+                }
+            },
+            false // <--- register inside the module scope
+        )
+    ],
+    exports: [RedisModule] // re-export
+})
+export class SharedRedis {}
+```
+
+The next thing is import `SharedRedis` to the consumer module:
+
+```TypeScript
+// cats.module.ts
+import { Module } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { CatsController } from './cats.controller';
+import { SharedRedis } from '../shared-redis.module';
+
+@Module({
+    imports: [SharedRedis],
+    providers: [CatsService],
+    controllers: [CatsController]
+})
+export class CatsModule {}
+```

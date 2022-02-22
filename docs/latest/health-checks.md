@@ -8,12 +8,12 @@
 $ npm install --save @nestjs/terminus
 ```
 
-**2**, we need to import the `TerminusModule` and `RedisHealthModule` into our business module:
+**2**, import the `TerminusModule` and `RedisHealthModule` into the business module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
 import { ClusterModule, RedisModule } from '@liaoliaots/nestjs-redis';
-import { RedisHealthModule } from '@liaoliaots/nestjs-redis/health'; // note the import path
+import { RedisHealthModule } from '@liaoliaots/nestjs-redis/health'; // note the path
 import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
 
@@ -22,18 +22,16 @@ import { AppController } from './app.controller';
 @Module({
     imports: [
         ClusterModule.forRoot({
-            closeClient: true,
             config: {
-                nodes: [{ host: '127.0.0.1', port: 16380 }],
-                options: { redisOptions: { password: 'clusterpassword1' } }
+                nodes: [{ host: 'localhost', port: 16380 }],
+                options: { redisOptions: { password: 'cluster1' } }
             }
         }),
         RedisModule.forRoot({
-            closeClient: true,
             config: {
-                host: '127.0.0.1',
+                host: 'localhost',
                 port: 6380,
-                password: 'masterpassword1'
+                password: 'redismain'
             }
         }),
         TerminusModule,
@@ -52,49 +50,48 @@ export class AppModule {}
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheck, HealthCheckResult } from '@nestjs/terminus';
 import { InjectRedis, InjectCluster } from '@liaoliaots/nestjs-redis';
-import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis/health'; // note the import path
+import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis/health'; // note the path
 import { Redis, Cluster } from 'ioredis';
 
 @Controller()
 export class AppController {
     constructor(
         private readonly health: HealthCheckService,
-        private readonly redis: RedisHealthIndicator,
-        @InjectRedis() private readonly defaultRedisClient: Redis,
-        @InjectCluster() private readonly defaultClusterClient: Cluster
+        private readonly redisIndicator: RedisHealthIndicator,
+        @InjectRedis() private readonly redis: Redis,
+        @InjectCluster() private readonly cluster: Cluster
     ) {}
 
     @Get('health')
     @HealthCheck()
     async healthChecks(): Promise<HealthCheckResult> {
         return await this.health.check([
-            () => this.redis.checkHealth('default-redis-client', { client: this.defaultRedisClient }),
-            () => this.redis.checkHealth('default-cluster-client', { client: this.defaultClusterClient })
+            () => this.redisIndicator.checkHealth('redis', { client: this.redis }),
+            () => this.redisIndicator.checkHealth('cluster', { client: this.cluster })
         ]);
     }
 }
-
 ```
 
-If your redis and cluster are reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
+If your redis and cluster servers are reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
 
 ```json
 {
     "status": "ok",
     "info": {
-        "default-redis-client": {
+        "redis": {
             "status": "up"
         },
-        "default-cluster-client": {
+        "cluster": {
             "status": "up"
         }
     },
     "error": {},
     "details": {
-        "default-redis-client": {
+        "redis": {
             "status": "up"
         },
-        "default-cluster-client": {
+        "cluster": {
             "status": "up"
         }
     }

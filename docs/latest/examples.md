@@ -4,13 +4,13 @@
 
 ### Sentinel
 
-| name                     | ip        | port | password         |
-| ------------------------ | --------- | ---- | ---------------- |
-| master                   | 127.0.0.1 | 6380 | masterpassword1  |
-| slave1                   | 127.0.0.1 | 6480 | masterpassword1  |
-| slave2                   | 127.0.0.1 | 6481 | masterpassword1  |
-| sentinel1 (**mymaster**) | 127.0.0.1 | 7380 | sentinelpassword |
-| sentinel2 (**mymaster**) | 127.0.0.1 | 7381 | sentinelpassword |
+| name                   | ip        | port | password    |
+| ---------------------- | --------- | ---- | ----------- |
+| master                 | localhost | 6381 | redismaster |
+| slave1                 | localhost | 6480 | redismaster |
+| slave2                 | localhost | 6481 | redismaster |
+| sentinel1 (`mymaster`) | localhost | 7380 | sentinel    |
+| sentinel2 (`mymaster`) | localhost | 7381 | sentinel    |
 
 > HINT: When using Sentinel in Master-Slave setup, if you want to set the passwords for Master and Slave nodes, consider having the same password for them ([#7292](https://github.com/redis/redis/issues/7292)).
 
@@ -21,24 +21,34 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         RedisModule.forRoot({
-            closeClient: true,
-            config: {
-                namespace: 'master-client',
+            readyLog: true,
+            commonOptions: {
                 name: 'mymaster',
-                role: 'master',
                 sentinels: [
                     {
-                        host: '127.0.0.1',
+                        host: 'localhost',
                         port: 7380
                     },
                     {
-                        host: '127.0.0.1',
+                        host: 'localhost',
                         port: 7381
                     }
                 ],
-                sentinelPassword: 'sentinelpassword',
-                password: 'masterpassword1'
-            }
+                sentinelPassword: 'sentinel',
+                password: 'redismaster'
+            },
+            config: [
+                {
+                    // get master node from the sentinel group
+                    role: 'master',
+                    namespace: "I'm master"
+                },
+                {
+                    // get a random slave node from the sentinel group
+                    role: 'slave',
+                    namespace: "I'm slave"
+                }
+            ]
         })
     ]
 })
@@ -53,19 +63,19 @@ export class AppModule {}
 
 cluster 1:
 
-| name    | ip        | port  | password         |
-| ------- | --------- | ----- | ---------------- |
-| master1 | 127.0.0.1 | 16380 | clusterpassword1 |
-| master2 | 127.0.0.1 | 16381 | clusterpassword1 |
-| master3 | 127.0.0.1 | 16382 | clusterpassword1 |
+| name    | ip        | port  | password |
+| ------- | --------- | ----- | -------- |
+| master1 | localhost | 16380 | cluster1 |
+| master2 | localhost | 16381 | cluster1 |
+| master3 | localhost | 16382 | cluster1 |
 
 cluster 2:
 
-| name    | ip        | port  | password         |
-| ------- | --------- | ----- | ---------------- |
-| master1 | 127.0.0.1 | 16480 | clusterpassword2 |
-| master2 | 127.0.0.1 | 16481 | clusterpassword2 |
-| master3 | 127.0.0.1 | 16482 | clusterpassword2 |
+| name    | ip        | port  | password |
+| ------- | --------- | ----- | -------- |
+| master1 | localhost | 16480 | cluster2 |
+| master2 | localhost | 16481 | cluster2 |
+| master3 | localhost | 16482 | cluster2 |
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -74,17 +84,16 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 @Module({
     imports: [
         ClusterModule.forRoot({
-            closeClient: true,
             config: [
                 {
                     namespace: 'cluster1',
-                    nodes: [{ host: '127.0.0.1', port: 16380 }],
-                    options: { redisOptions: { password: 'clusterpassword1' } }
+                    nodes: [{ host: 'localhost', port: 16380 }],
+                    options: { redisOptions: { password: 'cluster1' } }
                 },
                 {
                     namespace: 'cluster2',
-                    nodes: [{ host: '127.0.0.1', port: 16480 }],
-                    options: { redisOptions: { password: 'clusterpassword2' } }
+                    nodes: [{ host: 'localhost', port: 16480 }],
+                    options: { redisOptions: { password: 'cluster2' } }
                 }
             ]
         })
