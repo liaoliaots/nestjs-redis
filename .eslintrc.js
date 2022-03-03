@@ -12,7 +12,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:jest/recommended',
         'plugin:jest/style',
-        'plugin:promise/recommended',
         'plugin:prettier/recommended'
     ],
     root: true,
