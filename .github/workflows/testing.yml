@@ -5,14 +5,24 @@ on:
             - main
 jobs:
     test:
-        runs-on: ubuntu-20.04
+        name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os:
+                    - ubuntu-20.04
+                node_version:
+                    - '12'
+                    - '14'
+                    - '16'
+                architecture:
+                    - x64
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
-                  architecture: 'x64'
-                  cache: 'npm'
+                  node-version: ${{ matrix.node_version }}
+                  architecture: ${{ matrix.architecture }}
                   check-latest: true
             - run: npm install -g npm@latest
             - run: npm ci
