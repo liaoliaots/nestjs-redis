@@ -11,8 +11,6 @@ jobs:
             matrix:
                 os:
                     - ubuntu-20.04
-                    - windows-2022
-                    - macos-11
                 node_version:
                     - '12'
                     - '14'
