@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
-import IORedis, { Redis, Cluster } from 'ioredis';
 import { RedisError } from 'redis-errors';
-import { CLIENT_NOT_FOUND_FOR_HEALTH, FAILED_CLUSTER_STATE, CANNOT_BE_READ } from '@/messages';
-import { isError, isDirectInstanceOf } from '@/utils';
-
-export interface RedisCheckOptions {
-    /**
-     * The client which the health check should get executed.
-     */
-    client: Redis | Cluster;
-}
+import {
+    FAILED_CLUSTER_STATE,
+    CANNOT_BE_READ,
+    CLIENT_NOT_FOUND_FOR_HEALTH,
+    NOT_RESPONSIVE,
+    ABNORMALLY_MEMORY_USAGE
+} from '@/messages';
+import { isError, promiseTimeout, removeLineBreaks, parseUsedMemory } from '@/utils';
+import { RedisCheckSettings } from './redis-check-settings.interface';
 
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
@@ -18,7 +17,7 @@ export class RedisHealthIndicator extends HealthIndicator {
      * Checks a redis/cluster connection.
      *
      * @param key - The key which will be used for the result object
-     * @param options - The options for check
+     * @param options - The extra options for check
      *
      * @example
      * ```
@@ -36,16 +35,24 @@ export class RedisHealthIndicator extends HealthIndicator {
      * indicator.checkHealth('cluster', { client });
      * ```
      */
-    async checkHealth(key: string, options: RedisCheckOptions): Promise<HealthIndicatorResult> {
+    async checkHealth(key: string, options: RedisCheckSettings): Promise<HealthIndicatorResult> {
+        const { type } = options;
         let isHealthy = false;
 
         try {
             if (!options.client) throw new RedisError(CLIENT_NOT_FOUND_FOR_HEALTH);
 
-            // * is redis
-            if (isDirectInstanceOf(options.client, IORedis)) await options.client.ping();
-            // * is cluster
-            else {
+            if (type === 'redis') {
+                const pong = await promiseTimeout(options.timeout ?? 1000, options.client.ping());
+                if (pong !== 'PONG') throw new Error(NOT_RESPONSIVE(key));
+
+                if (options.memoryThreshold) {
+                    const info = await options.client.info('memory');
+                    if (parseUsedMemory(removeLineBreaks(info)) > options.memoryThreshold) {
+                        throw new Error(ABNORMALLY_MEMORY_USAGE(key));
+                    }
+                }
+            } else {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 const clusterInfo = await options.client.cluster('info');
 

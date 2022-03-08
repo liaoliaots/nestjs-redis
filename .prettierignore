@@ -1,2 +1,5 @@
-# Ignore health
-health
+# health barrel files
+./health
+
+# tsc build
+dist

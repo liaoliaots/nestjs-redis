@@ -19,14 +19,14 @@ describe('RedisHealthIndicator', () => {
 
     test('should throw an error if the client is null', async () => {
         const client = null as unknown as Redis;
-        await expect(indicator.checkHealth('', { client })).rejects.toThrow();
+        await expect(indicator.checkHealth('', { type: 'redis', client })).rejects.toThrow();
     });
 
     describe('redis', () => {
         test('the status should be up', async () => {
             jest.spyOn(redisClient, 'ping').mockResolvedValue('PONG');
 
-            await expect(indicator.checkHealth('redis', { client: redisClient })).resolves.toEqual({
+            await expect(indicator.checkHealth('redis', { type: 'redis', client: redisClient })).resolves.toEqual({
                 redis: { status: 'up' }
             });
         });
@@ -34,7 +34,7 @@ describe('RedisHealthIndicator', () => {
         test('the status should be down', async () => {
             jest.spyOn(redisClient, 'ping').mockRejectedValue(undefined);
 
-            await expect(indicator.checkHealth('redis', { client: redisClient })).resolves.toEqual({
+            await expect(indicator.checkHealth('redis', { type: 'redis', client: redisClient })).resolves.toEqual({
                 redis: { status: 'down' }
             });
         });
@@ -43,7 +43,9 @@ describe('RedisHealthIndicator', () => {
             const message = 'a redis error';
             jest.spyOn(redisClient, 'ping').mockRejectedValue(new Error(message));
 
-            await expect(indicator.checkHealth('redis', { client: redisClient })).rejects.toThrow(message);
+            await expect(indicator.checkHealth('redis', { type: 'redis', client: redisClient })).rejects.toThrow(
+                message
+            );
         });
     });
 
@@ -51,28 +53,34 @@ describe('RedisHealthIndicator', () => {
         test('the status should be up', async () => {
             jest.spyOn(clusterClient, 'cluster').mockResolvedValue('cluster_state:ok');
 
-            await expect(indicator.checkHealth('cluster', { client: clusterClient })).resolves.toEqual({
-                cluster: { status: 'up' }
-            });
+            await expect(indicator.checkHealth('cluster', { type: 'cluster', client: clusterClient })).resolves.toEqual(
+                {
+                    cluster: { status: 'up' }
+                }
+            );
         });
 
         test('should throw an error', async () => {
             const message = 'a redis error';
             jest.spyOn(clusterClient, 'cluster').mockRejectedValue(new Error(message));
 
-            await expect(indicator.checkHealth('cluster', { client: clusterClient })).rejects.toThrow(message);
+            await expect(indicator.checkHealth('cluster', { type: 'cluster', client: clusterClient })).rejects.toThrow(
+                message
+            );
         });
 
         test('should throw an error if cluster-info is null', async () => {
             jest.spyOn(clusterClient, 'cluster').mockResolvedValue(null);
 
-            await expect(indicator.checkHealth('cluster', { client: clusterClient })).rejects.toThrow(CANNOT_BE_READ);
+            await expect(indicator.checkHealth('cluster', { type: 'cluster', client: clusterClient })).rejects.toThrow(
+                CANNOT_BE_READ
+            );
         });
 
         test('should throw an error if cluster-info does not contain "cluster_state:ok"', async () => {
             jest.spyOn(clusterClient, 'cluster').mockResolvedValue('cluster_state:fail');
 
-            await expect(indicator.checkHealth('cluster', { client: clusterClient })).rejects.toThrow(
+            await expect(indicator.checkHealth('cluster', { type: 'cluster', client: clusterClient })).rejects.toThrow(
                 FAILED_CLUSTER_STATE
             );
         });
