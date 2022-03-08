@@ -16,8 +16,8 @@ export class HealthController {
     @Get()
     async healthCheck(): Promise<HealthCheckResult> {
         return await this.health.check([
-            () => this.redis.checkHealth('default', { client: this.defaultClient }),
-            () => this.redis.checkHealth('client1', { client: this.client1 })
+            () => this.redis.checkHealth('default', { client: this.defaultClient, type: 'redis' }),
+            () => this.redis.checkHealth('client1', { client: this.client1, type: 'redis' })
         ]);
     }
 }

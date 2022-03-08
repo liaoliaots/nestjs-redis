@@ -15,7 +15,8 @@
         "skipLibCheck": true,
         "paths": {
             "@/*": ["lib/*"]
-        }
+        },
+        "forceConsistentCasingInFileNames": true
     },
     "include": ["lib", "test"]
 }
