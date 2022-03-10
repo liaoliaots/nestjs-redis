@@ -4,8 +4,7 @@ import {
     FAILED_CLUSTER_STATE,
     CANNOT_BE_READ,
     CLIENT_NOT_FOUND_FOR_HEALTH,
-    CONNECTED_SUCCESSFULLY,
-    NOT_RESPONSIVE
+    CONNECTED_SUCCESSFULLY
 } from '.';
 
 describe('MISSING_CONFIGURATION', () => {
@@ -45,11 +44,5 @@ describe('CLIENT_NOT_FOUND', () => {
         expect(CLIENT_NOT_FOUND(namespace)).toContain('redis');
         expect(CLIENT_NOT_FOUND(namespace, false)).toContain(namespace);
         expect(CLIENT_NOT_FOUND(namespace, false)).toContain('cluster');
-    });
-});
-
-describe('NOT_RESPONSIVE', () => {
-    test('should be a string', () => {
-        expect(NOT_RESPONSIVE('key')).toContain('key');
     });
 });

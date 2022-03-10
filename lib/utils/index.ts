@@ -27,7 +27,12 @@ export const removeLineBreaks = (text: string): string => {
  * Parses used_memory to number.
  */
 export const parseUsedMemory = (info: string): number => {
-    const start = info.search(/used_memory/);
-    const end = info.search(/used_memory_human/) - 1;
+    const start = info.indexOf('used_memory');
+    const end = info.indexOf('used_memory_human') - 1;
     return Number.parseInt(info.slice(start, end).split(':')[1], 10);
 };
+
+/**
+ * Checks if the value is not defined (=== null, === undefined).
+ */
+export const isNullish = (value: unknown): value is undefined | null => value === undefined || value === null;

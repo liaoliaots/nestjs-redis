@@ -12,6 +12,6 @@ export const CLIENT_NOT_FOUND = (namespace: string, isRedis = true): string => {
     return `The ${isRedis ? 'redis' : 'cluster'} client-provider '${namespace}' not found in the application context.`;
 };
 
-export const NOT_RESPONSIVE = (key: string) => `The '${key}' Redis client is not responsive.`;
+export const NOT_RESPONSIVE = `This client is not responsive.`;
 
-export const ABNORMALLY_MEMORY_USAGE = (key: string) => `The ${key} Redis client is using abnormally high memory.`;
+export const ABNORMALLY_MEMORY_USAGE = `This client is using abnormally high memory.`;
