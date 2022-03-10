@@ -13,8 +13,8 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
             timer = setTimeout(() => {
                 reject(new Error(`timeout of ${ms}ms exceeded`));
             }, ms);
-        }).finally(() => {
-            clearTimeout(timer);
         })
-    ]);
+    ]).finally(() => {
+        clearTimeout(timer);
+    });
 };
