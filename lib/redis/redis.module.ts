@@ -1,5 +1,4 @@
 import { Module, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
-import { RedisError } from 'redis-errors';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
 import { RedisManager } from './redis-manager';
 import {
@@ -13,6 +12,7 @@ import { quitClients } from './common';
 import { MISSING_CONFIGURATION } from '@/messages';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './redis-logger';
+import { MissingConfigurationError } from '@/errors';
 
 @Module({})
 export class RedisModule implements OnApplicationShutdown {
@@ -46,7 +46,7 @@ export class RedisModule implements OnApplicationShutdown {
      */
     static forRootAsync(options: RedisModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
-            throw new RedisError(MISSING_CONFIGURATION);
+            throw new MissingConfigurationError(MISSING_CONFIGURATION);
         }
 
         const redisClientProviders = createRedisClientProviders();
