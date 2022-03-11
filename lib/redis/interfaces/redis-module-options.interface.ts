@@ -4,18 +4,21 @@ import { ClientNamespace } from '@/interfaces';
 
 export interface RedisClientOptions extends RedisOptions {
     /**
-     * The name of the client, and must be unique.
+     * Client name. If client name is not given then it will be called "default".
+     * Different clients must have different names.
      */
     namespace?: ClientNamespace;
+
     /**
-     * The URL specifies connection options.
+     * URL used to specify connection options.
      *
      * - redis:// https://www.iana.org/assignments/uri-schemes/prov/redis
      * - rediss:// https://www.iana.org/assignments/uri-schemes/prov/rediss
      */
     url?: string;
+
     /**
-     * This function will be executed as soon as the client is created.
+     * Function to be executed as soon as the client is created.
      *
      * @param client - The new client
      */
@@ -25,20 +28,21 @@ export interface RedisClientOptions extends RedisOptions {
 export interface RedisModuleOptions {
     /**
      * If `true`, all clients will be closed automatically on nestjs application shutdown.
-     *
-     * Default: false
+     * Default value is true.
      */
     closeClient?: boolean;
+
     /**
-     * The common options for each client.
+     * Common options for each client.
      */
     commonOptions?: RedisOptions;
+
     /**
      * If `true`, will show a message when the client is ready.
-     *
-     * Default: false
+     * Default value is false.
      */
     readyLog?: boolean;
+
     /**
      * Specify single or multiple clients.
      */

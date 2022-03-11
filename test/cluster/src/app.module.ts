@@ -15,12 +15,12 @@ import { ManagerController } from './controllers/manager.controller';
                     config: [
                         {
                             nodes: [{ host: '127.0.0.1', port: 16380 }],
-                            options: { redisOptions: { password: 'cluster1' } }
+                            redisOptions: { password: 'cluster1' }
                         },
                         {
                             namespace: 'client1',
                             nodes: [{ host: '127.0.0.1', port: 16480 }],
-                            options: { redisOptions: { password: 'cluster2' } }
+                            redisOptions: { password: 'cluster2' }
                         }
                     ]
                 };

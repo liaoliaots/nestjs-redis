@@ -8,9 +8,9 @@ import { CONNECTED_SUCCESSFULLY } from '@/messages';
 import { logger } from '../cluster-logger';
 
 export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
-    const { nodes, options, onClientCreated } = clientOptions;
+    const { nodes, onClientCreated, ...clusterOptions } = clientOptions;
 
-    const client = new IORedis.Cluster(nodes, options);
+    const client = new IORedis.Cluster(nodes, clusterOptions);
     if (onClientCreated) onClientCreated(client);
 
     return client;
