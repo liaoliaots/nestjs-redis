@@ -12,11 +12,11 @@ describe('createClient', () => {
     test('should create a client with options', () => {
         const options: ClusterClientOptions = {
             nodes: [{ host: '127.0.0.1', port: 16380 }],
-            options: { redisOptions: { password: '' } }
+            redisOptions: { password: '' }
         };
         const client = createClient(options);
         expect(MockCluster).toHaveBeenCalledTimes(1);
-        expect(MockCluster).toHaveBeenCalledWith(options.nodes, options.options);
+        expect(MockCluster).toHaveBeenCalledWith(options.nodes, { redisOptions: { password: '' } });
         expect(client).toBeInstanceOf(IORedis.Cluster);
     });
 
@@ -25,7 +25,7 @@ describe('createClient', () => {
 
         const client = createClient({ nodes: [], onClientCreated: mockOnClientCreated });
         expect(MockCluster).toHaveBeenCalledTimes(1);
-        expect(MockCluster).toHaveBeenCalledWith([], undefined);
+        expect(MockCluster).toHaveBeenCalledWith([], {});
         expect(client).toBeInstanceOf(IORedis.Cluster);
         expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
         expect(mockOnClientCreated).toHaveBeenCalledWith(client);

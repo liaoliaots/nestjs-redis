@@ -2,21 +2,20 @@ import { Type, ModuleMetadata, Provider } from '@nestjs/common';
 import { ClusterNode, ClusterOptions, Cluster } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
-export interface ClusterClientOptions {
+export interface ClusterClientOptions extends ClusterOptions {
     /**
-     * The name of the client, and must be unique.
+     * Client name. If client name is not given then it will be called "default".
+     * Different clients must have different names.
      */
     namespace?: ClientNamespace;
+
     /**
-     * A list of nodes of the cluster.
+     * List of cluster nodes.
      */
     nodes: ClusterNode[];
+
     /**
-     * The options of the cluster.
-     */
-    options?: ClusterOptions;
-    /**
-     * This function will be executed as soon as the client is created.
+     * Function to be executed as soon as the client is created.
      *
      * @param client - The new client
      */
@@ -26,16 +25,16 @@ export interface ClusterClientOptions {
 export interface ClusterModuleOptions {
     /**
      * If `true`, all clients will be closed automatically on nestjs application shutdown.
-     *
-     * Default: false
+     * Default value is true.
      */
     closeClient?: boolean;
+
     /**
      * If `true`, will show a message when the client is ready.
-     *
-     * Default: false
+     * Default value is false.
      */
     readyLog?: boolean;
+
     /**
      * Specify single or multiple clients.
      */
