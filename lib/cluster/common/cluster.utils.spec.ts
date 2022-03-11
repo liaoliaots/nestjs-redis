@@ -25,7 +25,7 @@ describe('createClient', () => {
 
         const client = createClient({ nodes: [], onClientCreated: mockOnClientCreated });
         expect(MockCluster).toHaveBeenCalledTimes(1);
-        expect(MockCluster).toHaveBeenCalledWith([], undefined);
+        expect(MockCluster).toHaveBeenCalledWith([], {});
         expect(client).toBeInstanceOf(IORedis.Cluster);
         expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
         expect(mockOnClientCreated).toHaveBeenCalledWith(client);
