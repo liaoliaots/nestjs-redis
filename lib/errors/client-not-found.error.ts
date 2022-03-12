@@ -1,3 +1,6 @@
+/**
+ * Thrown when no client could be found.
+ */
 export class ClientNotFoundError extends Error {
     constructor(message: string) {
         super(message);

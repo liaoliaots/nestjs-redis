@@ -54,3 +54,8 @@ export const isRejection = <T>(value: PromiseResult<T>): value is PromiseRejecti
 export const isDirectInstanceOf = <T>(value: unknown, class_: Constructor<T>): value is T => {
     return Object.getPrototypeOf(value) === class_.prototype;
 };
+
+/**
+ * Checks if the value is not defined (=== null, === undefined).
+ */
+export const isNullish = (value: unknown): value is undefined | null => value === undefined || value === null;
