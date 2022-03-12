@@ -10,9 +10,7 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
     return Promise.race([
         promise,
         new Promise((_, reject) => {
-            timer = setTimeout(() => {
-                reject(new Error(`timeout of ${ms}ms exceeded`));
-            }, ms);
+            timer = setTimeout(() => reject(new Error(`timeout of ${ms}ms exceeded`)), ms);
         })
     ]).finally(() => {
         clearTimeout(timer);

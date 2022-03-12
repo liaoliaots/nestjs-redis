@@ -1,5 +1,4 @@
-import IORedis from 'ioredis';
-import { isString, isSymbol, isError, isResolution, isRejection, isDirectInstanceOf } from './is';
+import { isString, isSymbol, isError, isResolution, isRejection, isDirectInstanceOf, isNullish } from './is';
 
 describe('isString', () => {
     test('should work correctly', () => {
@@ -26,17 +25,14 @@ describe('isSymbol', () => {
 
 describe('isError', () => {
     test('should work correctly', () => {
-        class RedisError extends Error {}
+        class CustomError extends Error {}
         class UnknownError {}
 
-        const err1 = new Error();
-        const err2 = new RedisError();
-        const err3 = new UnknownError();
-        expect(isError(err1)).toBe(true);
-        expect(isError(err2)).toBe(true);
-        expect(isError(err3)).toBe(false);
+        expect(isError(new Error())).toBe(true);
+        expect(isError(new CustomError())).toBe(true);
+        expect(isError(new UnknownError())).toBe(false);
         expect(isError('')).toBe(false);
-        expect(isError(1)).toBe(false);
+        expect(isError(0)).toBe(false);
         expect(isError(true)).toBe(false);
         expect(isError(undefined)).toBe(false);
         expect(isError(null)).toBe(false);
@@ -60,13 +56,21 @@ describe('isRejection', () => {
 
 describe('isDirectInstanceOf', () => {
     test('should work correctly', () => {
-        class Unknown {}
+        class CustomError extends Error {}
 
-        const c1 = new IORedis();
-        const c2 = new IORedis.Cluster([]);
-        expect(isDirectInstanceOf(c1, IORedis)).toBe(true);
-        expect(isDirectInstanceOf(c2, IORedis.Cluster)).toBe(true);
-        expect(isDirectInstanceOf(new Unknown(), Unknown)).toBe(true);
-        expect(isDirectInstanceOf(new Unknown(), Object)).toBe(false);
+        expect(isDirectInstanceOf(new CustomError(), CustomError)).toBe(true);
+        expect(isDirectInstanceOf(new CustomError(), Error)).toBe(false);
+    });
+});
+
+describe('isNullish', () => {
+    test('should work correctly', () => {
+        expect(isNullish(undefined)).toBe(true);
+        expect(isNullish(null)).toBe(true);
+        expect(isNullish(NaN)).toBe(false);
+        expect(isNullish(false)).toBe(false);
+        expect(isNullish('')).toBe(false);
+        expect(isNullish(0)).toBe(false);
+        expect(isNullish(1)).toBe(false);
     });
 });

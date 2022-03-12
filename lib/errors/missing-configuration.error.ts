@@ -1,3 +1,6 @@
+/**
+ * Thrown when async configurations are missing.
+ */
 export class MissingConfigurationError extends Error {
     constructor(message: string) {
         super(message);
