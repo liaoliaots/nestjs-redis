@@ -1,6 +1,6 @@
 {
     "name": "@liaoliaots/nestjs-redis",
-    "version": "7.0.0-alpha.3",
+    "version": "7.0.0-rc.2",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao",
     "main": "dist/index.js",
@@ -36,7 +36,8 @@
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme --style=\"flat-square\"",
         "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js health/index.js",
-        "publish:next": "npm publish --tag next"
+        "publish:next": "npm publish --tag next",
+        "publish:rc": "npm publish --tag rc"
     },
     "dependencies": {
         "@types/promise.allsettled": "1.0.3",
