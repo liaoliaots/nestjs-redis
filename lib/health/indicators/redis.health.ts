@@ -3,7 +3,7 @@ import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestj
 import {
     FAILED_CLUSTER_STATE,
     CANNOT_BE_READ,
-    CLIENT_NOT_FOUND_FOR_HEALTH,
+    MISSING_CLIENT,
     NOT_RESPONSIVE,
     ABNORMALLY_MEMORY_USAGE
 } from '@/messages';
@@ -39,7 +39,7 @@ export class RedisHealthIndicator extends HealthIndicator {
         let isHealthy = false;
 
         try {
-            if (!options.client) throw new Error(CLIENT_NOT_FOUND_FOR_HEALTH);
+            if (!options.client) throw new Error(MISSING_CLIENT);
 
             if (type === 'redis') {
                 const pong = await promiseTimeout(options.timeout ?? 1000, options.client.ping());
