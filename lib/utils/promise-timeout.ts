@@ -1,3 +1,5 @@
+import { OPERATIONS_TIMEOUT } from '@/messages';
+
 /**
  * Executes a promise in the given timeout. If the promise does not finish in the given timeout, it will throw an Error.
  *
@@ -10,7 +12,7 @@ export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<u
     return Promise.race([
         promise,
         new Promise((_, reject) => {
-            timer = setTimeout(() => reject(new Error(`timeout of ${ms}ms exceeded`)), ms);
+            timer = setTimeout(() => reject(new Error(OPERATIONS_TIMEOUT(ms))), ms);
         })
     ]).finally(() => {
         clearTimeout(timer);
