@@ -5,7 +5,8 @@ import {
     CANNOT_BE_READ,
     MISSING_CLIENT,
     NOT_RESPONSIVE,
-    ABNORMALLY_MEMORY_USAGE
+    ABNORMALLY_MEMORY_USAGE,
+    MISSING_TYPE
 } from '@/messages';
 import { isError, promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@/utils';
 import { RedisCheckSettings } from './redis-check-settings.interface';
@@ -39,6 +40,7 @@ export class RedisHealthIndicator extends HealthIndicator {
         let isHealthy = false;
 
         try {
+            if (!type) throw new Error(MISSING_TYPE);
             if (!options.client) throw new Error(MISSING_CLIENT);
 
             if (type === 'redis') {

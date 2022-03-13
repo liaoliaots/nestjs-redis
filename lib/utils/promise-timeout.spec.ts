@@ -1,4 +1,5 @@
 import { promiseTimeout } from './promise-timeout';
+import { OPERATIONS_TIMEOUT } from '@/messages';
 
 describe('promiseTimeout', () => {
     let timer: NodeJS.Timeout;
@@ -17,6 +18,6 @@ describe('promiseTimeout', () => {
     });
 
     test('should throw an error', async () => {
-        await expect(promiseTimeout(10, getPromise(20))).rejects.toThrow();
+        await expect(promiseTimeout(10, getPromise(20))).rejects.toThrow(OPERATIONS_TIMEOUT(10));
     });
 });
