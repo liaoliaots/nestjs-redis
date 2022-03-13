@@ -61,10 +61,11 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 ### Deprecated
 
--   V2 and V3@next, [click here](docs/v2/README.md)
--   V3@latest, [click here](docs/v3)
--   V4, [click here](docs/v4)
--   V5, [click here](docs/v5)
+-   v2 and v3@next, [click here](docs/v2/README.md)
+-   v3@latest, [click here](docs/v3)
+-   v4, [click here](docs/v4)
+-   v5, [click here](docs/v5)
+-   v6, [click here](docs/v6)
 
 ## Install
 
@@ -96,9 +97,10 @@ const module: TestingModule = await Test.createTestingModule({
 
 A working example is available [here](sample/01-testing-inject).
 
-## TODO
+## Future
 
-1.  -   [ ] COMMAND: **SELECT**
+1.  -   [ ] COMMAND: SELECT
+2.  -   [ ] Microservice strategy
 
 ## Author
 
