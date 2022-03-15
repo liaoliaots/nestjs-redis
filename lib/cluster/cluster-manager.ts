@@ -12,14 +12,14 @@ export class ClusterManager {
     constructor(@Inject(CLUSTER_CLIENTS) private readonly clusterClients: ClusterClients) {}
 
     /**
-     * Gets all cluster clients as a read-only map.
+     * Returns all cluster clients.
      */
     get clients(): ReadonlyMap<ClientNamespace, Cluster> {
         return this.clusterClients;
     }
 
     /**
-     * Gets cluster client via namespace.
+     * Retrieves a cluster client by namespace.
      */
     getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);

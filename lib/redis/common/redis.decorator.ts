@@ -6,9 +6,9 @@ import { isString, isSymbol } from '@/utils';
 export const namespaces = new Map<ClientNamespace, ClientNamespace>();
 
 /**
- * Decorator that injects a redis client to the constructor parameter.
+ * This decorator is used to mark a specific class property as a redis client.
  *
- * @param namespace - The name of the client
+ * @param namespace - Client name
  */
 export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): ReturnType<typeof Inject> => {
     if (isString(namespace)) {
@@ -22,9 +22,9 @@ export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE
 };
 
 /**
- * Generates an injection token for a redis client.
+ * This function generates an injection token for a redis client.
  *
- * @param namespace  - The name of the client
+ * @param namespace - Client name
  */
 export const getRedisToken = (namespace: ClientNamespace): ClientNamespace => {
     if (isSymbol(namespace)) return namespace;

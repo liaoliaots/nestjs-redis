@@ -1,5 +1,5 @@
 /**
- * The name of the client.
+ * Client name.
  */
 export type ClientNamespace = string | symbol;
 
