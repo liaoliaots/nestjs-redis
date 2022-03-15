@@ -33,9 +33,9 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 -   **Both redis & cluster are supported**: You can also specify multiple clients.
 -   **Health**: Checks health of redis & cluster server.
--   **Rigorously tested**: With 120+ tests and 100% code coverage.
+-   **Rigorously tested**: With 130+ tests and 100% code coverage.
 -   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
--   **Services**: Gets redis/cluster client via `RedisService` and `ClusterService`.
+-   **Services**: Retrieves redis/cluster client via `RedisService` and `ClusterService`.
 
 ## Test coverage 🧐
 
@@ -54,10 +54,9 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   [Examples](docs/latest/examples.md)
     -   [Redis Sentinel](docs/latest/examples.md#sentinel)
     -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
--   [Distributed locks](#distributed-locks)
 -   [Test a class](#test-a-class)
+-   [Future](#future)
 -   [Package dependency overview](#package-dependency-overview)
--   [TODO](#todo)
 
 ### Deprecated
 
@@ -81,10 +80,6 @@ $ yarn add @liaoliaots/nestjs-redis ioredis
 $ yarn add --dev @types/ioredis
 ```
 
-## Distributed locks
-
--   [redlock](https://github.com/mike-marcacci/node-redlock)
-
 ## Test a class
 
 This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
@@ -101,6 +96,10 @@ A working example is available [here](sample/01-testing-inject).
 
 1.  -   [ ] COMMAND: SELECT
 2.  -   [ ] Microservice strategy
+
+## Package dependency overview
+
+![](docs/latest/dependency-graph.svg)
 
 ## Author
 
@@ -119,7 +118,3 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
-
-## Package dependency overview
-
-![](docs/latest/dependency-graph.svg)
