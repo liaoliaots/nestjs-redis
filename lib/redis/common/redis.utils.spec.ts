@@ -1,5 +1,5 @@
 import IORedis, { Redis } from 'ioredis';
-import { createClient, quitClients, displayReadyLog } from './redis.utils';
+import { createClient, quitClients, displayReadyLog, displayErrorLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
 
 const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
@@ -60,15 +60,40 @@ describe('displayReadyLog', () => {
     });
 
     test('should work correctly', () => {
-        const mockOnce = jest
-            .spyOn(client, 'once')
-            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
+        const mockOn = jest
+            .spyOn(client, 'on')
+            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
                 listener();
                 return undefined as unknown as Redis;
             });
 
         displayReadyLog(clients);
-        expect(mockOnce).toHaveBeenCalledTimes(1);
+        expect(mockOn).toHaveBeenCalledTimes(1);
+        mockOn.mockReset();
+    });
+});
+
+describe('displayErrorLog', () => {
+    let client: Redis;
+    let clients: RedisClients;
+
+    beforeEach(() => {
+        client = new IORedis();
+        clients = new Map();
+        clients.set('client', client);
+    });
+
+    test('should work correctly', () => {
+        const mockOn = jest
+            .spyOn(client, 'on')
+            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
+                listener(new Error(''));
+                return undefined as unknown as Redis;
+            });
+
+        displayErrorLog(clients);
+        expect(mockOn).toHaveBeenCalledTimes(1);
+        mockOn.mockReset();
     });
 });
 

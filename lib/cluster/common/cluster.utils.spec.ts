@@ -1,5 +1,5 @@
 import IORedis, { Cluster } from 'ioredis';
-import { createClient, quitClients, displayReadyLog } from './cluster.utils';
+import { createClient, quitClients, displayReadyLog, displayErrorLog } from './cluster.utils';
 import { ClusterClients, ClusterClientOptions } from '../interfaces';
 
 const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
@@ -43,15 +43,40 @@ describe('displayReadyLog', () => {
     });
 
     test('should work correctly', () => {
-        const mockOnce = jest
-            .spyOn(client, 'once')
-            .mockImplementation((event: string | symbol, listener: (...args: unknown[]) => void) => {
+        const mockOn = jest
+            .spyOn(client, 'on')
+            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
                 listener();
                 return undefined as unknown as Cluster;
             });
 
         displayReadyLog(clients);
-        expect(mockOnce).toHaveBeenCalledTimes(1);
+        expect(mockOn).toHaveBeenCalledTimes(1);
+        mockOn.mockReset();
+    });
+});
+
+describe('displayErrorLog', () => {
+    let client: Cluster;
+    let clients: ClusterClients;
+
+    beforeEach(() => {
+        client = new IORedis.Cluster([]);
+        clients = new Map();
+        clients.set('client', client);
+    });
+
+    test('should work correctly', () => {
+        const mockOn = jest
+            .spyOn(client, 'on')
+            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
+                listener(new Error(''));
+                return undefined as unknown as Cluster;
+            });
+
+        displayErrorLog(clients);
+        expect(mockOn).toHaveBeenCalledTimes(1);
+        mockOn.mockReset();
     });
 });
 

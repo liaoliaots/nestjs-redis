@@ -7,7 +7,7 @@ import {
     DEFAULT_CLUSTER_NAMESPACE,
     CLUSTER_INTERNAL_OPTIONS
 } from './cluster.constants';
-import { createClient, namespaces, displayReadyLog } from './common';
+import { createClient, namespaces, displayReadyLog, displayErrorLog } from './common';
 import { ClusterManager } from './cluster-manager';
 import { defaultClusterModuleOptions } from './default-options';
 
@@ -94,6 +94,7 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
             clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
         }
 
+        displayErrorLog(clients);
         if (options.readyLog) displayReadyLog(clients);
 
         return clients;

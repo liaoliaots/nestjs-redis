@@ -1,7 +1,6 @@
 import IORedis, { Redis } from 'ioredis';
 import allSettled, { PromiseResult } from 'promise.allsettled';
 import { RedisClientOptions, RedisClients } from '../interfaces';
-import { RedisStatus } from '../redis.constants';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { CONNECTED_SUCCESSFULLY } from '@/messages';
@@ -18,8 +17,16 @@ export const createClient = (clientOptions: RedisClientOptions): Redis => {
 
 export const displayReadyLog = (clients: RedisClients): void => {
     clients.forEach((client, namespace) => {
-        client.once(RedisStatus.READY, () => {
+        client.on('ready', () => {
             logger.log(`${parseNamespace(namespace)}: ${CONNECTED_SUCCESSFULLY}`);
+        });
+    });
+};
+
+export const displayErrorLog = (clients: RedisClients): void => {
+    clients.forEach((client, namespace) => {
+        client.on('error', (error: Error) => {
+            logger.error(`${parseNamespace(namespace)}: ${error.message}`, error.stack);
         });
     });
 };
@@ -29,7 +36,7 @@ export const quitClients = (
 ): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
     const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
-        if (client.status === RedisStatus.READY) {
+        if (client.status === 'ready') {
             promises.push(allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
