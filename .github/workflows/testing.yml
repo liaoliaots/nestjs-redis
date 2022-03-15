@@ -12,6 +12,7 @@ jobs:
                 os:
                     - ubuntu-20.04
                 node_version:
+                    - '10'
                     - '12'
                     - '14'
                     - '16'
