@@ -7,12 +7,15 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "target": "ES2017",
-        "lib": ["ES2017", "DOM"],
+        "lib": ["ES2017"],
         "sourceMap": true,
         "outDir": "./dist",
         "baseUrl": "./",
+        "esModuleInterop": true,
+        "importHelpers": true,
         "incremental": true,
-        "skipLibCheck": false,
-        "strict": true
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true
     }
 }
