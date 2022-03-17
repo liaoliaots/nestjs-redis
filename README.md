@@ -51,6 +51,8 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   [Cluster](docs/latest/cluster.md)
     -   [Non-global](docs/latest/cluster.md#non-global)
 -   [Health Checks](docs/latest/health-checks.md)
+    -   [Usage](docs/latest/health-checks.md#usage)
+    -   [Options](docs/latest/health-checks.md#options)
 -   [Examples](docs/latest/examples.md)
     -   [Redis Sentinel](docs/latest/examples.md#sentinel)
     -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
