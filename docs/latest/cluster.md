@@ -324,6 +324,7 @@ You can change the behavior by modifying `isGlobal` parameter:
 ```TypeScript
 // cats.module.ts
 import { Module } from '@nestjs/common';
+import { ClusterModule } from '@liaoliaots/nestjs-redis';
 import { CatsService } from './cats.service';
 import { CatsController } from './cats.controller';
 
