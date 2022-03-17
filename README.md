@@ -60,15 +60,12 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 ### Deprecated
 
--   v2 and v3@next, [click here](docs/v2/README.md)
--   v3@latest, [click here](docs/v3)
--   v4, [click here](docs/v4)
 -   v5, [click here](docs/v5)
 -   v6, [click here](docs/v6)
 
 ## Install
 
-**This package supports both nestjs 7.x and 8.x.**
+**This package supports both nestjs 7.x and 8.x**.
 
 ```sh
 $ npm install --save @liaoliaots/nestjs-redis ioredis
