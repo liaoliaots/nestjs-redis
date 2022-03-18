@@ -13,7 +13,7 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } }
+                redisOptions: { password: 'cluster1' } }
             }
         })
     ]
@@ -110,7 +110,7 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
                 return {
                     config: {
                         nodes: [{ host: 'localhost', port: 16380 }],
-                        options: { redisOptions: { password: 'cluster1' } }
+                        redisOptions: { password: 'cluster1' }
                     }
                 };
             }
@@ -134,7 +134,7 @@ export class ClusterConfigService implements ClusterOptionsFactory {
         return {
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } }
+                redisOptions: { password: 'cluster1' }
             }
         };
     }
@@ -165,7 +165,7 @@ const MyOptionsProvider: ValueProvider<ClusterModuleOptions> = {
         readyLog: true,
         config: {
             nodes: [{ host: 'localhost', port: 16380 }],
-            options: { redisOptions: { password: 'cluster1' } }
+            redisOptions: { password: 'cluster1' }
         }
     }
 };
@@ -205,7 +205,7 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
             readyLog: true,
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } }
+                redisOptions: { password: 'cluster1' }
             }
         })
     ]
@@ -230,7 +230,7 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } }
+                redisOptions: { password: 'cluster1' }
 
                 // or with URL
                 // nodes: ['redis://:cluster1@localhost:16380']
@@ -253,12 +253,12 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
             config: [
                 {
                     nodes: [{ host: 'localhost', port: 16380 }],
-                    options: { redisOptions: { password: 'cluster1' } }
+                    redisOptions: { password: 'cluster1' }
                 },
                 {
                     namespace: 'cluster2',
                     nodes: [{ host: 'localhost', port: 16480 }],
-                    options: { redisOptions: { password: 'cluster2' } }
+                    redisOptions: { password: 'cluster2' }
                 }
             ]
         })
@@ -304,7 +304,7 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
         ClusterModule.forRoot({
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } },
+                redisOptions: { password: 'cluster1' },
                 onClientCreated(client) {
                     client.on('error', err => {});
                 }
@@ -333,7 +333,7 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
                 readyLog: true,
                 config: {
                     nodes: [{ host: 'localhost', port: 16380 }],
-                    options: { redisOptions: { password: 'cluster1' } }
+                    redisOptions: { password: 'cluster1' }
                 }
             },
             false

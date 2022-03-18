@@ -24,7 +24,7 @@ import { AppController } from './app.controller';
         ClusterModule.forRoot({
             config: {
                 nodes: [{ host: 'localhost', port: 16380 }],
-                options: { redisOptions: { password: 'cluster1' } }
+                redisOptions: { password: 'cluster1' }
             }
         }),
         RedisModule.forRoot({
