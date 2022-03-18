@@ -88,12 +88,12 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
                 {
                     namespace: 'cluster1',
                     nodes: [{ host: 'localhost', port: 16380 }],
-                    options: { redisOptions: { password: 'cluster1' } }
+                    redisOptions: { password: 'cluster1' }
                 },
                 {
                     namespace: 'cluster2',
                     nodes: [{ host: 'localhost', port: 16480 }],
-                    options: { redisOptions: { password: 'cluster2' } }
+                    redisOptions: { password: 'cluster2' }
                 }
             ]
         })
