@@ -431,9 +431,11 @@ By default, the `RedisModule` is registered in the global scope, so `RedisServic
 You can change the behavior by modifying `isGlobal` parameter:
 
 ```TypeScript
-// shared-redis.module.ts
+// cats.module.ts
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { CatsService } from './cats.service';
+import { CatsController } from './cats.controller';
 
 @Module({
     imports: [
@@ -449,22 +451,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
             false // <-- register inside the module scope
         )
     ],
-    exports: [RedisModule] // <-- re-export
-})
-export class SharedRedis {}
-```
-
-The next thing is import `SharedRedis` to the consumer module:
-
-```TypeScript
-// cats.module.ts
-import { Module } from '@nestjs/common';
-import { CatsService } from './cats.service';
-import { CatsController } from './cats.controller';
-import { SharedRedis } from '../shared-redis.module';
-
-@Module({
-    imports: [SharedRedis],
     providers: [CatsService],
     controllers: [CatsController]
 })

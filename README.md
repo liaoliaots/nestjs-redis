@@ -51,6 +51,8 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   [Cluster](docs/latest/cluster.md)
     -   [Non-global](docs/latest/cluster.md#non-global)
 -   [Health Checks](docs/latest/health-checks.md)
+    -   [Usage](docs/latest/health-checks.md#usage)
+    -   [Options](docs/latest/health-checks.md#options)
 -   [Examples](docs/latest/examples.md)
     -   [Redis Sentinel](docs/latest/examples.md#sentinel)
     -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
@@ -60,15 +62,12 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 ### Deprecated
 
--   v2 and v3@next, [click here](docs/v2/README.md)
--   v3@latest, [click here](docs/v3)
--   v4, [click here](docs/v4)
 -   v5, [click here](docs/v5)
 -   v6, [click here](docs/v6)
 
 ## Install
 
-**This package supports both nestjs 7.x and 8.x.**
+**This package supports both nestjs 7.x and 8.x**.
 
 ```sh
 $ npm install --save @liaoliaots/nestjs-redis ioredis
