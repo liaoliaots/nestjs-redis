@@ -19,7 +19,7 @@ module.exports = {
     env: {
         node: true,
         jest: true,
-        es2017: true
+        es2021: true
     },
     ignorePatterns: ['dist/*', 'health/*', '.eslintrc.js', 'health.ts', 'compat.js'],
     reportUnusedDisableDirectives: true,

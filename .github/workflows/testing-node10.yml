@@ -1,0 +1,27 @@
+name: testing-node10
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    test:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '10'
+                  architecture: 'x64'
+                  cache: 'npm'
+                  check-latest: true
+            - run: npm install -g npm@7
+            - run: npm ci
+            - run: docker-compose up -d
+            - name: Initialize cluster 1
+              run: docker-compose exec -T cluster-1-master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
+            - name: Initialize cluster 2
+              run: docker-compose exec -T cluster-2-master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+            - run: npm run lint
+            - run: npm run test
+            - run: npm run test:e2e
+            - run: docker-compose down -v
