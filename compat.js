@@ -2,7 +2,7 @@
 // https://node.green/
 
 const { targets } = require('core-js-compat')({
-    targets: 'node 10.13',
+    targets: 'node 12.22',
     filter: /^es\./,
     version: '3.21'
 });
