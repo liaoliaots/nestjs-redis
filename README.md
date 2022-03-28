@@ -65,18 +65,21 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   v5, [click here](docs/v5)
 -   v6, [click here](docs/v6)
 
+## Prerequisites
+
+-   [node](https://nodejs.org/en/) >=12.22.0
+-   [ioredis](https://github.com/luin/ioredis) 5.x
+
 ## Install
 
 **This package supports both nestjs 7.x and 8.x**.
 
 ```sh
 $ npm install --save @liaoliaots/nestjs-redis ioredis
-$ npm install --save-dev @types/ioredis
 ```
 
 ```sh
 $ yarn add @liaoliaots/nestjs-redis ioredis
-$ yarn add --dev @types/ioredis
 ```
 
 ## Test a class
@@ -85,7 +88,7 @@ This package exports `getRedisToken()` and `getClusterToken()` functions that re
 
 ```TypeScript
 const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getRedisToken('your namespace'), useValue: mockClient }, YourService]
+    providers: [{ provide: getRedisToken('namespace'), useValue: mockedClient }, YourService]
 }).compile();
 ```
 
