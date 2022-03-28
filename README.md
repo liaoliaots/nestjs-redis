@@ -64,6 +64,7 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 -   v5, [click here](docs/v5)
 -   v6, [click here](docs/v6)
+-   v7, [click here](docs/v7)
 
 ## Prerequisites
 
