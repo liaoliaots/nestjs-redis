@@ -1,6 +1,6 @@
 import { FactoryProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import IORedis, { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import {
     createOptionsProvider,
     createAsyncProviders,
@@ -15,10 +15,12 @@ import { namespaces, displayReadyLog } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
+jest.mock('ioredis', () => jest.fn(() => ({})));
+
 jest.mock('./common', () => ({
-    __esModule: true,
     ...jest.requireActual('./common'),
-    displayReadyLog: jest.fn()
+    displayReadyLog: jest.fn(),
+    displayErrorLog: jest.fn()
 }));
 
 class RedisConfigService implements RedisOptionsFactory {
@@ -146,9 +148,9 @@ describe('redisClientsProvider', () => {
         test('should work correctly', () => {
             let client: Redis;
             client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
             client = manager.getClient('client1');
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
         });
     });
 
@@ -178,7 +180,7 @@ describe('redisClientsProvider', () => {
 
         test('should work correctly', () => {
             const client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
         });
     });
 
@@ -209,7 +211,7 @@ describe('redisClientsProvider', () => {
 
         test('should work correctly', () => {
             const client = manager.getClient('client1');
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
         });
     });
 
@@ -279,8 +281,8 @@ describe('createRedisClientProviders', () => {
 
     beforeEach(async () => {
         clients = new Map();
-        clients.set('client1', new IORedis());
-        clients.set('client2', new IORedis());
+        clients.set('client1', new Redis());
+        clients.set('client2', new Redis());
         namespaces.set('client1', 'client1');
         namespaces.set('client2', 'client2');
 
@@ -293,7 +295,7 @@ describe('createRedisClientProviders', () => {
     });
 
     test('should work correctly', () => {
-        expect(client1).toBeInstanceOf(IORedis);
-        expect(client2).toBeInstanceOf(IORedis);
+        expect(client1).toBeDefined();
+        expect(client2).toBeDefined();
     });
 });

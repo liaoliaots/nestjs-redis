@@ -1,4 +1,4 @@
-import { Cluster } from 'ioredis';
+import type { Cluster } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
 export type ClusterClients = Map<ClientNamespace, Cluster>;

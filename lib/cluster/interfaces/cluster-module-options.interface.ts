@@ -1,5 +1,6 @@
 import { Type, ModuleMetadata, Provider } from '@nestjs/common';
-import { ClusterNode, ClusterOptions, Cluster } from 'ioredis';
+import type { Cluster } from 'ioredis';
+import { ClusterNode, ClusterOptions } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
 export interface ClusterClientOptions extends ClusterOptions {

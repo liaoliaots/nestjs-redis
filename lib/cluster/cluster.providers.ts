@@ -1,5 +1,5 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
-import { Cluster } from 'ioredis';
+import type { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
 import {
     CLUSTER_OPTIONS,

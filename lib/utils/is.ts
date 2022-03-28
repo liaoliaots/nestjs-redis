@@ -1,4 +1,3 @@
-import { PromiseResult, PromiseResolution, PromiseRejection } from 'promise.allsettled';
 import { Constructor } from '@/interfaces';
 
 /**
@@ -28,20 +27,20 @@ export const isError = (value: unknown): value is Error => {
 };
 
 /**
- * Returns `true` if the value is of type `PromiseResolution`.
+ * Returns `true` if the value is of type `PromiseFulfilledResult`.
  *
  * @param value - The promise result
  */
-export const isResolution = <T>(value: PromiseResult<T>): value is PromiseResolution<T> => {
+export const isResolution = <T>(value: PromiseSettledResult<T>): value is PromiseFulfilledResult<T> => {
     return value.status === 'fulfilled';
 };
 
 /**
- * Returns `true` if the value is of type `PromiseRejection`.
+ * Returns `true` if the value is of type `PromiseRejectedResult`.
  *
  * @param value - The promise result
  */
-export const isRejection = <T>(value: PromiseResult<T>): value is PromiseRejection<T> => {
+export const isRejection = (value: PromiseSettledResult<unknown>): value is PromiseRejectedResult => {
     return value.status === 'rejected';
 };
 
