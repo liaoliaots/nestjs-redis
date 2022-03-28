@@ -68,6 +68,10 @@ describe('displayReadyLog', () => {
     });
 
     test('should work correctly', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        mockOn.mockImplementation((_, fn: Function) => {
+            fn();
+        });
         displayReadyLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
     });
@@ -84,6 +88,10 @@ describe('displayErrorLog', () => {
     });
 
     test('should work correctly', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        mockOn.mockImplementation((_, fn: Function) => {
+            fn({ message: '' });
+        });
         displayErrorLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
     });

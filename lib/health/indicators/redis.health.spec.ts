@@ -57,7 +57,12 @@ describe('RedisHealthIndicator', () => {
             jest.spyOn(redis, 'info').mockResolvedValue('# Memory used_memory:100000 used_memory_human:');
 
             await expect(
-                indicator.checkHealth('redis', { type: 'redis', client: redis, memoryThreshold: 1024 * 1024 * 100 })
+                indicator.checkHealth('redis', {
+                    type: 'redis',
+                    client: redis,
+                    timeout: 1000,
+                    memoryThreshold: 1024 * 1024 * 100
+                })
             ).resolves.toEqual({
                 redis: { status: 'up' }
             });
