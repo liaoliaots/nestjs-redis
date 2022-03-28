@@ -1,5 +1,4 @@
-import IORedis, { Cluster } from 'ioredis';
-import allSettled, { PromiseResult } from 'promise.allsettled';
+import { Cluster } from 'ioredis';
 import { ClusterClientOptions, ClusterClients } from '../interfaces';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
@@ -9,7 +8,7 @@ import { logger } from '../cluster-logger';
 export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
     const { nodes, onClientCreated, ...clusterOptions } = clientOptions;
 
-    const client = new IORedis.Cluster(nodes, clusterOptions);
+    const client = new Cluster(nodes, clusterOptions);
     if (onClientCreated) onClientCreated(client);
 
     return client;
@@ -33,11 +32,11 @@ export const displayErrorLog = (clients: ClusterClients): void => {
 
 export const quitClients = (
     clients: ClusterClients
-): Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>][]> => {
-    const promises: Promise<[PromiseResult<ClientNamespace>, PromiseResult<'OK'>]>[] = [];
+): Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]> => {
+    const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
         if (client.status === 'ready') {
-            promises.push(allSettled([Promise.resolve(namespace), client.quit()]));
+            promises.push(Promise.allSettled([Promise.resolve(namespace), client.quit()]));
             return;
         }
         client.disconnect();

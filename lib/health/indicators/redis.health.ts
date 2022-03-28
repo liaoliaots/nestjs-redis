@@ -36,32 +36,27 @@ export class RedisHealthIndicator extends HealthIndicator {
      * ```
      */
     async checkHealth(key: string, options: RedisCheckSettings): Promise<HealthIndicatorResult> {
-        const { type } = options;
+        const { type, client } = options;
         let isHealthy = false;
 
         try {
             if (!type) throw new Error(MISSING_TYPE);
-            if (!options.client) throw new Error(MISSING_CLIENT);
+            if (!client) throw new Error(MISSING_CLIENT);
 
             if (type === 'redis') {
-                const pong = await promiseTimeout(options.timeout ?? 1000, options.client.ping());
+                const pong = await promiseTimeout(options.timeout ?? 1000, client.ping());
                 if (pong !== 'PONG') throw new Error(NOT_RESPONSIVE);
-
                 if (!isNullish(options.memoryThreshold)) {
-                    const info = await options.client.info('memory');
+                    const info = await client.info('memory');
                     if (parseUsedMemory(removeLineBreaks(info)) > options.memoryThreshold) {
                         throw new Error(ABNORMALLY_MEMORY_USAGE);
                     }
                 }
             } else {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const clusterInfo = await options.client.cluster('info');
-
+                const clusterInfo = await client.cluster('INFO');
                 if (clusterInfo && typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new Error(FAILED_CLUSTER_STATE);
-                } else {
-                    throw new Error(CANNOT_BE_READ);
-                }
+                } else throw new Error(CANNOT_BE_READ);
             }
 
             isHealthy = true;

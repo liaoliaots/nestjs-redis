@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import { InjectRedis } from '@/.';
 
 @Controller('inject')

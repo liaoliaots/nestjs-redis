@@ -1,29 +1,54 @@
-import IORedis, { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import { createClient, quitClients, displayReadyLog, displayErrorLog } from './redis.utils';
 import { RedisClients, RedisClientOptions } from '../interfaces';
 
-const MockIORedis = IORedis as jest.MockedClass<typeof IORedis>;
+jest.mock('../redis-logger', () => ({
+    logger: {
+        log: jest.fn(),
+        error: jest.fn()
+    }
+}));
+
+const mockOn = jest.fn();
+const mockQuit = jest.fn();
+const mockDisconnect = jest.fn();
+jest.mock('ioredis', () =>
+    jest.fn(() => ({
+        on: mockOn,
+        quit: mockQuit,
+        disconnect: mockDisconnect
+    }))
+);
 
 beforeEach(() => {
-    MockIORedis.mockReset();
+    mockOn.mockReset();
+    mockQuit.mockReset();
+    mockDisconnect.mockReset();
 });
 
 describe('createClient', () => {
+    const MockRedis = Redis as jest.MockedClass<typeof Redis>;
+    beforeEach(() => {
+        MockRedis.mockClear();
+    });
+
     describe('with a URL', () => {
         const url = `redis://:masterpassword1@127.0.0.1:6380/0`;
 
         test('should create a client with a URL', () => {
             const client = createClient({ url });
-            expect(MockIORedis).toHaveBeenCalledTimes(1);
-            expect(MockIORedis).toHaveBeenCalledWith(url, {});
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
+            expect(MockRedis).toHaveBeenCalledTimes(1);
+            expect(MockRedis).toHaveBeenCalledWith(url, {});
+            expect(MockRedis.mock.instances).toHaveLength(1);
         });
 
         test('should create a client with a URL and options', () => {
             const client = createClient({ url, lazyConnect: true });
-            expect(MockIORedis).toHaveBeenCalledTimes(1);
-            expect(MockIORedis).toHaveBeenCalledWith(url, { lazyConnect: true });
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
+            expect(MockRedis).toHaveBeenCalledTimes(1);
+            expect(MockRedis).toHaveBeenCalledWith(url, { lazyConnect: true });
+            expect(MockRedis.mock.instances).toHaveLength(1);
         });
     });
 
@@ -31,18 +56,20 @@ describe('createClient', () => {
         test('should create a client with options', () => {
             const options: RedisClientOptions = { host: '127.0.0.1', port: 6380 };
             const client = createClient(options);
-            expect(MockIORedis).toHaveBeenCalledTimes(1);
-            expect(MockIORedis).toHaveBeenCalledWith(options);
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
+            expect(MockRedis).toHaveBeenCalledTimes(1);
+            expect(MockRedis).toHaveBeenCalledWith(options);
+            expect(MockRedis.mock.instances).toHaveLength(1);
         });
 
         test('should call onClientCreated', () => {
             const mockOnClientCreated = jest.fn();
 
             const client = createClient({ onClientCreated: mockOnClientCreated });
-            expect(MockIORedis).toHaveBeenCalledTimes(1);
-            expect(MockIORedis).toHaveBeenCalledWith({});
-            expect(client).toBeInstanceOf(IORedis);
+            expect(client).toBeDefined();
+            expect(MockRedis).toHaveBeenCalledTimes(1);
+            expect(MockRedis).toHaveBeenCalledWith({});
+            expect(MockRedis.mock.instances).toHaveLength(1);
             expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
             expect(mockOnClientCreated).toHaveBeenCalledWith(client);
         });
@@ -54,22 +81,14 @@ describe('displayReadyLog', () => {
     let clients: RedisClients;
 
     beforeEach(() => {
-        client = new IORedis();
+        client = new Redis();
         clients = new Map();
         clients.set('client', client);
     });
 
     test('should work correctly', () => {
-        const mockOn = jest
-            .spyOn(client, 'on')
-            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
-                listener();
-                return undefined as unknown as Redis;
-            });
-
         displayReadyLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
-        mockOn.mockReset();
     });
 });
 
@@ -78,22 +97,14 @@ describe('displayErrorLog', () => {
     let clients: RedisClients;
 
     beforeEach(() => {
-        client = new IORedis();
+        client = new Redis();
         clients = new Map();
         clients.set('client', client);
     });
 
     test('should work correctly', () => {
-        const mockOn = jest
-            .spyOn(client, 'on')
-            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
-                listener(new Error(''));
-                return undefined as unknown as Redis;
-            });
-
         displayErrorLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
-        mockOn.mockReset();
     });
 });
 
@@ -103,8 +114,8 @@ describe('quitClients', () => {
     let clients: RedisClients;
 
     beforeEach(() => {
-        client1 = new IORedis();
-        client2 = new IORedis();
+        client1 = new Redis();
+        client2 = new Redis();
         clients = new Map();
         clients.set('client1', client1);
         clients.set('client2', client2);
@@ -118,8 +129,8 @@ describe('quitClients', () => {
         const mockClient2Quit = jest.spyOn(client2, 'quit').mockRejectedValue('');
 
         const results = await quitClients(clients);
-        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
-        expect(mockClient2Quit).toHaveBeenCalledTimes(1);
+        expect(mockClient1Quit).toHaveBeenCalled();
+        expect(mockClient2Quit).toHaveBeenCalled();
         expect(results).toHaveLength(2);
         expect(results[0][0]).toEqual({ status: 'fulfilled', value: 'client1' });
         expect(results[0][1]).toHaveProperty('status', 'rejected');
@@ -136,8 +147,8 @@ describe('quitClients', () => {
         const mockClient2Disconnect = jest.spyOn(client2, 'disconnect');
 
         const results = await quitClients(clients);
-        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
-        expect(mockClient2Disconnect).toHaveBeenCalledTimes(1);
+        expect(mockClient1Quit).toHaveBeenCalled();
+        expect(mockClient2Disconnect).toHaveBeenCalled();
         expect(results).toHaveLength(1);
     });
 });

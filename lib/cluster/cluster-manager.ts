@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Cluster } from 'ioredis';
+import type { Cluster } from 'ioredis';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { ClusterClients } from './interfaces';
 import { CLIENT_NOT_FOUND } from '@/messages';

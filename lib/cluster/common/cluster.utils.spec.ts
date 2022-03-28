@@ -1,32 +1,57 @@
-import IORedis, { Cluster } from 'ioredis';
+import { Cluster } from 'ioredis';
 import { createClient, quitClients, displayReadyLog, displayErrorLog } from './cluster.utils';
 import { ClusterClients, ClusterClientOptions } from '../interfaces';
 
-const MockCluster = IORedis.Cluster as jest.MockedClass<typeof IORedis.Cluster>;
+jest.mock('../cluster-logger', () => ({
+    logger: {
+        log: jest.fn(),
+        error: jest.fn()
+    }
+}));
+
+const mockOn = jest.fn();
+const mockQuit = jest.fn();
+const mockDisconnect = jest.fn();
+jest.mock('ioredis', () => ({
+    Cluster: jest.fn(() => ({
+        on: mockOn,
+        quit: mockQuit,
+        disconnect: mockDisconnect
+    }))
+}));
 
 beforeEach(() => {
-    MockCluster.mockReset();
+    mockOn.mockReset();
+    mockQuit.mockReset();
+    mockDisconnect.mockReset();
 });
 
 describe('createClient', () => {
+    const MockCluster = Cluster as jest.MockedClass<typeof Cluster>;
+    beforeEach(() => {
+        MockCluster.mockClear();
+    });
+
     test('should create a client with options', () => {
         const options: ClusterClientOptions = {
             nodes: [{ host: '127.0.0.1', port: 16380 }],
             redisOptions: { password: '' }
         };
         const client = createClient(options);
+        expect(client).toBeDefined();
         expect(MockCluster).toHaveBeenCalledTimes(1);
         expect(MockCluster).toHaveBeenCalledWith(options.nodes, { redisOptions: { password: '' } });
-        expect(client).toBeInstanceOf(IORedis.Cluster);
+        expect(MockCluster.mock.instances).toHaveLength(1);
     });
 
     test('should call onClientCreated', () => {
         const mockOnClientCreated = jest.fn();
 
         const client = createClient({ nodes: [], onClientCreated: mockOnClientCreated });
+        expect(client).toBeDefined();
         expect(MockCluster).toHaveBeenCalledTimes(1);
         expect(MockCluster).toHaveBeenCalledWith([], {});
-        expect(client).toBeInstanceOf(IORedis.Cluster);
+        expect(MockCluster.mock.instances).toHaveLength(1);
         expect(mockOnClientCreated).toHaveBeenCalledTimes(1);
         expect(mockOnClientCreated).toHaveBeenCalledWith(client);
     });
@@ -37,22 +62,14 @@ describe('displayReadyLog', () => {
     let clients: ClusterClients;
 
     beforeEach(() => {
-        client = new IORedis.Cluster([]);
+        client = new Cluster([]);
         clients = new Map();
         clients.set('client', client);
     });
 
     test('should work correctly', () => {
-        const mockOn = jest
-            .spyOn(client, 'on')
-            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
-                listener();
-                return undefined as unknown as Cluster;
-            });
-
         displayReadyLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
-        mockOn.mockReset();
     });
 });
 
@@ -61,22 +78,14 @@ describe('displayErrorLog', () => {
     let clients: ClusterClients;
 
     beforeEach(() => {
-        client = new IORedis.Cluster([]);
+        client = new Cluster([]);
         clients = new Map();
         clients.set('client', client);
     });
 
     test('should work correctly', () => {
-        const mockOn = jest
-            .spyOn(client, 'on')
-            .mockImplementation((event: unknown, listener: (...args: unknown[]) => void) => {
-                listener(new Error(''));
-                return undefined as unknown as Cluster;
-            });
-
         displayErrorLog(clients);
         expect(mockOn).toHaveBeenCalledTimes(1);
-        mockOn.mockReset();
     });
 });
 
@@ -86,8 +95,8 @@ describe('quitClients', () => {
     let clients: ClusterClients;
 
     beforeEach(() => {
-        client1 = new IORedis.Cluster([]);
-        client2 = new IORedis.Cluster([]);
+        client1 = new Cluster([]);
+        client2 = new Cluster([]);
         clients = new Map();
         clients.set('client1', client1);
         clients.set('client2', client2);
@@ -101,8 +110,8 @@ describe('quitClients', () => {
         const mockClient2Quit = jest.spyOn(client2, 'quit').mockRejectedValue('');
 
         const results = await quitClients(clients);
-        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
-        expect(mockClient2Quit).toHaveBeenCalledTimes(1);
+        expect(mockClient1Quit).toHaveBeenCalled();
+        expect(mockClient2Quit).toHaveBeenCalled();
         expect(results).toHaveLength(2);
         expect(results[0][0]).toEqual({ status: 'fulfilled', value: 'client1' });
         expect(results[0][1]).toHaveProperty('status', 'rejected');
@@ -119,8 +128,8 @@ describe('quitClients', () => {
         const mockClient2Disconnect = jest.spyOn(client2, 'disconnect');
 
         const results = await quitClients(clients);
-        expect(mockClient1Quit).toHaveBeenCalledTimes(1);
-        expect(mockClient2Disconnect).toHaveBeenCalledTimes(1);
+        expect(mockClient1Quit).toHaveBeenCalled();
+        expect(mockClient2Disconnect).toHaveBeenCalled();
         expect(results).toHaveLength(1);
     });
 });
