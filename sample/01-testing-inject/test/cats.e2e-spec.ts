@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { getRedisToken } from '@liaoliaots/nestjs-redis';
 import { FastifyInstance, LightMyRequestResponse } from 'fastify';
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import { AppModule } from '../src/app.module';
 import { CreateCatDto } from '../src/cats/create-cat.dto';
 
