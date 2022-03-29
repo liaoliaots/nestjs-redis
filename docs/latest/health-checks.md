@@ -54,7 +54,7 @@ import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheck, HealthCheckResult } from '@nestjs/terminus';
 import { InjectRedis, InjectCluster } from '@liaoliaots/nestjs-redis';
 import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis/health';
-import { Redis, Cluster } from 'ioredis';
+import Redis, { Cluster } from 'ioredis';
 
 @Controller()
 export class AppController {
