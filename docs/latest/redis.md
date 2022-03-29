@@ -31,7 +31,7 @@ via decorator:
 ```TypeScript
 import { Injectable } from '@nestjs/common';
 import { InjectRedis, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class AppService {
@@ -52,7 +52,7 @@ via service:
 ```TypeScript
 import { Injectable } from '@nestjs/common';
 import { RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class AppService {
