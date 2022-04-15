@@ -18,22 +18,6 @@ export class RedisHealthIndicator extends HealthIndicator {
      *
      * @param key - The key which will be used for the result object
      * @param options - The extra options for check
-     *
-     * @example
-     * ```
-     * import IORedis from 'ioredis';
-     *
-     * const client = new IORedis({ host: 'localhost', port: 6380 });
-     * indicator.checkHealth('redis', { type: 'redis', client });
-     * ```
-     *
-     * @example
-     * ```
-     * import IORedis from 'ioredis';
-     *
-     * const client = new IORedis.Cluster([{ host: 'localhost', port: 16380 }]);
-     * indicator.checkHealth('cluster', { type: 'cluster', client });
-     * ```
      */
     async checkHealth(key: string, options: RedisCheckSettings): Promise<HealthIndicatorResult> {
         const { type, client } = options;
@@ -46,6 +30,7 @@ export class RedisHealthIndicator extends HealthIndicator {
             if (type === 'redis') {
                 const pong = await promiseTimeout(options.timeout ?? 1000, client.ping());
                 if (pong !== 'PONG') throw new Error(NOT_RESPONSIVE);
+
                 if (!isNullish(options.memoryThreshold)) {
                     const info = await client.info('memory');
                     if (parseUsedMemory(removeLineBreaks(info)) > options.memoryThreshold) {

@@ -94,8 +94,8 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
             clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
         }
 
-        displayErrorLog(clients);
         if (options.readyLog) displayReadyLog(clients);
+        if (options.errorLog) displayErrorLog(clients);
 
         return clients;
     },

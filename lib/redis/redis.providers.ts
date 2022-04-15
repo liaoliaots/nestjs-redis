@@ -92,8 +92,8 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
             clients.set(options.config.namespace ?? DEFAULT_REDIS_NAMESPACE, createClient(options.config));
         }
 
-        displayErrorLog(clients);
         if (options.readyLog) displayReadyLog(clients);
+        if (options.errorLog) displayErrorLog(clients);
 
         return clients;
     },

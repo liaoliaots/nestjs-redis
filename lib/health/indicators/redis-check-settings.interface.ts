@@ -1,5 +1,4 @@
-import type Redis from 'ioredis';
-import type { Cluster } from 'ioredis';
+import type { Redis, Cluster } from 'ioredis';
 
 export type RedisCheckSettings =
     | {
@@ -9,13 +8,13 @@ export type RedisCheckSettings =
           type: 'redis';
 
           /**
-           * The client which the health check should get executed.
+           * The client which the health check should get executed. This option is required.
            */
           client: Redis;
 
           /**
            * The amount of time the check should require in ms.
-           * Default value is 1000 which is equivalent to 1 second.
+           * Default is 1000 which is equivalent to 1 second.
            */
           timeout?: number;
 
@@ -31,7 +30,7 @@ export type RedisCheckSettings =
           type: 'cluster';
 
           /**
-           * The client which the health check should get executed.
+           * The client which the health check should get executed. This option is required.
            */
           client: Cluster;
       };

@@ -113,8 +113,8 @@ interface checkHealth {
 
 -   **key**: The key which will be used for the result object.
 -   **type**: Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". This option is required.
--   **client**: The client which the health check should get executed.
--   **timeout**: The amount of time the check should require in ms. Default value is 1000 which is equivalent to 1 second.
+-   **client**: The client which the health check should get executed. This option is required.
+-   **timeout**: The amount of time the check should require in ms. Default is 1000 which is equivalent to 1 second.
 -   **memoryThreshold**: The maximum amount of memory that the Redis server expects to use in bytes.
 
 ### Cluster
@@ -127,4 +127,4 @@ interface checkHealth {
 
 -   **key**: The key which will be used for the result object.
 -   **type**: Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". This option is required.
--   **client**: The client which the health check should get executed.
+-   **client**: The client which the health check should get executed. This option is required.

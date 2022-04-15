@@ -1,6 +1,6 @@
 import * as allExports from '.';
 
-const { CLIENT_NOT_FOUND, OPERATIONS_TIMEOUT, ...messages } = allExports;
+const { CLIENT_NOT_FOUND, OPERATIONS_TIMEOUT, READY_LOG, ERROR_LOG, ...messages } = allExports;
 
 describe('CLIENT_NOT_FOUND', () => {
     test('should return a string', () => {
@@ -15,6 +15,18 @@ describe('CLIENT_NOT_FOUND', () => {
 describe('OPERATIONS_TIMEOUT', () => {
     test('should return a string', () => {
         expect(OPERATIONS_TIMEOUT(100)).toContain('100');
+    });
+});
+
+describe('READY_LOG', () => {
+    test('should return a string', () => {
+        expect(READY_LOG('name')).toBe(`name: ${messages.CONNECTED_SUCCESSFULLY}`);
+    });
+});
+
+describe('ERROR_LOG', () => {
+    test('should return a string', () => {
+        expect(ERROR_LOG({ namespace: 'name', error: new Error('custom') })).toBe(`name: custom`);
     });
 });
 
