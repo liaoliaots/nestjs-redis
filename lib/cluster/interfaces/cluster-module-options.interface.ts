@@ -25,19 +25,22 @@ export interface ClusterClientOptions extends ClusterOptions {
 
 export interface ClusterModuleOptions {
     /**
-     * If `true`, all clients will be closed automatically on nestjs application shutdown.
-     * Default value is true.
+     * If set to `true`, all clients will be closed automatically on nestjs application shutdown. (Default: `true`)
      */
     closeClient?: boolean;
 
     /**
-     * If `true`, will show a message when the client is ready.
-     * Default value is false.
+     * If set to `true` then ready logging will be shown when the client is ready. (Default: `false`)
      */
     readyLog?: boolean;
 
     /**
-     * Specify single or multiple clients.
+     * If set to `true` then error logging will be shown with a built-in logger while connecting. (Default: `true`)
+     */
+    errorLog?: boolean;
+
+    /**
+     * Used to specify single or multiple clients.
      */
     config: ClusterClientOptions | ClusterClientOptions[];
 }

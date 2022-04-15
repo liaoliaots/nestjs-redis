@@ -1,6 +1,6 @@
 {
     "name": "@liaoliaots/nestjs-redis",
-    "version": "8.0.0",
+    "version": "8.1.0",
     "description": "Redis(ioredis) module for NestJS framework",
     "author": "LiaoLiao",
     "main": "dist/index.js",
@@ -66,7 +66,7 @@
         "ioredis": "5.0.4",
         "istanbul-badges-readme": "1.8.1",
         "jest": "27.5.1",
-        "lint-staged": "12.3.7",
+        "lint-staged": "12.3.8",
         "prettier": "2.6.2",
         "rimraf": "3.0.2",
         "ts-jest": "27.1.4",
@@ -112,10 +112,7 @@
             "@/(.*)": [
                 "<rootDir>/$1"
             ]
-        },
-        "coverageReporters": [
-            "json-summary"
-        ]
+        }
     },
     "commitlint": {
         "extends": [

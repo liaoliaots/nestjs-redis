@@ -1,9 +1,9 @@
 import { Cluster } from 'ioredis';
 import { ClusterClientOptions, ClusterClients } from '../interfaces';
-import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
-import { CONNECTED_SUCCESSFULLY } from '@/messages';
+import { READY_LOG, ERROR_LOG } from '@/messages';
 import { logger } from '../cluster-logger';
+import { parseNamespace } from '@/utils';
 
 export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
     const { nodes, onClientCreated, ...clusterOptions } = clientOptions;
@@ -17,7 +17,7 @@ export const createClient = (clientOptions: ClusterClientOptions): Cluster => {
 export const displayReadyLog = (clients: ClusterClients): void => {
     clients.forEach((client, namespace) => {
         client.on('ready', () => {
-            logger.log(`${parseNamespace(namespace)}: ${CONNECTED_SUCCESSFULLY}`);
+            logger.log(READY_LOG(parseNamespace(namespace)));
         });
     });
 };
@@ -25,14 +25,12 @@ export const displayReadyLog = (clients: ClusterClients): void => {
 export const displayErrorLog = (clients: ClusterClients): void => {
     clients.forEach((client, namespace) => {
         client.on('error', (error: Error) => {
-            logger.error(`${parseNamespace(namespace)}: ${error.message}`, error.stack);
+            logger.error(ERROR_LOG({ namespace: parseNamespace(namespace), error }), error.stack);
         });
     });
 };
 
-export const quitClients = (
-    clients: ClusterClients
-): Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>][]> => {
+export const quitClients = (clients: ClusterClients) => {
     const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
     clients.forEach((client, namespace) => {
         if (client.status === 'ready') {

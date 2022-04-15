@@ -10,8 +10,8 @@ import {
     createAsyncOptions
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_INTERNAL_OPTIONS } from './redis.constants';
-import { namespaces, displayReadyLog } from './common';
+import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_INTERNAL_OPTIONS } from './redis.constants';
+import { namespaces, displayReadyLog, displayErrorLog } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
@@ -22,6 +22,13 @@ jest.mock('./common', () => ({
     displayReadyLog: jest.fn(),
     displayErrorLog: jest.fn()
 }));
+const mockDisplayReadyLog = displayReadyLog as jest.MockedFunction<typeof displayReadyLog>;
+const mockDisplayErrorLog = displayErrorLog as jest.MockedFunction<typeof displayErrorLog>;
+
+beforeEach(() => {
+    mockDisplayReadyLog.mockReset();
+    mockDisplayErrorLog.mockReset();
+});
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions(): RedisModuleOptions {
@@ -114,162 +121,31 @@ describe('createAsyncOptionsProvider', () => {
 });
 
 describe('redisClientsProvider', () => {
-    describe('with multiple clients', () => {
-        let clients: RedisClients;
-        let manager: RedisManager;
-
-        beforeEach(async () => {
-            const options: RedisModuleOptions = {
-                config: [
-                    {
-                        host: '127.0.0.1',
-                        port: 6380
-                    },
-                    {
-                        namespace: 'client1',
-                        host: '127.0.0.1',
-                        port: 6381
-                    }
-                ]
-            };
-
-            const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
-            }).compile();
-
-            clients = module.get<RedisClients>(REDIS_CLIENTS);
-            manager = module.get<RedisManager>(RedisManager);
-        });
-
-        test('should have 2 members', () => {
-            expect(clients.size).toBe(2);
-        });
-
-        test('should work correctly', () => {
-            let client: Redis;
-            client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
-            expect(client).toBeDefined();
-            client = manager.getClient('client1');
-            expect(client).toBeDefined();
-        });
+    test('should be a dynamic module', () => {
+        expect(redisClientsProvider).toHaveProperty('provide', REDIS_CLIENTS);
+        expect(redisClientsProvider).toHaveProperty('useFactory');
+        expect(redisClientsProvider).toHaveProperty('inject', [REDIS_OPTIONS]);
     });
 
-    describe('with a single client and no namespace', () => {
-        let clients: RedisClients;
-        let manager: RedisManager;
+    test('with multiple clients', () => {
+        const options: RedisModuleOptions = { readyLog: true, errorLog: true, config: [{}, { namespace: 'client1' }] };
+        const clients = redisClientsProvider.useFactory(options);
+        expect(clients.size).toBe(2);
+        expect(mockDisplayErrorLog).toHaveBeenCalledTimes(1);
+        expect(mockDisplayReadyLog).toHaveBeenCalledTimes(1);
+    });
 
-        beforeEach(async () => {
-            const options: RedisModuleOptions = {
-                config: {
-                    host: '127.0.0.1',
-                    port: 6380
-                }
-            };
-
-            const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
-            }).compile();
-
-            clients = module.get<RedisClients>(REDIS_CLIENTS);
-            manager = module.get<RedisManager>(RedisManager);
-        });
-
-        test('should have 1 member', () => {
+    describe('with single client', () => {
+        test('with namespace', () => {
+            const options: RedisModuleOptions = { config: { namespace: 'client1' } };
+            const clients = redisClientsProvider.useFactory(options);
             expect(clients.size).toBe(1);
         });
 
-        test('should work correctly', () => {
-            const client = manager.getClient(DEFAULT_REDIS_NAMESPACE);
-            expect(client).toBeDefined();
-        });
-    });
-
-    describe('with a single client and namespace', () => {
-        let clients: RedisClients;
-        let manager: RedisManager;
-
-        beforeEach(async () => {
-            const options: RedisModuleOptions = {
-                config: {
-                    namespace: 'client1',
-                    host: '127.0.0.1',
-                    port: 6380
-                }
-            };
-
-            const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: options }, redisClientsProvider, RedisManager]
-            }).compile();
-
-            clients = module.get<RedisClients>(REDIS_CLIENTS);
-            manager = module.get<RedisManager>(RedisManager);
-        });
-
-        test('should have 1 member', () => {
+        test('without namespace', () => {
+            const options: RedisModuleOptions = { config: {} };
+            const clients = redisClientsProvider.useFactory(options);
             expect(clients.size).toBe(1);
-        });
-
-        test('should work correctly', () => {
-            const client = manager.getClient('client1');
-            expect(client).toBeDefined();
-        });
-    });
-
-    describe('without options', () => {
-        let clients: RedisClients;
-
-        beforeEach(async () => {
-            const module: TestingModule = await Test.createTestingModule({
-                providers: [{ provide: REDIS_OPTIONS, useValue: {} }, redisClientsProvider, RedisManager]
-            }).compile();
-
-            clients = module.get<RedisClients>(REDIS_CLIENTS);
-        });
-
-        test('should have 1 member', () => {
-            expect(clients.size).toBe(0);
-        });
-    });
-
-    describe('displayReadyLog', () => {
-        beforeEach(() => {
-            (displayReadyLog as jest.MockedFunction<typeof displayReadyLog>).mockReset();
-        });
-
-        test('multiple clients', () => {
-            const options: RedisModuleOptions = {
-                readyLog: true,
-                config: [
-                    {
-                        host: '127.0.0.1',
-                        port: 6380
-                    },
-                    {
-                        namespace: 'client1',
-                        host: '127.0.0.1',
-                        port: 6381
-                    }
-                ]
-            };
-            redisClientsProvider.useFactory(options);
-            expect(displayReadyLog).toHaveBeenCalledTimes(1);
-        });
-
-        test('single client', () => {
-            const options: RedisModuleOptions = {
-                readyLog: true,
-                config: {
-                    host: '127.0.0.1',
-                    port: 6380
-                }
-            };
-            redisClientsProvider.useFactory(options);
-            expect(displayReadyLog).toHaveBeenCalledTimes(1);
-        });
-
-        test('without options', () => {
-            redisClientsProvider.useFactory({ readyLog: true });
-            expect(displayReadyLog).toHaveBeenCalledTimes(1);
         });
     });
 });
@@ -292,6 +168,10 @@ describe('createRedisClientProviders', () => {
 
         client1 = module.get<Redis>('client1');
         client2 = module.get<Redis>('client2');
+    });
+
+    afterEach(() => {
+        namespaces.clear();
     });
 
     test('should work correctly', () => {

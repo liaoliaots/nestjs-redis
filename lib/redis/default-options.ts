@@ -2,7 +2,8 @@ import { RedisModuleOptions } from './interfaces';
 
 export const defaultRedisModuleOptions: RedisModuleOptions = {
     closeClient: true,
+    commonOptions: undefined,
     readyLog: false,
-    config: undefined,
-    commonOptions: undefined
+    errorLog: true,
+    config: undefined
 };

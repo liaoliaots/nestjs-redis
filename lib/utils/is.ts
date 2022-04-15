@@ -29,7 +29,7 @@ export const isError = (value: unknown): value is Error => {
 /**
  * Returns `true` if the value is of type `PromiseFulfilledResult`.
  *
- * @param value - The promise result
+ * @param value - PromiseSettledResult
  */
 export const isResolution = <T>(value: PromiseSettledResult<T>): value is PromiseFulfilledResult<T> => {
     return value.status === 'fulfilled';
@@ -38,7 +38,7 @@ export const isResolution = <T>(value: PromiseSettledResult<T>): value is Promis
 /**
  * Returns `true` if the value is of type `PromiseRejectedResult`.
  *
- * @param value - The promise result
+ * @param value - PromiseSettledResult
  */
 export const isRejection = (value: PromiseSettledResult<unknown>): value is PromiseRejectedResult => {
     return value.status === 'rejected';
@@ -55,6 +55,8 @@ export const isDirectInstanceOf = <T>(value: unknown, class_: Constructor<T>): v
 };
 
 /**
- * Checks if the value is not defined (=== null, === undefined).
+ * Returns `true` if the value is not defined (=== null, === undefined).
+ *
+ * @param value - Any value
  */
 export const isNullish = (value: unknown): value is undefined | null => value === undefined || value === null;

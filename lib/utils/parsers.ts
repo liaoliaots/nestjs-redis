@@ -21,7 +21,9 @@ export const removeLineBreaks = (text: string): string => {
 };
 
 /**
- * Parses used_memory to number.
+ * Parses used_memory to an integer.
+ *
+ * @param info - Memory consumption related information
  */
 export const parseUsedMemory = (info: string): number => {
     const start = info.indexOf('used_memory');

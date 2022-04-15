@@ -66,21 +66,17 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   v6, [click here](docs/v6)
 -   v7, [click here](docs/v7)
 
-## Prerequisites
-
--   [node](https://nodejs.org/en/) >=12.22.0
--   [ioredis](https://github.com/luin/ioredis) 5.x
-
 ## Install
 
-**This package supports both nestjs 7.x and 8.x**.
+This lib requires **Node.js >=12.22.0**, **[IORedis](https://github.com/luin/ioredis) ^5.0.0**, **NestJS 7.x and 8.x**.
+
+-   If you depend on **[IORedis 4](https://github.com/luin/ioredis/tree/v4)**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 
 ```sh
-$ npm install --save @liaoliaots/nestjs-redis ioredis
-```
-
-```sh
-$ yarn add @liaoliaots/nestjs-redis ioredis
+# with npm
+npm install --save @liaoliaots/nestjs-redis ioredis
+# with yarn
+yarn add @liaoliaots/nestjs-redis ioredis
 ```
 
 ## Test a class
@@ -97,8 +93,7 @@ A working example is available [here](sample/01-testing-inject).
 
 ## Future
 
-1.  -   [ ] COMMAND: SELECT
-2.  -   [ ] Microservice strategy
+1.  -   [ ] Microservice strategy
 
 ## Package dependency overview
 

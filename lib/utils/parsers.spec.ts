@@ -22,7 +22,7 @@ describe('removeLineBreaks', () => {
 
 describe('parseUsedMemory', () => {
     test('should work correctly', () => {
-        const info = '# Memory used_memory:894952 used_memory_human:873.98K';
-        expect(parseUsedMemory(info)).toBe(894952);
+        const info = '# Memory used_memory:102400 used_memory_human:100K';
+        expect(parseUsedMemory(info)).toBe(102400);
     });
 });
