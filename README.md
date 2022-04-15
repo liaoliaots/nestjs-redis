@@ -68,9 +68,9 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 ## Install
 
-This lib requires **Node.js >=12.22.0**, **[IORedis](https://github.com/luin/ioredis) ^5.0.0**, **NestJS 7.x and 8.x**.
+This lib requires **Node.js >=12.22.0**, **[ioredis](https://github.com/luin/ioredis) ^5.0.0**, **NestJS 7.x** or **8.x**.
 
--   If you depend on **[IORedis 4](https://github.com/luin/ioredis/tree/v4)**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+-   If you depend on **[ioredis 4](https://github.com/luin/ioredis/tree/v4)**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 
 ```sh
 # with npm
