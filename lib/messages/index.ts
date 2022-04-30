@@ -7,7 +7,6 @@ export const READY_LOG = (namespace: string) => `${namespace}: ${CONNECTED_SUCCE
 export const ERROR_LOG = ({ namespace, error }: { namespace: string; error: Error }) =>
     `${namespace}: ${error.message}`;
 
-export const MISSING_CLIENT = 'Argument `client` is missing.';
 export const MISSING_TYPE = 'Argument `type` is missing.';
 export const NOT_RESPONSIVE = `The client is not responsive.`;
 export const ABNORMALLY_MEMORY_USAGE = `The client is using abnormally high memory.`;

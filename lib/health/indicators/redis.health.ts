@@ -3,7 +3,6 @@ import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestj
 import {
     FAILED_CLUSTER_STATE,
     CANNOT_BE_READ,
-    MISSING_CLIENT,
     NOT_RESPONSIVE,
     ABNORMALLY_MEMORY_USAGE,
     MISSING_TYPE
@@ -25,7 +24,6 @@ export class RedisHealthIndicator extends HealthIndicator {
 
         try {
             if (!type) throw new Error(MISSING_TYPE);
-            if (!client) throw new Error(MISSING_CLIENT);
 
             if (type === 'redis') {
                 const pong = await promiseTimeout(options.timeout ?? 1000, client.ping());
@@ -39,9 +37,11 @@ export class RedisHealthIndicator extends HealthIndicator {
                 }
             } else {
                 const clusterInfo = await client.cluster('INFO');
-                if (clusterInfo && typeof clusterInfo === 'string') {
+                if (typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new Error(FAILED_CLUSTER_STATE);
-                } else throw new Error(CANNOT_BE_READ);
+                } else {
+                    throw new Error(CANNOT_BE_READ);
+                }
             }
 
             isHealthy = true;
