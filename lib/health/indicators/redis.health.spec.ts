@@ -4,7 +4,6 @@ import { RedisHealthIndicator } from './redis.health';
 import {
     FAILED_CLUSTER_STATE,
     CANNOT_BE_READ,
-    MISSING_CLIENT,
     NOT_RESPONSIVE,
     ABNORMALLY_MEMORY_USAGE,
     MISSING_TYPE,
@@ -39,11 +38,6 @@ describe('RedisHealthIndicator', () => {
 
         const module: TestingModule = await Test.createTestingModule({ providers: [RedisHealthIndicator] }).compile();
         indicator = module.get<RedisHealthIndicator>(RedisHealthIndicator);
-    });
-
-    test('should throw an error if the argument `client` is not defined', async () => {
-        const client = undefined as unknown as Redis;
-        await expect(indicator.checkHealth('', { type: 'redis', client })).rejects.toThrow(MISSING_CLIENT);
     });
 
     test('should throw an error if the argument `type` is not defined', async () => {
