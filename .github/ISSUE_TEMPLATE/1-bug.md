@@ -1,3 +1,9 @@
+---
+name: '🐞 Bug Report'
+about: Report a bug
+labels: 'type: bug'
+---
+
 Your issue may already be reported!
 Please search on the [issue tracker](../) before creating one.
 
