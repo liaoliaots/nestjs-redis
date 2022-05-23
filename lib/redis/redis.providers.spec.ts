@@ -17,6 +17,7 @@ import { defaultRedisModuleOptions } from './default-options';
 
 jest.mock('ioredis', () => jest.fn(() => ({})));
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('./common', () => ({
     ...jest.requireActual('./common'),
     displayReadyLog: jest.fn(),
