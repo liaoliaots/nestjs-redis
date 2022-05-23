@@ -19,16 +19,25 @@ export interface RedisClientOptions extends RedisOptions {
     url?: string;
 
     /**
+     * Path to be used for Unix domain socket.
+     */
+    path?: string;
+
+    /**
      * Function to be executed as soon as the client is created.
      *
      * @param client - The new client
+     *
+     * @deprecated Pointless function, just for compatibility.
      */
     onClientCreated?: (client: Redis) => void;
 }
 
 export interface RedisModuleOptions {
     /**
-     * If set to `true`, all clients will be closed automatically on nestjs application shutdown. (Default: `true`)
+     * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
+     *
+     * @defaultValue `true`
      */
     closeClient?: boolean;
 
@@ -38,12 +47,16 @@ export interface RedisModuleOptions {
     commonOptions?: RedisOptions;
 
     /**
-     * If set to `true` then ready logging will be shown when the client is ready. (Default: `false`)
+     * If set to `true` then ready logging will be shown when the client is ready.
+     *
+     * @defaultValue `false`
      */
     readyLog?: boolean;
 
     /**
-     * If set to `true` then error logging will be shown with a built-in logger while connecting. (Default: `true`)
+     * If set to `true` then error logging will be shown with a built-in logger while connecting.
+     *
+     * @defaultValue `true`
      */
     errorLog?: boolean;
 
