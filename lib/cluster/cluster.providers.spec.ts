@@ -19,6 +19,7 @@ jest.mock('ioredis', () => ({
     Cluster: jest.fn(() => ({}))
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('./common', () => ({
     ...jest.requireActual('./common'),
     displayReadyLog: jest.fn(),
