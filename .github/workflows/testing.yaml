@@ -4,34 +4,38 @@ on:
         branches:
             - main
 jobs:
-    test:
+    unit_e2e:
         name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 os:
                     - ubuntu-20.04
+                    - macos-11
+                    - windows-2022
                 node_version:
-                    - '12'
-                    - '14'
-                    - '16'
+                    - 12
+                    - 14
+                    - 16
                 architecture:
                     - x64
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node_version }}
                   architecture: ${{ matrix.architecture }}
                   check-latest: true
+                  cache: npm
             - run: npm install -g npm@latest
             - run: npm ci
             - run: docker-compose up -d
-            - name: Initialize cluster 1
-              run: docker-compose exec -T cluster-1-master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
-            - name: Initialize cluster 2
-              run: docker-compose exec -T cluster-2-master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
-            - run: npm run lint
+            - name: initialize cluster 1
+              run: docker-compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
+            - name: initialize cluster 2
+              run: docker-compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+            - run: npm run lint:es
+            - run: npm run lint:tsc
             - run: npm run test
             - run: npm run test:e2e
             - run: docker-compose down -v
