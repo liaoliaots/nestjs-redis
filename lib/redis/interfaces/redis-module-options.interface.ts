@@ -1,34 +1,41 @@
 import { Type, ModuleMetadata, Provider } from '@nestjs/common';
-import type Redis from 'ioredis';
-import { RedisOptions } from 'ioredis';
+import { Redis, RedisOptions } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
 export interface RedisClientOptions extends RedisOptions {
     /**
      * Client name. If client name is not given then it will be called "default".
      * Different clients must have different names.
+     *
+     * @defaultValue `"default"`
      */
     namespace?: ClientNamespace;
 
     /**
-     * URL used to specify connection options.
+     * URI scheme to be used to specify connection options as a redis:// URL or rediss:// URL.
      *
-     * - redis:// https://www.iana.org/assignments/uri-schemes/prov/redis
-     * - rediss:// https://www.iana.org/assignments/uri-schemes/prov/rediss
+     * - redis - https://www.iana.org/assignments/uri-schemes/prov/redis
+     * - rediss - https://www.iana.org/assignments/uri-schemes/prov/rediss
+     *
+     * @example
+     * ```ts
+     * // Connect to 127.0.0.1:6380, db 4, using password "authpassword":
+     * { config: { url: 'redis://:authpassword@127.0.0.1:6380/4' } }
+     * ```
      */
     url?: string;
 
     /**
-     * Path to be used for Unix domain socket.
+     * Path to be used for Unix domain sockets.
      */
     path?: string;
 
     /**
      * Function to be executed as soon as the client is created.
      *
-     * @param client - The new client
+     * @param client - The new client created
      *
-     * @deprecated Pointless function, just for compatibility.
+     * @deprecated Meaningless function, just for compatibility.
      */
     onClientCreated?: (client: Redis) => void;
 }
@@ -47,14 +54,14 @@ export interface RedisModuleOptions {
     commonOptions?: RedisOptions;
 
     /**
-     * If set to `true` then ready logging will be shown when the client is ready.
+     * If set to `true`, then ready logging will be displayed when the client is ready.
      *
      * @defaultValue `false`
      */
     readyLog?: boolean;
 
     /**
-     * If set to `true` then error logging will be shown with a built-in logger while connecting.
+     * If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.
      *
      * @defaultValue `true`
      */
