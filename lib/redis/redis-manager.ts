@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import type Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { RedisClients } from './interfaces';
 import { CLIENT_NOT_FOUND } from '@/messages';
@@ -7,12 +7,19 @@ import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { ClientNotFoundError } from '@/errors';
 
+/**
+ * Manager for redis clients.
+ *
+ * @public
+ */
 @Injectable()
 export class RedisManager {
     constructor(@Inject(REDIS_CLIENTS) private readonly redisClients: RedisClients) {}
 
     /**
-     * Returns all redis clients.
+     * Retrieves all redis clients.
+     *
+     * @public
      */
     get clients(): ReadonlyMap<ClientNamespace, Redis> {
         return this.redisClients;
@@ -20,6 +27,8 @@ export class RedisManager {
 
     /**
      * Retrieves a redis client by namespace.
+     *
+     * @public
      */
     getClient(namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): Redis {
         const client = this.redisClients.get(namespace);
