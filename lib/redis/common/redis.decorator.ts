@@ -9,6 +9,8 @@ export const namespaces = new Map<ClientNamespace, ClientNamespace>();
  * This decorator is used to mark a specific constructor parameter as a redis client.
  *
  * @param namespace - Client name
+ *
+ * @public
  */
 export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): ParameterDecorator => {
     const token = getRedisToken(namespace);
@@ -20,6 +22,8 @@ export const InjectRedis = (namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE
  * This function generates an injection token for a redis client.
  *
  * @param namespace - Client name
+ *
+ * @public
  */
 export const getRedisToken = (namespace: ClientNamespace): ClientNamespace => {
     if (isSymbol(namespace)) return namespace;
