@@ -6,9 +6,14 @@ import { logger } from '../redis-logger';
 import { parseNamespace } from '@/utils';
 
 export const createClient = (clientOptions: RedisClientOptions): Redis => {
-    const { url, onClientCreated, ...redisOptions } = clientOptions;
+    // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-vars
+    const { namespace, url, path, onClientCreated, ...redisOptions } = clientOptions;
 
-    const client = url ? new Redis(url, redisOptions) : new Redis(redisOptions);
+    let client: Redis;
+    if (url) client = new Redis(url, redisOptions);
+    else if (path) client = new Redis(path, redisOptions);
+    else client = new Redis(redisOptions);
+
     if (onClientCreated) onClientCreated(client);
 
     return client;

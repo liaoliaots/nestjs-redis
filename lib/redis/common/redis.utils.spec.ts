@@ -52,6 +52,17 @@ describe('createClient', () => {
         });
     });
 
+    describe('with path', () => {
+        test('should create a client with path', () => {
+            const path = '/run/redis.sock';
+            const client = createClient({ path, lazyConnect: true });
+            expect(client).toBeDefined();
+            expect(MockRedis).toHaveBeenCalledTimes(1);
+            expect(MockRedis).toHaveBeenCalledWith(path, { lazyConnect: true });
+            expect(MockRedis.mock.instances).toHaveLength(1);
+        });
+    });
+
     describe('with options', () => {
         test('should create a client with options', () => {
             const options: RedisClientOptions = { host: '127.0.0.1', port: 6380 };

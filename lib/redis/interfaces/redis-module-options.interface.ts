@@ -74,10 +74,10 @@ export interface RedisModuleOptions {
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-    useExisting?: Type<RedisOptionsFactory>;
-    useClass?: Type<RedisOptionsFactory>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useFactory?: (...args: any[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
+    useClass?: Type<RedisOptionsFactory>;
+    useExisting?: Type<RedisOptionsFactory>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inject?: any[];
     extraProviders?: Provider[];
