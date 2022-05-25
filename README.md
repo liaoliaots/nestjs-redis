@@ -55,6 +55,8 @@
 
 ## About The Project
 
+### Features
+
 -   **Both redis & cluster are supported**: You can also specify multiple clients.
 -   **Health**: Checks health of redis & cluster server.
 -   **Rigorously tested**: With 120+ tests and 100% code coverage.

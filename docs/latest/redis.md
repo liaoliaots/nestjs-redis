@@ -457,3 +457,5 @@ import { CatsController } from './cats.controller';
 })
 export class CatsModule {}
 ```
+
+### Unix domain socket
