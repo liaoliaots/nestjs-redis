@@ -37,7 +37,7 @@ describe('RedisHealthIndicator', () => {
         cluster = new Cluster([]);
 
         const module: TestingModule = await Test.createTestingModule({ providers: [RedisHealthIndicator] }).compile();
-        indicator = module.get<RedisHealthIndicator>(RedisHealthIndicator);
+        indicator = await module.resolve<RedisHealthIndicator>(RedisHealthIndicator);
     });
 
     test('should throw an error if the argument `type` is not defined', async () => {
@@ -96,14 +96,6 @@ describe('RedisHealthIndicator', () => {
             await expect(
                 indicator.checkHealth('redis', { type: 'redis', client: redis, memoryThreshold: 1000 * 100 })
             ).rejects.toThrow(ABNORMALLY_MEMORY_USAGE);
-        });
-
-        test('the status should be down if the error is not an instance of Error', async () => {
-            jest.spyOn(redis, 'ping').mockRejectedValue(undefined);
-
-            await expect(indicator.checkHealth('redis', { type: 'redis', client: redis })).resolves.toEqual({
-                redis: { status: 'down' }
-            });
         });
     });
 

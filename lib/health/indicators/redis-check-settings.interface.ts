@@ -1,5 +1,10 @@
 import type { Redis, Cluster } from 'ioredis';
 
+/**
+ * The settings for redis/cluster check.
+ *
+ * @public
+ */
 export type RedisCheckSettings =
     | {
           /**
@@ -13,13 +18,14 @@ export type RedisCheckSettings =
           client: Redis;
 
           /**
-           * The amount of time the check should require in ms.
-           * Default is 1000 which is equivalent to 1 second.
+           * The amount of time the check should require in `ms`.
+           *
+           * @defaultValue `1000`
            */
           timeout?: number;
 
           /**
-           * The maximum amount of memory that the Redis server expects to use in bytes.
+           * The maximum amount of memory used by redis in `bytes`.
            */
           memoryThreshold?: number;
       }
