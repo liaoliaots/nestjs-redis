@@ -14,6 +14,18 @@ export interface ClusterClientOptions extends ClusterOptions {
 
     /**
      * List of cluster nodes.
+     *
+     * @example
+     * ```ts
+     * // Connect with url
+     * ['redis://:authpassword@127.0.0.1:16380']
+     * ```
+     *
+     * @example
+     * ```ts
+     * // Connect with host, port
+     * [{ host: '127.0.0.1', port: 16380 }]
+     * ```
      */
     nodes: ClusterNode[];
 
