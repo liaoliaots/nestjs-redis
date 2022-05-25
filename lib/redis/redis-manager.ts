@@ -18,8 +18,6 @@ export class RedisManager {
 
     /**
      * Retrieves all redis clients.
-     *
-     * @public
      */
     get clients(): ReadonlyMap<ClientNamespace, Redis> {
         return this.redisClients;
@@ -27,8 +25,6 @@ export class RedisManager {
 
     /**
      * Retrieves a redis client by namespace.
-     *
-     * @public
      */
     getClient(namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): Redis {
         const client = this.redisClients.get(namespace);

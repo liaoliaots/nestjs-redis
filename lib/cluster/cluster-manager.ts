@@ -18,8 +18,6 @@ export class ClusterManager {
 
     /**
      * Retrieves all cluster clients.
-     *
-     * @public
      */
     get clients(): ReadonlyMap<ClientNamespace, Cluster> {
         return this.clusterClients;
@@ -27,8 +25,6 @@ export class ClusterManager {
 
     /**
      * Retrieves a cluster client by namespace.
-     *
-     * @public
      */
     getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);

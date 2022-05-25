@@ -3,6 +3,9 @@ import type { Cluster } from 'ioredis';
 import { ClusterNode, ClusterOptions } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
+/**
+ * @public
+ */
 export interface ClusterClientOptions extends ClusterOptions {
     /**
      * Client name. If client name is not given then it will be called "default".
@@ -39,6 +42,9 @@ export interface ClusterClientOptions extends ClusterOptions {
     onClientCreated?: (client: Cluster) => void;
 }
 
+/**
+ * @public
+ */
 export interface ClusterModuleOptions {
     /**
      * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
@@ -67,6 +73,9 @@ export interface ClusterModuleOptions {
     config: ClusterClientOptions | ClusterClientOptions[];
 }
 
+/**
+ * @public
+ */
 export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useFactory?: (...args: any[]) => ClusterModuleOptions | Promise<ClusterModuleOptions>;
@@ -77,6 +86,9 @@ export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports
     extraProviders?: Provider[];
 }
 
+/**
+ * @public
+ */
 export interface ClusterOptionsFactory {
     createClusterOptions: () => ClusterModuleOptions | Promise<ClusterModuleOptions>;
 }

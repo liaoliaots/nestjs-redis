@@ -14,6 +14,9 @@ import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './cluster-logger';
 import { MissingConfigurationError } from '@/errors';
 
+/**
+ * @public
+ */
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
     constructor(
