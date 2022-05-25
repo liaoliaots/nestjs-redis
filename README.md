@@ -28,6 +28,20 @@
   </p>
 </div>
 
+## About The Project
+
+-   **Both redis & cluster are supported**: You can also specify multiple clients.
+-   **Health**: Checks health of redis & cluster server.
+-   **Rigorously tested**: With 130+ tests and 100% code coverage.
+-   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
+-   **Services**: Retrieves redis/cluster client via `RedisService` and `ClusterService`.
+
+### Test coverage
+
+| Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
+
 ## Roadmap
 
 -   [ ] Compatible with **NestJS** **^9**
