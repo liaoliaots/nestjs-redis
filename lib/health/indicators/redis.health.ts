@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
 import {
     FAILED_CLUSTER_STATE,
@@ -7,13 +7,16 @@ import {
     ABNORMALLY_MEMORY_USAGE,
     MISSING_TYPE
 } from '@/messages';
-import { isError, promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@/utils';
+import { promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@/utils';
 import { RedisCheckSettings } from './redis-check-settings.interface';
 
-@Injectable()
+/**
+ * @public
+ */
+@Injectable({ scope: Scope.TRANSIENT })
 export class RedisHealthIndicator extends HealthIndicator {
     /**
-     * Checks a redis/cluster client.
+     * Checks a redis/cluster connection.
      *
      * @param key - The key which will be used for the result object
      * @param options - The extra options for check
@@ -35,20 +38,17 @@ export class RedisHealthIndicator extends HealthIndicator {
                         throw new Error(ABNORMALLY_MEMORY_USAGE);
                     }
                 }
-            } else {
+            } else if (type === 'cluster') {
                 const clusterInfo = await client.cluster('INFO');
                 if (typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new Error(FAILED_CLUSTER_STATE);
-                } else {
-                    throw new Error(CANNOT_BE_READ);
-                }
+                } else throw new Error(CANNOT_BE_READ);
             }
 
             isHealthy = true;
-        } catch (error) {
-            if (isError(error)) {
-                throw new HealthCheckError(error.message, this.getStatus(key, isHealthy, { message: error.message }));
-            }
+        } catch (e) {
+            const error = e as Error;
+            throw new HealthCheckError(error.message, this.getStatus(key, isHealthy, { message: error.message }));
         }
 
         return this.getStatus(key, isHealthy);
