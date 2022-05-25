@@ -7,6 +7,8 @@ export interface ClusterClientOptions extends ClusterOptions {
     /**
      * Client name. If client name is not given then it will be called "default".
      * Different clients must have different names.
+     *
+     * @defaultValue `"default"`
      */
     namespace?: ClientNamespace;
 
@@ -18,24 +20,32 @@ export interface ClusterClientOptions extends ClusterOptions {
     /**
      * Function to be executed as soon as the client is created.
      *
-     * @param client - The new client
+     * @param client - The new client created
+     *
+     * @deprecated Meaningless function, just for compatibility.
      */
     onClientCreated?: (client: Cluster) => void;
 }
 
 export interface ClusterModuleOptions {
     /**
-     * If set to `true`, all clients will be closed automatically on nestjs application shutdown. (Default: `true`)
+     * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
+     *
+     * @defaultValue `true`
      */
     closeClient?: boolean;
 
     /**
-     * If set to `true` then ready logging will be shown when the client is ready. (Default: `false`)
+     * If set to `true`, then ready logging will be displayed when the client is ready.
+     *
+     * @defaultValue `false`
      */
     readyLog?: boolean;
 
     /**
-     * If set to `true` then error logging will be shown with a built-in logger while connecting. (Default: `true`)
+     * If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.
+     *
+     * @defaultValue `true`
      */
     errorLog?: boolean;
 
@@ -46,10 +56,10 @@ export interface ClusterModuleOptions {
 }
 
 export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-    useExisting?: Type<ClusterOptionsFactory>;
-    useClass?: Type<ClusterOptionsFactory>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useFactory?: (...args: any[]) => ClusterModuleOptions | Promise<ClusterModuleOptions>;
+    useClass?: Type<ClusterOptionsFactory>;
+    useExisting?: Type<ClusterOptionsFactory>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inject?: any[];
     extraProviders?: Provider[];

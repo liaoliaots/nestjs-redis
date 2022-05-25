@@ -7,12 +7,19 @@ import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { ClientNotFoundError } from '@/errors';
 
+/**
+ * Manager for cluster clients.
+ *
+ * @public
+ */
 @Injectable()
 export class ClusterManager {
     constructor(@Inject(CLUSTER_CLIENTS) private readonly clusterClients: ClusterClients) {}
 
     /**
-     * Returns all cluster clients.
+     * Retrieves all cluster clients.
+     *
+     * @public
      */
     get clients(): ReadonlyMap<ClientNamespace, Cluster> {
         return this.clusterClients;
@@ -20,6 +27,8 @@ export class ClusterManager {
 
     /**
      * Retrieves a cluster client by namespace.
+     *
+     * @public
      */
     getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);
