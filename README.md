@@ -32,9 +32,9 @@
 
 -   **Both redis & cluster are supported**: You can also specify multiple clients.
 -   **Health**: Checks health of redis & cluster server.
--   **Rigorously tested**: With 130+ tests and 100% code coverage.
--   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
--   **Services**: Retrieves redis/cluster client via `RedisService` and `ClusterService`.
+-   **Rigorously tested**: With 120+ tests and 100% code coverage.
+-   **Decorators**: Injects redis/cluster client via `@InjectRedis()`, `@InjectCluster()`.
+-   **Services**: Retrieves redis/cluster client via `RedisService`, `ClusterService`.
 
 ### Test coverage
 
