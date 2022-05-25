@@ -30,7 +30,7 @@
 
 ## Roadmap
 
--   [] Compatible with **NestJS** 9
+-   [ ] Compatible with **NestJS** **^9**
 
 ## Contributing
 
