@@ -2,6 +2,9 @@ import { Type, ModuleMetadata, Provider } from '@nestjs/common';
 import { Redis, RedisOptions } from 'ioredis';
 import { ClientNamespace } from '@/interfaces';
 
+/**
+ * @public
+ */
 export interface RedisClientOptions extends RedisOptions {
     /**
      * Client name. If client name is not given then it will be called "default".
@@ -40,6 +43,9 @@ export interface RedisClientOptions extends RedisOptions {
     onClientCreated?: (client: Redis) => void;
 }
 
+/**
+ * @public
+ */
 export interface RedisModuleOptions {
     /**
      * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
@@ -73,6 +79,9 @@ export interface RedisModuleOptions {
     config?: RedisClientOptions | RedisClientOptions[];
 }
 
+/**
+ * @public
+ */
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useFactory?: (...args: any[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
@@ -83,6 +92,9 @@ export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'>
     extraProviders?: Provider[];
 }
 
+/**
+ * @public
+ */
 export interface RedisOptionsFactory {
     createRedisOptions: () => RedisModuleOptions | Promise<RedisModuleOptions>;
 }

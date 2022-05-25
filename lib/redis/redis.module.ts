@@ -14,6 +14,9 @@ import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './redis-logger';
 import { MissingConfigurationError } from '@/errors';
 
+/**
+ * @public
+ */
 @Module({})
 export class RedisModule implements OnApplicationShutdown {
     constructor(
