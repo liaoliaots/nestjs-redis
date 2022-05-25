@@ -20,7 +20,7 @@
     <a href="https://github.com/liaoliaots/nestjs-redis"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/liaoliaots/nestjs-redis/tree/main/sample">View Demo</a>
+    <a href="sample">View Demo</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
     ·
