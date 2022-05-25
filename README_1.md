@@ -25,7 +25,7 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 
 <p align="center">
 <a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml">
-<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml/badge.svg" />
+<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yaml/badge.svg" />
 </a>
 </p>
 
