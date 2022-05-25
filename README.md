@@ -1,51 +1,93 @@
-<p align="center">
-<a href="https://nestjs.com/">
-<img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" />
-</a>
-</p>
+[![NPM][npm-shield]][npm-url]
+[![Downloads][downloads-shield]][downloads-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+![Vulnerabilities][vulnerabilities-shield]
+[![License][license-shield]][license-url]
 
 <p align="center">
-Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS framework.
+  <a href="https://nestjs.com/">
+    <img src="https://nestjs.com/img/logo-small.svg" alt="Nest Logo" width="120">
+  </a>
 </p>
 
-<p align="center">
-<a href="https://www.npmjs.com/package/@liaoliaots/nestjs-redis">
-<img src="https://img.shields.io/npm/v/@liaoliaots/nestjs-redis?style=for-the-badge" alt="NPM Version" />
-</a>
-<a href="https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE">
-<img src="https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge" alt="Package License" />
-</a>
-<a href="#">
-<img src="https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge" alt="NPM Downloads" />
-</a>
-<a href="#">
-<img src="https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge" alt="Package Vulnerabilities" />
-</a>
-</p>
+<div align="center">
+  <h3 align="center">@liaoliaots/nestjs-redis</h3>
 
-<p align="center">
-<a href="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml">
-<img src="https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yml/badge.svg" />
-</a>
-</p>
+  <p align="center">
+    Redis(ioredis) module for NestJS framework.
+    <br />
+    <a href="https://github.com/liaoliaots/nestjs-redis"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="sample">View Demo</a>
+    ·
+    <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/liaoliaots/nestjs-redis/issues">Request Feature</a>
+  </p>
+</div>
 
-## Features 🚀
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+## About The Project
+
+### Features
 
 -   **Both redis & cluster are supported**: You can also specify multiple clients.
 -   **Health**: Checks health of redis & cluster server.
--   **Rigorously tested**: With 130+ tests and 100% code coverage.
--   **Decorators**: Injects redis/cluster client via `@InjectRedis()` and `@InjectCluster()`.
--   **Services**: Retrieves redis/cluster client via `RedisService` and `ClusterService`.
+-   **Rigorously tested**: With 120+ tests and 100% code coverage.
+-   **Decorators**: Injects redis/cluster client via `@InjectRedis()`, `@InjectCluster()`.
+-   **Services**: Retrieves redis/cluster client via `RedisService`, `ClusterService`.
 
-## Test coverage 🧐
+### Test coverage
 
 | Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
 | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
 
-## Documentation
+## Getting Started
 
--   [Install](#install)
+### Prerequisites
+
+This lib requires **Node.js >=12.22.0**, **ioredis ^5.0.0**, **NestJS 7.x** or **8.x**.
+
+-   If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+
+### Installation
+
+```sh
+# with npm
+npm install --save @liaoliaots/nestjs-redis ioredis
+# with yarn
+yarn add @liaoliaots/nestjs-redis ioredis
+```
+
+## Usage
+
 -   [Redis](docs/latest/redis.md)
     -   [Non-global](docs/latest/redis.md#non-global)
 -   [Cluster](docs/latest/cluster.md)
@@ -56,63 +98,42 @@ Redis(<a href="https://github.com/luin/ioredis">ioredis</a>) module for NestJS f
 -   [Examples](docs/latest/examples.md)
     -   [Redis Sentinel](docs/latest/examples.md#sentinel)
     -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
--   [Test a class](#test-a-class)
--   [Future](#future)
--   [Package dependency overview](#package-dependency-overview)
 
-### Deprecated
+## Roadmap
 
--   v5, [click here](docs/v5)
--   v6, [click here](docs/v6)
--   v7, [click here](docs/v7)
+-   [ ] Compatible with **NestJS** **^9**
 
-## Install
+## Contributing
 
-This lib requires **Node.js >=12.22.0**, **[ioredis](https://github.com/luin/ioredis) ^5.0.0**, **NestJS 7.x** or **8.x**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
--   If you depend on **[ioredis 4](https://github.com/luin/ioredis/tree/v4)**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-```sh
-# with npm
-npm install --save @liaoliaots/nestjs-redis ioredis
-# with yarn
-yarn add @liaoliaots/nestjs-redis ioredis
-```
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Test a class
+## License
 
-This package exports `getRedisToken()` and `getClusterToken()` functions that return an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis/cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-```TypeScript
-const module: TestingModule = await Test.createTestingModule({
-    providers: [{ provide: getRedisToken('namespace'), useValue: mockedClient }, YourService]
-}).compile();
-```
+## Acknowledgments
 
-A working example is available [here](sample/01-testing-inject).
+-   [Client ioredis](https://github.com/luin/ioredis)
+-   [Redis documentation](https://redis.io/)
+-   [Redis docker image](https://hub.docker.com/_/redis)
 
-## Future
-
-1.  -   [ ] Microservice strategy
-
-## Package dependency overview
-
-![](docs/latest/dependency-graph.svg)
-
-## Author
-
-👤 **LiaoLiao**
-
--   Github: [@liaoliaots](https://github.com/liaoliaots)
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/liaoliaots/nestjs-redis/issues).
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-## 📝 License
-
-This project is [MIT](https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE) licensed.
+[npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
+[npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
+[downloads-shield]: https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge
+[downloads-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
+[stars-shield]: https://img.shields.io/github/stars/liaoliaots/nestjs-redis?style=for-the-badge
+[stars-url]: https://github.com/liaoliaots/nestjs-redis/stargazers
+[issues-shield]: https://img.shields.io/github/issues/liaoliaots/nestjs-redis?style=for-the-badge
+[issues-url]: https://github.com/liaoliaots/nestjs-redis/issues
+[license-shield]: https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge
+[license-url]: https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE
+[vulnerabilities-shield]: https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge
