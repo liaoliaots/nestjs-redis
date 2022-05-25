@@ -20,7 +20,7 @@ export interface RedisClientOptions extends RedisOptions {
      * @example
      * ```ts
      * // Connect to 127.0.0.1:6380, db 4, using password "authpassword":
-     * { config: { url: 'redis://:authpassword@127.0.0.1:6380/4' } }
+     * 'redis://:authpassword@127.0.0.1:6380/4'
      * ```
      */
     url?: string;
