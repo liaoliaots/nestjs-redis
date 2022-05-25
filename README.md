@@ -28,6 +28,12 @@
   </p>
 </div>
 
+## Acknowledgments
+
+-   [ioredis documentation](https://github.com/luin/ioredis)
+-   [redis documentation](https://redis.io/)
+-   [redis docker image](https://hub.docker.com/_/redis)
+
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
 [downloads-shield]: https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge
