@@ -28,6 +28,31 @@
   </p>
 </div>
 
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
 ## About The Project
 
 -   **Both redis & cluster are supported**: You can also specify multiple clients.
@@ -41,6 +66,36 @@
 | Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
 | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
+
+## Getting Started
+
+### Prerequisites
+
+This lib requires **Node.js >=12.22.0**, **ioredis ^5.0.0**, **NestJS 7.x** or **8.x**.
+
+-   If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+
+### Installation
+
+```sh
+# with npm
+npm install --save @liaoliaots/nestjs-redis ioredis
+# with yarn
+yarn add @liaoliaots/nestjs-redis ioredis
+```
+
+## Usage
+
+-   [Redis](docs/latest/redis.md)
+    -   [Non-global](docs/latest/redis.md#non-global)
+-   [Cluster](docs/latest/cluster.md)
+    -   [Non-global](docs/latest/cluster.md#non-global)
+-   [Health Checks](docs/latest/health-checks.md)
+    -   [Usage](docs/latest/health-checks.md#usage)
+    -   [Options](docs/latest/health-checks.md#options)
+-   [Examples](docs/latest/examples.md)
+    -   [Redis Sentinel](docs/latest/examples.md#sentinel)
+    -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
 
 ## Roadmap
 
