@@ -12,12 +12,12 @@
 </p>
 
 <div align="center">
-  <h3 align="center">@liaoliaots/nestjs-redis</h3>
+  <h1 align="center">Nest Redis Module</h1>
 
   <p align="center">
-    Redis(ioredis) module for NestJS framework.
+    Redis(ioredis) module for Nest framework (node.js).
     <br />
-    <a href="https://github.com/liaoliaots/nestjs-redis"><strong>Explore the docs »</strong></a>
+    <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="sample">View Demo</a>
@@ -34,7 +34,8 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#test-coverage">Test coverage</a></li>
       </ul>
     </li>
     <li>
@@ -48,8 +49,8 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="docs/latest/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -57,11 +58,12 @@
 
 ### Features
 
--   **Both redis & cluster are supported**: You can also specify multiple clients.
--   **Health**: Checks health of redis & cluster server.
+-   **Both redis & cluster are supported**: You can also specify multiple instances.
+-   **Health**: Checks health of **redis & cluster** server.
 -   **Rigorously tested**: With 120+ tests and 100% code coverage.
--   **Decorators**: Injects redis/cluster client via `@InjectRedis()`, `@InjectCluster()`.
--   **Services**: Retrieves redis/cluster client via `RedisService`, `ClusterService`.
+-   **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
+-   **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
+-   **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
 
 ### Test coverage
 
@@ -73,7 +75,7 @@
 
 ### Prerequisites
 
-This lib requires **Node.js >=12.22.0**, **ioredis ^5.0.0**, **NestJS 7.x** or **8.x**.
+This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**.
 
 -   If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 
@@ -89,19 +91,31 @@ yarn add @liaoliaots/nestjs-redis ioredis
 ## Usage
 
 -   [Redis](docs/latest/redis.md)
-    -   [Non-global](docs/latest/redis.md#non-global)
+    -   [Usage](docs/latest/redis.md)
+    -   [Configuration](docs/latest/redis.md#configuration)
+    -   [Testing](docs/latest/redis.md#testing)
+    -   [Non-Global](docs/latest/redis.md#non-global)
+    -   [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
 -   [Cluster](docs/latest/cluster.md)
-    -   [Non-global](docs/latest/cluster.md#non-global)
+    -   [Usage](docs/latest/cluster.md)
+    -   [Configuration](docs/latest/cluster.md#configuration)
+    -   [Testing](docs/latest/cluster.md#testing)
+    -   [Non-Global](docs/latest/cluster.md#non-global)
 -   [Health Checks](docs/latest/health-checks.md)
-    -   [Usage](docs/latest/health-checks.md#usage)
-    -   [Options](docs/latest/health-checks.md#options)
+    -   [Usage](docs/latest/health-checks.md)
+    -   [Settings](docs/latest/health-checks.md#settings)
 -   [Examples](docs/latest/examples.md)
-    -   [Redis Sentinel](docs/latest/examples.md#sentinel)
-    -   [Multiple Cluster Clients](docs/latest/examples.md#multiple-clients)
+    -   [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+
+### Legacy
+
+-   version 5, [click here](docs/v5)
+-   version 6, [click here](docs/v6)
+-   version 7, [click here](docs/v7)
 
 ## Roadmap
 
--   [ ] Compatible with **NestJS** **^9**
+-   [ ] Compatible with **NestJS ^9**
 
 ## Contributing
 
@@ -122,7 +136,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 
--   [Client ioredis](https://github.com/luin/ioredis)
+-   [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
 -   [Redis documentation](https://redis.io/)
 -   [Redis docker image](https://hub.docker.com/_/redis)
 
