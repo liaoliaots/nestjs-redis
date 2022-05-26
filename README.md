@@ -74,7 +74,7 @@
 
 ### Prerequisites
 
-This lib requires **Node.js >=12.22.0**, **ioredis ^5.0.0**, **NestJS 7.x** or **8.x**.
+This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**.
 
 -   If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 
