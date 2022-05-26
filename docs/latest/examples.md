@@ -10,11 +10,12 @@
 | sentinel1 (`mymaster`) | localhost | 7380 | sentinel    |
 | sentinel2 (`mymaster`) | localhost | 7381 | sentinel    |
 
+> INFO: Read more about ioredis sentinel [here](https://github.com/luin/ioredis#sentinel).
+
 > HINT: When using Sentinel in Master-Slave setup, if you want to set the passwords for Master and Slave nodes, consider having the same password for them ([#7292](https://github.com/redis/redis/issues/7292)).
 
-> INFO: Read more about sentinel [here](https://github.com/luin/ioredis#sentinel).
-
-```TypeScript
+```ts
+// app.module.ts
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 
