@@ -50,6 +50,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="docs/latest/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -99,12 +100,18 @@ yarn add @liaoliaots/nestjs-redis ioredis
     -   [Usage](docs/latest/cluster.md)
     -   [Configuration](docs/latest/cluster.md#configuration)
     -   [Testing](docs/latest/cluster.md#testing)
-    -   [Non-global](docs/latest/cluster.md#non-global)
+    -   [Non-Global](docs/latest/cluster.md#non-global)
 -   [Health Checks](docs/latest/health-checks.md)
     -   [Usage](docs/latest/health-checks.md)
     -   [Settings](docs/latest/health-checks.md#settings)
 -   [Examples](docs/latest/examples.md)
     -   [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+
+### Legacy
+
+-   version 5, [click here](docs/v5)
+-   version 6, [click here](docs/v6)
+-   version 7, [click here](docs/v7)
 
 ## Roadmap
 
