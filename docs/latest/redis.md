@@ -1,5 +1,3 @@
-# Redis
-
 ## Usage
 
 **1**, we need to import the `RedisModule` into our root module:

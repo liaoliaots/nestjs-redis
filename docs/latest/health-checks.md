@@ -1,5 +1,3 @@
-# Health Checks
-
 ## Usage
 
 **1**, install the required package:

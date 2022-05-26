@@ -58,10 +58,11 @@
 ### Features
 
 -   **Both redis & cluster are supported**: You can also specify multiple instances.
--   **Health**: Checks health of redis & cluster server.
+-   **Health**: Checks health of **redis & cluster** server.
 -   **Rigorously tested**: With 120+ tests and 100% code coverage.
--   **Decorators**: Injects redis/cluster clients via `@InjectRedis()`, `@InjectCluster()`.
--   **Services**: Retrieves redis/cluster clients via `RedisService`, `ClusterService`.
+-   **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
+-   **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
+-   **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
 
 ### Test coverage
 

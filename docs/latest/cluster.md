@@ -1,5 +1,3 @@
-# Cluster
-
 ## Usage
 
 **1**, we need to import the `ClusterModule` into our root module:
