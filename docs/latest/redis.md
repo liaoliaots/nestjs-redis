@@ -1,6 +1,6 @@
 ## Usage
 
-**1**, we need to import the `RedisModule` into our root module:
+**First** we need to import the `RedisModule` into our root module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -22,7 +22,7 @@ export class AppModule {}
 
 > HINT: The `RedisModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**2**, we can use redis in two ways.
+**Then** we can use redis in two ways.
 
 via decorator:
 
@@ -70,13 +70,11 @@ export class AppService {
 
 > HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
-### Use with other libraries
-
-For example, use with `@nestjs/throttler` and `nestjs-throttler-storage-redis`:
+### Use with other libs
 
 ```TypeScript
 import { Module } from '@nestjs/common';
-import { RedisModule, RedisService, DEFAULT_REDIS_NAMESPACE } from '@liaoliaots/nestjs-redis';
+import { RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 
@@ -92,7 +90,7 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
         }),
         ThrottlerModule.forRootAsync({
             useFactory(redisService: RedisService) {
-                const redis = redisService.getClient(DEFAULT_REDIS_NAMESPACE);
+                const redis = redisService.getClient();
                 return { ttl: 60, limit: 10, storage: new ThrottlerStorageRedisService(redis) };
             },
             inject: [RedisService]
@@ -106,13 +104,13 @@ export class AppModule {}
 
 ### RedisModuleOptions
 
-| Name          | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                                    |
-| ------------- | ------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient   | boolean                              | true          | If set to `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| commonOptions | object                               | undefined     | Common options to be passed to each client.                                                                                                                                                                                                                                                                    |
-| readyLog      | boolean                              | false         | If set to `true` then ready logging will be shown when the client is ready.                                                                                                                                                                                                                                    |
-| errorLog      | boolean                              | true          | If set to `true` then error logging will be shown with a built-in logger while connecting.                                                                                                                                                                                                                     |
-| config        | `ClientOptions` or `ClientOptions`[] | undefined     | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
+| Name                                                                                                                             | Type                                                                                        | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [closeClient](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L55)   | `boolean`                                                                                   | `true`      | `false`  | If set to `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| [commonOptions](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L60) | [RedisOptions](https://github.com/luin/ioredis/blob/e41c3dc/lib/redis/RedisOptions.ts#L184) | `undefined` | `false`  | Common options to be passed to each client.                                                                                                                                                                                                                                                                    |
+| [readyLog](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L67)      | `boolean`                                                                                   | `false`     | `false`  | If set to `true`, then ready logging will be displayed when the client is ready.                                                                                                                                                                                                                               |
+| [errorLog](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L74)      | `boolean`                                                                                   | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
+| [config](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L79)        | `ClientOptions` \| `ClientOptions`[]                                                        | `undefined` | `false`  | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
 ### ClientOptions
 
