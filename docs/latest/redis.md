@@ -22,6 +22,8 @@ export class AppModule {}
 
 > HINT: The `RedisModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
+> HINT: If you don't set the namespace for a client, its namespace is set to "default". Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
+
 **Then** we can use redis in two ways.
 
 via decorator:
@@ -68,8 +70,6 @@ export class AppService {
 }
 ```
 
-> HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
-
 ### Use with other libs
 
 ```TypeScript
@@ -102,7 +102,7 @@ export class AppModule {}
 
 ## Configuration
 
-### RedisModuleOptions
+### [RedisModuleOptions](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L49)
 
 | Name                                                                                                                             | Type                                                                                        | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
 | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -110,16 +110,17 @@ export class AppModule {}
 | [commonOptions](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L60) | [RedisOptions](https://github.com/luin/ioredis/blob/e41c3dc/lib/redis/RedisOptions.ts#L184) | `undefined` | `false`  | Common options to be passed to each client.                                                                                                                                                                                                                                                                    |
 | [readyLog](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L67)      | `boolean`                                                                                   | `false`     | `false`  | If set to `true`, then ready logging will be displayed when the client is ready.                                                                                                                                                                                                                               |
 | [errorLog](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L74)      | `boolean`                                                                                   | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
-| [config](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L79)        | `ClientOptions` \| `ClientOptions`[]                                                        | `undefined` | `false`  | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
+| [config](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L79)        | `RedisClientOptions` \| `RedisClientOptions`[]                                              | `undefined` | `false`  | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
-### ClientOptions
+### [RedisClientOptions](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L8)
 
-| Name                                                                                                 | Type             | Default value | Description                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------- | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| namespace                                                                                            | string or symbol | 'default'     | Client name. If client name is not given then it will be called "default". Different clients must have different names. You can import `DEFAULT_REDIS_NAMESPACE` to reference the default value. |
-| url                                                                                                  | string           | undefined     | URL([redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss)) used to specify connection options.            |
-| onClientCreated                                                                                      | function         | undefined     | Function to be executed as soon as the client is created.                                                                                                                                        |
-| **...**[RedisOptions](https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options) | object           | -             | Extends the [RedisOptions](https://github.com/luin/ioredis/blob/master/lib/redis/RedisOptions.ts#L8).                                                                                            |
+| Name                                                                                                                               | Type                 | Default     | Required | Description                                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [namespace](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L15)       | `string` \| `symbol` | `'default'` | `false`  | Client name. If client name is not given then it will be called `"default"`. Different clients must have different names. You can import `DEFAULT_REDIS_NAMESPACE` to use it.                                  |
+| [url](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L29)             | `string`             | `undefined` | `false`  | URI scheme to be used to specify connection options as a [redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) URL or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss) URL. |
+| [path](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L34)            | `string`             | `undefined` | `false`  | Path to be used for Unix domain sockets.                                                                                                                                                                       |
+| [onClientCreated](https://github.com/liaoliaots/nestjs-redis/blob/docs/lib/redis/interfaces/redis-module-options.interface.ts#L43) | `function`           | `undefined` | `false`  | Function to be executed as soon as the client is created.                                                                                                                                                      |
+| **...**[RedisOptions](https://github.com/luin/ioredis/blob/e41c3dc/lib/redis/RedisOptions.ts#L184)                                 | `RedisOptions`       | -           | `false`  | Extends from [RedisOptions](https://luin.github.io/ioredis/index.html#RedisOptions).                                                                                                                           |
 
 ### Asynchronous configuration
 
