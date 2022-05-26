@@ -101,7 +101,7 @@ If your redis and cluster servers are reachable, you should now see the followin
 }
 ```
 
-## Options
+## Settings
 
 ### Redis
 

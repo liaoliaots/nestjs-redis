@@ -12,7 +12,7 @@
 </p>
 
 <div align="center">
-  <h3 align="center">@liaoliaots/nestjs-redis</h3>
+  <h1 align="center">Nest Redis Module</h1>
 
   <p align="center">
     Redis(ioredis) module for Nest framework (node.js).
@@ -95,13 +95,13 @@ yarn add @liaoliaots/nestjs-redis ioredis
     -   [Non-Global](docs/latest/redis.md#non-global)
     -   [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
 -   [Cluster](docs/latest/cluster.md)
-    -   [Usage](docs/latest/redis.md)
+    -   [Usage](docs/latest/cluster.md)
     -   [Configuration](docs/latest/cluster.md#configuration)
     -   [Testing](docs/latest/cluster.md#testing)
     -   [Non-global](docs/latest/cluster.md#non-global)
 -   [Health Checks](docs/latest/health-checks.md)
-    -   [Usage](docs/latest/health-checks.md#usage)
-    -   [Options](docs/latest/health-checks.md#options)
+    -   [Usage](docs/latest/health-checks.md)
+    -   [Settings](docs/latest/health-checks.md#settings)
 -   [Examples](docs/latest/examples.md)
     -   [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
 
