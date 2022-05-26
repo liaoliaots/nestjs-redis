@@ -6,7 +6,7 @@
 $ npm install --save @nestjs/terminus
 ```
 
-**2**, import `TerminusModule` and `RedisHealthModule` into the business module:
+**2**, import `TerminusModule` and `RedisHealthModule` into the imports array:
 
 ```ts
 // app.module.ts
@@ -38,7 +38,7 @@ export class AppModule {}
 
 > HINT: Neither `TerminusModule` nor `RedisHealthModule` is global module.
 
-**3**, let's create health checks:
+**3**, let's setup `AppController`:
 
 ```ts
 // app.controller.ts
