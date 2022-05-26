@@ -11,8 +11,8 @@ $ npm install --save @nestjs/terminus
 ```ts
 // app.module.ts
 import { Module } from '@nestjs/common';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { TerminusModule } from '@nestjs/terminus';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisHealthModule } from '@liaoliaots/nestjs-redis/health';
 import { AppController } from './app.controller';
 
@@ -66,7 +66,7 @@ export class AppController {
 }
 ```
 
-If your redis server is reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
+**4**, If your redis server is reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
 
 ```json
 {
