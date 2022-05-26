@@ -8,7 +8,7 @@ $ npm install --save @nestjs/terminus
 
 **2**, import `TerminusModule` and `RedisHealthModule` into the business module:
 
-```TypeScript
+```ts
 // app.module.ts
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
@@ -34,11 +34,13 @@ import { AppController } from './app.controller';
 export class AppModule {}
 ```
 
-> HINT: Both `TerminusModule` and `RedisHealthModule` aren't global modules. Read more about `@nestjs/terminus` [here](https://docs.nestjs.com/recipes/terminus).
+> INFO: Read more about `@nestjs/terminus` [here](https://docs.nestjs.com/recipes/terminus).
+
+> HINT: Neither `TerminusModule` nor `RedisHealthModule` is global module.
 
 **3**, let's create health checks:
 
-```TypeScript
+```ts
 // app.controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheck, HealthCheckResult } from '@nestjs/terminus';
@@ -58,7 +60,7 @@ export class AppController {
     @HealthCheck()
     async healthChecks(): Promise<HealthCheckResult> {
         return await this.health.check([
-            () => this.redisIndicator.checkHealth('redis', { type: 'redis', client: this.redis })
+            () => this.redisIndicator.checkHealth('redis', { type: 'redis', client: this.redis, timeout: 500 })
         ]);
     }
 }
@@ -72,17 +74,11 @@ If your redis and cluster servers are reachable, you should now see the followin
     "info": {
         "redis": {
             "status": "up"
-        },
-        "cluster": {
-            "status": "up"
         }
     },
     "error": {},
     "details": {
         "redis": {
-            "status": "up"
-        },
-        "cluster": {
             "status": "up"
         }
     }
@@ -93,26 +89,16 @@ If your redis and cluster servers are reachable, you should now see the followin
 
 ### Redis
 
-```TypeScript
-interface checkHealth {
-    (key: string, options: { type: 'redis'; client: Redis; timeout?: number; memoryThreshold?: number }): Promise<HealthIndicatorResult>;
-}
-```
-
--   **key**: The key which will be used for the result object.
--   **type**: Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". This option is required.
--   **client**: The client which the health check should get executed. This option is required.
--   **timeout**: The amount of time the check should require in ms. Default is 1000 which is equivalent to 1 second.
--   **memoryThreshold**: The maximum amount of memory that the Redis server expects to use in bytes.
+| Name            | Type      | Default     | Required | Description                                                                                           |
+| --------------- | --------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| type            | `'redis'` | `undefined` | `true`   | Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". |
+| client          | `Redis`   | `undefined` | `true`   | The client which the health check should get executed.                                                |
+| timeout         | `number`  | `1000`      | `false`  | The amount of time the check should require in `ms`.                                                  |
+| memoryThreshold | `number`  | `undefined` | `false`  | The maximum amount of memory used by redis in `bytes`.                                                |
 
 ### Cluster
 
-```TypeScript
-interface checkHealth {
-    (key: string, options: { type: 'cluster'; client: Cluster }): Promise<HealthIndicatorResult>;
-}
-```
-
--   **key**: The key which will be used for the result object.
--   **type**: Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". This option is required.
--   **client**: The client which the health check should get executed. This option is required.
+| Name   | Type        | Default     | Required | Description                                                                                           |
+| ------ | ----------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| type   | `'cluster'` | `undefined` | `true`   | Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". |
+| client | `Cluster`   | `undefined` | `true`   | The client which the health check should get executed.                                                |
