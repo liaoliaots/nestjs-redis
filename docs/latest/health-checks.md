@@ -66,7 +66,7 @@ export class AppController {
 }
 ```
 
-**4**, If your redis server is reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
+**4**, if your redis server is reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
 
 ```json
 {
