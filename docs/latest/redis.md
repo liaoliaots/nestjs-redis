@@ -504,12 +504,12 @@ And there we go.
 
 ### Testing
 
-This package exports `getRedisToken()` function that returns an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+This package exposes `getRedisToken()` function that returns an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
-```TypeScript
+```ts
 const module: TestingModule = await Test.createTestingModule({
     providers: [{ provide: getRedisToken('namespace'), useValue: mockedClient }, YourService]
 }).compile();
 ```
 
-A working example is available [here](sample/01-testing-inject).
+A working example is available [here](../../sample/01-testing-inject/).
