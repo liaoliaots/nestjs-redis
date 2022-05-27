@@ -481,7 +481,7 @@ unixsocketperm 777
 
 **3**, save and exit, then restart your redis server.
 
-**4**, let's setup out application:
+**4**, let's setup our application:
 
 ```ts
 import { Module } from '@nestjs/common';
