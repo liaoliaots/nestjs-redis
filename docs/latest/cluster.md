@@ -1,6 +1,6 @@
 ## Usage
 
-**1**, we need to import the `ClusterModule` into our root module:
+**First** we need to import the `ClusterModule` into our root module:
 
 ```TypeScript
 import { Module } from '@nestjs/common';
@@ -21,7 +21,9 @@ export class AppModule {}
 
 > HINT: The `ClusterModule` is a [global module](https://docs.nestjs.com/modules#global-modules). Once defined, this module is available everywhere.
 
-**2**, we can use cluster in two ways.
+> HINT: If you don't set the namespace for a client, its namespace is set to `"default"`. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
+
+**Then** we can use cluster in two ways.
 
 via decorator:
 
@@ -67,27 +69,25 @@ export class AppService {
 }
 ```
 
-> HINT: If you don't set the namespace for a client, its namespace is set to default. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
-
 ## Configuration
 
-### ClusterModuleOptions
+### [ClusterModuleOptions](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L45)
 
-| Name        | Type                                 | Default value | Description                                                                                                                                                                                                                                                                                                    |
-| ----------- | ------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| closeClient | boolean                              | true          | If set to `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
-| readyLog    | boolean                              | false         | If set to `true` then ready logging will be shown when the client is ready.                                                                                                                                                                                                                                    |
-| errorLog    | boolean                              | true          | If set to `true` then error logging will be shown with a built-in logger while connecting.                                                                                                                                                                                                                     |
-| config      | `ClientOptions` or `ClientOptions`[] | undefined     | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
+| Name                                                                                                                               | Type                                               | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [closeClient](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L49) | `boolean`                                          | `true`      | `false`  | If set to `true`, all clients will be closed automatically on nestjs application shutdown. To use `closeClient`, you **must enable listeners** by calling `app.enableShutdownHooks()`. [Read more about the application shutdown.](https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown) |
+| [readyLog](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L56)    | `boolean`                                          | `false`     | `false`  | If set to `true`, then ready logging will be displayed when the client is ready.                                                                                                                                                                                                                               |
+| [errorLog](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L63)    | `boolean`                                          | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
+| [config](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L70)      | `ClusterClientOptions` \| `ClusterClientOptions`[] | `undefined` | `true`   | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
-### ClientOptions
+### [ClusterClientOptions](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L6)
 
-| Name                                                                                                    | Type                                                             | Default value | Description                                                                                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| namespace                                                                                               | string or symbol                                                 | 'default'     | Client name. If client name is not given then it will be called "default". Different clients must have different names. You can import `DEFAULT_CLUSTER_NAMESPACE` to reference the default value. |
-| [nodes](https://github.com/luin/ioredis/blob/master/API.md#new-clusterstartupnodes-options)             | `{ host?: string; port?: number }[]` or `string[]` or `number[]` | undefined     | List of cluster nodes. The **first** argument of `new Cluster(startupNodes, options).`                                                                                                             |
-| onClientCreated                                                                                         | function                                                         | undefined     | Function to be executed as soon as the client is created.                                                                                                                                          |
-| **...**[ClusterOptions](https://github.com/luin/ioredis/blob/v4/API.md#new-clusterstartupnodes-options) | object                                                           | -             | Extends the [ClusterOptions](https://github.com/luin/ioredis/blob/v4/lib/cluster/ClusterOptions.ts#L30).                                                                                           |
+| Name                                                                                                                                   | Type                                                             | Default     | Required | Description                                                                                                                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [namespace](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L10)       | `string` \| `symbol`                                             | `'default'` | `false`  | Client name. If client name is not given then it will be called "default". Different clients must have different names. You can import `DEFAULT_CLUSTER_NAMESPACE` to use it. |
+| [nodes](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L18)           | `{ host?: string; port?: number }[]` \| `string[]` \| `number[]` | `undefined` | `true`   | List of cluster nodes.                                                                                                                                                        |
+| [onClientCreated](https://github.com/liaoliaots/nestjs-redis/blob/main/lib/cluster/interfaces/cluster-module-options.interface.ts#L35) | `function`                                                       | `undefined` | `false`  | Function to be executed as soon as the client is created.                                                                                                                     |
+| **...**[ClusterOptions](https://github.com/luin/ioredis/blob/e41c3dc880/lib/cluster/ClusterOptions.ts#L29)                             | `ClusterOptions`                                                 | -           | `false`  | Extends from [ClusterOptions](https://luin.github.io/ioredis/interfaces/ClusterOptions.html).                                                                                 |
 
 ### Asynchronous configuration
 
@@ -314,9 +314,9 @@ import { ClusterModule } from '@liaoliaots/nestjs-redis';
 export class AppModule {}
 ```
 
-### Non-global
+### Non-Global
 
-By default, the `ClusterModule` is registered in the global scope, so `ClusterService` and `all cluster clients defined` are available everywhere.
+By default, the `ClusterModule` is registered in the global scope, so `ClusterService` and all cluster clients defined are available everywhere.
 
 You can change the behavior by modifying `isGlobal` parameter:
 
@@ -345,3 +345,15 @@ import { CatsController } from './cats.controller';
 })
 export class CatsModule {}
 ```
+
+### Testing
+
+This package exposes `getClusterToken()` function that returns an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the cluster client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+
+```ts
+const module: TestingModule = await Test.createTestingModule({
+    providers: [{ provide: getClusterToken('namespace'), useValue: mockedClient }, YourService]
+}).compile();
+```
+
+A working example is available [here](../../sample/01-testing-inject/).
