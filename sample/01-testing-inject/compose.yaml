@@ -1,7 +1,3 @@
-version: '3.9'
-networks:
-    dev:
-        driver: bridge
 services:
     redis:
         image: bitnami/redis:latest
@@ -12,3 +8,5 @@ services:
             - dev
         ports:
             - '6380:6380'
+networks:
+    dev:
