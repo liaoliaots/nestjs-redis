@@ -12,9 +12,9 @@ jobs:
                 os:
                     - ubuntu-20.04
                 node_version:
-                    - 12
-                    - 14
-                    - 16
+                    - 12.22.12
+                    - 14.19.3
+                    - 16.15.0
                 architecture:
                     - x64
         steps:
@@ -23,9 +23,8 @@ jobs:
               with:
                   node-version: ${{ matrix.node_version }}
                   architecture: ${{ matrix.architecture }}
-                  check-latest: true
                   cache: npm
-            - run: npm install -g npm@latest
+            - run: npm install -g npm@8.10.0 --verbose
             - run: npm ci
             - run: docker-compose up -d
             - name: initialize cluster 1
