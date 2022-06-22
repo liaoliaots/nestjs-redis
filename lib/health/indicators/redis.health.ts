@@ -5,7 +5,8 @@ import {
     CANNOT_BE_READ,
     NOT_RESPONSIVE,
     ABNORMALLY_MEMORY_USAGE,
-    MISSING_TYPE
+    MISSING_TYPE,
+    INVALID_TYPE
 } from '@/messages';
 import { promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@/utils';
 import { RedisCheckSettings } from './redis-check-settings.interface';
@@ -43,12 +44,12 @@ export class RedisHealthIndicator extends HealthIndicator {
                 if (typeof clusterInfo === 'string') {
                     if (!clusterInfo.includes('cluster_state:ok')) throw new Error(FAILED_CLUSTER_STATE);
                 } else throw new Error(CANNOT_BE_READ);
-            }
+            } else throw new Error(INVALID_TYPE);
 
             isHealthy = true;
         } catch (e) {
-            const error = e as Error;
-            throw new HealthCheckError(error.message, this.getStatus(key, isHealthy, { message: error.message }));
+            const { message } = e as Error;
+            throw new HealthCheckError(message, this.getStatus(key, isHealthy, { message }));
         }
 
         return this.getStatus(key, isHealthy);

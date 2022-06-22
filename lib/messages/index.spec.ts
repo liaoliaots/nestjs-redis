@@ -1,20 +1,13 @@
 import * as allExports from '.';
 
-const { CLIENT_NOT_FOUND, OPERATIONS_TIMEOUT, READY_LOG, ERROR_LOG, ...messages } = allExports;
-
-describe('CLIENT_NOT_FOUND', () => {
-    test('should return a string', () => {
-        const namespace = 'name';
-        expect(CLIENT_NOT_FOUND(namespace)).toContain(namespace);
-        expect(CLIENT_NOT_FOUND(namespace)).toContain('Redis');
-        expect(CLIENT_NOT_FOUND(namespace, false)).toContain(namespace);
-        expect(CLIENT_NOT_FOUND(namespace, false)).toContain('Cluster');
-    });
-});
+const { OPERATIONS_TIMEOUT, READY_LOG, ERROR_LOG, ...messages } = allExports;
 
 describe('OPERATIONS_TIMEOUT', () => {
     test('should return a string', () => {
-        expect(OPERATIONS_TIMEOUT(100)).toContain('100');
+        expect(OPERATIONS_TIMEOUT(1)).toContain('1');
+        expect(OPERATIONS_TIMEOUT(1)).toMatch(/\bmillisecond\b/);
+        expect(OPERATIONS_TIMEOUT(2)).toContain('2');
+        expect(OPERATIONS_TIMEOUT(2)).toMatch(/\bmilliseconds\b/);
     });
 });
 
@@ -26,7 +19,7 @@ describe('READY_LOG', () => {
 
 describe('ERROR_LOG', () => {
     test('should return a string', () => {
-        expect(ERROR_LOG({ namespace: 'name', error: new Error('custom') })).toBe(`name: custom`);
+        expect(ERROR_LOG('name', new Error('custom'))).toBe(`name: custom`);
     });
 });
 

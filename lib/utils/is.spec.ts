@@ -1,4 +1,4 @@
-import { isString, isSymbol, isError, isResolution, isRejection, isDirectInstanceOf, isNullish } from './is';
+import { isString, isSymbol, isError, isResolution, isRejection, isNullish } from './is';
 
 describe('isString', () => {
     test('should work correctly', () => {
@@ -51,15 +51,6 @@ describe('isRejection', () => {
     test('should work correctly', () => {
         expect(isRejection({ status: 'fulfilled', value: '' })).toBe(false);
         expect(isRejection({ status: 'rejected', reason: '' })).toBe(true);
-    });
-});
-
-describe('isDirectInstanceOf', () => {
-    test('should work correctly', () => {
-        class CustomError extends Error {}
-
-        expect(isDirectInstanceOf(new CustomError(), CustomError)).toBe(true);
-        expect(isDirectInstanceOf(new CustomError(), Error)).toBe(false);
     });
 });
 

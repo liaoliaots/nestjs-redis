@@ -62,6 +62,12 @@ describe('RedisHealthIndicator', () => {
             });
         });
 
+        test('should throw an error if type is invalid', async () => {
+            await expect(
+                indicator.checkHealth('', { type: 'unknown' as unknown as 'redis', client: redis })
+            ).rejects.toThrow();
+        });
+
         test('should throw an error if ping is rejected', async () => {
             const message = 'a redis error';
             jest.spyOn(redis, 'ping').mockRejectedValue(new Error(message));

@@ -1,6 +1,6 @@
 import { RedisModule } from './redis.module';
 import { RedisModuleAsyncOptions } from './interfaces';
-import { quitClients } from './common';
+import { destroy } from './common';
 import { logger } from './redis-logger';
 
 jest.mock('./common');
@@ -10,7 +10,7 @@ jest.mock('./redis-logger', () => ({
     }
 }));
 
-const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
+const mockQuitClients = destroy as jest.MockedFunction<typeof destroy>;
 
 describe('RedisModule', () => {
     describe('forRoot', () => {

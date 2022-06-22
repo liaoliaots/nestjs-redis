@@ -25,11 +25,11 @@ export const displayReadyLog = (clients: ClusterClients): void => {
 };
 
 export const displayErrorLog = (clients: ClusterClients): void => {
-    clients.forEach((client, namespace) => {
-        client.on(ERROR_EVENT, (error: Error) => {
-            logger.error(ERROR_LOG({ namespace: parseNamespace(namespace), error }), error.stack);
-        });
-    });
+    // clients.forEach((client, namespace) => {
+    //     client.on(ERROR_EVENT, (error: Error) => {
+    //         logger.error(ERROR_LOG({ namespace: parseNamespace(namespace), error }), error.stack);
+    //     });
+    // });
 };
 
 export const quitClients = (clients: ClusterClients) => {

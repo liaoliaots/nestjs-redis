@@ -11,25 +11,11 @@ import {
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_INTERNAL_OPTIONS } from './redis.constants';
-import { namespaces, displayReadyLog, displayErrorLog } from './common';
+import { namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
 jest.mock('ioredis', () => jest.fn(() => ({})));
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('./common', () => ({
-    ...jest.requireActual('./common'),
-    displayReadyLog: jest.fn(),
-    displayErrorLog: jest.fn()
-}));
-const mockDisplayReadyLog = displayReadyLog as jest.MockedFunction<typeof displayReadyLog>;
-const mockDisplayErrorLog = displayErrorLog as jest.MockedFunction<typeof displayErrorLog>;
-
-beforeEach(() => {
-    mockDisplayReadyLog.mockReset();
-    mockDisplayErrorLog.mockReset();
-});
 
 class RedisConfigService implements RedisOptionsFactory {
     createRedisOptions(): RedisModuleOptions {
@@ -129,11 +115,9 @@ describe('redisClientsProvider', () => {
     });
 
     test('with multiple clients', () => {
-        const options: RedisModuleOptions = { readyLog: true, errorLog: true, config: [{}, { namespace: 'client1' }] };
+        const options: RedisModuleOptions = { config: [{}, { namespace: 'client1' }] };
         const clients = redisClientsProvider.useFactory(options);
         expect(clients.size).toBe(2);
-        expect(mockDisplayErrorLog).toHaveBeenCalledTimes(1);
-        expect(mockDisplayReadyLog).toHaveBeenCalledTimes(1);
     });
 
     describe('with single client', () => {

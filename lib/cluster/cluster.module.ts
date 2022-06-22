@@ -9,10 +9,9 @@ import {
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { quitClients } from './common';
-import { MISSING_CONFIGURATION } from '@/messages';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './cluster-logger';
-import { MissingConfigurationError } from '@/errors';
+import { MissingConfigurationsError } from '@/errors';
 
 /**
  * @public
@@ -49,7 +48,7 @@ export class ClusterModule implements OnApplicationShutdown {
      */
     static forRootAsync(options: ClusterModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
-            throw new MissingConfigurationError(MISSING_CONFIGURATION);
+            throw new MissingConfigurationsError();
         }
 
         const clusterClientProviders = createClusterClientProviders();
