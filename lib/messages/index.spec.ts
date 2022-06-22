@@ -19,7 +19,7 @@ describe('READY_LOG', () => {
 
 describe('ERROR_LOG', () => {
     test('should return a string', () => {
-        expect(ERROR_LOG('name', new Error('custom'))).toBe(`name: custom`);
+        expect(ERROR_LOG('name', 'message')).toBe(`name: message`);
     });
 });
 

@@ -21,14 +21,15 @@ export const addListeners = ({
     Reflect.set(instance, NAMESPACE_KEY, namespace);
     if (readyLog) {
         instance.on(READY_EVENT, function (this: Redis) {
-            const namespace = Reflect.get(this, NAMESPACE_KEY) as ClientNamespace;
-            logger.log(READY_LOG(parseNamespace(namespace)));
+            logger.log(READY_LOG(parseNamespace(Reflect.get(this, NAMESPACE_KEY) as ClientNamespace)));
         });
     }
     if (errorLog) {
         instance.on(ERROR_EVENT, function (this: Redis, error: Error) {
-            const namespace = Reflect.get(this, NAMESPACE_KEY) as ClientNamespace;
-            logger.error(ERROR_LOG(parseNamespace(namespace), error), error.stack);
+            logger.error(
+                ERROR_LOG(parseNamespace(Reflect.get(this, NAMESPACE_KEY) as ClientNamespace), error.message),
+                error.stack
+            );
         });
     }
 };
@@ -57,6 +58,5 @@ export const destroy = async (clients: RedisClients) => {
         }
         client.disconnect();
     });
-
     return await Promise.all(promises);
 };

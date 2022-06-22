@@ -1,6 +1,6 @@
 export const CONNECTED_SUCCESSFULLY = `Connected successfully and ready to receive commands`;
 export const READY_LOG = (namespace: string) => `${namespace}: ${CONNECTED_SUCCESSFULLY}`;
-export const ERROR_LOG = (namespace: string, error: Error) => `${namespace}: ${error.message}`;
+export const ERROR_LOG = (namespace: string, message: string) => `${namespace}: ${message}`;
 
 export const MISSING_TYPE = `Argument "type" is missing.`;
 export const INVALID_TYPE = `Argument "type" is invalid. Expected one of: "redis", "cluster".`;
