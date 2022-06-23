@@ -143,7 +143,7 @@ describe('addListeners', () => {
         client = new Redis();
     });
 
-    test('should set namespace key correctly', () => {
+    test('should set namespace correctly', () => {
         const namespace = Symbol();
         addListeners({ namespace, instance: client, readyLog: false, errorLog: false });
         expect(Reflect.get(client, NAMESPACE_KEY)).toBe(namespace);

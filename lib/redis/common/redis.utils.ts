@@ -38,12 +38,11 @@ export const createClient = (
     { namespace, url, path, onClientCreated, ...redisOptions }: RedisClientOptions,
     { readyLog, errorLog }: RedisModuleOptions
 ): Redis => {
-    const finalNamespace = namespace ?? DEFAULT_REDIS_NAMESPACE;
     let client: Redis;
     if (url) client = new Redis(url, redisOptions);
     else if (path) client = new Redis(path, redisOptions);
     else client = new Redis(redisOptions);
-    addListeners({ namespace: finalNamespace, instance: client, readyLog, errorLog });
+    addListeners({ namespace: namespace ?? DEFAULT_REDIS_NAMESPACE, instance: client, readyLog, errorLog });
     if (onClientCreated) onClientCreated(client);
     return client;
 };
