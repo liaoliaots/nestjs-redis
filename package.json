@@ -1,6 +1,6 @@
 {
     "name": "@liaoliaots/nestjs-redis",
-    "version": "8.2.2",
+    "version": "8.2.2-next.1",
     "description": "Redis(ioredis) module for Nest framework (node.js).",
     "author": "LiaoLiao",
     "main": "dist/index.js",
@@ -29,9 +29,9 @@
         "lint": "concurrently \"npm:lint:es\" \"npm:lint:tsc\"",
         "lint:es": "eslint \"{lib,test}/**/*.ts\"",
         "lint:tsc": "tsc -p tsconfig.json --noEmit",
-        "test": "jest ./lib/redis",
+        "test": "jest",
         "test:watch": "jest --watch",
-        "test:cov": "jest --coverage ./lib/redis",
+        "test:cov": "jest --coverage",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "test:clear": "jest --clearCache",
         "make-badges": "istanbul-badges-readme --style=\"flat-square\"",
@@ -112,7 +112,10 @@
             "@/(.*)": [
                 "<rootDir>/$1"
             ]
-        }
+        },
+        "coverageReporters": [
+            "json-summary"
+        ]
     },
     "commitlint": {
         "extends": [

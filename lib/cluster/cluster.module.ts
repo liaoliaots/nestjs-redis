@@ -8,10 +8,11 @@ import {
     clusterClientsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
-import { quitClients } from './common';
+import { destroy } from './common';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './cluster-logger';
 import { MissingConfigurationsError } from '@/errors';
+import { ERROR_LOG } from '@/messages';
 
 /**
  * @public
@@ -71,10 +72,10 @@ export class ClusterModule implements OnApplicationShutdown {
 
     async onApplicationShutdown(): Promise<void> {
         if (this.options.closeClient) {
-            const result = await quitClients(this.clients);
+            const result = await destroy(this.clients);
             result.forEach(([namespace, quit]) => {
                 if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
-                    logger.error(`${parseNamespace(namespace.value)}: ${quit.reason.message}`);
+                    logger.error(ERROR_LOG(parseNamespace(namespace.value), quit.reason.message), quit.reason.stack);
                 }
             });
         }

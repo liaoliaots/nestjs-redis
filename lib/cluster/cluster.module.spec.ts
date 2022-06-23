@@ -1,6 +1,6 @@
 import { ClusterModule } from './cluster.module';
 import { ClusterModuleAsyncOptions } from './interfaces';
-import { quitClients } from './common';
+import { destroy } from './common';
 import { logger } from './cluster-logger';
 
 jest.mock('./common');
@@ -10,7 +10,7 @@ jest.mock('./cluster-logger', () => ({
     }
 }));
 
-const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
+const mockQuitClients = destroy as jest.MockedFunction<typeof destroy>;
 
 describe('ClusterModule', () => {
     describe('forRoot', () => {
