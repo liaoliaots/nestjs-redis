@@ -70,7 +70,7 @@ export class RedisModule implements OnApplicationShutdown {
         };
     }
 
-    async onApplicationShutdown(): Promise<void> {
+    async onApplicationShutdown() {
         if (this.options.closeClient) {
             const results = await destroy(this.clients);
             results.forEach(([namespace, quit]) => {
