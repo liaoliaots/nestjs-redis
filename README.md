@@ -12,7 +12,7 @@
 </p>
 
 <div align="center">
-  <h1 align="center">Nest Redis Module</h1>
+  <h1 align="center">NestJS Redis Module</h1>
 
   <p align="center">
     Redis(ioredis) module for Nest framework (node.js).
@@ -60,7 +60,7 @@
 
 -   **Both redis & cluster are supported**: You can also specify multiple instances.
 -   **Health**: Checks health of **redis & cluster** server.
--   **Rigorously tested**: With 120+ tests and 100% code coverage.
+-   **Rigorously tested**: With 130+ tests and 100% code coverage.
 -   **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
 -   **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
 -   **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
