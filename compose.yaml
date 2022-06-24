@@ -4,7 +4,7 @@
 
 services:
     cluster-1_master-1:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16380
             - REDIS_PASSWORD=cluster1
@@ -14,7 +14,7 @@ services:
             - REDISCLI_AUTH=cluster1
         network_mode: host
     cluster-1_master-2:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16381
             - REDIS_PASSWORD=cluster1
@@ -23,7 +23,7 @@ services:
             - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
         network_mode: host
     cluster-1_master-3:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16382
             - REDIS_PASSWORD=cluster1
@@ -33,7 +33,7 @@ services:
         network_mode: host
     #
     cluster-2_master-1:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16480
             - REDIS_PASSWORD=cluster2
@@ -43,7 +43,7 @@ services:
             - REDISCLI_AUTH=cluster2
         network_mode: host
     cluster-2_master-2:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16481
             - REDIS_PASSWORD=cluster2
@@ -52,7 +52,7 @@ services:
             - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
         network_mode: host
     cluster-2_master-3:
-        image: bitnami/redis-cluster:latest
+        image: bitnami/redis-cluster:6.2.7
         environment:
             - REDIS_PORT_NUMBER=16482
             - REDIS_PASSWORD=cluster2
@@ -62,7 +62,7 @@ services:
         network_mode: host
     #
     redis-main:
-        image: bitnami/redis:latest
+        image: bitnami/redis:6.2.7
         environment:
             - REDIS_PORT_NUMBER=6380
             - REDIS_PASSWORD=redismain
@@ -73,7 +73,7 @@ services:
         command: /opt/bitnami/scripts/redis/run.sh --maxmemory 32mb
     #
     redis-master:
-        image: bitnami/redis:latest
+        image: bitnami/redis:6.2.7
         environment:
             - REDIS_PORT_NUMBER=6381
             - REDIS_PASSWORD=redismaster
@@ -84,7 +84,7 @@ services:
         ports:
             - '6381:6381'
     redis-slave-1:
-        image: bitnami/redis:latest
+        image: bitnami/redis:6.2.7
         environment:
             - REDIS_PORT_NUMBER=6480
             - REDIS_PASSWORD=redismaster
@@ -100,7 +100,7 @@ services:
         depends_on:
             - redis-master
     redis-slave-2:
-        image: bitnami/redis:latest
+        image: bitnami/redis:6.2.7
         environment:
             - REDIS_PORT_NUMBER=6481
             - REDIS_PASSWORD=redismaster
@@ -116,7 +116,7 @@ services:
         depends_on:
             - redis-master
     redis-sentinel-1:
-        image: bitnami/redis-sentinel:latest
+        image: bitnami/redis-sentinel:6.2.7
         environment:
             - REDIS_SENTINEL_PORT_NUMBER=7380
             - REDIS_SENTINEL_PASSWORD=sentinel
@@ -133,7 +133,7 @@ services:
             - redis-slave-1
             - redis-slave-2
     redis-sentinel-2:
-        image: bitnami/redis-sentinel:latest
+        image: bitnami/redis-sentinel:6.2.7
         environment:
             - REDIS_SENTINEL_PORT_NUMBER=7381
             - REDIS_SENTINEL_PASSWORD=sentinel

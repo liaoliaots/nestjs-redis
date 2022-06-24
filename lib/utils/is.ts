@@ -18,9 +18,7 @@ export const isSymbol = (value: unknown): value is symbol => typeof value === 's
  * @param value - Any value
  */
 export const isError = (value: unknown): value is Error => {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    const { toString } = Object.prototype;
-    const typeName = toString.call(value).slice(8, -1);
+    const typeName = Object.prototype.toString.call(value).slice(8, -1);
     return typeName === 'Error';
 };
 

@@ -26,11 +26,11 @@ describe('isSymbol', () => {
 describe('isError', () => {
     test('should work correctly', () => {
         class CustomError extends Error {}
-        class UnknownError {}
+        class User {}
 
         expect(isError(new Error())).toBe(true);
         expect(isError(new CustomError())).toBe(true);
-        expect(isError(new UnknownError())).toBe(false);
+        expect(isError(new User())).toBe(false);
         expect(isError('')).toBe(false);
         expect(isError(0)).toBe(false);
         expect(isError(true)).toBe(false);
