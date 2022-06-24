@@ -11,27 +11,13 @@ import {
 } from './cluster.providers';
 import { ClusterOptionsFactory, ClusterModuleAsyncOptions, ClusterClients, ClusterModuleOptions } from './interfaces';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, CLUSTER_INTERNAL_OPTIONS } from './cluster.constants';
-import { namespaces, displayReadyLog, displayErrorLog } from './common';
+import { namespaces } from './common';
 import { ClusterManager } from './cluster-manager';
 import { defaultClusterModuleOptions } from './default-options';
 
 jest.mock('ioredis', () => ({
     Cluster: jest.fn(() => ({}))
 }));
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('./common', () => ({
-    ...jest.requireActual('./common'),
-    displayReadyLog: jest.fn(),
-    displayErrorLog: jest.fn()
-}));
-const mockDisplayReadyLog = displayReadyLog as jest.MockedFunction<typeof displayReadyLog>;
-const mockDisplayErrorLog = displayErrorLog as jest.MockedFunction<typeof displayErrorLog>;
-
-beforeEach(() => {
-    mockDisplayReadyLog.mockReset();
-    mockDisplayErrorLog.mockReset();
-});
 
 const clusterOptions: ClusterModuleOptions = { config: { nodes: [] } };
 class ClusterConfigService implements ClusterOptionsFactory {
@@ -133,14 +119,10 @@ describe('clusterClientsProvider', () => {
 
     test('with multiple clients', () => {
         const options: ClusterModuleOptions = {
-            readyLog: true,
-            errorLog: true,
             config: [{ nodes: [] }, { namespace: 'client1', nodes: [] }]
         };
         const clients = clusterClientsProvider.useFactory(options);
         expect(clients.size).toBe(2);
-        expect(mockDisplayErrorLog).toHaveBeenCalledTimes(1);
-        expect(mockDisplayReadyLog).toHaveBeenCalledTimes(1);
     });
 
     describe('with single client', () => {

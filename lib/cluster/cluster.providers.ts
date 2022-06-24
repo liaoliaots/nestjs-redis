@@ -7,7 +7,7 @@ import {
     DEFAULT_CLUSTER_NAMESPACE,
     CLUSTER_INTERNAL_OPTIONS
 } from './cluster.constants';
-import { createClient, namespaces, displayReadyLog, displayErrorLog } from './common';
+import { createClient, namespaces } from './common';
 import { ClusterManager } from './cluster-manager';
 import { defaultClusterModuleOptions } from './default-options';
 
@@ -85,18 +85,13 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
     provide: CLUSTER_CLIENTS,
     useFactory: (options: ClusterModuleOptions) => {
         const clients: ClusterClients = new Map();
-
-        if (Array.isArray(options.config) /* multiple */) {
+        if (Array.isArray(options.config)) {
             options.config.forEach(item =>
-                clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item))
+                clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item, options))
             );
-        } else if (options.config /* single */) {
-            clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config));
+        } else if (options.config) {
+            clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config, options));
         }
-
-        if (options.readyLog) displayReadyLog(clients);
-        if (options.errorLog) displayErrorLog(clients);
-
         return clients;
     },
     inject: [CLUSTER_OPTIONS]

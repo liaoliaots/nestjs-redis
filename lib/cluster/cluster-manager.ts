@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@nestjs/common';
 import type { Cluster } from 'ioredis';
 import { CLUSTER_CLIENTS, DEFAULT_CLUSTER_NAMESPACE } from './cluster.constants';
 import { ClusterClients } from './interfaces';
-import { CLIENT_NOT_FOUND } from '@/messages';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { ClientNotFoundError } from '@/errors';
@@ -28,7 +27,7 @@ export class ClusterManager {
      */
     getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
         const client = this.clusterClients.get(namespace);
-        if (!client) throw new ClientNotFoundError(CLIENT_NOT_FOUND(parseNamespace(namespace), false));
+        if (!client) throw new ClientNotFoundError(parseNamespace(namespace), 'cluster');
         return client;
     }
 }

@@ -1,6 +1,6 @@
 import { RedisModule } from './redis.module';
 import { RedisModuleAsyncOptions } from './interfaces';
-import { quitClients } from './common';
+import { destroy } from './common';
 import { logger } from './redis-logger';
 
 jest.mock('./common');
@@ -10,7 +10,7 @@ jest.mock('./redis-logger', () => ({
     }
 }));
 
-const mockQuitClients = quitClients as jest.MockedFunction<typeof quitClients>;
+const mockDestroy = destroy as jest.MockedFunction<typeof destroy>;
 
 describe('RedisModule', () => {
     describe('forRoot', () => {
@@ -54,29 +54,29 @@ describe('RedisModule', () => {
 
     describe('onApplicationShutdown', () => {
         beforeEach(() => {
-            mockQuitClients.mockReset();
+            mockDestroy.mockReset();
             jest.spyOn(logger, 'error').mockReset();
         });
 
         test('should call quitClients', async () => {
-            mockQuitClients.mockResolvedValue([]);
+            mockDestroy.mockResolvedValue([]);
 
             const module = new RedisModule({ closeClient: true }, new Map());
             await module.onApplicationShutdown();
-            expect(mockQuitClients).toHaveBeenCalledTimes(1);
+            expect(mockDestroy).toHaveBeenCalledTimes(1);
         });
 
         test('should not call quitClients', async () => {
-            mockQuitClients.mockResolvedValue([]);
+            mockDestroy.mockResolvedValue([]);
 
             const module = new RedisModule({ closeClient: false }, new Map());
             await module.onApplicationShutdown();
-            expect(mockQuitClients).toHaveBeenCalledTimes(0);
+            expect(mockDestroy).toHaveBeenCalledTimes(0);
         });
 
         test('should call logger.error', async () => {
             const mockError = jest.spyOn(logger, 'error');
-            mockQuitClients.mockResolvedValue([
+            mockDestroy.mockResolvedValue([
                 [
                     { status: 'fulfilled', value: '' },
                     { status: 'rejected', reason: new Error('') }
@@ -90,7 +90,7 @@ describe('RedisModule', () => {
 
         test('should not call logger.error', async () => {
             const mockError = jest.spyOn(logger, 'error');
-            mockQuitClients.mockResolvedValue([
+            mockDestroy.mockResolvedValue([
                 [
                     { status: 'fulfilled', value: '' },
                     { status: 'fulfilled', value: 'OK' }

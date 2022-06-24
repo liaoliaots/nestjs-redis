@@ -2,7 +2,7 @@ import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_INTERNAL_OPTIONS } from './redis.constants';
-import { createClient, namespaces, displayReadyLog, displayErrorLog } from './common';
+import { createClient, namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
@@ -80,21 +80,16 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
     provide: REDIS_CLIENTS,
     useFactory: (options: RedisModuleOptions) => {
         const clients: RedisClients = new Map();
-
-        if (Array.isArray(options.config) /* multiple */) {
+        if (Array.isArray(options.config)) {
             options.config.forEach(item =>
                 clients.set(
                     item.namespace ?? DEFAULT_REDIS_NAMESPACE,
-                    createClient({ ...options.commonOptions, ...item })
+                    createClient({ ...options.commonOptions, ...item }, options)
                 )
             );
-        } else if (options.config /* single */) {
-            clients.set(options.config.namespace ?? DEFAULT_REDIS_NAMESPACE, createClient(options.config));
+        } else if (options.config) {
+            clients.set(options.config.namespace ?? DEFAULT_REDIS_NAMESPACE, createClient(options.config, options));
         }
-
-        if (options.readyLog) displayReadyLog(clients);
-        if (options.errorLog) displayErrorLog(clients);
-
         return clients;
     },
     inject: [REDIS_OPTIONS]

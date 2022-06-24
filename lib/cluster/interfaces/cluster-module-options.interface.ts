@@ -36,8 +36,6 @@ export interface ClusterClientOptions extends ClusterOptions {
      * Function to be executed as soon as the client is created.
      *
      * @param client - The new client created
-     *
-     * @deprecated Meaningless function, just for compatibility.
      */
     onClientCreated?: (client: Cluster) => void;
 }

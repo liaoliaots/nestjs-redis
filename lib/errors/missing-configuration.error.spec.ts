@@ -1,10 +1,10 @@
-import { MissingConfigurationError } from './missing-configuration.error';
+import { MissingConfigurationsError } from './missing-configurations.error';
 
-describe('MissingConfigurationError', () => {
+describe('MissingConfigurationsError', () => {
     test('should create an instance', () => {
-        const error = new MissingConfigurationError('custom');
-        expect(error.name).toBe(MissingConfigurationError.name);
-        expect(error.message).toBe('custom');
+        const error = new MissingConfigurationsError();
+        expect(error.name).toBe(MissingConfigurationsError.name);
+        expect(typeof error.message).toBe('string');
         expect(error.stack).toBeDefined();
     });
 });

@@ -37,8 +37,6 @@ export interface RedisClientOptions extends RedisOptions {
      * Function to be executed as soon as the client is created.
      *
      * @param client - The new client created
-     *
-     * @deprecated Meaningless function, just for compatibility.
      */
     onClientCreated?: (client: Redis) => void;
 }

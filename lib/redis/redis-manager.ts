@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE } from './redis.constants';
 import { RedisClients } from './interfaces';
-import { CLIENT_NOT_FOUND } from '@/messages';
 import { parseNamespace } from '@/utils';
 import { ClientNamespace } from '@/interfaces';
 import { ClientNotFoundError } from '@/errors';
@@ -28,7 +27,7 @@ export class RedisManager {
      */
     getClient(namespace: ClientNamespace = DEFAULT_REDIS_NAMESPACE): Redis {
         const client = this.redisClients.get(namespace);
-        if (!client) throw new ClientNotFoundError(CLIENT_NOT_FOUND(parseNamespace(namespace)));
+        if (!client) throw new ClientNotFoundError(parseNamespace(namespace), 'redis');
         return client;
     }
 }

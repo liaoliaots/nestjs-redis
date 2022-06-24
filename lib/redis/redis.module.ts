@@ -8,11 +8,11 @@ import {
     redisClientsProvider
 } from './redis.providers';
 import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
-import { quitClients } from './common';
-import { MISSING_CONFIGURATION } from '@/messages';
+import { destroy } from './common';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './redis-logger';
-import { MissingConfigurationError } from '@/errors';
+import { MissingConfigurationsError } from '@/errors';
+import { ERROR_LOG } from '@/messages';
 
 /**
  * @public
@@ -49,7 +49,7 @@ export class RedisModule implements OnApplicationShutdown {
      */
     static forRootAsync(options: RedisModuleAsyncOptions, isGlobal = true): DynamicModule {
         if (!options.useFactory && !options.useClass && !options.useExisting) {
-            throw new MissingConfigurationError(MISSING_CONFIGURATION);
+            throw new MissingConfigurationsError();
         }
 
         const redisClientProviders = createRedisClientProviders();
@@ -70,12 +70,12 @@ export class RedisModule implements OnApplicationShutdown {
         };
     }
 
-    async onApplicationShutdown(): Promise<void> {
+    async onApplicationShutdown() {
         if (this.options.closeClient) {
-            const result = await quitClients(this.clients);
-            result.forEach(([namespace, quit]) => {
+            const results = await destroy(this.clients);
+            results.forEach(([namespace, quit]) => {
                 if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
-                    logger.error(`${parseNamespace(namespace.value)}: ${quit.reason.message}`);
+                    logger.error(ERROR_LOG(parseNamespace(namespace.value), quit.reason.message), quit.reason.stack);
                 }
             });
         }
