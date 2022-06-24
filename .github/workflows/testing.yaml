@@ -14,7 +14,7 @@ jobs:
                 node_version:
                     - 12.22.12
                     - 14.19.3
-                    - 16.15.0
+                    - 16.15.1
                 architecture:
                     - x64
         steps:
@@ -24,7 +24,7 @@ jobs:
                   node-version: ${{ matrix.node_version }}
                   architecture: ${{ matrix.architecture }}
                   cache: npm
-            - run: npm install -g npm@8.10.0 --verbose
+            - run: npm install -g npm@8.13.1 --verbose
             - run: npm ci
             - run: docker-compose up -d
             - name: initialize cluster 1
