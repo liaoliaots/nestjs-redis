@@ -63,7 +63,7 @@
         "eslint-plugin-tsdoc": "0.2.16",
         "fastify": "3.29.0",
         "husky": "8.0.1",
-        "ioredis": "5.0.6",
+        "ioredis": "5.1.0",
         "istanbul-badges-readme": "1.8.2",
         "jest": "28.1.1",
         "lint-staged": "13.0.2",
