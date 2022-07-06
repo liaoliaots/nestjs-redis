@@ -11,7 +11,7 @@ jobs:
                   architecture: x64
                   cache: npm
                   registry-url: 'https://registry.npmjs.org'
-            - run: npm install -g npm@8.13.1 --verbose
+            - run: npm install -g npm@8.13.2 --verbose
             - run: npm ci
             - run: npm run lint
             - run: npm run build
