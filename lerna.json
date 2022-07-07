@@ -1,0 +1,10 @@
+{
+    "command": {
+        "init": {
+            "exact": true
+        }
+    },
+    "packages": ["packages/*"],
+    "useNx": false,
+    "version": "independent"
+}

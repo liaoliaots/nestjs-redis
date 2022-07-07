@@ -1,22 +1,5 @@
 {
     "version": "0.2",
     "language": "en",
-    "allowCompoundWords": true,
-    "words": [
-        "liaoliao",
-        "liaoliaots",
-        "prebuild",
-        "tsc",
-        "cov",
-        "rediss",
-        "nestjs",
-        "fastify",
-        "commitlint",
-        "tsdoc",
-        "env",
-        "npx",
-        "mymaster",
-        "mutex",
-        "ioredis"
-    ]
+    "words": []
 }
