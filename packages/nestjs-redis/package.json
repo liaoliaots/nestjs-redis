@@ -1,0 +1,93 @@
+{
+    "name": "@liaoliaots/nestjs-redis",
+    "version": "8.2.2",
+    "description": "Redis(ioredis) module for Nest framework (node.js).",
+    "author": "LiaoLiao <yxiaosong002@gmail.com>",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "license": "MIT",
+    "keywords": [
+        "redis",
+        "ioredis",
+        "sentinel",
+        "cluster",
+        "health",
+        "nestjs",
+        "nest",
+        "nodejs",
+        "node",
+        "typescript"
+    ],
+    "scripts": {
+        "prepare": "husky install",
+        "prebuild": "rimraf dist",
+        "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+        "lint": "concurrently \"npm:lint:es\" \"npm:lint:tsc\"",
+        "lint:es": "eslint \"{lib,test}/**/*.ts\"",
+        "lint:tsc": "tsc -p tsconfig.json --noEmit",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:cov": "jest --coverage",
+        "test:e2e": "jest --config ./test/jest-e2e.json",
+        "test:clear": "jest --clearCache",
+        "make-badges": "istanbul-badges-readme --style=\"flat-square\"",
+        "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js health/index.js",
+        "publish:next": "npm publish --tag next",
+        "publish:rc": "npm publish --tag rc"
+    },
+    "dependencies": {
+        "tslib": "2.4.0"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^8.0.0 || ^7.0.0",
+        "@nestjs/core": "^8.0.0 || ^7.0.0",
+        "ioredis": "^5.0.0"
+    },
+    "engines": {
+        "node": ">=12.22.0"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "lib",
+        "testRegex": ".*\\.spec\\.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "collectCoverageFrom": [
+            "**/*.(t|j)s"
+        ],
+        "coverageDirectory": "../coverage",
+        "testEnvironment": "node",
+        "verbose": true,
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/interfaces/"
+        ],
+        "moduleNameMapper": {
+            "@/(.*)": [
+                "<rootDir>/$1"
+            ]
+        },
+        "coverageReporters": [
+            "json-summary"
+        ]
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "homepage": "https://github.com/liaoliaots/nestjs-redis#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/liaoliaots/nestjs-redis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/liaoliaots/nestjs-redis/issues"
+    }
+}
