@@ -8,13 +8,13 @@ import { InjectController } from './controllers/inject.controller';
 import { ManagerController } from './controllers/manager.controller';
 
 @Module({
-    imports: [
-        RedisModule.forRootAsync({
-            useClass: RedisConfigService
-        }),
-        TerminusModule,
-        RedisHealthModule
-    ],
-    controllers: [HealthController, InjectController, ManagerController]
+  imports: [
+    RedisModule.forRootAsync({
+      useClass: RedisConfigService
+    }),
+    TerminusModule,
+    RedisHealthModule
+  ],
+  controllers: [HealthController, InjectController, ManagerController]
 })
 export class AppModule {}

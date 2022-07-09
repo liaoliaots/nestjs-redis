@@ -70,6 +70,12 @@ importers:
     dependencies:
       tslib: 2.4.0
 
+  packages/nestjs-redis-health:
+    specifiers:
+      tslib: 2.4.0
+    dependencies:
+      tslib: 2.4.0
+
 packages:
 
   /@ampproject/remapping/2.2.0:
