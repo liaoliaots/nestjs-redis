@@ -58,12 +58,12 @@
 
 ### Features
 
--   **Both redis & cluster are supported**: You can also specify multiple instances.
--   **Health**: Checks health of **redis & cluster** server.
--   **Rigorously tested**: With 130+ tests and 100% code coverage.
--   **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
--   **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
--   **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
+- **Both redis & cluster are supported**: You can also specify multiple instances.
+- **Health**: Checks health of **redis & cluster** server.
+- **Rigorously tested**: With 130+ tests and 100% code coverage.
+- **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
+- **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
+- **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
 
 ### Test coverage
 
@@ -77,7 +77,7 @@
 
 This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**.
 
--   If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+- If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 
 ### Installation
 
@@ -90,32 +90,32 @@ yarn add @liaoliaots/nestjs-redis ioredis
 
 ## Usage
 
--   [Redis](docs/latest/redis.md)
-    -   [Usage](docs/latest/redis.md)
-    -   [Configuration](docs/latest/redis.md#configuration)
-    -   [Testing](docs/latest/redis.md#testing)
-    -   [Non-Global](docs/latest/redis.md#non-global)
-    -   [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
--   [Cluster](docs/latest/cluster.md)
-    -   [Usage](docs/latest/cluster.md)
-    -   [Configuration](docs/latest/cluster.md#configuration)
-    -   [Testing](docs/latest/cluster.md#testing)
-    -   [Non-Global](docs/latest/cluster.md#non-global)
--   [Health Checks](docs/latest/health-checks.md)
-    -   [Usage](docs/latest/health-checks.md)
-    -   [Settings](docs/latest/health-checks.md#settings)
--   [Examples](docs/latest/examples.md)
-    -   [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+- [Redis](docs/latest/redis.md)
+  - [Usage](docs/latest/redis.md)
+  - [Configuration](docs/latest/redis.md#configuration)
+  - [Testing](docs/latest/redis.md#testing)
+  - [Non-Global](docs/latest/redis.md#non-global)
+  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
+- [Cluster](docs/latest/cluster.md)
+  - [Usage](docs/latest/cluster.md)
+  - [Configuration](docs/latest/cluster.md#configuration)
+  - [Testing](docs/latest/cluster.md#testing)
+  - [Non-Global](docs/latest/cluster.md#non-global)
+- [Health Checks](docs/latest/health-checks.md)
+  - [Usage](docs/latest/health-checks.md)
+  - [Settings](docs/latest/health-checks.md#settings)
+- [Examples](docs/latest/examples.md)
+  - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
 
 ### Legacy
 
--   version 5, [click here](docs/v5)
--   version 6, [click here](docs/v6)
--   version 7, [click here](docs/v7)
+- version 5, [click here](docs/v5)
+- version 6, [click here](docs/v6)
+- version 7, [click here](docs/v7)
 
 ## Roadmap
 
--   [ ] Compatible with **NestJS ^9**
+- [ ] Compatible with **NestJS ^9**
 
 ## Contributing
 
@@ -136,9 +136,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 
--   [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
--   [Redis documentation](https://redis.io/)
--   [Redis docker image](https://hub.docker.com/_/redis)
+- [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
+- [Redis documentation](https://redis.io/)
+- [Redis docker image](https://hub.docker.com/_/redis)
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis

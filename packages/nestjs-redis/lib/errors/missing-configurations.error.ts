@@ -2,10 +2,10 @@
  * Thrown when async configurations are missing.
  */
 export class MissingConfigurationsError extends Error {
-    constructor() {
-        super(`Asynchronous configurations are missing. Expected one of: "useFactory", "useClass", "useExisting".`);
+  constructor() {
+    super(`Asynchronous configurations are missing. Expected one of: "useFactory", "useClass", "useExisting".`);
 
-        this.name = MissingConfigurationsError.name;
-        Error.captureStackTrace(this, this.constructor);
-    }
+    this.name = MissingConfigurationsError.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
 }

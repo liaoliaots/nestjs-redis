@@ -13,9 +13,9 @@ export const namespaces = new Map<ClientNamespace, ClientNamespace>();
  * @public
  */
 export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): ParameterDecorator => {
-    const token = getClusterToken(namespace);
-    namespaces.set(namespace, token);
-    return Inject(token);
+  const token = getClusterToken(namespace);
+  namespaces.set(namespace, token);
+  return Inject(token);
 };
 
 /**
@@ -26,6 +26,6 @@ export const InjectCluster = (namespace: ClientNamespace = DEFAULT_CLUSTER_NAMES
  * @public
  */
 export const getClusterToken = (namespace: ClientNamespace): ClientNamespace => {
-    if (isSymbol(namespace)) return namespace;
-    return `${CLUSTER_MODULE_ID}:${namespace}`;
+  if (isSymbol(namespace)) return namespace;
+  return `${CLUSTER_MODULE_ID}:${namespace}`;
 };

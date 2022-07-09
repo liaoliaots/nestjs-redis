@@ -7,14 +7,14 @@ import { OPERATIONS_TIMEOUT } from '@/messages';
  * @param promise - The promise which should get executed
  */
 export const promiseTimeout = (ms: number, promise: Promise<unknown>): Promise<unknown> => {
-    let timer: NodeJS.Timeout;
+  let timer: NodeJS.Timeout;
 
-    return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-            timer = setTimeout(() => reject(new Error(OPERATIONS_TIMEOUT(ms))), ms);
-        })
-    ]).finally(() => {
-        clearTimeout(timer);
-    });
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(OPERATIONS_TIMEOUT(ms))), ms);
+    })
+  ]).finally(() => {
+    clearTimeout(timer);
+  });
 };

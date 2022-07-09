@@ -13,21 +13,21 @@ import { ClientNotFoundError } from '@/errors';
  */
 @Injectable()
 export class ClusterManager {
-    constructor(@Inject(CLUSTER_CLIENTS) private readonly clusterClients: ClusterClients) {}
+  constructor(@Inject(CLUSTER_CLIENTS) private readonly clusterClients: ClusterClients) {}
 
-    /**
-     * Retrieves all cluster clients.
-     */
-    get clients(): ReadonlyMap<ClientNamespace, Cluster> {
-        return this.clusterClients;
-    }
+  /**
+   * Retrieves all cluster clients.
+   */
+  get clients(): ReadonlyMap<ClientNamespace, Cluster> {
+    return this.clusterClients;
+  }
 
-    /**
-     * Retrieves a cluster client by namespace.
-     */
-    getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
-        const client = this.clusterClients.get(namespace);
-        if (!client) throw new ClientNotFoundError(parseNamespace(namespace), 'cluster');
-        return client;
-    }
+  /**
+   * Retrieves a cluster client by namespace.
+   */
+  getClient(namespace: ClientNamespace = DEFAULT_CLUSTER_NAMESPACE): Cluster {
+    const client = this.clusterClients.get(namespace);
+    if (!client) throw new ClientNotFoundError(parseNamespace(namespace), 'cluster');
+    return client;
+  }
 }

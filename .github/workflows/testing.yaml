@@ -1,37 +1,37 @@
 name: testing
 on:
-    pull_request:
-        branches:
-            - main
-            - 8.x
+  pull_request:
+    branches:
+      - main
+      - 8.x
 jobs:
-    unit_e2e:
-        name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os:
-                    - ubuntu-20.04
-                node_version:
-                    - 12.22.12
-                    - 14.19.3
-                    - 16.15.1
-                architecture:
-                    - x64
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node_version }}
-                  architecture: ${{ matrix.architecture }}
-                  cache: npm
-            - run: npm install -g npm@8.13.2 --verbose
-            - run: npm ci
-            - run: docker-compose up -d
-            - run: docker-compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
-            - run: docker-compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
-            - run: npm run lint:es
-            - run: npm run lint:tsc
-            - run: npm run test
-            - run: npm run test:e2e
-            - run: docker-compose down -v
+  unit_e2e:
+    name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+        node_version:
+          - 12.22.12
+          - 14.19.3
+          - 16.15.1
+        architecture:
+          - x64
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+          architecture: ${{ matrix.architecture }}
+          cache: npm
+      - run: npm install -g npm@8.13.2 --verbose
+      - run: npm ci
+      - run: docker-compose up -d
+      - run: docker-compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
+      - run: docker-compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+      - run: npm run lint:es
+      - run: npm run lint:tsc
+      - run: npm run test
+      - run: npm run test:e2e
+      - run: docker-compose down -v

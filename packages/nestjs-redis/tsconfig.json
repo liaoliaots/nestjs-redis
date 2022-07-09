@@ -1,11 +1,11 @@
 {
-    "extends": "../../tsconfig",
-    "compilerOptions": {
-        "baseUrl": ".",
-        "outDir": "./dist",
-        "paths": {
-            "@/*": ["lib/*"]
-        }
-    },
-    "include": ["lib/**/*"]
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["lib/*"]
+    }
+  },
+  "include": ["lib", "test"]
 }

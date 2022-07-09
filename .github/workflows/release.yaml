@@ -1,20 +1,20 @@
 name: release
 on: workflow_dispatch
 jobs:
-    release:
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: 16.15.1
-                  architecture: x64
-                  cache: npm
-                  registry-url: 'https://registry.npmjs.org'
-            - run: npm install -g npm@8.13.2 --verbose
-            - run: npm ci
-            - run: npm run lint
-            - run: npm run build
-            - run: npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.1
+          architecture: x64
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@8.13.2 --verbose
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

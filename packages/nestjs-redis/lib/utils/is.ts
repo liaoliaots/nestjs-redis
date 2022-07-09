@@ -18,8 +18,8 @@ export const isSymbol = (value: unknown): value is symbol => typeof value === 's
  * @param value - Any value
  */
 export const isError = (value: unknown): value is Error => {
-    const typeName = Object.prototype.toString.call(value).slice(8, -1);
-    return typeName === 'Error';
+  const typeName = Object.prototype.toString.call(value).slice(8, -1);
+  return typeName === 'Error';
 };
 
 /**
@@ -28,7 +28,7 @@ export const isError = (value: unknown): value is Error => {
  * @param value - `PromiseSettledResult`
  */
 export const isResolution = <T>(value: PromiseSettledResult<T>): value is PromiseFulfilledResult<T> => {
-    return value.status === 'fulfilled';
+  return value.status === 'fulfilled';
 };
 
 /**
@@ -37,7 +37,7 @@ export const isResolution = <T>(value: PromiseSettledResult<T>): value is Promis
  * @param value - `PromiseSettledResult`
  */
 export const isRejection = (value: PromiseSettledResult<unknown>): value is PromiseRejectedResult => {
-    return value.status === 'rejected';
+  return value.status === 'rejected';
 };
 
 /**
