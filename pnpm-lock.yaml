@@ -72,9 +72,12 @@ importers:
 
   packages/nestjs-redis-health:
     specifiers:
+      '@liaoliaots/nestjs-redis': workspace:*
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
+    devDependencies:
+      '@liaoliaots/nestjs-redis': link:../nestjs-redis
 
 packages:
 

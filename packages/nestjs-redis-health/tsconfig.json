@@ -7,5 +7,5 @@
       "@/*": ["lib/*"]
     }
   },
-  "include": ["lib"]
+  "include": ["lib", "test"]
 }

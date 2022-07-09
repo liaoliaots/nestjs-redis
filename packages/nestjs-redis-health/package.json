@@ -14,12 +14,15 @@
     "ioredis",
     "sentinel",
     "cluster",
-    "health",
     "nestjs",
     "nest",
     "nodejs",
     "node",
-    "typescript"
+    "typescript",
+    "javascript",
+    "health",
+    "healthcheck",
+    "healthchecks"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -39,6 +42,9 @@
   },
   "dependencies": {
     "tslib": "2.4.0"
+  },
+  "devDependencies": {
+    "@liaoliaots/nestjs-redis": "workspace:*"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
