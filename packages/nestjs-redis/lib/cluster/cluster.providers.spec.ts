@@ -117,24 +117,24 @@ describe('clusterClientsProvider', () => {
     expect(clusterClientsProvider).toHaveProperty('inject', [CLUSTER_OPTIONS]);
   });
 
-  test('with multiple clients', () => {
+  test('with multiple clients', async () => {
     const options: ClusterModuleOptions = {
       config: [{ nodes: [] }, { namespace: 'client1', nodes: [] }]
     };
-    const clients = clusterClientsProvider.useFactory(options);
+    const clients = await clusterClientsProvider.useFactory(options);
     expect(clients.size).toBe(2);
   });
 
   describe('with single client', () => {
-    test('with namespace', () => {
+    test('with namespace', async () => {
       const options: ClusterModuleOptions = { config: { namespace: 'client1', nodes: [] } };
-      const clients = clusterClientsProvider.useFactory(options);
+      const clients = await clusterClientsProvider.useFactory(options);
       expect(clients.size).toBe(1);
     });
 
-    test('without namespace', () => {
+    test('without namespace', async () => {
       const options: ClusterModuleOptions = { config: { nodes: [] } };
-      const clients = clusterClientsProvider.useFactory(options);
+      const clients = await clusterClientsProvider.useFactory(options);
       expect(clients.size).toBe(1);
     });
   });

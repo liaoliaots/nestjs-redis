@@ -114,22 +114,22 @@ describe('redisClientsProvider', () => {
     expect(redisClientsProvider).toHaveProperty('inject', [REDIS_OPTIONS]);
   });
 
-  test('with multiple clients', () => {
+  test('with multiple clients', async () => {
     const options: RedisModuleOptions = { config: [{}, { namespace: 'client1' }] };
-    const clients = redisClientsProvider.useFactory(options);
+    const clients = await redisClientsProvider.useFactory(options);
     expect(clients.size).toBe(2);
   });
 
   describe('with single client', () => {
-    test('with namespace', () => {
+    test('with namespace', async () => {
       const options: RedisModuleOptions = { config: { namespace: 'client1' } };
-      const clients = redisClientsProvider.useFactory(options);
+      const clients = await redisClientsProvider.useFactory(options);
       expect(clients.size).toBe(1);
     });
 
-    test('without namespace', () => {
+    test('without namespace', async () => {
       const options: RedisModuleOptions = { config: {} };
-      const clients = redisClientsProvider.useFactory(options);
+      const clients = await redisClientsProvider.useFactory(options);
       expect(clients.size).toBe(1);
     });
   });

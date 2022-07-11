@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-redis-health",
+  "name": "@liaoliaots/nestjs-redis-health",
   "version": "9.0.0",
   "description": "Redis(ioredis) health checks for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
@@ -12,7 +12,6 @@
   "keywords": [
     "redis",
     "ioredis",
-    "sentinel",
     "cluster",
     "nestjs",
     "nest",
@@ -49,7 +48,7 @@
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/terminus": "^8.0.0",
+    "@nestjs/terminus": "^9.0.0",
     "ioredis": "^5.0.0"
   },
   "engines": {
