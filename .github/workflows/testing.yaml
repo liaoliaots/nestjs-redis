@@ -12,7 +12,6 @@ jobs:
         os:
           - ubuntu-20.04
         node_version:
-          - 12.22.12
           - 14.20.0
           - 16.16.0
         architecture:
