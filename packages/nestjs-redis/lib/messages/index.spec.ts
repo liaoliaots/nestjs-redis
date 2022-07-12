@@ -1,15 +1,6 @@
 import * as allExports from '.';
 
-const { OPERATIONS_TIMEOUT, READY_LOG, ERROR_LOG, ...messages } = allExports;
-
-describe('OPERATIONS_TIMEOUT', () => {
-  test('should return a string', () => {
-    expect(OPERATIONS_TIMEOUT(1)).toContain('1');
-    expect(OPERATIONS_TIMEOUT(1)).toMatch(/\bmillisecond\b/);
-    expect(OPERATIONS_TIMEOUT(2)).toContain('2');
-    expect(OPERATIONS_TIMEOUT(2)).toMatch(/\bmilliseconds\b/);
-  });
-});
+const { READY_LOG, ERROR_LOG, ...messages } = allExports;
 
 describe('READY_LOG', () => {
   test('should return a string', () => {
