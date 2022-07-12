@@ -20,7 +20,7 @@ module.exports = {
     node: true,
     jest: true
   },
-  ignorePatterns: ['.eslintrc.js', 'dist'],
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
     'tsdoc/syntax': 'warn'
   },
