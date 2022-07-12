@@ -27,10 +27,11 @@ jobs:
           check-latest: true
           architecture: ${{ matrix.architecture }}
           cache: pnpm
-      - run: pnpm install
       - run: docker compose up -d
       - run: docker compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
       - run: docker compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -F "@liaoliaots/nestjs-redis" build
       - run: pnpm -r lint
       - run: pnpm -r test
       - run: pnpm -r test:e2e
