@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { ClusterModule, ClusterModuleOptions } from '@/.';
-import { RedisHealthModule } from '@/health';
+import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis/dist';
+import { RedisHealthModule } from '@/index';
 import { HealthController } from './controllers/health.controller';
-import { InjectController } from './controllers/inject.controller';
-import { ManagerController } from './controllers/manager.controller';
 
 @Module({
   imports: [
@@ -29,6 +27,6 @@ import { ManagerController } from './controllers/manager.controller';
     TerminusModule,
     RedisHealthModule
   ],
-  controllers: [HealthController, InjectController, ManagerController]
+  controllers: [HealthController]
 })
 export class AppModule {}

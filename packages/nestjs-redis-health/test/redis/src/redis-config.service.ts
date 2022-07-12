@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RedisOptionsFactory, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import { RedisOptionsFactory, RedisModuleOptions } from '@liaoliaots/nestjs-redis/dist';
 
 @Injectable()
 export class RedisConfigService implements RedisOptionsFactory {

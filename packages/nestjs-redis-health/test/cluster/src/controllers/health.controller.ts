@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
 import { Cluster } from 'ioredis';
-import { RedisHealthIndicator } from '@/health';
-import { InjectCluster } from '@/.';
+import { RedisHealthIndicator } from '@/index';
+import { InjectCluster } from '@liaoliaots/nestjs-redis/dist';
 
 @Controller('health')
 export class HealthController {
