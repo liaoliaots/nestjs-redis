@@ -5,16 +5,18 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: latest
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1
+          node-version: 16.16.0
           architecture: x64
-          cache: npm
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g npm@8.13.2 --verbose
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run build
-      - run: npm publish
+          cache: pnpm
+          registry-url: 'http://codeliaoliao.xyz:4873/'
+      - run: pnpm install
+      - run: pnpm --filter @liaoliaots/nestjs-redis lint
+      - run: pnpm --filter @liaoliaots/nestjs-redis build
+      - run: pnpm --filter @liaoliaots/nestjs-redis publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_NPM_TOKEN }}
