@@ -12,8 +12,8 @@ jobs:
         os:
           - ubuntu-20.04
         node_version:
-          - 14.20.0
-          - 16.16.0
+          - 14
+          - 16
         architecture:
           - x64
     steps:
@@ -24,14 +24,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
+          check-latest: true
           architecture: ${{ matrix.architecture }}
           cache: pnpm
       - run: pnpm install
-      - run: docker-compose up -d
-      - run: docker-compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
-      - run: docker-compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
-      - run: pnpm --filter @liaoliaots/nestjs-redis lint:es
-      - run: pnpm --filter @liaoliaots/nestjs-redis lint:tsc
-      - run: pnpm --filter @liaoliaots/nestjs-redis test
-      - run: pnpm --filter @liaoliaots/nestjs-redis test:e2e
-      - run: docker-compose down -v
+      - run: docker compose up -d
+      - run: docker compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
+      - run: docker compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+      - run: pnpm -r lint
+      - run: pnpm -r test
+      - run: pnpm -r test:e2e
+      - run: docker compose down -v
