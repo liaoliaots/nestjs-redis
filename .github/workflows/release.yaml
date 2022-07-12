@@ -17,6 +17,6 @@ jobs:
       - run: pnpm install
       - run: pnpm --filter @liaoliaots/nestjs-redis lint
       - run: pnpm --filter @liaoliaots/nestjs-redis build
-      - run: pnpm --filter @liaoliaots/nestjs-redis publish
+      - run: pnpm --filter @liaoliaots/nestjs-redis publish --publish-branch dev
         env:
           NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_NPM_TOKEN }}
