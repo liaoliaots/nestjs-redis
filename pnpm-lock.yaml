@@ -75,13 +75,11 @@ importers:
   packages/nestjs-redis-health:
     specifiers:
       '@liaoliaots/nestjs-redis': workspace:*
-      '@nestjs/terminus': 9.0.0
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
     devDependencies:
       '@liaoliaots/nestjs-redis': link:../nestjs-redis
-      '@nestjs/terminus': 9.0.0
 
 packages:
 
@@ -1021,17 +1019,6 @@ packages:
       tslib: 2.4.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@nestjs/terminus/9.0.0:
-    resolution: {integrity: sha512-Yqx310ld2JwWgFFQyw0Cri+Y4yfG9gq66BLZ37vdOgZeKFS4wHdJZG6PlYeO3ztvE+vVZCKxvORLtaNa4u2bSQ==}
-    peerDependencies:
-      '@nestjs/common': 9.x
-      '@nestjs/core': 9.x
-      reflect-metadata: 0.1.x
-      rxjs: 7.x
-    dependencies:
-      check-disk-space: 3.3.0
     dev: true
 
   /@nestjs/terminus/9.0.0_pyvsgnftvt633q7nviz6axfssi:
