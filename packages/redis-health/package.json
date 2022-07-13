@@ -43,7 +43,7 @@
     "tslib": "2.4.0"
   },
   "devDependencies": {
-    "@liaoliaots/nestjs-redis": "workspace:*"
+    "@liaoliaots/nestjs-redis": "9.0.0-next.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",

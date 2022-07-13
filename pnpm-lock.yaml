@@ -11,7 +11,7 @@ importers:
       '@nestjs/platform-fastify': 9.0.3
       '@nestjs/terminus': 9.0.0
       '@nestjs/testing': 9.0.3
-      '@types/jest': 28.1.4
+      '@types/jest': 28.1.5
       '@types/node': 16.11.43
       '@typescript-eslint/eslint-plugin': 5.30.6
       '@typescript-eslint/parser': 5.30.6
@@ -42,7 +42,7 @@ importers:
       '@nestjs/platform-fastify': 9.0.3_2loxls3fbqb44dvsophl4n3naa
       '@nestjs/terminus': 9.0.0_33mrpcfda32jyo6ciawkgxnbha
       '@nestjs/testing': 9.0.3_2loxls3fbqb44dvsophl4n3naa
-      '@types/jest': 28.1.4
+      '@types/jest': 28.1.5
       '@types/node': 16.11.43
       '@typescript-eslint/eslint-plugin': 5.30.6_2vt5mtrqleafs33qg2bhpmbaqm
       '@typescript-eslint/parser': 5.30.6_4x5o4skxv6sl53vpwefgt23khm
@@ -66,20 +66,20 @@ importers:
       tsc-alias: 1.6.11
       typescript: 4.7.4
 
-  packages/nestjs-redis:
+  packages/redis:
     specifiers:
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
 
-  packages/nestjs-redis-health:
+  packages/redis-health:
     specifiers:
-      '@liaoliaots/nestjs-redis': workspace:*
+      '@liaoliaots/nestjs-redis': 9.0.0-next.1
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
     devDependencies:
-      '@liaoliaots/nestjs-redis': link:../nestjs-redis
+      '@liaoliaots/nestjs-redis': link:../redis
 
 packages:
 
@@ -1170,8 +1170,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest/28.1.4:
-    resolution: {integrity: sha512-telv6G5N7zRJiLcI3Rs3o+ipZ28EnE+7EvF0pSrt2pZOMnAVI/f+6/LucDxOvcBcTeTL3JMF744BbVQAVBUQRA==}
+  /@types/jest/28.1.5:
+    resolution: {integrity: sha512-TLAC2zXxGnohSP3GxgIyJn7yrTeRPDEyVFyCY1NE2wzg392auI+69uk5EPGjUXuhkq/K208J/TWpLG7J8ebIEQ==}
     dependencies:
       jest-matcher-utils: 28.1.1
       pretty-format: 28.1.1
@@ -1615,8 +1615,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001365
-      electron-to-chromium: 1.4.186
+      caniuse-lite: 1.0.30001366
+      electron-to-chromium: 1.4.187
       node-releases: 2.0.6
       update-browserslist-db: 1.0.4_browserslist@4.21.1
     dev: true
@@ -1662,8 +1662,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite/1.0.30001365:
-    resolution: {integrity: sha512-VDQZ8OtpuIPMBA4YYvZXECtXbddMCUFJk1qu8Mqxfm/SZJNSr1cy4IuLCOL7RJ/YASrvJcYg1Zh+UEUQ5m6z8Q==}
+  /caniuse-lite/1.0.30001366:
+    resolution: {integrity: sha512-yy7XLWCubDobokgzudpkKux8e0UOOnLHE6mlNJBzT3lZJz6s5atSEzjoL+fsCPkI0G8MP5uVdDx1ur/fXEWkZA==}
     dev: true
 
   /chalk/2.4.2:
@@ -2001,8 +2001,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium/1.4.186:
-    resolution: {integrity: sha512-YoVeFrGd/7ROjz4R9uPoND1K/hSRC/xADy9639ZmIZeJSaBnKdYx3I6LMPsY7CXLpK7JFgKQVzeZ/dk2br6Eaw==}
+  /electron-to-chromium/1.4.187:
+    resolution: {integrity: sha512-t3iFLHVIMhB8jGZ+8ui951nz6Bna5qKfhxezG3wzXdBJ79qFKPsE2chjjVFNqC1ewhfrPQrw9pmVeo4FFpZeQA==}
     dev: true
 
   /emittery/0.10.2:
