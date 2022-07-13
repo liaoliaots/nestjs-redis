@@ -3,12 +3,10 @@
   "version": "9.0.0-next.1",
   "description": "Redis(ioredis) module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "index.js",
-    "index.d.ts"
+    "dist"
   ],
   "license": "MIT",
   "keywords": [
