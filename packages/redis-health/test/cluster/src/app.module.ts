@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis/dist';
+import { ClusterModule, ClusterModuleOptions } from '@liaoliaots/nestjs-redis';
 import { RedisHealthModule } from '@/index';
 import { HealthController } from './controllers/health.controller';
 
