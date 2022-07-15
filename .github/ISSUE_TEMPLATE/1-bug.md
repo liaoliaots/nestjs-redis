@@ -5,7 +5,7 @@ labels: 'type: bug'
 ---
 
 Your issue may already be reported!
-Please search on the [issue tracker](../issues?q=is%3Aissue) before creating one.
+Please search on the [issue tracker](../) before creating one.
 
 ## Expected Behavior
 
@@ -46,4 +46,3 @@ Please search on the [issue tracker](../issues?q=is%3Aissue) before creating one
 - Node.js version:
 - Operating System and version (macOS, Windows, Linux):
 - Link to your project:
-- ...

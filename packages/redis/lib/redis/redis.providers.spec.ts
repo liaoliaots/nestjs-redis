@@ -14,7 +14,7 @@ import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.cons
 import { namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
-console.log();
+
 jest.mock('ioredis', () => jest.fn(() => ({})));
 
 class RedisConfigService implements RedisOptionsFactory {
