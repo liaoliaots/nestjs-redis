@@ -5,8 +5,8 @@ import {
   createOptionsProvider,
   createAsyncProviders,
   createRedisClientProviders,
-  createRedisClientsProvider,
-  createMergedOptionsProvider
+  redisClientsProvider,
+  mergedOptionsProvider
 } from './redis.providers';
 import { REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.constants';
 import { destroy } from './common';
@@ -32,8 +32,8 @@ export class RedisModule implements OnApplicationShutdown {
     const redisClientProviders = createRedisClientProviders();
     const providers: Provider[] = [
       createOptionsProvider(options),
-      createRedisClientsProvider,
-      createMergedOptionsProvider,
+      redisClientsProvider,
+      mergedOptionsProvider,
       RedisManager,
       ...redisClientProviders
     ];
@@ -57,8 +57,8 @@ export class RedisModule implements OnApplicationShutdown {
     const redisClientProviders = createRedisClientProviders();
     const providers: Provider[] = [
       ...createAsyncProviders(options),
-      createRedisClientsProvider,
-      createMergedOptionsProvider,
+      redisClientsProvider,
+      mergedOptionsProvider,
       RedisManager,
       ...redisClientProviders,
       ...(options.extraProviders ?? [])

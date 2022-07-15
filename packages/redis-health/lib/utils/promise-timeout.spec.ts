@@ -1,5 +1,5 @@
 import { promiseTimeout } from './promise-timeout';
-import { OPERATIONS_TIMEOUT } from '@/messages';
+import { OPERATIONS_TIMEOUT } from '@health/messages';
 
 describe('promiseTimeout', () => {
   beforeEach(() => {

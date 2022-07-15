@@ -10,11 +10,11 @@ import {
   createAsyncOptions
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_INTERNAL_OPTIONS } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.constants';
 import { namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
-
+console.log();
 jest.mock('ioredis', () => jest.fn(() => ({})));
 
 class RedisConfigService implements RedisOptionsFactory {
@@ -37,12 +37,12 @@ describe('createAsyncProviders', () => {
     const result = createAsyncProviders({ useFactory: () => ({}), inject: [] });
     expect(result).toHaveLength(2);
     expect(result[0]).toHaveProperty('provide', REDIS_OPTIONS);
-    expect(result[0]).toHaveProperty('inject', [REDIS_INTERNAL_OPTIONS]);
+    expect(result[0]).toHaveProperty('inject', [REDIS_MERGED_OPTIONS]);
     expect((result[0] as FactoryProvider).useFactory({ closeClient: true })).toEqual({
       ...defaultRedisModuleOptions,
       closeClient: true
     });
-    expect(result[1]).toHaveProperty('provide', REDIS_INTERNAL_OPTIONS);
+    expect(result[1]).toHaveProperty('provide', REDIS_MERGED_OPTIONS);
     expect(result[1]).toHaveProperty('inject', []);
   });
 
@@ -85,7 +85,7 @@ describe('createAsyncOptions', () => {
 describe('createAsyncOptionsProvider', () => {
   test('should create provider with useFactory', () => {
     const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['token'] };
-    expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_INTERNAL_OPTIONS, ...options });
+    expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_OPTIONS, ...options });
   });
 
   test('should create provider with useClass', () => {
