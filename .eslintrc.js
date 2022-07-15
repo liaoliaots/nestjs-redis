@@ -1,29 +1,28 @@
 module.exports = {
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: __dirname,
-        sourceType: 'module'
-    },
-    plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc', 'deprecation'],
-    extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:jest/recommended',
-        'plugin:jest/style',
-        'plugin:prettier/recommended'
-    ],
-    root: true,
-    env: {
-        node: true,
-        jest: true
-    },
-    ignorePatterns: ['.eslintrc.js', 'dist/*', 'health/*', 'health.ts', 'compat.js'],
-    reportUnusedDisableDirectives: true,
-    rules: {
-        'tsdoc/syntax': 'warn',
-        'deprecation/deprecation': 'warn'
-    }
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['./packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
+    sourceType: 'module'
+  },
+  plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
+    'plugin:prettier/recommended'
+  ],
+  root: true,
+  env: {
+    node: true,
+    jest: true
+  },
+  ignorePatterns: ['.eslintrc.js'],
+  rules: {
+    'tsdoc/syntax': 'warn'
+  },
+  reportUnusedDisableDirectives: true
 };

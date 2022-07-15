@@ -41,9 +41,9 @@ Please search on the [issue tracker](../issues?q=is%3Aissue) before creating one
 
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 
--   Version used:
--   NestJS version:
--   Node.js version:
--   Operating System and version (macOS, Windows, Linux):
--   Link to your project:
--   ...
+- Version used:
+- NestJS version:
+- Node.js version:
+- Operating System and version (macOS, Windows, Linux):
+- Link to your project:
+- ...

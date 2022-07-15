@@ -1,9 +1,9 @@
 version: 2
 updates:
-    - package-ecosystem: 'npm'
-      directory: '/'
-      schedule:
-          interval: 'monthly'
-          time: '00:00'
-          timezone: 'America/New_York'
-      open-pull-requests-limit: 999
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+      time: '00:00'
+      timezone: 'America/New_York'
+    open-pull-requests-limit: 999

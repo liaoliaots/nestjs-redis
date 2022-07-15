@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["../../packages/redis/lib/*"],
+      "@health/*": ["lib/*"]
+    }
+  },
+  "include": ["lib", "test"]
+}

@@ -5,15 +5,15 @@ import { Cat } from './cat';
 
 @Controller('cats')
 export class CatsController {
-    constructor(private readonly catsService: CatsService) {}
+  constructor(private readonly catsService: CatsService) {}
 
-    @Get()
-    async findAll(): Promise<Cat[]> {
-        return await this.catsService.findAll();
-    }
+  @Get()
+  async findAll(): Promise<Cat[]> {
+    return await this.catsService.findAll();
+  }
 
-    @Post()
-    async create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
-        return await this.catsService.create(createCatDto);
-    }
+  @Post()
+  async create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
+    return await this.catsService.create(createCatDto);
+  }
 }
