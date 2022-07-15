@@ -17,7 +17,7 @@ importers:
       concurrently: 7.2.2
       eslint: 8.19.0
       eslint-config-prettier: 8.5.0
-      eslint-plugin-jest: 26.5.3
+      eslint-plugin-jest: 26.6.0
       eslint-plugin-prettier: 4.2.1
       eslint-plugin-tsdoc: 0.2.16
       fastify: 4.2.0
@@ -45,7 +45,7 @@ importers:
       concurrently: 7.2.2
       eslint: 8.19.0
       eslint-config-prettier: 8.5.0_eslint@8.19.0
-      eslint-plugin-jest: 26.5.3_dtrlyvg6hjzxkf5jkawgfpa6ma
+      eslint-plugin-jest: 26.6.0_dtrlyvg6hjzxkf5jkawgfpa6ma
       eslint-plugin-prettier: 4.2.1_7uxdfn2xinezdgvmbammh6ev5i
       eslint-plugin-tsdoc: 0.2.16
       fastify: 4.2.0
@@ -68,7 +68,7 @@ importers:
 
   packages/redis-health:
     specifiers:
-      '@liaoliaots/nestjs-redis': workspace:9.0.0-next.1
+      '@liaoliaots/nestjs-redis': workspace:*
       '@nestjs/terminus': 9.0.0
       tslib: 2.4.0
     dependencies:
@@ -811,7 +811,7 @@ packages:
     resolution: {integrity: sha512-/l/VWsdt/aBXgjshLWOFyFt3IVdYypu5y2Wn2rOO1un6nkqIn8SLXzgIMYXFyYsRWDyF5EthmKJMIdJvk08grg==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      '@sinclair/typebox': 0.24.19
+      '@sinclair/typebox': 0.24.20
     dev: true
 
   /@jest/source-map/28.1.2:
@@ -1083,8 +1083,8 @@ packages:
       - encoding
     dev: true
 
-  /@sinclair/typebox/0.24.19:
-    resolution: {integrity: sha512-gHJu8cdYTD5p4UqmQHrxaWrtb/jkH5imLXzuBypWhKzNkW0qfmgz+w1xaJccWVuJta1YYUdlDiPHXRTR4Ku0MQ==}
+  /@sinclair/typebox/0.24.20:
+    resolution: {integrity: sha512-kVaO5aEFZb33nPMTZBxiPEkY+slxiPtqC7QX8f9B3eGOMBvEfuMfxp9DSTTCsRJPumPKjrge4yagyssO4q6qzQ==}
     dev: true
 
   /@sinonjs/commons/1.8.3:
@@ -1612,7 +1612,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001366
-      electron-to-chromium: 1.4.189
+      electron-to-chromium: 1.4.191
       node-releases: 2.0.6
       update-browserslist-db: 1.0.4_browserslist@4.21.2
     dev: true
@@ -1787,8 +1787,8 @@ packages:
     resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
     dev: true
 
-  /commander/9.3.0:
-    resolution: {integrity: sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==}
+  /commander/9.4.0:
+    resolution: {integrity: sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==}
     engines: {node: ^12.20.0 || >=14}
     dev: true
 
@@ -1997,8 +1997,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium/1.4.189:
-    resolution: {integrity: sha512-dQ6Zn4ll2NofGtxPXaDfY2laIa6NyCQdqXYHdwH90GJQW0LpJJib0ZU/ERtbb0XkBEmUD2eJtagbOie3pdMiPg==}
+  /electron-to-chromium/1.4.191:
+    resolution: {integrity: sha512-MeEaiuoSFh4G+rrN+Ilm1KJr8pTTZloeLurcZ+PRcthvdK1gWThje+E6baL7/7LoNctrzCncavAG/j/vpES9jg==}
     dev: true
 
   /emittery/0.10.2:
@@ -2049,8 +2049,8 @@ packages:
       eslint: 8.19.0
     dev: true
 
-  /eslint-plugin-jest/26.5.3_dtrlyvg6hjzxkf5jkawgfpa6ma:
-    resolution: {integrity: sha512-sICclUqJQnR1bFRZGLN2jnSVsYOsmPYYnroGCIMVSvTS3y8XR3yjzy1EcTQmk6typ5pRgyIWzbjqxK6cZHEZuQ==}
+  /eslint-plugin-jest/26.6.0_dtrlyvg6hjzxkf5jkawgfpa6ma:
+    resolution: {integrity: sha512-f8n46/97ZFdU4KqeQYqO8AEVGIhHWvkpgNBWHH3jrM28/y8llnbf3IjfIKv6p2pZIMinK1PCqbbROxs9Eud02Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -3309,7 +3309,7 @@ packages:
     dependencies:
       cli-truncate: 3.1.0
       colorette: 2.0.19
-      commander: 9.3.0
+      commander: 9.4.0
       debug: 4.3.4
       execa: 6.1.0
       lilconfig: 2.0.5
@@ -4440,7 +4440,7 @@ packages:
     hasBin: true
     dependencies:
       chokidar: 3.5.3
-      commander: 9.3.0
+      commander: 9.4.0
       globby: 11.1.0
       mylas: 2.1.11
       normalize-path: 3.0.0

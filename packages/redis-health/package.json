@@ -1,7 +1,7 @@
 {
   "name": "@liaoliaots/nestjs-redis-health",
   "version": "9.0.0-next.1",
-  "description": "Redis(ioredis) health checks for Nest framework (node.js).",
+  "description": "Redis(ioredis) health checks module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,8 @@
     "javascript",
     "health",
     "healthcheck",
-    "healthchecks"
+    "healthchecks",
+    "diagnostics"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -34,7 +35,7 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:clear": "jest --clearCache",
-    "make-badges": "istanbul-badges-readme --style=\"flat-square\"",
+    "make-badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"../../\" --style=\"flat-square\" --logo=\"jest\"",
     "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js health/index.js",
     "publish:next": "npm publish --tag next",
     "publish:rc": "npm publish --tag rc"
@@ -43,7 +44,7 @@
     "tslib": "2.4.0"
   },
   "devDependencies": {
-    "@liaoliaots/nestjs-redis": "workspace:9.0.0-next.1",
+    "@liaoliaots/nestjs-redis": "workspace:*",
     "@nestjs/terminus": "9.0.0"
   },
   "peerDependencies": {

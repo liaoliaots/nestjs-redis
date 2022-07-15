@@ -1,3 +1,3 @@
 module.exports = {
-  '{lib,test}/**/*.ts': [() => 'tsc -p tsconfig.json --noEmit']
+  'packages/redis/**/*.ts': ['prettier --write', 'eslint', () => 'tsc -p packages/redis/tsconfig.json --noEmit']
 };
