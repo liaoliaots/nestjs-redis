@@ -8,7 +8,7 @@ import {
   ABNORMALLY_MEMORY_USAGE,
   MISSING_TYPE,
   OPERATIONS_TIMEOUT
-} from '@/messages';
+} from '@health/messages';
 
 const mockPing = jest.fn();
 const mockInfo = jest.fn();

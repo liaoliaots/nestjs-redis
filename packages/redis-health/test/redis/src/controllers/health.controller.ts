@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
 import Redis from 'ioredis';
-import { RedisHealthIndicator } from '@/index';
+import { RedisHealthIndicator } from '@health/.';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 
 @Controller('health')

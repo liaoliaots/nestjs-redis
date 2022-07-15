@@ -62,7 +62,19 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
   };
 };
 
-export const createRedisClientsProvider: FactoryProvider<RedisClients> = {
+export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
+  const providers: FactoryProvider<Redis>[] = [];
+  namespaces.forEach((token, namespace) => {
+    providers.push({
+      provide: token,
+      useFactory: (redisManager: RedisManager) => redisManager.getClient(namespace),
+      inject: [RedisManager]
+    });
+  });
+  return providers;
+};
+
+export const redisClientsProvider: FactoryProvider<RedisClients> = {
   provide: REDIS_CLIENTS,
   useFactory: (options: RedisModuleOptions) => {
     const clients: RedisClients = new Map();
@@ -78,22 +90,10 @@ export const createRedisClientsProvider: FactoryProvider<RedisClients> = {
     }
     return clients;
   },
-  inject: [REDIS_OPTIONS]
+  inject: [REDIS_MERGED_OPTIONS]
 };
 
-export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
-  const providers: FactoryProvider<Redis>[] = [];
-  namespaces.forEach((token, namespace) => {
-    providers.push({
-      provide: token,
-      useFactory: (redisManager: RedisManager) => redisManager.getClient(namespace),
-      inject: [RedisManager]
-    });
-  });
-  return providers;
-};
-
-export const createMergedOptionsProvider: FactoryProvider<RedisModuleOptions> = {
+export const mergedOptionsProvider: FactoryProvider<RedisModuleOptions> = {
   provide: REDIS_MERGED_OPTIONS,
   useFactory: (options: RedisModuleOptions) => ({ ...defaultRedisModuleOptions, ...options }),
   inject: [REDIS_OPTIONS]
