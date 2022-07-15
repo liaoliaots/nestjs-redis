@@ -1,4 +1,4 @@
-import { OPERATIONS_TIMEOUT } from '@/messages';
+import { OPERATIONS_TIMEOUT } from '@health/messages';
 
 /**
  * Executes a promise in the given timeout. If the promise does not finish in the given timeout, it will throw an Error.

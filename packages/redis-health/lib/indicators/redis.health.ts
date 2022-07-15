@@ -7,8 +7,8 @@ import {
   ABNORMALLY_MEMORY_USAGE,
   MISSING_TYPE,
   INVALID_TYPE
-} from '@/messages';
-import { promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@/utils';
+} from '@health/messages';
+import { promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@health/utils';
 import { RedisCheckSettings } from './redis-check-settings.interface';
 
 /**

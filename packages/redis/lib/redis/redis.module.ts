@@ -5,9 +5,10 @@ import {
   createOptionsProvider,
   createAsyncProviders,
   createRedisClientProviders,
-  redisClientsProvider
+  createRedisClientsProvider,
+  createMergedOptionsProvider
 } from './redis.providers';
-import { REDIS_OPTIONS, REDIS_CLIENTS } from './redis.constants';
+import { REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.constants';
 import { destroy } from './common';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './redis-logger';
@@ -20,7 +21,7 @@ import { ERROR_LOG } from '@/messages';
 @Module({})
 export class RedisModule implements OnApplicationShutdown {
   constructor(
-    @Inject(REDIS_OPTIONS) private readonly options: RedisModuleOptions,
+    @Inject(REDIS_MERGED_OPTIONS) private readonly options: RedisModuleOptions,
     @Inject(REDIS_CLIENTS) private readonly clients: RedisClients
   ) {}
 
@@ -31,7 +32,8 @@ export class RedisModule implements OnApplicationShutdown {
     const redisClientProviders = createRedisClientProviders();
     const providers: Provider[] = [
       createOptionsProvider(options),
-      redisClientsProvider,
+      createRedisClientsProvider,
+      createMergedOptionsProvider,
       RedisManager,
       ...redisClientProviders
     ];
@@ -55,7 +57,8 @@ export class RedisModule implements OnApplicationShutdown {
     const redisClientProviders = createRedisClientProviders();
     const providers: Provider[] = [
       ...createAsyncProviders(options),
-      redisClientsProvider,
+      createRedisClientsProvider,
+      createMergedOptionsProvider,
       RedisManager,
       ...redisClientProviders,
       ...(options.extraProviders ?? [])

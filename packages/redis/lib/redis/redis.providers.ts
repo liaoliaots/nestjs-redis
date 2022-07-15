@@ -1,30 +1,17 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_INTERNAL_OPTIONS } from './redis.constants';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_MERGED_OPTIONS } from './redis.constants';
 import { createClient, namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: RedisModuleOptions): ValueProvider<RedisModuleOptions> => ({
   provide: REDIS_OPTIONS,
-  useValue: { ...defaultRedisModuleOptions, ...options }
+  useValue: options
 });
 
 export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider[] => {
-  if (options.useFactory) {
-    return [
-      {
-        provide: REDIS_OPTIONS,
-        useFactory(options: RedisModuleOptions) {
-          return { ...defaultRedisModuleOptions, ...options };
-        },
-        inject: [REDIS_INTERNAL_OPTIONS]
-      },
-      createAsyncOptionsProvider(options)
-    ];
-  }
-
   if (options.useClass) {
     return [
       {
@@ -35,20 +22,19 @@ export const createAsyncProviders = (options: RedisModuleAsyncOptions): Provider
     ];
   }
 
-  if (options.useExisting) return [createAsyncOptionsProvider(options)];
+  if (options.useExisting || options.useFactory) return [createAsyncOptionsProvider(options)];
 
   return [];
 };
 
 export const createAsyncOptions = async (optionsFactory: RedisOptionsFactory): Promise<RedisModuleOptions> => {
-  const options = await optionsFactory.createRedisOptions();
-  return { ...defaultRedisModuleOptions, ...options };
+  return await optionsFactory.createRedisOptions();
 };
 
 export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Provider => {
   if (options.useFactory) {
     return {
-      provide: REDIS_INTERNAL_OPTIONS,
+      provide: REDIS_OPTIONS,
       useFactory: options.useFactory,
       inject: options.inject
     };
@@ -76,7 +62,7 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
   };
 };
 
-export const redisClientsProvider: FactoryProvider<RedisClients> = {
+export const createRedisClientsProvider: FactoryProvider<RedisClients> = {
   provide: REDIS_CLIENTS,
   useFactory: (options: RedisModuleOptions) => {
     const clients: RedisClients = new Map();
@@ -105,4 +91,10 @@ export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
     });
   });
   return providers;
+};
+
+export const createMergedOptionsProvider: FactoryProvider<RedisModuleOptions> = {
+  provide: REDIS_MERGED_OPTIONS,
+  useFactory: (options: RedisModuleOptions) => ({ ...defaultRedisModuleOptions, ...options }),
+  inject: [REDIS_OPTIONS]
 };

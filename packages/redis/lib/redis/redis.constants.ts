@@ -1,6 +1,6 @@
 export const REDIS_OPTIONS = Symbol();
 
-export const REDIS_INTERNAL_OPTIONS = Symbol();
+export const REDIS_MERGED_OPTIONS = Symbol();
 
 export const REDIS_CLIENTS = Symbol();
 
