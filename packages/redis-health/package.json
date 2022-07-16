@@ -77,8 +77,8 @@
       "/interfaces/"
     ],
     "moduleNameMapper": {
-      "@/(.*)": [
-        "<rootDir>/$1"
+      "@health/(.*)": [
+        "<rootDir>/../lib/$1"
       ]
     },
     "setupFilesAfterEnv": [
