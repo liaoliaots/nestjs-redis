@@ -1,2 +1,2 @@
-export { MissingConfigurationsError } from './missing-configurations.error';
-export { ClientNotFoundError } from './client-not-found.error';
+export * from './missing-configurations.error';
+export * from './client-not-found.error';

@@ -5,5 +5,5 @@ test('there should be 4 exports', () => {
 });
 
 test('each of exports should be defined', () => {
-  Object.values(allExports).forEach(value => expect(value).toBeDefined());
+  Object.values(allExports).forEach(value => expect(value).not.toBeNil());
 });

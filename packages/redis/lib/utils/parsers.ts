@@ -6,7 +6,5 @@ import { ClientNamespace } from '@/interfaces';
  *
  * @param namespace - The namespace of the client
  */
-export const parseNamespace = (namespace: ClientNamespace): string => {
-  if (isString(namespace)) return namespace;
-  return namespace.toString();
-};
+export const parseNamespace = (namespace: ClientNamespace): string =>
+  isString(namespace) ? namespace : namespace.toString();

@@ -1,4 +1,4 @@
-import { isString, isSymbol, isError, isResolution, isRejection, isNullish } from './is';
+import { isString, isSymbol, isError, isResolution, isRejection } from './is';
 
 describe('isString', () => {
   test('should work correctly', () => {
@@ -51,17 +51,5 @@ describe('isRejection', () => {
   test('should work correctly', () => {
     expect(isRejection({ status: 'fulfilled', value: '' })).toBe(false);
     expect(isRejection({ status: 'rejected', reason: '' })).toBe(true);
-  });
-});
-
-describe('isNullish', () => {
-  test('should work correctly', () => {
-    expect(isNullish(undefined)).toBe(true);
-    expect(isNullish(null)).toBe(true);
-    expect(isNullish(NaN)).toBe(false);
-    expect(isNullish(false)).toBe(false);
-    expect(isNullish('')).toBe(false);
-    expect(isNullish(0)).toBe(false);
-    expect(isNullish(1)).toBe(false);
   });
 });

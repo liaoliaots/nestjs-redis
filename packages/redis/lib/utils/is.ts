@@ -39,10 +39,3 @@ export const isResolution = <T>(value: PromiseSettledResult<T>): value is Promis
 export const isRejection = (value: PromiseSettledResult<unknown>): value is PromiseRejectedResult => {
   return value.status === 'rejected';
 };
-
-/**
- * Returns `true` if the value is not defined (=== null, === undefined).
- *
- * @param value - Any value
- */
-export const isNullish = (value: unknown): value is undefined | null => value === undefined || value === null;

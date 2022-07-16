@@ -16,7 +16,7 @@ describe('HealthController (e2e)', () => {
 
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
-    await timeout(300);
+    await timeout(500);
   });
 
   afterAll(async () => {

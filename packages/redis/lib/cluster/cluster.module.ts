@@ -5,9 +5,10 @@ import {
   createOptionsProvider,
   createAsyncProviders,
   createClusterClientProviders,
-  clusterClientsProvider
+  clusterClientsProvider,
+  mergedOptionsProvider
 } from './cluster.providers';
-import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
+import { CLUSTER_CLIENTS, CLUSTER_MERGED_OPTIONS } from './cluster.constants';
 import { destroy } from './common';
 import { parseNamespace, isResolution, isRejection, isError } from '@/utils';
 import { logger } from './cluster-logger';
@@ -20,7 +21,7 @@ import { ERROR_LOG } from '@/messages';
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
   constructor(
-    @Inject(CLUSTER_OPTIONS) private readonly options: ClusterModuleOptions,
+    @Inject(CLUSTER_MERGED_OPTIONS) private readonly options: ClusterModuleOptions,
     @Inject(CLUSTER_CLIENTS) private readonly clients: ClusterClients
   ) {}
 
@@ -32,6 +33,7 @@ export class ClusterModule implements OnApplicationShutdown {
     const providers: Provider[] = [
       createOptionsProvider(options),
       clusterClientsProvider,
+      mergedOptionsProvider,
       ClusterManager,
       ...clusterClientProviders
     ];
@@ -56,6 +58,7 @@ export class ClusterModule implements OnApplicationShutdown {
     const providers: Provider[] = [
       ...createAsyncProviders(options),
       clusterClientsProvider,
+      mergedOptionsProvider,
       ClusterManager,
       ...clusterClientProviders,
       ...(options.extraProviders ?? [])
