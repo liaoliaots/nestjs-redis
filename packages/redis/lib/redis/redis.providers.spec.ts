@@ -1,4 +1,3 @@
-import { FactoryProvider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import Redis from 'ioredis';
 import {
@@ -7,7 +6,8 @@ import {
   createAsyncOptionsProvider,
   redisClientsProvider,
   createRedisClientProviders,
-  createAsyncOptions
+  createAsyncOptions,
+  mergedOptionsProvider
 } from './redis.providers';
 import { RedisOptionsFactory, RedisModuleAsyncOptions, RedisClients, RedisModuleOptions } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.constants';
@@ -17,52 +17,47 @@ import { defaultRedisModuleOptions } from './default-options';
 
 jest.mock('ioredis', () => jest.fn(() => ({})));
 
-class RedisConfigService implements RedisOptionsFactory {
-  createRedisOptions(): RedisModuleOptions {
-    return {};
-  }
-}
-
 describe('createOptionsProvider', () => {
   test('should work correctly', () => {
     expect(createOptionsProvider({})).toEqual({
       provide: REDIS_OPTIONS,
-      useValue: { ...defaultRedisModuleOptions }
+      useValue: {}
     });
   });
 });
 
 describe('createAsyncProviders', () => {
-  test('should create providers with useFactory', () => {
+  class RedisConfigService implements RedisOptionsFactory {
+    createRedisOptions(): RedisModuleOptions {
+      return {};
+    }
+  }
+
+  test('with useFactory', () => {
     const result = createAsyncProviders({ useFactory: () => ({}), inject: [] });
-    expect(result).toHaveLength(2);
-    expect(result[0]).toHaveProperty('provide', REDIS_OPTIONS);
-    expect(result[0]).toHaveProperty('inject', [REDIS_MERGED_OPTIONS]);
-    expect((result[0] as FactoryProvider).useFactory({ closeClient: true })).toEqual({
-      ...defaultRedisModuleOptions,
-      closeClient: true
-    });
-    expect(result[1]).toHaveProperty('provide', REDIS_MERGED_OPTIONS);
-    expect(result[1]).toHaveProperty('inject', []);
+    expect(result).toHaveLength(1);
+    expect(result).toPartiallyContain({ provide: REDIS_OPTIONS, inject: [] });
+    expect(result[0]).toHaveProperty('useFactory');
   });
 
-  test('should create providers with useClass', () => {
+  test('with useClass', () => {
     const result = createAsyncProviders({ useClass: RedisConfigService });
     expect(result).toHaveLength(2);
-    expect(result[0]).toHaveProperty('provide', RedisConfigService);
-    expect(result[0]).toHaveProperty('useClass', RedisConfigService);
-    expect(result[1]).toHaveProperty('provide', REDIS_OPTIONS);
-    expect(result[1]).toHaveProperty('inject', [RedisConfigService]);
+    expect(result).toIncludeAllPartialMembers([
+      { provide: RedisConfigService, useClass: RedisConfigService },
+      { provide: REDIS_OPTIONS, inject: [RedisConfigService] }
+    ]);
+    expect(result[1]).toHaveProperty('useFactory');
   });
 
-  test('should create providers with useExisting', () => {
+  test('with useExisting', () => {
     const result = createAsyncProviders({ useExisting: RedisConfigService });
     expect(result).toHaveLength(1);
-    expect(result[0]).toHaveProperty('provide', REDIS_OPTIONS);
-    expect(result[0]).toHaveProperty('inject', [RedisConfigService]);
+    expect(result).toIncludeAllPartialMembers([{ provide: REDIS_OPTIONS, inject: [RedisConfigService] }]);
+    expect(result[0]).toHaveProperty('useFactory');
   });
 
-  test('should create providers without options', () => {
+  test('without options', () => {
     const result = createAsyncProviders({});
     expect(result).toHaveLength(0);
   });
@@ -75,63 +70,38 @@ describe('createAsyncOptions', () => {
         return { closeClient: true };
       }
     };
-    await expect(createAsyncOptions(redisConfigService)).resolves.toEqual({
-      ...defaultRedisModuleOptions,
-      closeClient: true
-    });
+    await expect(createAsyncOptions(redisConfigService)).resolves.toEqual({ closeClient: true });
   });
 });
 
 describe('createAsyncOptionsProvider', () => {
-  test('should create provider with useFactory', () => {
+  class RedisConfigService implements RedisOptionsFactory {
+    createRedisOptions(): RedisModuleOptions {
+      return {};
+    }
+  }
+
+  test('with useFactory', () => {
     const options: RedisModuleAsyncOptions = { useFactory: () => ({}), inject: ['token'] };
     expect(createAsyncOptionsProvider(options)).toEqual({ provide: REDIS_OPTIONS, ...options });
   });
 
-  test('should create provider with useClass', () => {
+  test('with useClass', () => {
     const options: RedisModuleAsyncOptions = { useClass: RedisConfigService };
     expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
     expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
     expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
   });
 
-  test('should create provider with useExisting', () => {
+  test('with useExisting', () => {
     const options: RedisModuleAsyncOptions = { useExisting: RedisConfigService };
     expect(createAsyncOptionsProvider(options)).toHaveProperty('provide', REDIS_OPTIONS);
     expect(createAsyncOptionsProvider(options)).toHaveProperty('useFactory');
     expect(createAsyncOptionsProvider(options)).toHaveProperty('inject', [RedisConfigService]);
   });
 
-  test('should create provider without options', () => {
+  test('without options', () => {
     expect(createAsyncOptionsProvider({})).toEqual({ provide: REDIS_OPTIONS, useValue: {} });
-  });
-});
-
-describe('redisClientsProvider', () => {
-  test('should be a dynamic module', () => {
-    expect(redisClientsProvider).toHaveProperty('provide', REDIS_CLIENTS);
-    expect(redisClientsProvider).toHaveProperty('useFactory');
-    expect(redisClientsProvider).toHaveProperty('inject', [REDIS_OPTIONS]);
-  });
-
-  test('with multiple clients', async () => {
-    const options: RedisModuleOptions = { config: [{}, { namespace: 'client1' }] };
-    const clients = await redisClientsProvider.useFactory(options);
-    expect(clients.size).toBe(2);
-  });
-
-  describe('with single client', () => {
-    test('with namespace', async () => {
-      const options: RedisModuleOptions = { config: { namespace: 'client1' } };
-      const clients = await redisClientsProvider.useFactory(options);
-      expect(clients.size).toBe(1);
-    });
-
-    test('without namespace', async () => {
-      const options: RedisModuleOptions = { config: {} };
-      const clients = await redisClientsProvider.useFactory(options);
-      expect(clients.size).toBe(1);
-    });
   });
 });
 
@@ -162,5 +132,47 @@ describe('createRedisClientProviders', () => {
   test('should work correctly', () => {
     expect(client1).toBeDefined();
     expect(client2).toBeDefined();
+  });
+});
+
+describe('redisClientsProvider', () => {
+  test('should be a dynamic module', () => {
+    expect(redisClientsProvider).toHaveProperty('provide', REDIS_CLIENTS);
+    expect(redisClientsProvider).toHaveProperty('useFactory');
+    expect(redisClientsProvider).toHaveProperty('inject', [REDIS_MERGED_OPTIONS]);
+  });
+
+  test('with multiple clients', async () => {
+    const options: RedisModuleOptions = { config: [{}, { namespace: 'client1' }] };
+    const clients = await redisClientsProvider.useFactory(options);
+    expect(clients.size).toBe(2);
+  });
+
+  describe('with single client', () => {
+    test('with namespace', async () => {
+      const options: RedisModuleOptions = { config: { namespace: 'client1' } };
+      const clients = await redisClientsProvider.useFactory(options);
+      expect(clients.size).toBe(1);
+    });
+
+    test('without namespace', async () => {
+      const options: RedisModuleOptions = { config: {} };
+      const clients = await redisClientsProvider.useFactory(options);
+      expect(clients.size).toBe(1);
+    });
+  });
+});
+
+describe('mergedOptionsProvider', () => {
+  test('should be a dynamic module', () => {
+    expect(mergedOptionsProvider).toHaveProperty('provide', REDIS_MERGED_OPTIONS);
+    expect(mergedOptionsProvider).toHaveProperty('useFactory');
+    expect(mergedOptionsProvider).toHaveProperty('inject', [REDIS_OPTIONS]);
+  });
+
+  test('should work correctly', async () => {
+    const options: RedisModuleOptions = { closeClient: false };
+    const mergedOptions = await mergedOptionsProvider.useFactory(options);
+    expect(mergedOptions).toEqual({ ...defaultRedisModuleOptions, closeClient: false });
   });
 });

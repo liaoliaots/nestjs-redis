@@ -74,8 +74,8 @@
         "<rootDir>/$1"
       ]
     },
-    "coverageReporters": [
-      "json-summary"
+    "setupFilesAfterEnv": [
+      "jest-extended/all"
     ]
   },
   "publishConfig": {
