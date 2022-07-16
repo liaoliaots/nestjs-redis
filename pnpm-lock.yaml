@@ -28,7 +28,9 @@ importers:
       jest-extended: 3.0.1
       lint-staged: 13.0.3
       prettier: 2.7.1
+      reflect-metadata: 0.1.13
       rimraf: 3.0.2
+      rxjs: 7.5.6
       ts-jest: 28.0.6
       tsc-alias: 1.6.11
       typescript: 4.7.4
@@ -57,7 +59,9 @@ importers:
       jest-extended: 3.0.1_jest@28.1.3
       lint-staged: 13.0.3
       prettier: 2.7.1
+      reflect-metadata: 0.1.13
       rimraf: 3.0.2
+      rxjs: 7.5.6
       ts-jest: 28.0.6_k6golhwauqch3cid7i46v6vltm
       tsc-alias: 1.6.11
       typescript: 4.7.4
@@ -1614,7 +1618,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001367
-      electron-to-chromium: 1.4.191
+      electron-to-chromium: 1.4.192
       node-releases: 2.0.6
       update-browserslist-db: 1.0.4_browserslist@4.21.2
     dev: true
@@ -1999,8 +2003,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium/1.4.191:
-    resolution: {integrity: sha512-MeEaiuoSFh4G+rrN+Ilm1KJr8pTTZloeLurcZ+PRcthvdK1gWThje+E6baL7/7LoNctrzCncavAG/j/vpES9jg==}
+  /electron-to-chromium/1.4.192:
+    resolution: {integrity: sha512-8nCXyIQY9An88NXAp+PuPy5h3/w5ZY7Iu2lag65Q0XREprcat5F8gKhoHsBUnQcFuCRnmevpR8yEBYRU3d2HDw==}
     dev: true
 
   /emittery/0.10.2:
