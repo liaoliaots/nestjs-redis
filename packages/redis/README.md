@@ -12,7 +12,7 @@
 </p>
 
 <div align="center">
-  <h1 align="center">NestJS Redis Module</h1>
+  <h1 align="center">Nest Redis Module</h1>
 
   <p align="center">
     Redis(ioredis) module for Nest framework (node.js).
@@ -67,9 +67,9 @@
 
 ### Test coverage
 
-| Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
+| Statements                                                                                                | Branches                                                                                              | Functions                                                                                               | Lines                                                                                           |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square&logo=jest) |
 
 ## Getting Started
 

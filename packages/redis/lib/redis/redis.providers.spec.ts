@@ -66,7 +66,7 @@ describe('createAsyncProviders', () => {
 describe('createAsyncOptions', () => {
   test('should work correctly', async () => {
     const redisConfigService: RedisOptionsFactory = {
-      createRedisOptions() {
+      createRedisOptions(): RedisModuleOptions {
         return { closeClient: true };
       }
     };

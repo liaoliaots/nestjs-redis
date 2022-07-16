@@ -5,7 +5,7 @@ import {
   CLUSTER_OPTIONS,
   CLUSTER_CLIENTS,
   DEFAULT_CLUSTER_NAMESPACE,
-  CLUSTER_INTERNAL_OPTIONS
+  CLUSTER_MERGED_OPTIONS
 } from './cluster.constants';
 import { createClient, namespaces } from './common';
 import { ClusterManager } from './cluster-manager';
@@ -13,23 +13,10 @@ import { defaultClusterModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
   provide: CLUSTER_OPTIONS,
-  useValue: { ...defaultClusterModuleOptions, ...options }
+  useValue: options
 });
 
 export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provider[] => {
-  if (options.useFactory) {
-    return [
-      {
-        provide: CLUSTER_OPTIONS,
-        useFactory(options: ClusterModuleOptions) {
-          return { ...defaultClusterModuleOptions, ...options };
-        },
-        inject: [CLUSTER_INTERNAL_OPTIONS]
-      },
-      createAsyncOptionsProvider(options)
-    ];
-  }
-
   if (options.useClass) {
     return [
       {
@@ -40,20 +27,19 @@ export const createAsyncProviders = (options: ClusterModuleAsyncOptions): Provid
     ];
   }
 
-  if (options.useExisting) return [createAsyncOptionsProvider(options)];
+  if (options.useExisting || options.useFactory) return [createAsyncOptionsProvider(options)];
 
   return [];
 };
 
 export const createAsyncOptions = async (optionsFactory: ClusterOptionsFactory): Promise<ClusterModuleOptions> => {
-  const options = await optionsFactory.createClusterOptions();
-  return { ...defaultClusterModuleOptions, ...options };
+  return await optionsFactory.createClusterOptions();
 };
 
 export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): Provider => {
   if (options.useFactory) {
     return {
-      provide: CLUSTER_INTERNAL_OPTIONS,
+      provide: CLUSTER_OPTIONS,
       useFactory: options.useFactory,
       inject: options.inject
     };
@@ -81,6 +67,18 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
   };
 };
 
+export const createClusterClientProviders = (): FactoryProvider<Cluster>[] => {
+  const providers: FactoryProvider<Cluster>[] = [];
+  namespaces.forEach((token, namespace) => {
+    providers.push({
+      provide: token,
+      useFactory: (clusterManager: ClusterManager) => clusterManager.getClient(namespace),
+      inject: [ClusterManager]
+    });
+  });
+  return providers;
+};
+
 export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
   provide: CLUSTER_CLIENTS,
   useFactory: (options: ClusterModuleOptions) => {
@@ -94,17 +92,11 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
     }
     return clients;
   },
-  inject: [CLUSTER_OPTIONS]
+  inject: [CLUSTER_MERGED_OPTIONS]
 };
 
-export const createClusterClientProviders = (): FactoryProvider<Cluster>[] => {
-  const providers: FactoryProvider<Cluster>[] = [];
-  namespaces.forEach((token, namespace) => {
-    providers.push({
-      provide: token,
-      useFactory: (clusterManager: ClusterManager) => clusterManager.getClient(namespace),
-      inject: [ClusterManager]
-    });
-  });
-  return providers;
+export const mergedOptionsProvider: FactoryProvider<ClusterModuleOptions> = {
+  provide: CLUSTER_MERGED_OPTIONS,
+  useFactory: (options: ClusterModuleOptions) => ({ ...defaultClusterModuleOptions, ...options }),
+  inject: [CLUSTER_OPTIONS]
 };

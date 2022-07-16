@@ -5,7 +5,8 @@ import {
   createOptionsProvider,
   createAsyncProviders,
   createClusterClientProviders,
-  clusterClientsProvider
+  clusterClientsProvider,
+  mergedOptionsProvider
 } from './cluster.providers';
 import { CLUSTER_OPTIONS, CLUSTER_CLIENTS } from './cluster.constants';
 import { destroy } from './common';
@@ -32,6 +33,7 @@ export class ClusterModule implements OnApplicationShutdown {
     const providers: Provider[] = [
       createOptionsProvider(options),
       clusterClientsProvider,
+      mergedOptionsProvider,
       ClusterManager,
       ...clusterClientProviders
     ];
@@ -56,6 +58,7 @@ export class ClusterModule implements OnApplicationShutdown {
     const providers: Provider[] = [
       ...createAsyncProviders(options),
       clusterClientsProvider,
+      mergedOptionsProvider,
       ClusterManager,
       ...clusterClientProviders,
       ...(options.extraProviders ?? [])

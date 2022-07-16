@@ -1,6 +1,6 @@
 export const CLUSTER_OPTIONS = Symbol();
 
-export const CLUSTER_INTERNAL_OPTIONS = Symbol();
+export const CLUSTER_MERGED_OPTIONS = Symbol();
 
 export const CLUSTER_CLIENTS = Symbol();
 

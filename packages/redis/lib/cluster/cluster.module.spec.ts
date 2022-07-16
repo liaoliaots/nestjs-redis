@@ -10,96 +10,71 @@ jest.mock('./cluster-logger', () => ({
   }
 }));
 
-const mockDestroy = destroy as jest.MockedFunction<typeof destroy>;
+describe('forRoot', () => {
+  test('should work correctly', () => {
+    const module = ClusterModule.forRoot({ config: { nodes: [] } });
+    expect(module.global).toBe(true);
+    expect(module.module).toBe(ClusterModule);
+    expect(module.providers?.length).toBeGreaterThanOrEqual(4);
+    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
+  });
+});
 
-describe('ClusterModule', () => {
-  describe('forRoot', () => {
-    test('should work correctly', () => {
-      const module = ClusterModule.forRoot({ config: { nodes: [] } });
-      expect(module.global).toBe(true);
-      expect(module.module).toBe(ClusterModule);
-      expect(module.providers?.length).toBeGreaterThanOrEqual(3);
-      expect(module.exports?.length).toBeGreaterThanOrEqual(1);
-    });
+describe('forRootAsync', () => {
+  test('should work correctly', () => {
+    const options: ClusterModuleAsyncOptions = {
+      imports: [],
+      useFactory: () => ({ config: { nodes: [] } }),
+      inject: [],
+      extraProviders: [{ provide: '', useValue: '' }]
+    };
+    const module = ClusterModule.forRootAsync(options);
+    expect(module.global).toBe(true);
+    expect(module.module).toBe(ClusterModule);
+    expect(module.imports).toBeArray();
+    expect(module.providers?.length).toBeGreaterThanOrEqual(5);
+    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
   });
 
-  describe('forRootAsync', () => {
-    test('should work correctly', () => {
-      const options: ClusterModuleAsyncOptions = {
-        imports: [],
-        useFactory: () => ({ config: { nodes: [] } }),
-        inject: []
-      };
-      const module = ClusterModule.forRootAsync(options);
-      expect(module.global).toBe(true);
-      expect(module.module).toBe(ClusterModule);
-      expect(module.imports?.length).toBe(0);
-      expect(module.providers?.length).toBeGreaterThanOrEqual(3);
-      expect(module.exports?.length).toBeGreaterThanOrEqual(1);
-    });
-
-    test('should work correctly with extraProviders', () => {
-      const options: ClusterModuleAsyncOptions = {
-        useFactory: () => ({ config: { nodes: [] } }),
-        extraProviders: [{ provide: '', useValue: '' }]
-      };
-      const module = ClusterModule.forRootAsync(options);
-      expect(module.providers?.length).toBeGreaterThanOrEqual(4);
-    });
-
-    test('should throw an error', () => {
-      expect(() => ClusterModule.forRootAsync({})).toThrow();
-    });
+  test('without extraProviders', () => {
+    const options: ClusterModuleAsyncOptions = {
+      imports: [],
+      useFactory: () => ({ config: { nodes: [] } }),
+      inject: []
+    };
+    const module = ClusterModule.forRootAsync(options);
+    expect(module.global).toBe(true);
+    expect(module.module).toBe(ClusterModule);
+    expect(module.imports).toBeArray();
+    expect(module.providers?.length).toBeGreaterThanOrEqual(4);
+    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
   });
 
-  describe('onApplicationShutdown', () => {
-    beforeEach(() => {
-      mockDestroy.mockReset();
-      jest.spyOn(logger, 'error').mockReset();
-    });
+  test('should throw an error', () => {
+    expect(() => ClusterModule.forRootAsync({})).toThrow();
+  });
+});
 
-    test('should call quitClients', async () => {
-      mockDestroy.mockResolvedValue([]);
+describe('onApplicationShutdown', () => {
+  const mockDestroy = destroy as jest.MockedFunction<typeof destroy>;
+  const mockError = jest.spyOn(logger, 'error');
 
-      const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
-      await module.onApplicationShutdown();
-      expect(mockDestroy).toHaveBeenCalledTimes(1);
-    });
+  beforeEach(() => {
+    mockDestroy.mockClear();
+    mockError.mockClear();
+  });
 
-    test('should not call quitClients', async () => {
-      mockDestroy.mockResolvedValue([]);
+  test('should be invoked', async () => {
+    mockDestroy.mockResolvedValue([
+      [
+        { status: 'fulfilled', value: '' },
+        { status: 'rejected', reason: new Error('') }
+      ]
+    ]);
 
-      const module = new ClusterModule({ closeClient: false, config: { nodes: [] } }, new Map());
-      await module.onApplicationShutdown();
-      expect(mockDestroy).toHaveBeenCalledTimes(0);
-    });
-
-    test('should call logger.error', async () => {
-      const mockError = jest.spyOn(logger, 'error');
-      mockDestroy.mockResolvedValue([
-        [
-          { status: 'fulfilled', value: '' },
-          { status: 'rejected', reason: new Error('') }
-        ]
-      ]);
-
-      const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
-      await module.onApplicationShutdown();
-      expect(mockError).toHaveBeenCalledTimes(1);
-    });
-
-    test('should not call logger.error', async () => {
-      const mockError = jest.spyOn(logger, 'error');
-      mockDestroy.mockResolvedValue([
-        [
-          { status: 'fulfilled', value: '' },
-          { status: 'fulfilled', value: 'OK' }
-        ]
-      ]);
-
-      const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
-      await module.onApplicationShutdown();
-      expect(mockError).toHaveBeenCalledTimes(0);
-    });
+    const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
+    await module.onApplicationShutdown();
+    expect(mockDestroy).toHaveBeenCalledTimes(1);
+    expect(mockError).toHaveBeenCalledTimes(1);
   });
 });

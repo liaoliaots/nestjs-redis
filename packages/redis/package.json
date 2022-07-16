@@ -32,8 +32,8 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:clear": "jest --clearCache",
-    "make-badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"../../\" --style=\"flat-square\" --logo=\"jest\"",
-    "madge": "madge --image docs/latest/dependency-graph.svg dist/index.js health/index.js",
+    "make-badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"./\" --style=\"flat-square\" --logo=\"jest\"",
+    "madge": "madge --image ../../docs/latest/dependency-graph.svg dist/index.js",
     "publish:next": "npm publish --tag next",
     "publish:rc": "npm publish --tag rc"
   },
