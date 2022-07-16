@@ -60,7 +60,7 @@
 
 - **Both redis & cluster are supported**: You can also specify multiple instances.
 - **Health**: Checks health of **redis & cluster** server.
-- **Rigorously tested**: With 130+ tests and 100% code coverage.
+- **Rigorously tested**: With 100+ tests and 100% code coverage.
 - **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
 - **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
 - **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
@@ -75,9 +75,10 @@
 
 ### Prerequisites
 
-This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**.
+This lib requires **Node.js >=12.22.0**, **NestJS ^9**, **ioredis ^5**.
 
-- If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+- If you depend on **ioredis 4**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+- If you depend on **NestJS ^7** or **^8**, please use [version 8](https://github.com/liaoliaots/nestjs-redis/tree/v8.2.2) of the lib.
 
 ### Installation
 
@@ -86,6 +87,8 @@ This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**
 npm install --save @liaoliaots/nestjs-redis ioredis
 # with yarn
 yarn add @liaoliaots/nestjs-redis ioredis
+# with pnpm
+pnpm add @liaoliaots/nestjs-redis ioredis
 ```
 
 ## Usage
@@ -101,9 +104,8 @@ yarn add @liaoliaots/nestjs-redis ioredis
   - [Configuration](docs/latest/cluster.md#configuration)
   - [Testing](docs/latest/cluster.md#testing)
   - [Non-Global](docs/latest/cluster.md#non-global)
-- [Health Checks](docs/latest/health-checks.md)
-  - [Usage](docs/latest/health-checks.md)
-  - [Settings](docs/latest/health-checks.md#settings)
+- [Circular dependency](#circular-dependency)
+- [Health Checks](packages/redis-health/README.md)
 - [Examples](docs/latest/examples.md)
   - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
 
@@ -112,10 +114,15 @@ yarn add @liaoliaots/nestjs-redis ioredis
 - version 5, [click here](docs/v5)
 - version 6, [click here](docs/v6)
 - version 7, [click here](docs/v7)
+- version 8, [click here](docs/v8)
+
+### Circular dependency
+
+> WARNING: A circular dependency might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
 
 ## Roadmap
 
-- [ ] Compatible with **NestJS ^9**
+- [x] Compatible with **NestJS ^9**
 
 ## Contributing
 
@@ -137,8 +144,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Acknowledgments
 
 - [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
-- [Redis documentation](https://redis.io/)
-- [Redis docker image](https://hub.docker.com/_/redis)
+- [Redis Documentation](https://redis.io/)
+- [Redis Docker Official Image](https://hub.docker.com/_/redis)
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
