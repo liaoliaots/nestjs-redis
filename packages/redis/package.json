@@ -27,7 +27,7 @@
     "lint": "concurrently \"npm:lint:es\" \"npm:lint:tsc\"",
     "lint:es": "eslint \"{lib,test}/**/*.ts\"",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "test": "jest ./lib/redis/redis.providers.spec.ts",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",

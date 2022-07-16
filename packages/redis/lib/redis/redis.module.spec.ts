@@ -36,6 +36,20 @@ describe('forRootAsync', () => {
     expect(module.exports?.length).toBeGreaterThanOrEqual(1);
   });
 
+  test('without extraProviders', () => {
+    const options: RedisModuleAsyncOptions = {
+      imports: [],
+      useFactory: () => ({}),
+      inject: []
+    };
+    const module = RedisModule.forRootAsync(options);
+    expect(module.global).toBe(true);
+    expect(module.module).toBe(RedisModule);
+    expect(module.imports).toBeArray();
+    expect(module.providers?.length).toBeGreaterThanOrEqual(4);
+    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
+  });
+
   test('should throw an error', () => {
     expect(() => RedisModule.forRootAsync({})).toThrow();
   });
