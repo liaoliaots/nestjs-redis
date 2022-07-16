@@ -9,6 +9,7 @@ importers:
       '@nestjs/common': 9.0.3
       '@nestjs/core': 9.0.3
       '@nestjs/platform-fastify': 9.0.3
+      '@nestjs/terminus': 9.0.0
       '@nestjs/testing': 9.0.3
       '@types/jest': 28.1.6
       '@types/node': 16.11.45
@@ -40,6 +41,7 @@ importers:
       '@nestjs/common': 9.0.3_j5hagqx4mwzscud4kyjdvubauy
       '@nestjs/core': 9.0.3_juuodvksmdkbuombvw4ic54spm
       '@nestjs/platform-fastify': 9.0.3_2loxls3fbqb44dvsophl4n3naa
+      '@nestjs/terminus': 9.0.0_33mrpcfda32jyo6ciawkgxnbha
       '@nestjs/testing': 9.0.3_2loxls3fbqb44dvsophl4n3naa
       '@types/jest': 28.1.6
       '@types/node': 16.11.45
@@ -75,13 +77,11 @@ importers:
   packages/redis-health:
     specifiers:
       '@liaoliaots/nestjs-redis': workspace:*
-      '@nestjs/terminus': 9.0.0
       tslib: 2.4.0
     dependencies:
       tslib: 2.4.0
     devDependencies:
       '@liaoliaots/nestjs-redis': link:../redis
-      '@nestjs/terminus': 9.0.0_33mrpcfda32jyo6ciawkgxnbha
 
 packages:
 

@@ -76,6 +76,9 @@
     },
     "setupFilesAfterEnv": [
       "jest-extended/all"
+    ],
+    "coverageReporters": [
+      "json-summary"
     ]
   },
   "publishConfig": {
