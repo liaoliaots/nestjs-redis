@@ -1,5 +1,5 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
-import { Redis } from 'ioredis';
+import type { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_MERGED_OPTIONS } from './redis.constants';
 import { createClient, namespaces } from './common';
@@ -82,11 +82,17 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
       options.config.forEach(item =>
         clients.set(
           item.namespace ?? DEFAULT_REDIS_NAMESPACE,
-          createClient({ ...options.commonOptions, ...item }, options)
+          createClient(
+            { ...options.commonOptions, ...item },
+            { readyLog: options.readyLog, errorLog: options.errorLog }
+          )
         )
       );
     } else if (options.config) {
-      clients.set(options.config.namespace ?? DEFAULT_REDIS_NAMESPACE, createClient(options.config, options));
+      clients.set(
+        options.config.namespace ?? DEFAULT_REDIS_NAMESPACE,
+        createClient(options.config, { readyLog: options.readyLog, errorLog: options.errorLog })
+      );
     }
     return clients;
   },

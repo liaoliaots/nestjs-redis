@@ -173,6 +173,6 @@ describe('mergedOptionsProvider', () => {
   test('should work correctly', async () => {
     const options: RedisModuleOptions = { closeClient: false };
     const mergedOptions = await mergedOptionsProvider.useFactory(options);
-    expect(mergedOptions).toEqual({ ...defaultRedisModuleOptions, closeClient: false });
+    expect(mergedOptions).toEqual({ ...defaultRedisModuleOptions, ...options });
   });
 });

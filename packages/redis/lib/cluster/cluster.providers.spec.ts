@@ -69,10 +69,13 @@ describe('createAsyncOptions', () => {
   test('should work correctly', async () => {
     const clusterConfigService: ClusterOptionsFactory = {
       createClusterOptions(): ClusterModuleOptions {
-        return { config: { nodes: [] } };
+        return { closeClient: true, config: { nodes: [] } };
       }
     };
-    await expect(createAsyncOptions(clusterConfigService)).resolves.toEqual({ config: { nodes: [] } });
+    await expect(createAsyncOptions(clusterConfigService)).resolves.toEqual({
+      closeClient: true,
+      config: { nodes: [] }
+    });
   });
 });
 
@@ -107,7 +110,7 @@ describe('createAsyncOptionsProvider', () => {
   });
 });
 
-describe('createRedisClientProviders', () => {
+describe('createClusterClientProviders', () => {
   let clients: ClusterClients;
   let client1: Cluster;
   let client2: Cluster;

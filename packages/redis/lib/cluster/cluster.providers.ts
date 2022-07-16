@@ -85,10 +85,16 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
     const clients: ClusterClients = new Map();
     if (Array.isArray(options.config)) {
       options.config.forEach(item =>
-        clients.set(item.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(item, options))
+        clients.set(
+          item.namespace ?? DEFAULT_CLUSTER_NAMESPACE,
+          createClient(item, { readyLog: options.readyLog, errorLog: options.errorLog })
+        )
       );
     } else if (options.config) {
-      clients.set(options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE, createClient(options.config, options));
+      clients.set(
+        options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE,
+        createClient(options.config, { readyLog: options.readyLog, errorLog: options.errorLog })
+      );
     }
     return clients;
   },
