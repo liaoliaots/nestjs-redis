@@ -85,7 +85,7 @@ export class AppService {
 | namespace              | `string` \| `symbol`                                             | `'default'` | `false`  | Client name. If client name is not given then it will be called "default". Different clients must have different names. You can import `DEFAULT_CLUSTER_NAMESPACE` to use it. |
 | nodes                  | `{ host?: string; port?: number }[]` \| `string[]` \| `number[]` | `undefined` | `true`   | List of cluster nodes.                                                                                                                                                        |
 | onClientCreated        | `function`                                                       | `undefined` | `false`  | Function to be executed as soon as the client is created.                                                                                                                     |
-| **...** ClusterOptions | `ClusterOptions`                                                 | -           | `false`  | Extends from [ClusterOptions](https://luin.github.io/ioredis/interfaces/ClusterOptions.html).                                                                                 |
+| **...** ClusterOptions | `ClusterOptions`                                                 | -           | `false`  | Inherits from [ClusterOptions](https://luin.github.io/ioredis/interfaces/ClusterOptions.html).                                                                                |
 
 ### Asynchronous configuration
 
@@ -289,7 +289,7 @@ export class AppModule {}
 
 ### onClientCreated
 
-For example, we can listen to the error event of the cluster client.
+For example, we can listen to some events of the cluster instance.
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -314,7 +314,7 @@ export class AppModule {}
 
 ### Non-Global
 
-By default, the `ClusterModule` is a **Global module**, `ClusterService` and all redis instances are registered in the global scope. Once defined, they're available everywhere.
+By default, the `ClusterModule` is a **Global module**, `ClusterService` and all cluster instances are registered in the global scope. Once defined, they're available everywhere.
 
 You can change this behavior by `isGlobal` parameter:
 
@@ -329,7 +329,6 @@ import { CatsController } from './cats.controller';
   imports: [
     ClusterModule.forRoot(
       {
-        readyLog: true,
         config: {
           nodes: [{ host: 'localhost', port: 16380 }],
           redisOptions: { password: 'authpassword' }

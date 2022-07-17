@@ -46,7 +46,6 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#settings">Settings</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
     <li><a href="./dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
@@ -171,10 +170,6 @@ export class AppController {
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-## Acknowledgments
-
-- [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis-health/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis-health
