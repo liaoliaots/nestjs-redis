@@ -66,7 +66,7 @@ export class AppService {
 
 > HINT: By default, the `RedisModule` is a [**Global module**](https://docs.nestjs.com/modules#global-modules).
 
-> HINT: If you don't set the `namespace` for a client, its namespace is set to `"default"`. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
+> HINT: If you don't set the `namespace` for an instance, its namespace is set to `"default"`. Please note that you shouldn't have multiple client without a namespace, or with the same namespace, otherwise they will get overridden.
 
 ### Use with other libs
 
@@ -100,7 +100,7 @@ export class AppModule {}
 
 ## Configuration
 
-### [RedisModuleOptions](https://github.com/liaoliaots/nestjs-redis/blob/main/packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
+### [RedisModuleOptions](../../packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
 
 | Name          | Type                                                                   | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
 | ------------- | ---------------------------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
