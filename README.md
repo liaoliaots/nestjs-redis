@@ -78,7 +78,7 @@
 This lib requires **Node.js >=12.22.0**, **NestJS ^9.0.0**, **ioredis ^5.0.0**.
 
 - If you depend on **ioredis 4**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
-- If you depend on **NestJS 7** or **8**, please use [version 8](https://github.com/liaoliaots/nestjs-redis/tree/v8.2.2) of the lib.
+- If you depend on **ioredis 5**, **NestJS 7** or **8**, please use [version 8](https://github.com/liaoliaots/nestjs-redis/tree/v8.2.2) of the lib.
 
 ### Installation
 
@@ -99,7 +99,7 @@ pnpm add @liaoliaots/nestjs-redis ioredis
   - [Testing](docs/latest/redis.md#testing)
   - [Non-Global](docs/latest/redis.md#non-global)
   - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
-  - [Auto-reconnect](https://github.com/luin/ioredis#auto-reconnect)
+  - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/CommonRedisOptions.html#retryStrategy)
 - [Cluster](docs/latest/cluster.md)
   - [Usage](docs/latest/cluster.md)
   - [Configuration](docs/latest/cluster.md#configuration)
@@ -113,12 +113,10 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 ### Legacy
 
-- version 5, [click here](docs/v5)
-- version 6, [click here](docs/v6)
 - version 7, [click here](docs/v7)
 - version 8, [click here](docs/v8)
 
-### Circular dependency
+### Circular dependency ⚠️
 
 > WARNING: [A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
 
