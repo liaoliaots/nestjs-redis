@@ -424,7 +424,7 @@ export class AppModule {}
 
 By default, the `RedisModule` is a **Global module**, `RedisService` and all redis instances are registered in the global scope. Once defined, they're available everywhere.
 
-You can change this behavior by modifying `isGlobal` parameter:
+You can change this behavior by `isGlobal` parameter:
 
 ```ts
 // cats.module.ts
