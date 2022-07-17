@@ -1,7 +1,7 @@
 import type { Redis, Cluster } from 'ioredis';
 
 /**
- * The settings for redis/cluster check.
+ * The settings for redis/cluster checks.
  *
  * @public
  */

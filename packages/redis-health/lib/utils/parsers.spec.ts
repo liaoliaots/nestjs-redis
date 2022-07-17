@@ -16,4 +16,9 @@ describe('parseUsedMemory', () => {
     const info = '# Memory used_memory:102400 used_memory_human:100K';
     expect(parseUsedMemory(info)).toBe(102400);
   });
+
+  test('should return 0 if not found', () => {
+    const info = '# Memory used_memory:102400';
+    expect(parseUsedMemory(info)).toBe(0);
+  });
 });

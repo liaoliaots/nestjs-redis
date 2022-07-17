@@ -1,17 +1,12 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { HealthIndicator, HealthIndicatorResult, HealthCheckError } from '@nestjs/terminus';
-import {
-  FAILED_CLUSTER_STATE,
-  CANNOT_BE_READ,
-  NOT_RESPONSIVE,
-  ABNORMALLY_MEMORY_USAGE,
-  MISSING_TYPE,
-  INVALID_TYPE
-} from '@health/messages';
+import { FAILED_CLUSTER_STATE, CANNOT_BE_READ, ABNORMALLY_MEMORY_USAGE, INVALID_TYPE } from '@health/messages';
 import { promiseTimeout, removeLineBreaks, parseUsedMemory, isNullish } from '@health/utils';
 import { RedisCheckSettings } from './redis-check-settings.interface';
 
 /**
+ * The RedisHealthIndicator is used for health checks related to redis.
+ *
  * @public
  */
 @Injectable({ scope: Scope.TRANSIENT })
@@ -26,25 +21,23 @@ export class RedisHealthIndicator extends HealthIndicator {
     const { type, client } = options;
     let isHealthy = false;
 
+    if (type !== 'redis' && type !== 'cluster') throw new Error(INVALID_TYPE);
+
     try {
-      if (!type) throw new Error(MISSING_TYPE);
-
       if (type === 'redis') {
-        const pong = await promiseTimeout(options.timeout ?? 1000, client.ping());
-        if (pong !== 'PONG') throw new Error(NOT_RESPONSIVE);
-
+        await promiseTimeout(options.timeout ?? 1000, client.ping());
         if (!isNullish(options.memoryThreshold)) {
           const info = await client.info('memory');
           if (parseUsedMemory(removeLineBreaks(info)) > options.memoryThreshold) {
             throw new Error(ABNORMALLY_MEMORY_USAGE);
           }
         }
-      } else if (type === 'cluster') {
+      } else {
         const clusterInfo = await client.cluster('INFO');
         if (typeof clusterInfo === 'string') {
           if (!clusterInfo.includes('cluster_state:ok')) throw new Error(FAILED_CLUSTER_STATE);
         } else throw new Error(CANNOT_BE_READ);
-      } else throw new Error(INVALID_TYPE);
+      }
 
       isHealthy = true;
     } catch (e) {
