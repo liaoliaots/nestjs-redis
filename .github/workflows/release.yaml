@@ -18,6 +18,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r lint
       - run: pnpm -r build
-      - run: pnpm -r publish --dry-run
+      - run: pnpm -r publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
