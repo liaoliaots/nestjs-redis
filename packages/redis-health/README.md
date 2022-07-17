@@ -44,10 +44,10 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#settings">Settings</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="docs/latest/dependency-graph.svg">Package dependency overview</a></li>
+    <li><a href="./dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -57,7 +57,7 @@
 
 - **Both redis & cluster are supported**.
 - **Health**: Checks health of **redis & cluster** server.
-- **Rigorously tested**: With 100+ tests and 100% code coverage.
+- **Rigorously tested**: With 20+ tests and 100% code coverage.
 
 ### Test coverage
 
@@ -148,7 +148,7 @@ export class AppController {
 
 > INFO: Read more about `@nestjs/terminus` [here](https://docs.nestjs.com/recipes/terminus).
 
-> HINT: Both `TerminusModule` nor `RedisHealthModule` are not global modules.
+> HINT: Both `TerminusModule` and `RedisHealthModule` are not global modules.
 
 ## Settings
 
@@ -167,19 +167,6 @@ export class AppController {
 | ------ | ----------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
 | type   | `'cluster'` | `undefined` | `true`   | Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". |
 | client | `Cluster`   | `undefined` | `true`   | The client which the health check should get executed.                                                |
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 

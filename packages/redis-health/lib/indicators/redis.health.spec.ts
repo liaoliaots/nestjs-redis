@@ -1,14 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import Redis, { Cluster } from 'ioredis';
 import { RedisHealthIndicator } from './redis.health';
-import {
-  FAILED_CLUSTER_STATE,
-  CANNOT_BE_READ,
-  NOT_RESPONSIVE,
-  ABNORMALLY_MEMORY_USAGE,
-  MISSING_TYPE,
-  OPERATIONS_TIMEOUT
-} from '@health/messages';
+import { FAILED_CLUSTER_STATE, CANNOT_BE_READ, ABNORMALLY_MEMORY_USAGE, OPERATIONS_TIMEOUT } from '@health/messages';
 
 const mockPing = jest.fn();
 const mockInfo = jest.fn();
@@ -38,11 +31,6 @@ describe('RedisHealthIndicator', () => {
 
     const module: TestingModule = await Test.createTestingModule({ providers: [RedisHealthIndicator] }).compile();
     indicator = await module.resolve<RedisHealthIndicator>(RedisHealthIndicator);
-  });
-
-  test('should throw an error if the argument `type` is not defined', async () => {
-    const type = undefined as unknown as 'redis';
-    await expect(indicator.checkHealth('', { type, client: redis })).rejects.toThrow(MISSING_TYPE);
   });
 
   describe('redis', () => {
@@ -87,12 +75,6 @@ describe('RedisHealthIndicator', () => {
       const promise = indicator.checkHealth('', { type: 'redis', client: redis });
       jest.runAllTimers();
       await expect(promise).rejects.toThrow(OPERATIONS_TIMEOUT(1000));
-    });
-
-    test('should throw an error if the result of ping is not PONG', async () => {
-      jest.spyOn(redis, 'ping').mockResolvedValue('');
-
-      await expect(indicator.checkHealth('', { type: 'redis', client: redis })).rejects.toThrow(NOT_RESPONSIVE);
     });
 
     test('should throw an error if used memory is greater than threshold', async () => {

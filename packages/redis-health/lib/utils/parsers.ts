@@ -15,5 +15,6 @@ export const removeLineBreaks = (text: string): string => {
 export const parseUsedMemory = (info: string): number => {
   const start = info.indexOf('used_memory');
   const end = info.indexOf('used_memory_human') - 1;
+  if (start < 0 || end < 0) return 0;
   return Number.parseInt(info.slice(start, end).split(':')[1], 10);
 };
