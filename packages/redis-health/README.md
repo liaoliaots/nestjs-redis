@@ -12,16 +12,14 @@
 </p>
 
 <div align="center">
-  <h1 align="center">NestJS Redis Module</h1>
+  <h1 align="center">Nest Redis Health Module</h1>
 
   <p align="center">
-    Redis(ioredis) module for Nest framework (node.js).
+    Redis(ioredis) health checks module for Nest framework (node.js).
     <br />
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="sample">View Demo</a>
-    ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Request Feature</a>
@@ -46,7 +44,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -58,64 +55,118 @@
 
 ### Features
 
-- **Both redis & cluster are supported**: You can also specify multiple instances.
+- **Both redis & cluster are supported**.
 - **Health**: Checks health of **redis & cluster** server.
-- **Rigorously tested**: With 130+ tests and 100% code coverage.
-- **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
-- **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
-- **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
+- **Rigorously tested**: With 100+ tests and 100% code coverage.
 
 ### Test coverage
 
-| Statements                                                                                      | Branches                                                                                    | Functions                                                                                     | Lines                                                                                 |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square) |
+| Statements                                                                                                | Branches                                                                                              | Functions                                                                                               | Lines                                                                                           |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat-square&logo=jest) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat-square&logo=jest) |
 
 ## Getting Started
 
 ### Prerequisites
 
-This lib requires **Node.js >=12.22.0**, **NestJS ^7** or **^8**, **ioredis ^5**.
-
-- If you depend on ioredis 4, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+This lib requires **Node.js >=12.22.0**, **NestJS ^9.0.0**, **ioredis ^5.0.0**.
 
 ### Installation
 
 ```sh
 # with npm
-npm install --save @liaoliaots/nestjs-redis ioredis
+npm install @nestjs/terminus @liaoliaots/nestjs-redis-health ioredis
 # with yarn
-yarn add @liaoliaots/nestjs-redis ioredis
+yarn add @nestjs/terminus @liaoliaots/nestjs-redis-health ioredis
+# with pnpm
+pnpm add @nestjs/terminus @liaoliaots/nestjs-redis-health ioredis
 ```
 
 ## Usage
 
-- [Redis](docs/latest/redis.md)
-  - [Usage](docs/latest/redis.md)
-  - [Configuration](docs/latest/redis.md#configuration)
-  - [Testing](docs/latest/redis.md#testing)
-  - [Non-Global](docs/latest/redis.md#non-global)
-  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
-- [Cluster](docs/latest/cluster.md)
-  - [Usage](docs/latest/cluster.md)
-  - [Configuration](docs/latest/cluster.md#configuration)
-  - [Testing](docs/latest/cluster.md#testing)
-  - [Non-Global](docs/latest/cluster.md#non-global)
-- [Health Checks](docs/latest/health-checks.md)
-  - [Usage](docs/latest/health-checks.md)
-  - [Settings](docs/latest/health-checks.md#settings)
-- [Examples](docs/latest/examples.md)
-  - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+**1**, import `TerminusModule` and `RedisHealthModule` into the imports array:
 
-### Legacy
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { TerminusModule } from '@nestjs/terminus';
+import { RedisHealthModule } from '@liaoliaots/nestjs-redis-health';
+import { AppController } from './app.controller';
 
-- version 5, [click here](docs/v5)
-- version 6, [click here](docs/v6)
-- version 7, [click here](docs/v7)
+@Module({
+  imports: [TerminusModule, RedisHealthModule],
+  controllers: [AppController]
+})
+export class AppModule {}
+```
 
-## Roadmap
+**2**, let's setup `AppController`:
 
-- [ ] Compatible with **NestJS ^9**
+```ts
+// app.controller.ts
+import { Controller, Get } from '@nestjs/common';
+import { HealthCheckService, HealthCheck, HealthCheckResult } from '@nestjs/terminus';
+import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
+import Redis from 'ioredis';
+
+@Controller()
+export class AppController {
+  private readonly redis: Redis;
+
+  constructor(private readonly health: HealthCheckService, private readonly redisIndicator: RedisHealthIndicator) {
+    this.redis = new Redis({ host: 'localhost', port: 6379, password: 'authpassword' });
+  }
+
+  @Get('health')
+  @HealthCheck()
+  async healthChecks(): Promise<HealthCheckResult> {
+    return await this.health.check([
+      () => this.redisIndicator.checkHealth('redis', { type: 'redis', client: this.redis, timeout: 500 })
+    ]);
+  }
+}
+```
+
+**3**, if your redis server is reachable, you should now see the following JSON-result when requesting http://localhost:3000/health with a GET request:
+
+```json
+{
+  "status": "ok",
+  "info": {
+    "redis": {
+      "status": "up"
+    }
+  },
+  "error": {},
+  "details": {
+    "redis": {
+      "status": "up"
+    }
+  }
+}
+```
+
+> INFO: Read more about `@nestjs/terminus` [here](https://docs.nestjs.com/recipes/terminus).
+
+> HINT: Both `TerminusModule` nor `RedisHealthModule` are not global modules.
+
+## Settings
+
+### Redis
+
+| Name            | Type      | Default     | Required | Description                                                                                           |
+| --------------- | --------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| type            | `'redis'` | `undefined` | `true`   | Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". |
+| client          | `Redis`   | `undefined` | `true`   | The client which the health check should get executed.                                                |
+| timeout         | `number`  | `1000`      | `false`  | The amount of time the check should require in `ms`.                                                  |
+| memoryThreshold | `number`  | `undefined` | `false`  | The maximum amount of memory used by redis in `bytes`.                                                |
+
+### Cluster
+
+| Name   | Type        | Default     | Required | Description                                                                                           |
+| ------ | ----------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| type   | `'cluster'` | `undefined` | `true`   | Server type. You must specify what Redis server type you use. Possible values are "redis", "cluster". |
+| client | `Cluster`   | `undefined` | `true`   | The client which the health check should get executed.                                                |
 
 ## Contributing
 
@@ -137,17 +188,15 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Acknowledgments
 
 - [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
-- [Redis documentation](https://redis.io/)
-- [Redis docker image](https://hub.docker.com/_/redis)
 
-[npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
-[npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
-[downloads-shield]: https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge
-[downloads-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
+[npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis-health/latest?style=for-the-badge
+[npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis-health
+[downloads-shield]: https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis-health?style=for-the-badge
+[downloads-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis-health
 [stars-shield]: https://img.shields.io/github/stars/liaoliaots/nestjs-redis?style=for-the-badge
 [stars-url]: https://github.com/liaoliaots/nestjs-redis/stargazers
 [issues-shield]: https://img.shields.io/github/issues/liaoliaots/nestjs-redis?style=for-the-badge
 [issues-url]: https://github.com/liaoliaots/nestjs-redis/issues
 [license-shield]: https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge
 [license-url]: https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE
-[vulnerabilities-shield]: https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge
+[vulnerabilities-shield]: https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis-health?style=for-the-badge
