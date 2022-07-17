@@ -106,7 +106,7 @@ pnpm add @liaoliaots/nestjs-redis ioredis
   - [Testing](docs/latest/cluster.md#testing)
   - [Non-Global](docs/latest/cluster.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/ClusterOptions.html#clusterRetryStrategy)
-- [Circular dependency](#circular-dependency)
+- [Circular dependency](#circular-dependency-⚠️)
 - [Health Checks](packages/redis-health/README.md)
 - [Examples](docs/latest/examples.md)
   - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
