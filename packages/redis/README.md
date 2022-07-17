@@ -50,7 +50,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="docs/latest/dependency-graph.svg">Package dependency overview</a></li>
+    <li><a href="packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
