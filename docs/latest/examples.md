@@ -20,38 +20,38 @@ import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
-    imports: [
-        RedisModule.forRoot({
-            readyLog: true,
-            commonOptions: {
-                name: 'mymaster',
-                sentinels: [
-                    {
-                        host: 'localhost',
-                        port: 7380
-                    },
-                    {
-                        host: 'localhost',
-                        port: 7381
-                    }
-                ],
-                sentinelPassword: 'sentinel',
-                password: 'redismaster'
-            },
-            config: [
-                {
-                    // get master node from the sentinel group
-                    role: 'master',
-                    namespace: "I'm master"
-                },
-                {
-                    // get a random slave node from the sentinel group
-                    role: 'slave',
-                    namespace: "I'm slave"
-                }
-            ]
-        })
-    ]
+  imports: [
+    RedisModule.forRoot({
+      readyLog: true,
+      commonOptions: {
+        name: 'mymaster',
+        sentinels: [
+          {
+            host: 'localhost',
+            port: 7380
+          },
+          {
+            host: 'localhost',
+            port: 7381
+          }
+        ],
+        sentinelPassword: 'sentinel',
+        password: 'redismaster'
+      },
+      config: [
+        {
+          // get master node from the sentinel group
+          role: 'master',
+          namespace: "I'm master"
+        },
+        {
+          // get a random slave node from the sentinel group
+          role: 'slave',
+          namespace: "I'm slave"
+        }
+      ]
+    })
+  ]
 })
 export class AppModule {}
 ```
