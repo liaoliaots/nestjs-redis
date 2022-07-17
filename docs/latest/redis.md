@@ -194,7 +194,6 @@ const MyOptionsSymbol = Symbol('options');
 const MyOptionsProvider: ValueProvider<RedisModuleOptions> = {
   provide: MyOptionsSymbol,
   useValue: {
-    readyLog: true,
     config: {
       host: 'localhost',
       port: 6379,
@@ -235,7 +234,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
   imports: [
     RedisModule.forRoot({
-      readyLog: true,
       config: {
         host: 'localhost',
         port: 6379,
@@ -250,7 +248,7 @@ export class AppModule {}
 The `RedisModule` will display a message when the server reports that it is ready to receive commands.
 
 ```sh
-[Nest] 17581  - 09/16/2021, 6:03:35 PM     LOG [RedisModule] default: Connected successfully to the server
+[Nest] 17581  - 09/16/2021, 6:03:35 PM     LOG [RedisModule] default: connected successfully to the server
 ```
 
 ### Single client
@@ -397,7 +395,7 @@ export class AppModule {}
 
 ### onClientCreated
 
-For example, we can listen to the error event of the redis client.
+For example, we can listen to some events of the redis instance.
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -412,6 +410,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
         password: 'authpassword',
         onClientCreated(client) {
           client.on('error', err => {});
+          client.on('ready', () => {});
         }
       }
     })
@@ -422,9 +421,9 @@ export class AppModule {}
 
 ### Non-Global
 
-By default, the `RedisModule` is registered in the global scope, so `RedisService` and all redis clients defined are available everywhere.
+By default, the `RedisModule` is a **Global module**, `RedisService` and all redis instances are registered in the global scope. Once defined, they're available everywhere.
 
-You can change the behavior by modifying `isGlobal` parameter:
+You can change this behavior by modifying `isGlobal` parameter:
 
 ```ts
 // cats.module.ts
@@ -437,14 +436,13 @@ import { CatsController } from './cats.controller';
   imports: [
     RedisModule.forRoot(
       {
-        readyLog: true,
         config: {
           host: 'localhost',
           port: 6379,
           password: 'authpassword'
         }
       },
-      false // <-- register inside the module scope
+      false // <-- providers are registered in the module scope
     )
   ],
   providers: [CatsService],
@@ -488,7 +486,6 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 @Module({
   imports: [
     RedisModule.forRoot({
-      readyLog: true,
       config: {
         path: '/run/redis.sock'
       }
@@ -502,12 +499,15 @@ And there we go.
 
 ### Testing
 
-This package exposes `getRedisToken()` function that returns an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis client using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
+This package exposes `getRedisToken()` function that returns an internal injection token based on the provided context. Using this token, you can provide a mock implementation of the redis instance using any of the standard custom provider techniques, including `useClass`, `useValue`, and `useFactory`.
 
 ```ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRedisToken } from '@liaoliaots/nestjs-redis';
+
 const module: TestingModule = await Test.createTestingModule({
-  providers: [{ provide: getRedisToken('namespace'), useValue: mockedClient }, YourService]
+  providers: [{ provide: getRedisToken('namespace'), useValue: mockedInstance }, YourService]
 }).compile();
 ```
 
-A working example is available [here](sample/01-testing-inject).
+A working example is available [here](../../sample).
