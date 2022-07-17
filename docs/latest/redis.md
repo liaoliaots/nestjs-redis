@@ -110,7 +110,7 @@ export class AppModule {}
 | errorLog      | `boolean`                                                              | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
 | config        | `RedisClientOptions` \| `RedisClientOptions`[]                         | `undefined` | `false`  | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
-### [RedisClientOptions](https://github.com/liaoliaots/nestjs-redis/blob/main/packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
+### [RedisClientOptions](../../packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
 
 | Name                 | Type                 | Default     | Required | Description                                                                                                                                                                                                    |
 | -------------------- | -------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,7 +118,7 @@ export class AppModule {}
 | url                  | `string`             | `undefined` | `false`  | URI scheme to be used to specify connection options as a [redis://](https://www.iana.org/assignments/uri-schemes/prov/redis) URL or [rediss://](https://www.iana.org/assignments/uri-schemes/prov/rediss) URL. |
 | path                 | `string`             | `undefined` | `false`  | Path to be used for Unix domain sockets.                                                                                                                                                                       |
 | onClientCreated      | `function`           | `undefined` | `false`  | Function to be executed as soon as the client is created.                                                                                                                                                      |
-| **...** RedisOptions | `RedisOptions`       | -           | `false`  | Extends from [RedisOptions](https://luin.github.io/ioredis/index.html#RedisOptions).                                                                                                                           |
+| **...** RedisOptions | `RedisOptions`       | -           | `false`  | Inherits from [RedisOptions](https://luin.github.io/ioredis/index.html#RedisOptions).                                                                                                                          |
 
 ### Asynchronous configuration
 
