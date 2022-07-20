@@ -141,7 +141,7 @@ Potential solutions:
   })
 ```
 
-1. Please make sure that `RedisModule` is added directly to `imports` array of the `@Module()` decorator of root module(if `isGlobal` is true) or other module(if `isGlobal` is false).
+Please make sure that the `RedisModule` is added directly to the `imports` array of `@Module()` decorator of "Root Module"(if `isGlobal` is true) or "Feature Module"(if `isGlobal` is false).
 
 </details>
 
