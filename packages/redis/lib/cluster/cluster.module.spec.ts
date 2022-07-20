@@ -1,7 +1,9 @@
+import { ModuleRef } from '@nestjs/core';
 import { ClusterModule } from './cluster.module';
 import { ClusterModuleAsyncOptions } from './interfaces';
 import { destroy } from './common';
 import { logger } from './cluster-logger';
+import { CLUSTER_CLIENTS, CLUSTER_MERGED_OPTIONS } from './cluster.constants';
 
 jest.mock('./common');
 jest.mock('./cluster-logger', () => ({
@@ -38,16 +40,10 @@ describe('forRootAsync', () => {
 
   test('without extraProviders', () => {
     const options: ClusterModuleAsyncOptions = {
-      imports: [],
-      useFactory: () => ({ config: { nodes: [] } }),
-      inject: []
+      useFactory: () => ({ config: { nodes: [] } })
     };
     const module = ClusterModule.forRootAsync(options);
-    expect(module.global).toBe(true);
-    expect(module.module).toBe(ClusterModule);
-    expect(module.imports).toBeArray();
     expect(module.providers?.length).toBeGreaterThanOrEqual(4);
-    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
   });
 
   test('should throw an error', () => {
@@ -64,7 +60,7 @@ describe('onApplicationShutdown', () => {
     mockError.mockClear();
   });
 
-  test('should be invoked', async () => {
+  test('should work correctly', async () => {
     mockDestroy.mockResolvedValue([
       [
         { status: 'fulfilled', value: '' },
@@ -72,7 +68,12 @@ describe('onApplicationShutdown', () => {
       ]
     ]);
 
-    const module = new ClusterModule({ closeClient: true, config: { nodes: [] } }, new Map());
+    const module = new ClusterModule({
+      get: (token: unknown) => {
+        if (token === CLUSTER_MERGED_OPTIONS) return { closeClient: true };
+        if (token === CLUSTER_CLIENTS) return new Map();
+      }
+    } as ModuleRef);
     await module.onApplicationShutdown();
     expect(mockDestroy).toHaveBeenCalledTimes(1);
     expect(mockError).toHaveBeenCalledTimes(1);

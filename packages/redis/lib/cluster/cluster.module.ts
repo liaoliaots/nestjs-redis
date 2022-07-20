@@ -1,4 +1,5 @@
-import { Module, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
+import { Module, DynamicModule, Provider, OnApplicationShutdown } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterClients } from './interfaces';
 import { ClusterManager } from './cluster-manager';
 import {
@@ -20,10 +21,7 @@ import { ERROR_LOG } from '@/messages';
  */
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
-  constructor(
-    @Inject(CLUSTER_MERGED_OPTIONS) private readonly options: ClusterModuleOptions,
-    @Inject(CLUSTER_CLIENTS) private readonly clients: ClusterClients
-  ) {}
+  constructor(private moduleRef: ModuleRef) {}
 
   /**
    * Registers the module synchronously.
@@ -73,9 +71,10 @@ export class ClusterModule implements OnApplicationShutdown {
     };
   }
 
-  async onApplicationShutdown() {
-    if (this.options.closeClient) {
-      const results = await destroy(this.clients);
+  async onApplicationShutdown(): Promise<void> {
+    const { closeClient } = this.moduleRef.get<ClusterModuleOptions>(CLUSTER_MERGED_OPTIONS);
+    if (closeClient) {
+      const results = await destroy(this.moduleRef.get<ClusterClients>(CLUSTER_CLIENTS));
       results.forEach(([namespace, quit]) => {
         if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
           logger.error(ERROR_LOG(parseNamespace(namespace.value), quit.reason.message), quit.reason.stack);
