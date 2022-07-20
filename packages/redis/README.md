@@ -20,7 +20,7 @@
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="sample">View Demo</a>
+    <a href="/sample">View Demo</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
     ·
@@ -46,11 +46,13 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#circular-dependency-️">Circular dependency</a></li>
+    <li><a href="#faqs">FAQs</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="packages/redis/dependency-graph.svg">Package dependency overview</a></li>
+    <li><a href="/packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -93,32 +95,124 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 ## Usage
 
-- [Redis](docs/latest/redis.md)
-  - [Usage](docs/latest/redis.md)
-  - [Configuration](docs/latest/redis.md#configuration)
-  - [Testing](docs/latest/redis.md#testing)
-  - [Non-Global](docs/latest/redis.md#non-global)
-  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
+- [Redis](/docs/latest/redis.md)
+  - [Usage](/docs/latest/redis.md)
+  - [Configuration](/docs/latest/redis.md#configuration)
+  - [Testing](/docs/latest/redis.md#testing)
+  - [Non-Global](/docs/latest/redis.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/CommonRedisOptions.html#retryStrategy)
-- [Cluster](docs/latest/cluster.md)
-  - [Usage](docs/latest/cluster.md)
-  - [Configuration](docs/latest/cluster.md#configuration)
-  - [Testing](docs/latest/cluster.md#testing)
-  - [Non-Global](docs/latest/cluster.md#non-global)
+  - [Unix domain socket](/docs/latest/redis.md#unix-domain-socket)
+- [Cluster](/docs/latest/cluster.md)
+  - [Usage](/docs/latest/cluster.md)
+  - [Configuration](/docs/latest/cluster.md#configuration)
+  - [Testing](/docs/latest/cluster.md#testing)
+  - [Non-Global](/docs/latest/cluster.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/ClusterOptions.html#clusterRetryStrategy)
-- [Circular dependency](#circular-dependency-️)
-- [Health Checks](packages/redis-health/README.md)
-- [Examples](docs/latest/examples.md)
-  - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+- [Health Checks](/packages/redis-health/README.md)
+- [Examples](/docs/latest/examples.md)
+  - [Redis Sentinel](/docs/latest/examples.md#sentinel)
 
 ### Legacy
 
-- version 7, [click here](docs/v7)
-- version 8, [click here](docs/v8)
+- version 7, [click here](/docs/v7)
+- version 8, [click here](/docs/v8)
 
-### Circular dependency ⚠️
+## Circular dependency ⚠️
 
 > WARNING: [A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
+
+## FAQs
+
+### "Cannot resolve dependency" error
+
+<details>
+  <summary>Click to expand</summary>
+
+If you encountered an error like this:
+
+```
+Nest can't resolve dependencies of the <provider> (?). Please make sure that the argument <unknown_token> at index [<index>] is available in the <module> context.
+
+Potential solutions:
+- If <unknown_token> is a provider, is it part of the current <module>?
+- If <unknown_token> is exported from a separate @Module, is that module imported within <module>?
+  @Module({
+    imports: [ /* the Module containing <unknown_token> */ ]
+  })
+```
+
+Please make sure that the `RedisModule` is added directly to the `imports` array of `@Module()` decorator of "Root Module"(if `isGlobal` is true) or "Feature Module"(if `isGlobal` is false).
+
+Examples of code:
+
+```ts
+// redis-config.service.ts
+import { Injectable } from '@nestjs/common';
+import { RedisModuleOptions, RedisOptionsFactory } from '@liaoliaots/nestjs-redis';
+
+@Injectable()
+export class RedisConfigService implements RedisOptionsFactory {
+  createRedisOptions(): RedisModuleOptions {
+    return {
+      readyLog: true,
+      config: {
+        host: 'localhost',
+        port: 6379,
+        password: 'authpassword'
+      }
+    };
+  }
+}
+```
+
+### ✅ Correct
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisConfigService } from './redis-config.service';
+
+@Module({
+  imports: [
+    RedisModule.forRootAsync({
+      useClass: RedisConfigService
+    })
+  ]
+})
+export class AppModule {}
+```
+
+### ❌ Incorrect
+
+```ts
+// my-redis.module.ts
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisConfigService } from './redis-config.service';
+
+@Module({
+  imports: [
+    RedisModule.forRootAsync({
+      useClass: RedisConfigService
+    })
+  ]
+})
+export class MyRedisModule {}
+```
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { MyRedisModule } from './my-redis.module';
+
+@Module({
+  imports: [MyRedisModule]
+})
+export class AppModule {}
+```
+
+</details>
 
 ## Roadmap
 
