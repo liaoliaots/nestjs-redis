@@ -128,7 +128,7 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 <details>
   <summary>Click to expand</summary>
 
-If you encountered the error like following:
+If you encountered an error like the following:
 
 ```
 Nest can't resolve dependencies of the <provider> (?). Please make sure that the argument <unknown_token> at index [<index>] is available in the <module> context.
@@ -140,6 +140,8 @@ Potential solutions:
     imports: [ /* the Module containing <unknown_token> */ ]
   })
 ```
+
+1. Please make sure that `RedisModule` is added directly to `imports` array of the `@Module()` decorator of root module(if `isGlobal` is true) or other module(if `isGlobal` is false).
 
 </details>
 
