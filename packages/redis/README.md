@@ -127,9 +127,10 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 <details>
   <summary>Click to expand</summary>
-  If you encountered the error like following:
 
-```bash
+If you encountered the error like following:
+
+```
 Nest can't resolve dependencies of the <provider> (?). Please make sure that the argument <unknown_token> at index [<index>] is available in the <module> context.
 
 Potential solutions:
