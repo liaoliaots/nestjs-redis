@@ -1,4 +1,5 @@
-import { Module, DynamicModule, Provider, OnApplicationShutdown, Inject } from '@nestjs/common';
+import { Module, DynamicModule, Provider, OnApplicationShutdown } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisClients } from './interfaces';
 import { RedisManager } from './redis-manager';
 import {
@@ -20,10 +21,7 @@ import { ERROR_LOG } from '@/messages';
  */
 @Module({})
 export class RedisModule implements OnApplicationShutdown {
-  constructor(
-    @Inject(REDIS_MERGED_OPTIONS) private readonly options: RedisModuleOptions,
-    @Inject(REDIS_CLIENTS) private readonly clients: RedisClients
-  ) {}
+  constructor(private moduleRef: ModuleRef) {}
 
   /**
    * Registers the module synchronously.
@@ -73,9 +71,10 @@ export class RedisModule implements OnApplicationShutdown {
     };
   }
 
-  async onApplicationShutdown() {
-    if (this.options.closeClient) {
-      const results = await destroy(this.clients);
+  async onApplicationShutdown(): Promise<void> {
+    const { closeClient } = this.moduleRef.get<RedisModuleOptions>(REDIS_MERGED_OPTIONS);
+    if (closeClient) {
+      const results = await destroy(this.moduleRef.get<RedisClients>(REDIS_CLIENTS));
       results.forEach(([namespace, quit]) => {
         if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
           logger.error(ERROR_LOG(parseNamespace(namespace.value), quit.reason.message), quit.reason.stack);

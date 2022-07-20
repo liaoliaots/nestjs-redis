@@ -1,7 +1,9 @@
+import { ModuleRef } from '@nestjs/core';
 import { RedisModule } from './redis.module';
 import { RedisModuleAsyncOptions } from './interfaces';
 import { destroy } from './common';
 import { logger } from './redis-logger';
+import { REDIS_CLIENTS, REDIS_MERGED_OPTIONS } from './redis.constants';
 
 jest.mock('./common');
 jest.mock('./redis-logger', () => ({
@@ -38,16 +40,10 @@ describe('forRootAsync', () => {
 
   test('without extraProviders', () => {
     const options: RedisModuleAsyncOptions = {
-      imports: [],
-      useFactory: () => ({}),
-      inject: []
+      useFactory: () => ({})
     };
     const module = RedisModule.forRootAsync(options);
-    expect(module.global).toBe(true);
-    expect(module.module).toBe(RedisModule);
-    expect(module.imports).toBeArray();
     expect(module.providers?.length).toBeGreaterThanOrEqual(4);
-    expect(module.exports?.length).toBeGreaterThanOrEqual(1);
   });
 
   test('should throw an error', () => {
@@ -64,7 +60,7 @@ describe('onApplicationShutdown', () => {
     mockError.mockClear();
   });
 
-  test('should be invoked', async () => {
+  test('should work correctly', async () => {
     mockDestroy.mockResolvedValue([
       [
         { status: 'fulfilled', value: '' },
@@ -72,7 +68,12 @@ describe('onApplicationShutdown', () => {
       ]
     ]);
 
-    const module = new RedisModule({ closeClient: true }, new Map());
+    const module = new RedisModule({
+      get: (token: unknown) => {
+        if (token === REDIS_MERGED_OPTIONS) return { closeClient: true };
+        if (token === REDIS_CLIENTS) return new Map();
+      }
+    } as ModuleRef);
     await module.onApplicationShutdown();
     expect(mockDestroy).toHaveBeenCalledTimes(1);
     expect(mockError).toHaveBeenCalledTimes(1);
