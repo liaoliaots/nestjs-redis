@@ -20,7 +20,7 @@
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="sample">View Demo</a>
+    <a href="/sample">View Demo</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
     ·
@@ -52,7 +52,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="packages/redis/dependency-graph.svg">Package dependency overview</a></li>
+    <li><a href="/packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -95,27 +95,27 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 ## Usage
 
-- [Redis](docs/latest/redis.md)
-  - [Usage](docs/latest/redis.md)
+- [Redis](/docs/latest/redis.md)
+  - [Usage](/docs/latest/redis.md)
   - [Configuration](/docs/latest/redis.md#configuration)
-  - [Testing](docs/latest/redis.md#testing)
-  - [Non-Global](docs/latest/redis.md#non-global)
+  - [Testing](/docs/latest/redis.md#testing)
+  - [Non-Global](/docs/latest/redis.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/CommonRedisOptions.html#retryStrategy)
-  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
-- [Cluster](docs/latest/cluster.md)
-  - [Usage](docs/latest/cluster.md)
-  - [Configuration](docs/latest/cluster.md#configuration)
-  - [Testing](docs/latest/cluster.md#testing)
-  - [Non-Global](docs/latest/cluster.md#non-global)
+  - [Unix domain socket](/docs/latest/redis.md#unix-domain-socket)
+- [Cluster](/docs/latest/cluster.md)
+  - [Usage](/docs/latest/cluster.md)
+  - [Configuration](/docs/latest/cluster.md#configuration)
+  - [Testing](/docs/latest/cluster.md#testing)
+  - [Non-Global](/docs/latest/cluster.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/ClusterOptions.html#clusterRetryStrategy)
-- [Health Checks](packages/redis-health/README.md)
-- [Examples](docs/latest/examples.md)
-  - [Redis Sentinel](docs/latest/examples.md#sentinel)
+- [Health Checks](/packages/redis-health/README.md)
+- [Examples](/docs/latest/examples.md)
+  - [Redis Sentinel](/docs/latest/examples.md#sentinel)
 
 ### Legacy
 
-- version 7, [click here](docs/v7)
-- version 8, [click here](docs/v8)
+- version 7, [click here](/docs/v7)
+- version 8, [click here](/docs/v8)
 
 ## Circular dependency ⚠️
 
@@ -143,9 +143,12 @@ Potential solutions:
 
 Please make sure that the `RedisModule` is added directly to the `imports` array of `@Module()` decorator of "Root Module"(if `isGlobal` is true) or "Feature Module"(if `isGlobal` is false).
 
+Examples of code:
+
 ### ✅ Correct
 
 ```ts
+// app.module.ts
 import { Module } from '@nestjs/common';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisConfigService } from './redis-config.service';
