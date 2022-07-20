@@ -47,11 +47,11 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#circular-dependency-️">Circular dependency</a></li>
+    <li><a href="#faqs">FAQs</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#faqs">FAQs</a></li>
     <li><a href="packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
@@ -121,6 +121,27 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 > WARNING: [A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
 
+## FAQs
+
+### "Cannot resolve dependency" error
+
+<details>
+  <summary>Click to expand</summary>
+  If you encountered the error like following:
+
+```bash
+Nest can't resolve dependencies of the <provider> (?). Please make sure that the argument <unknown_token> at index [<index>] is available in the <module> context.
+
+Potential solutions:
+- If <unknown_token> is a provider, is it part of the current <module>?
+- If <unknown_token> is exported from a separate @Module, is that module imported within <module>?
+  @Module({
+    imports: [ /* the Module containing <unknown_token> */ ]
+  })
+```
+
+</details>
+
 ## Roadmap
 
 - [x] Compatible with **NestJS ^9**
@@ -147,8 +168,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
 - [Redis Documentation](https://redis.io/)
 - [Redis Docker Official Image](https://hub.docker.com/_/redis)
-
-## FAQs
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
