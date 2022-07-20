@@ -128,7 +128,7 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 <details>
   <summary>Click to expand</summary>
 
-If you encountered an error like the following:
+If you encountered an error like this:
 
 ```
 Nest can't resolve dependencies of the <provider> (?). Please make sure that the argument <unknown_token> at index [<index>] is available in the <module> context.
@@ -142,6 +142,52 @@ Potential solutions:
 ```
 
 Please make sure that the `RedisModule` is added directly to the `imports` array of `@Module()` decorator of "Root Module"(if `isGlobal` is true) or "Feature Module"(if `isGlobal` is false).
+
+### ✅ Correct
+
+```ts
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisConfigService } from './redis-config.service';
+
+@Module({
+  imports: [
+    RedisModule.forRootAsync({
+      useClass: RedisConfigService
+    })
+  ]
+})
+export class AppModule {}
+```
+
+### ❌ Incorrect
+
+```ts
+// my-redis.module.ts
+import { Module } from '@nestjs/common';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisConfigService } from './redis-config.service';
+
+@Module({
+  imports: [
+    RedisModule.forRootAsync({
+      useClass: RedisConfigService
+    })
+  ]
+})
+export class MyRedisModule {}
+```
+
+```ts
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { MyRedisModule } from './my-redis.module';
+
+@Module({
+  imports: [MyRedisModule]
+})
+export class AppModule {}
+```
 
 </details>
 
