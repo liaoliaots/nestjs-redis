@@ -51,6 +51,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#faqs">FAQs</a></li>
     <li><a href="packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
@@ -96,7 +97,7 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 
 - [Redis](docs/latest/redis.md)
   - [Usage](docs/latest/redis.md)
-  - [Configuration](docs/latest/redis.md#configuration)
+  - [Configuration](/docs/latest/redis.md#configuration)
   - [Testing](docs/latest/redis.md#testing)
   - [Non-Global](docs/latest/redis.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/CommonRedisOptions.html#retryStrategy)
@@ -146,6 +147,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
 - [Redis Documentation](https://redis.io/)
 - [Redis Docker Official Image](https://hub.docker.com/_/redis)
+
+## FAQs
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
