@@ -46,6 +46,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#circular-dependency-️">Circular dependency</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -98,25 +99,24 @@ pnpm add @liaoliaots/nestjs-redis ioredis
   - [Configuration](docs/latest/redis.md#configuration)
   - [Testing](docs/latest/redis.md#testing)
   - [Non-Global](docs/latest/redis.md#non-global)
-  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/CommonRedisOptions.html#retryStrategy)
+  - [Unix domain socket](docs/latest/redis.md#unix-domain-socket)
 - [Cluster](docs/latest/cluster.md)
   - [Usage](docs/latest/cluster.md)
   - [Configuration](docs/latest/cluster.md#configuration)
   - [Testing](docs/latest/cluster.md#testing)
   - [Non-Global](docs/latest/cluster.md#non-global)
   - [Auto-reconnect](https://luin.github.io/ioredis/interfaces/ClusterOptions.html#clusterRetryStrategy)
-- [Circular dependency](#circular-dependency-️)
 - [Health Checks](packages/redis-health/README.md)
 - [Examples](docs/latest/examples.md)
-  - [High availability with Redis Sentinel](docs/latest/examples.md#sentinel)
+  - [Redis Sentinel](docs/latest/examples.md#sentinel)
 
 ### Legacy
 
 - version 7, [click here](docs/v7)
 - version 8, [click here](docs/v8)
 
-### Circular dependency ⚠️
+## Circular dependency ⚠️
 
 > WARNING: [A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
 
