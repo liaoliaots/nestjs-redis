@@ -12,7 +12,7 @@
     "@commitlint/cli": "17.0.3",
     "@commitlint/config-conventional": "17.0.3",
     "@nestjs/common": "9.0.5",
-    "@nestjs/core": "9.0.5",
+    "@nestjs/core": "9.0.7",
     "@nestjs/platform-fastify": "9.0.5",
     "@nestjs/terminus": "9.0.0",
     "@nestjs/testing": "9.0.5",
