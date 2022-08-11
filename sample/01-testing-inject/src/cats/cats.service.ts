@@ -14,7 +14,7 @@ export class CatsService {
     const cats = await this.client.get('cats');
     if (cats) return JSON.parse(cats) as Cat[];
 
-    await this.client.set('cats', JSON.stringify(this.cats));
+    await this.client.set('cats', JSON.stringify(this.cats), 'EX', 120);
     return this.cats;
   }
 

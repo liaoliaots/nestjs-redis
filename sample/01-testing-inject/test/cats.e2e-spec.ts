@@ -20,14 +20,11 @@ describe('CatsController (e2e)', () => {
 
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
+    await client.del('cats');
   });
 
   afterAll(async () => {
     await app.close();
-  });
-
-  beforeEach(async () => {
-    await client.del('cats');
   });
 
   afterEach(async () => {
