@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { getRedisToken } from '@liaoliaots/nestjs-redis';
-import { FastifyInstance, LightMyRequestResponse } from 'fastify';
+import { FastifyInstance } from 'fastify';
 import Redis from 'ioredis';
 import { AppModule } from '../src/app.module';
 import { CreateCatDto } from '../src/cats/create-cat.dto';
@@ -20,18 +20,15 @@ describe('CatsController (e2e)', () => {
 
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
-  });
-
-  beforeEach(async () => {
-    await client.del('cats');
-  });
-
-  afterEach(async () => {
     await client.del('cats');
   });
 
   afterAll(async () => {
     await app.close();
+  });
+
+  afterEach(async () => {
+    await client.del('cats');
   });
 
   test('post cat, get all', async () => {
@@ -50,23 +47,15 @@ describe('CatsController (e2e)', () => {
       ...createCatDto
     });
 
-    let cats: LightMyRequestResponse;
+    let cats;
     cats = await app.inject({
       method: 'GET',
       url: '/cats'
     });
     expect(cats.statusCode).toBe(200);
     expect(JSON.parse(cats.payload)).toEqual([
-      {
-        id: 1,
-        name: 'Test Cat 1',
-        breed: 'Test Breed 1'
-      },
-      {
-        id: 2,
-        name: 'Test Cat 2',
-        breed: 'Test Breed 2'
-      },
+      { id: 1, name: 'Test Cat 1', breed: 'Test Breed 1' },
+      { id: 2, name: 'Test Cat 2', breed: 'Test Breed 2' },
       { id: 3, name: 'Test Cat 3', breed: 'Test Breed 3' }
     ]);
     cats = await app.inject({
