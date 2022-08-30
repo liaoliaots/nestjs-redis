@@ -10,5 +10,6 @@
   "moduleNameMapper": {
     "@/(.*)": ["<rootDir>/../../../packages/redis/lib/$1"],
     "@health/(.*)": ["<rootDir>/../lib/$1"]
-  }
+  },
+  "setupFilesAfterEnv": ["jest-extended/all"]
 }

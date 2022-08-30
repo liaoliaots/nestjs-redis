@@ -7,7 +7,7 @@ import { InjectCluster } from '@liaoliaots/nestjs-redis/lib';
 @Controller('health')
 export class HealthController {
   constructor(
-    @InjectCluster() private readonly defaultClient: Cluster,
+    @InjectCluster() private readonly client0: Cluster,
     @InjectCluster('client1') private readonly client1: Cluster,
     private readonly health: HealthCheckService,
     private readonly redis: RedisHealthIndicator
@@ -15,8 +15,10 @@ export class HealthController {
 
   @Get()
   async healthCheck(): Promise<HealthCheckResult> {
+    await this.client0.ping();
+    await this.client1.ping();
     return await this.health.check([
-      () => this.redis.checkHealth('default', { client: this.defaultClient, type: 'cluster' }),
+      () => this.redis.checkHealth('default', { client: this.client0, type: 'cluster' }),
       () => this.redis.checkHealth('client1', { client: this.client1, type: 'cluster' })
     ]);
   }

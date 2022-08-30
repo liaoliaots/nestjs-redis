@@ -9,16 +9,15 @@ import { HealthController } from './controllers/health.controller';
     ClusterModule.forRootAsync({
       useFactory(): ClusterModuleOptions {
         return {
-          closeClient: true,
           config: [
             {
               nodes: [{ host: '127.0.0.1', port: 16380 }],
-              redisOptions: { password: 'cluster1' }
+              redisOptions: { password: 'cluster1', lazyConnect: true }
             },
             {
               namespace: 'client1',
               nodes: [{ host: '127.0.0.1', port: 16480 }],
-              redisOptions: { password: 'cluster2' }
+              redisOptions: { password: 'cluster2', lazyConnect: true }
             }
           ]
         };

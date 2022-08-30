@@ -5,14 +5,10 @@ import { RedisOptionsFactory, RedisModuleOptions } from '@/.';
 export class RedisConfigService implements RedisOptionsFactory {
   createRedisOptions(): RedisModuleOptions {
     return {
-      closeClient: true,
       commonOptions: {
         host: '127.0.0.1'
       },
-      config: [
-        { port: 6380, password: 'redismain' },
-        { namespace: 'client1', port: 6381, password: 'redismaster' }
-      ]
+      config: [{ port: 6380 }, { namespace: 'client1', port: 6381 }]
     };
   }
 }

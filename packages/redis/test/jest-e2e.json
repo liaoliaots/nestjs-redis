@@ -9,5 +9,6 @@
   "verbose": true,
   "moduleNameMapper": {
     "@/(.*)": ["<rootDir>/../lib/$1"]
-  }
+  },
+  "setupFilesAfterEnv": ["jest-extended/all"]
 }

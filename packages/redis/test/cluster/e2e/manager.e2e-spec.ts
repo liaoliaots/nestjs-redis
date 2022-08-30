@@ -10,9 +10,7 @@ describe('ManagerController (e2e)', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule]
     }).compile();
-
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
   });
@@ -24,12 +22,6 @@ describe('ManagerController (e2e)', () => {
   test('/manager (GET)', async () => {
     const res = await app.inject({ method: 'GET', url: '/manager' });
     expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
-  });
-
-  test('/manager/client1 (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/manager/client1' });
-    expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
+    expect(JSON.parse(res.payload)).toIncludeSameMembers(['PONG', 'PONG']);
   });
 });

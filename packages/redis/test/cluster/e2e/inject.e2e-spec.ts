@@ -10,9 +10,7 @@ describe('InjectController (e2e)', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule]
     }).compile();
-
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
   });
@@ -24,12 +22,6 @@ describe('InjectController (e2e)', () => {
   test('/inject (GET)', async () => {
     const res = await app.inject({ method: 'GET', url: '/inject' });
     expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
-  });
-
-  test('/inject/client1 (GET)', async () => {
-    const res = await app.inject({ method: 'GET', url: '/inject/client1' });
-    expect(res.statusCode).toBe(200);
-    expect(res.payload).toBe('PONG');
+    expect(JSON.parse(res.payload)).toIncludeSameMembers(['PONG', 'PONG']);
   });
 });
