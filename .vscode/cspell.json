@@ -1,16 +1,4 @@
 {
   "version": "0.2",
-  "language": "en",
-  "words": [
-    "commitlint",
-    "nestjs",
-    "tsdoc",
-    "fastify",
-    "pnpm",
-    "liaoliaots",
-    "healthcheck",
-    "healthchecks",
-    "rediss",
-    "authpassword"
-  ]
+  "enabled": false
 }
