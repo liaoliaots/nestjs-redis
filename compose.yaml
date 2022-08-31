@@ -31,7 +31,7 @@ services:
       - REDIS_CLUSTER_DYNAMIC_IPS=no
       - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
     network_mode: host
-  #
+
   cluster-2_master-1:
     image: bitnami/redis-cluster:latest
     environment:
@@ -60,18 +60,27 @@ services:
       - REDIS_CLUSTER_DYNAMIC_IPS=no
       - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
     network_mode: host
-  #
+
   redis-1:
     image: bitnami/redis:latest
     environment:
       - REDIS_PORT_NUMBER=6380
       - ALLOW_EMPTY_PASSWORD=yes
-    network_mode: host
+    networks:
+      - dev
+    ports:
+      - '6380:6380'
     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 16mb
   redis-2:
     image: bitnami/redis:latest
     environment:
       - REDIS_PORT_NUMBER=6381
       - ALLOW_EMPTY_PASSWORD=yes
-    network_mode: host
+    networks:
+      - dev
+    ports:
+      - '6381:6381'
     command: /opt/bitnami/scripts/redis/run.sh --maxmemory 16mb
+
+networks:
+  dev:
