@@ -59,3 +59,9 @@ export const destroy = async (clients: RedisClients) => {
   });
   return await Promise.all(promises);
 };
+
+export const prepare = async (clients: RedisClients) => {
+  const promises: Promise<'PONG'>[] = [];
+  clients.forEach(client => promises.push(client.ping()));
+  await Promise.allSettled(promises);
+};
