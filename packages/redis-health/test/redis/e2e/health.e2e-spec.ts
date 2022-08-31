@@ -10,9 +10,7 @@ describe('HealthController (e2e)', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule]
     }).compile();
-
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
   });
