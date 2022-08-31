@@ -8,7 +8,6 @@ import { ManagerController } from './controllers/manager.controller';
     ClusterModule.forRootAsync({
       useFactory(): ClusterModuleOptions {
         return {
-          closeClient: true,
           config: [
             {
               nodes: [{ host: '127.0.0.1', port: 16380 }],

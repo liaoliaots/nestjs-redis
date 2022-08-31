@@ -5,17 +5,14 @@ import { InjectCluster } from '@/.';
 @Controller('inject')
 export class InjectController {
   constructor(
-    @InjectCluster() private readonly defaultClient: Cluster,
+    @InjectCluster() private readonly client0: Cluster,
     @InjectCluster('client1') private readonly client1: Cluster
   ) {}
 
   @Get()
-  async pingDefault(): Promise<string> {
-    return await this.defaultClient.ping();
-  }
-
-  @Get('client1')
-  async pingClient1(): Promise<string> {
-    return await this.client1.ping();
+  async ping() {
+    const resp_0 = await this.client0.ping();
+    const resp_1 = await this.client1.ping();
+    return [resp_0, resp_1];
   }
 }

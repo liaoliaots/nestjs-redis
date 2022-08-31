@@ -31,7 +31,7 @@ services:
       - REDIS_CLUSTER_DYNAMIC_IPS=no
       - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
     network_mode: host
-  #
+
   cluster-2_master-1:
     image: bitnami/redis-cluster:latest
     environment:
@@ -60,94 +60,27 @@ services:
       - REDIS_CLUSTER_DYNAMIC_IPS=no
       - REDIS_CLUSTER_ANNOUNCE_IP=0.0.0.0
     network_mode: host
-  #
-  redis-main:
+
+  redis-1:
     image: bitnami/redis:latest
     environment:
       - REDIS_PORT_NUMBER=6380
-      - REDIS_PASSWORD=redismain
+      - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - dev
     ports:
       - '6380:6380'
-    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 32mb
-  #
-  redis-master:
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 16mb
+  redis-2:
     image: bitnami/redis:latest
     environment:
       - REDIS_PORT_NUMBER=6381
-      - REDIS_PASSWORD=redismaster
-      - REDIS_REPLICATION_MODE=master
-      - REDIS_REPLICA_PORT=6381
+      - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - dev
     ports:
       - '6381:6381'
-  redis-slave-1:
-    image: bitnami/redis:latest
-    environment:
-      - REDIS_PORT_NUMBER=6480
-      - REDIS_PASSWORD=redismaster
-      - REDIS_REPLICATION_MODE=slave
-      - REDIS_REPLICA_PORT=6480
-      - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PORT_NUMBER=6381
-      - REDIS_MASTER_PASSWORD=redismaster
-    networks:
-      - dev
-    ports:
-      - '6480:6480'
-    depends_on:
-      - redis-master
-  redis-slave-2:
-    image: bitnami/redis:latest
-    environment:
-      - REDIS_PORT_NUMBER=6481
-      - REDIS_PASSWORD=redismaster
-      - REDIS_REPLICATION_MODE=slave
-      - REDIS_REPLICA_PORT=6481
-      - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PORT_NUMBER=6381
-      - REDIS_MASTER_PASSWORD=redismaster
-    networks:
-      - dev
-    ports:
-      - '6481:6481'
-    depends_on:
-      - redis-master
-  redis-sentinel-1:
-    image: bitnami/redis-sentinel:latest
-    environment:
-      - REDIS_SENTINEL_PORT_NUMBER=7380
-      - REDIS_SENTINEL_PASSWORD=sentinel
-      - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
-      - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PORT_NUMBER=6381
-      - REDIS_MASTER_PASSWORD=redismaster
-    networks:
-      - dev
-    ports:
-      - '7380:7380'
-    depends_on:
-      - redis-master
-      - redis-slave-1
-      - redis-slave-2
-  redis-sentinel-2:
-    image: bitnami/redis-sentinel:latest
-    environment:
-      - REDIS_SENTINEL_PORT_NUMBER=7381
-      - REDIS_SENTINEL_PASSWORD=sentinel
-      - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
-      - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PORT_NUMBER=6381
-      - REDIS_MASTER_PASSWORD=redismaster
-    networks:
-      - dev
-    ports:
-      - '7381:7381'
-    depends_on:
-      - redis-master
-      - redis-slave-1
-      - redis-slave-2
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 16mb
+
 networks:
   dev:

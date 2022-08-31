@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import { FastifyInstance } from 'fastify';
 import { AppModule } from '../src/app.module';
-import { timeout } from '../../helper';
 
 describe('HealthController (e2e)', () => {
   let app: NestFastifyApplication;
@@ -11,12 +10,9 @@ describe('HealthController (e2e)', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule]
     }).compile();
-
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-
     await app.init();
     await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
-    await timeout(500);
   });
 
   afterAll(async () => {

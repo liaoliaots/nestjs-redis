@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@/*": ["../../packages/redis/lib/*"],
+      "@/*": ["../redis/lib/*"],
       "@health/*": ["lib/*"]
     }
   },
