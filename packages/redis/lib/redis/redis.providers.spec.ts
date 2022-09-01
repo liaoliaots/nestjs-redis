@@ -15,7 +15,7 @@ import { namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
-jest.mock('ioredis', () => jest.fn(() => ({ ping: jest.fn() })));
+jest.mock('ioredis', () => jest.fn(() => ({})));
 
 describe('createOptionsProvider', () => {
   test('should work correctly', () => {
