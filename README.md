@@ -46,7 +46,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#circular-dependency-️">Circular dependency</a></li>
     <li><a href="#faqs">FAQs</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -117,11 +116,16 @@ pnpm add @liaoliaots/nestjs-redis ioredis
 - version 7, [click here](/docs/v7)
 - version 8, [click here](/docs/v8)
 
-## Circular dependency ⚠️
-
-> WARNING: [A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
-
 ## FAQs
+
+### Circular dependency ⚠️
+
+<details>
+  <summary>Click to expand</summary>
+
+[A circular dependency](https://docs.nestjs.com/fundamentals/circular-dependency) might also be caused when using "barrel files"/index.ts files to group imports. Barrel files should be omitted when it comes to module/provider classes. For example, barrel files should not be used when importing files within the same directory as the barrel file, i.e. `cats/cats.controller` should not import `cats` to import the `cats/cats.service` file. For more details please also see [this github issue](https://github.com/nestjs/nest/issues/1181#issuecomment-430197191).
+
+</details>
 
 ### "Cannot resolve dependency" error
 
