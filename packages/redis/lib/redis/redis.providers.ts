@@ -2,7 +2,7 @@ import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
 import type { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
 import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_MERGED_OPTIONS } from './redis.constants';
-import { createClient, namespaces, prepare } from './common';
+import { createClient, namespaces } from './common';
 import { RedisManager } from './redis-manager';
 import { defaultRedisModuleOptions } from './default-options';
 
@@ -76,7 +76,7 @@ export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
 
 export const redisClientsProvider: FactoryProvider<RedisClients> = {
   provide: REDIS_CLIENTS,
-  useFactory: async (options: RedisModuleOptions) => {
+  useFactory: (options: RedisModuleOptions) => {
     const clients: RedisClients = new Map();
     if (Array.isArray(options.config)) {
       options.config.forEach(item =>
@@ -94,7 +94,6 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
         createClient(options.config, { readyLog: options.readyLog, errorLog: options.errorLog })
       );
     }
-    await prepare(clients);
     return clients;
   },
   inject: [REDIS_MERGED_OPTIONS]
