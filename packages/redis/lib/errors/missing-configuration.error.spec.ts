@@ -4,7 +4,7 @@ describe('MissingConfigurationsError', () => {
   test('should create an instance', () => {
     const error = new MissingConfigurationsError();
     expect(error.name).toBe(MissingConfigurationsError.name);
-    expect(typeof error.message).toBe('string');
+    expect(error.message).toBeString();
     expect(error.stack).toBeDefined();
   });
 });
