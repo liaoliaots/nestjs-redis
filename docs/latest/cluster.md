@@ -69,7 +69,7 @@ export class AppService {
 
 ## Configuration
 
-### [ClusterModuleOptions](../../packages/redis/lib/cluster/interfaces/cluster-module-options.interface.ts)
+### [ClusterModuleOptions](/packages/redis/lib/cluster/interfaces/cluster-module-options.interface.ts)
 
 | Name        | Type                                               | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
 | ----------- | -------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -78,7 +78,7 @@ export class AppService {
 | errorLog    | `boolean`                                          | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
 | config      | `ClusterClientOptions` \| `ClusterClientOptions`[] | `undefined` | `true`   | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
-### [ClusterClientOptions](../../packages/redis/lib/cluster/interfaces/cluster-module-options.interface.ts)
+### [ClusterClientOptions](/packages/redis/lib/cluster/interfaces/cluster-module-options.interface.ts)
 
 | Name                   | Type                                                             | Default     | Required | Description                                                                                                                                                                   |
 | ---------------------- | ---------------------------------------------------------------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -356,4 +356,4 @@ const module: TestingModule = await Test.createTestingModule({
 }).compile();
 ```
 
-A working example is available [here](../../sample).
+A working example is available [here](/sample).

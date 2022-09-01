@@ -5,7 +5,11 @@ import { ClientType } from '@/interfaces';
  */
 export class ClientNotFoundError extends Error {
   constructor(namespace: string, type: ClientType) {
-    super(`${type === 'redis' ? 'Redis' : 'Cluster'} client "${namespace}" was not found in the application context.`);
+    super(
+      `The ${
+        type === 'redis' ? 'redis' : 'cluster'
+      } client "${namespace}" could not be found in the application context.`
+    );
 
     this.name = ClientNotFoundError.name;
     Error.captureStackTrace(this, this.constructor);

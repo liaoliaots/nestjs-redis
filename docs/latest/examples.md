@@ -2,11 +2,11 @@
 
 ### Sentinel
 
-| name                   | ip        | port | password    |
+| name                   | address   | port | password    |
 | ---------------------- | --------- | ---- | ----------- |
-| master                 | localhost | 6381 | redismaster |
-| slave1                 | localhost | 6480 | redismaster |
-| slave2                 | localhost | 6481 | redismaster |
+| master                 | localhost | 6380 | my_password |
+| slave1                 | localhost | 6480 | my_password |
+| slave2                 | localhost | 6481 | my_password |
 | sentinel1 (`mymaster`) | localhost | 7380 | sentinel    |
 | sentinel2 (`mymaster`) | localhost | 7381 | sentinel    |
 
@@ -36,7 +36,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
           }
         ],
         sentinelPassword: 'sentinel',
-        password: 'redismaster'
+        password: 'my_password'
       },
       config: [
         {
