@@ -100,7 +100,7 @@ export class AppModule {}
 
 ## Configuration
 
-### [RedisModuleOptions](../../packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
+### [RedisModuleOptions](/packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
 
 | Name          | Type                                                                   | Default     | Required | Description                                                                                                                                                                                                                                                                                                    |
 | ------------- | ---------------------------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -110,7 +110,7 @@ export class AppModule {}
 | errorLog      | `boolean`                                                              | `true`      | `false`  | If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.                                                                                                                                                                                                         |
 | config        | `RedisClientOptions` \| `RedisClientOptions`[]                         | `undefined` | `false`  | Used to specify single or multiple clients.                                                                                                                                                                                                                                                                    |
 
-### [RedisClientOptions](../../packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
+### [RedisClientOptions](/packages/redis/lib/redis/interfaces/redis-module-options.interface.ts)
 
 | Name                 | Type                 | Default     | Required | Description                                                                                                                                                                                                    |
 | -------------------- | -------------------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -511,4 +511,4 @@ const module: TestingModule = await Test.createTestingModule({
 }).compile();
 ```
 
-A working example is available [here](../../sample).
+A working example is available [here](/sample).
