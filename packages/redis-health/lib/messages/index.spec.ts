@@ -4,10 +4,8 @@ const { OPERATIONS_TIMEOUT, ...messages } = allExports;
 
 describe('OPERATIONS_TIMEOUT', () => {
   test('should return a string', () => {
-    expect(OPERATIONS_TIMEOUT(1)).toContain('1');
-    expect(OPERATIONS_TIMEOUT(1)).toMatch(/\bmillisecond\b/);
-    expect(OPERATIONS_TIMEOUT(2)).toContain('2');
-    expect(OPERATIONS_TIMEOUT(2)).toMatch(/\bmilliseconds\b/);
+    expect(OPERATIONS_TIMEOUT(1000)).toContain('1000');
+    expect(OPERATIONS_TIMEOUT(2000)).toContain('2000');
   });
 });
 
