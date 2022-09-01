@@ -844,7 +844,7 @@ packages:
     resolution: {integrity: sha512-3Ab5HgYIIAnS0HjqJHQYZS+zXc4tUmTmBH3z83ajI6afXp8X3ZtdLX+nXx+I7LNkJD7uN9LAVhgnjDgZa2z0kA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@sinclair/typebox': 0.24.32
+      '@sinclair/typebox': 0.24.34
     dev: true
 
   /@jest/source-map/29.0.0:
@@ -1117,8 +1117,8 @@ packages:
       - encoding
     dev: true
 
-  /@sinclair/typebox/0.24.32:
-    resolution: {integrity: sha512-NWNTW284AOFhxgYofPef5IqDq6Y7ghZkZAkWJcUBp1r9ljfrFOKBDsiQJnLNp9tLcaSXFK9OgsS72W4RXe0jvw==}
+  /@sinclair/typebox/0.24.34:
+    resolution: {integrity: sha512-x3ejWKw7rpy30Bvm6U0AQMOHdjqe2E3YJrBHlTxH0KFsp77bBa+MH324nJxtXZFpnTy/JW2h5HPYVm0vG2WPnw==}
     dev: true
 
   /@sinonjs/commons/1.8.3:
@@ -1671,7 +1671,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001387
-      electron-to-chromium: 1.4.237
+      electron-to-chromium: 1.4.239
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.3
     dev: true
@@ -2060,8 +2060,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium/1.4.237:
-    resolution: {integrity: sha512-vxVyGJcsgArNOVUJcXm+7iY3PJAfmSapEszQD1HbyPLl0qoCmNQ1o/EX3RI7Et5/88In9oLxX3SGF8J3orkUgA==}
+  /electron-to-chromium/1.4.239:
+    resolution: {integrity: sha512-XbhfzxPIFzMjJm17T7yUGZEyYh5XuUjrA/FQ7JUy2bEd4qQ7MvFTaKpZ6zXZog1cfVttESo2Lx0ctnf7eQOaAQ==}
     dev: true
 
   /emittery/0.10.2:
