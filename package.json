@@ -30,7 +30,7 @@
     "@nestjs/common": "9.1.1",
     "@nestjs/core": "9.1.1",
     "@nestjs/platform-fastify": "9.1.1",
-    "@nestjs/terminus": "9.1.1",
+    "@nestjs/terminus": "9.1.2",
     "@nestjs/testing": "9.1.1",
     "@types/jest": "29.0.3",
     "@types/node": "16.11.59",
