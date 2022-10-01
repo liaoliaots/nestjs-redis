@@ -8,5 +8,5 @@
     }
   },
   "include": ["lib", "test"],
-  "files": ["../../global.d.ts"]
+  "files": ["../../node_modules/jest-extended/types/index.d.ts"]
 }
