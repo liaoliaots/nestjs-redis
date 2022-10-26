@@ -2,8 +2,8 @@
 [![Downloads][downloads-shield]][downloads-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-![Vulnerabilities][vulnerabilities-shield]
 [![License][license-shield]][license-url]
+![Vulnerabilities][vulnerabilities-shield]
 
 <p align="center">
   <a href="https://nestjs.com/">
