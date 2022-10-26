@@ -22,7 +22,7 @@
     <br />
     <a href="/sample">View Demos</a>
     ·
-    <a href="/issues">Report Bug</a>
+    <a href="https://github.com/liaoliaots/nestjs-redis/issues/new/choose">Report Bug</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Request Feature</a>
   </p>
@@ -220,6 +220,8 @@ export class AppModule {}
 ## Roadmap
 
 - [x] Compatible with **NestJS ^9**
+- [ ] Flexible custom logger
+- [ ] Add examples for **TLS**
 
 ## Contributing
 
@@ -240,9 +242,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 
-- [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
-- [Redis Documentation](https://redis.io/)
-- [Redis Docker Official Image](https://hub.docker.com/_/redis)
+- [Full-Featured Redis Client - ioredis](https://github.com/luin/ioredis)
+- [Official Redis Documentation](https://redis.io/)
+- [Official Redis Docker Image](https://hub.docker.com/_/redis)
+- [Official Bitnami Redis Docker Image](https://hub.docker.com/r/bitnami/redis)
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
