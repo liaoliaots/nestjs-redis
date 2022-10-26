@@ -2,8 +2,8 @@
 [![Downloads][downloads-shield]][downloads-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-![Vulnerabilities][vulnerabilities-shield]
 [![License][license-shield]][license-url]
+![Vulnerabilities][vulnerabilities-shield]
 
 <p align="center">
   <a href="https://nestjs.com/">
@@ -20,9 +20,9 @@
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="/sample">View Demo</a>
+    <a href="/sample">View Demos</a>
     ·
-    <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
+    <a href="https://github.com/liaoliaots/nestjs-redis/issues/new/choose">Report Bug</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Request Feature</a>
   </p>
@@ -51,7 +51,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="/packages/redis/dependency-graph.svg">Package dependency overview</a></li>
   </ol>
 </details>
 
@@ -221,6 +220,8 @@ export class AppModule {}
 ## Roadmap
 
 - [x] Compatible with **NestJS ^9**
+- [ ] Flexible custom logger
+- [ ] Add examples for **TLS**
 
 ## Contributing
 
@@ -241,9 +242,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Acknowledgments
 
-- [Full-featured Redis client - ioredis](https://github.com/luin/ioredis)
-- [Redis Documentation](https://redis.io/)
-- [Redis Docker Official Image](https://hub.docker.com/_/redis)
+- [Full-Featured Redis Client - ioredis](https://github.com/luin/ioredis)
+- [Official Redis Documentation](https://redis.io/)
+- [Official Redis Docker Image](https://hub.docker.com/_/redis)
+- [Official Bitnami Redis Docker Image](https://hub.docker.com/r/bitnami/redis)
 
 [npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
 [npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
