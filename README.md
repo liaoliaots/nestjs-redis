@@ -20,9 +20,9 @@
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="/sample">View Demo</a>
+    <a href="/sample">View Demos</a>
     ·
-    <a href="https://github.com/liaoliaots/nestjs-redis/issues">Report Bug</a>
+    <a href="/issues">Report Bug</a>
     ·
     <a href="https://github.com/liaoliaots/nestjs-redis/issues">Request Feature</a>
   </p>
