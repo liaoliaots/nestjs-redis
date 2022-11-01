@@ -38,7 +38,7 @@
     "publish:rc": "npm publish --tag rc"
   },
   "dependencies": {
-    "tslib": "2.4.0"
+    "tslib": "2.4.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
