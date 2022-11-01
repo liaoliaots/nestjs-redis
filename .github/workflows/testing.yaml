@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-20.04
+          - ubuntu-22.04
         node_version:
           - 14
           - 16
@@ -18,7 +18,7 @@ jobs:
           - x64
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.2.4
         with:
           version: latest
       - uses: actions/setup-node@v3
