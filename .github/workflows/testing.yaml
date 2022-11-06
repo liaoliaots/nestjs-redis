@@ -38,9 +38,8 @@ jobs:
       - run: pnpm -F "@liaoliaots/nestjs-redis-health" test
       - run: pnpm -F "@liaoliaots/nestjs-redis-health" test:e2e
       - run: docker compose down -v
-  test-with-node@12:
+  test-with-node12:
     name: Node 12 - x64 on ubuntu-22.04
-    needs: test
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
