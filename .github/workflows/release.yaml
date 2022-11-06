@@ -5,14 +5,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v2
         with:
           version: latest
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '16'
           check-latest: true
-          architecture: x64
+          architecture: 'x64'
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --frozen-lockfile
