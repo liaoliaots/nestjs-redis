@@ -1,6 +1,6 @@
 {
   "name": "@liaoliaots/nestjs-redis-health",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "description": "Redis(ioredis) health checks module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "main": "dist/index.js",
