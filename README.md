@@ -4,6 +4,7 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 ![Vulnerabilities][vulnerabilities-shield]
+[![NPM][workflow-shield]][workflow-url]
 
 <p align="center">
   <a href="https://nestjs.com/">
@@ -258,3 +259,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [license-shield]: https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge
 [license-url]: https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE
 [vulnerabilities-shield]: https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge
+[workflow-shield]: https://img.shields.io/github/workflow/status/liaoliaots/nestjs-redis/testing?label=TESTING&style=for-the-badge
+[workflow-url]: https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yaml
