@@ -4,7 +4,7 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 ![Vulnerabilities][vulnerabilities-shield]
-[![NPM][workflow-shield]][workflow-url]
+[![Workflow][workflow-shield]][workflow-url]
 
 <p align="center">
   <a href="https://nestjs.com/">
