@@ -221,7 +221,7 @@ export class AppModule {}
 
 - [x] Compatible with **NestJS ^9**
 - [ ] Flexible custom logger
-- [ ] Add examples for **TLS**
+- [ ] Add some examples for **TLS**
 
 ## Contributing
 
