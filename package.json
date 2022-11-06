@@ -58,8 +58,8 @@
     "typescript": "4.8.4"
   },
   "engines": {
-    "node": ">=14",
-    "pnpm": ">=7"
+    "node": ">=12.22.0",
+    "pnpm": ">=6"
   },
   "commitlint": {
     "extends": [
