@@ -39,7 +39,7 @@
     "concurrently": "7.5.0",
     "eslint": "8.27.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-jest": "27.1.4",
+    "eslint-plugin-jest": "27.1.6",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-tsdoc": "0.2.17",
     "fastify": "4.9.2",
