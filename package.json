@@ -28,7 +28,7 @@
     "@commitlint/cli": "17.2.0",
     "@commitlint/config-conventional": "17.2.0",
     "@nestjs/common": "9.1.6",
-    "@nestjs/core": "9.1.6",
+    "@nestjs/core": "9.2.1",
     "@nestjs/platform-fastify": "9.1.6",
     "@nestjs/terminus": "9.1.2",
     "@nestjs/testing": "9.1.6",
