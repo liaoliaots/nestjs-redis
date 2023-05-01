@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "17.3.0",
-    "@commitlint/config-conventional": "17.3.0",
+    "@commitlint/config-conventional": "17.6.1",
     "@nestjs/common": "9.2.1",
     "@nestjs/core": "9.2.1",
     "@nestjs/platform-fastify": "9.2.1",
