@@ -72,9 +72,9 @@ export class ClusterModule implements OnApplicationShutdown {
   }
 
   async onApplicationShutdown(): Promise<void> {
-    const { closeClient } = this.moduleRef.get<ClusterModuleOptions>(CLUSTER_MERGED_OPTIONS);
+    const { closeClient } = this.moduleRef.get<ClusterModuleOptions>(CLUSTER_MERGED_OPTIONS, { strict: false });
     if (closeClient) {
-      const results = await destroy(this.moduleRef.get<ClusterClients>(CLUSTER_CLIENTS));
+      const results = await destroy(this.moduleRef.get<ClusterClients>(CLUSTER_CLIENTS, {strict : false }));
       results.forEach(([namespace, quit]) => {
         if (isResolution(namespace) && isRejection(quit) && isError(quit.reason)) {
           logger.error(ERROR_LOG(parseNamespace(namespace.value), quit.reason.message), quit.reason.stack);
