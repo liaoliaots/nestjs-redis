@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["lib/*"]
+    }
+  },
+  "include": ["lib", "test"],
+  "files": ["../../node_modules/jest-extended/types/index.d.ts"]
+}
