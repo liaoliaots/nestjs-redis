@@ -1,6 +1,6 @@
 {
   "name": "@liaoliaots/root",
-  "version": "9",
+  "version": "10",
   "description": "Redis(ioredis) module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "private": true,
@@ -21,9 +21,7 @@
     "healthchecks",
     "diagnostics"
   ],
-  "scripts": {
-    "prepare": "husky install"
-  },
+  "scripts": {},
   "devDependencies": {
     "@commitlint/cli": "19.4.1",
     "@commitlint/config-conventional": "19.4.1",
