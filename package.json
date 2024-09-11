@@ -1,26 +1,10 @@
 {
   "name": "@liaoliaots/root",
   "version": "10",
-  "description": "Redis(ioredis) module for Nest framework (node.js).",
+  "description": "Redis module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "private": true,
   "license": "MIT",
-  "keywords": [
-    "redis",
-    "ioredis",
-    "sentinel",
-    "cluster",
-    "nestjs",
-    "nest",
-    "nodejs",
-    "node",
-    "typescript",
-    "javascript",
-    "health",
-    "healthcheck",
-    "healthchecks",
-    "diagnostics"
-  ],
   "scripts": {
     "prepare": "husky"
   },
