@@ -5,6 +5,5 @@ module.exports = {
   trailingComma: 'none',
   arrowParens: 'avoid',
   htmlWhitespaceSensitivity: 'strict',
-  vueIndentScriptAndStyle: true,
   endOfLine: 'auto'
 };
