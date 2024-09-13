@@ -1,4 +1,4 @@
-# sudo docker compose exec cluster-m3 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
+# sudo docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
 
 services:
   redis:
