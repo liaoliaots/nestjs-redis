@@ -1,5 +1,5 @@
 {
-  "name": "@liaoliaots/root",
+  "name": "@liaoliaots/nestjs-monorepo",
   "version": "10",
   "description": "Redis module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
