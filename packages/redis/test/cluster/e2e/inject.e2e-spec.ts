@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { FastifyInstance } from 'fastify';
 import { AppModule } from '../src/app.module';
 
 describe('InjectController (e2e)', () => {
@@ -12,7 +11,7 @@ describe('InjectController (e2e)', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    await (app.getHttpAdapter().getInstance() as FastifyInstance).ready();
+    await app.getHttpAdapter().getInstance().ready();
   });
 
   afterAll(async () => {
