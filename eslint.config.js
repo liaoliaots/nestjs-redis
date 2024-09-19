@@ -7,7 +7,7 @@ import jest from 'eslint-plugin-jest';
 
 export default tseslint.config(
   {
-    ignores: ['.prettierrc.js', 'eslint.config.js', 'sample', '**/dist', 'packages/**/*.js']
+    ignores: ['.prettierrc.js', 'eslint.config.js', 'sample', '**/dist', 'packages/*/*.js']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
