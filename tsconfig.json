@@ -3,6 +3,7 @@
   "include": ["*"],
   "compilerOptions": {
     "noEmit": true,
-    "allowJs": true
+    "allowJs": true,
+    "checkJs": true
   }
 }
