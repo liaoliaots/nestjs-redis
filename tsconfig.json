@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["*"],
+  "include": ["*.js"],
   "compilerOptions": {
     "noEmit": true,
     "allowJs": true,
