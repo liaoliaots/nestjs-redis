@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         node_version:
-          - 16
           - 18
           - 20
           - 22
@@ -25,13 +24,15 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
           compose-file: './compose.yaml'
+          up-flags: '-d'
+          down-flags: '-v'
       - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
       - run: pnpm install --frozen-lockfile
-      - run: pnpm -F "@liaoliaots/nestjs-redis" lint
-      - run: pnpm -F "@liaoliaots/nestjs-redis" test
-      - run: pnpm -F "@liaoliaots/nestjs-redis" test:e2e
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" test
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" test:e2e
