@@ -30,7 +30,7 @@ export default tseslint.config(
         ...globals.jest
       },
       parserOptions: {
-        ecmaVersion: 2023,
+        ecmaVersion: 'latest',
         projectService: true,
         tsconfigRootDir: import.meta.dirname
       }
