@@ -58,7 +58,7 @@ jobs:
           up-flags: '-d'
           down-flags: '-v'
       - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
-      - run: pnpm exec rimraf pnpm-lock.yaml
+      - run: rm -v pnpm-lock.yaml
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
       - run: pnpm run -F "@liaoliaots/nestjs-redis" test
