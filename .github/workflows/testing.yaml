@@ -8,17 +8,19 @@ jobs:
     name: Node.js 20
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           check-latest: true
           architecture: x64
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: 'pnpm'
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
