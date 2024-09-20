@@ -5,20 +5,14 @@ on:
       - main
 jobs:
   test:
-    name: Node ${{ matrix.node_version }}
+    name: Node.js 20
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node_version:
-          - 18
-          - 20
-          - 22
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: 20
           check-latest: true
           architecture: x64
       - name: Setup pnpm
@@ -33,33 +27,6 @@ jobs:
           down-flags: '-v'
       - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" test
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" test:e2e
-  test-node16:
-    name: Node 16
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16
-          check-latest: true
-          architecture: x64
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-      - name: Run docker-compose
-        uses: hoverkraft-tech/compose-action@v2.0.2
-        with:
-          compose-file: './compose.yaml'
-          up-flags: '-d'
-          down-flags: '-v'
-      - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
-      - run: rm -v pnpm-lock.yaml
-      - run: pnpm install --no-frozen-lockfile
       - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
       - run: pnpm run -F "@liaoliaots/nestjs-redis" test
       - run: pnpm run -F "@liaoliaots/nestjs-redis" test:e2e
