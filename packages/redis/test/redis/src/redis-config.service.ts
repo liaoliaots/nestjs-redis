@@ -8,7 +8,10 @@ export class RedisConfigService implements RedisOptionsFactory {
       commonOptions: {
         host: '127.0.0.1'
       },
-      config: [{ port: 6380 }, { namespace: 'client1', port: 6381 }]
+      config: [
+        { port: 6380, password: 'myredis' },
+        { namespace: 'client1', port: 6380, password: 'myredis' }
+      ]
     };
   }
 }

@@ -1,40 +1,34 @@
-name: testing
+name: Testing
 on:
   pull_request:
     branches:
       - main
 jobs:
   test:
-    name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-22.04
-        node_version:
-          - 14
-          - 16
-          - 18
-        architecture:
-          - x64
+    name: Node.js 20
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
-      - uses: actions/setup-node@v3
+          version: 9
+      - name: Setup node
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: 20
           check-latest: true
-          architecture: ${{ matrix.architecture }}
-      - run: docker compose up -d
-      - run: docker compose exec -T cluster-1_master-1 redis-cli --cluster create 127.0.0.1:16380 127.0.0.1:16381 127.0.0.1:16382 --cluster-yes
-      - run: docker compose exec -T cluster-2_master-1 redis-cli --cluster create 127.0.0.1:16480 127.0.0.1:16481 127.0.0.1:16482 --cluster-yes
+          architecture: x64
+          cache: 'pnpm'
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+          compose-file: './compose.yaml'
+          up-flags: '-d'
+          down-flags: '-v'
+      - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
       - run: pnpm install --frozen-lockfile
-      - run: pnpm -F "@liaoliaots/nestjs-redis" lint
-      - run: pnpm -F "@liaoliaots/nestjs-redis" test
-      - run: pnpm -F "@liaoliaots/nestjs-redis" test:e2e
-      - run: pnpm -F "@liaoliaots/nestjs-redis-health" lint
-      - run: pnpm -F "@liaoliaots/nestjs-redis-health" test
-      - run: pnpm -F "@liaoliaots/nestjs-redis-health" test:e2e
-      - run: docker compose down -v
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" test
+      - run: pnpm run -F "@liaoliaots/nestjs-redis" test:e2e

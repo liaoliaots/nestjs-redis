@@ -5,16 +5,16 @@ services:
     image: redis/redis-stack-server:latest
     network_mode: host
     environment:
-      - 'REDIS_ARGS=--port 6380 --requirepass myredis --appendonly yes'
+      - 'REDIS_ARGS=--port 6380 --requirepass myredis'
   cluster-m1:
     image: redis:latest
     network_mode: host
-    command: 'redis-server --port 7380 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf --appendonly yes'
+    command: 'redis-server --port 7380 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf'
   cluster-m2:
     image: redis:latest
     network_mode: host
-    command: 'redis-server --port 7381 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf --appendonly yes'
+    command: 'redis-server --port 7381 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf'
   cluster-m3:
     image: redis:latest
     network_mode: host
-    command: 'redis-server --port 7382 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf --appendonly yes'
+    command: 'redis-server --port 7382 --requirepass mycluster --cluster-enabled yes --cluster-config-file nodes.conf'
