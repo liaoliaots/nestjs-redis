@@ -20,6 +20,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r run lint
       - run: pnpm -r run build
-      # - run: pnpm -r publish
+      # - run: pnpm -r run publish
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
