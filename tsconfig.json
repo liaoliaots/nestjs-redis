@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["*.js"],
+  "files": ["eslint.config.js"],
   "compilerOptions": {
     "noEmit": true,
     "allowJs": true,

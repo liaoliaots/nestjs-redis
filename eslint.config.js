@@ -1,11 +1,11 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
-import prettier from 'eslint-plugin-prettier/recommended';
+import prettierPlugin from 'eslint-plugin-prettier/recommended';
 // @ts-ignore
 import jest from 'eslint-plugin-jest';
 
-const jestFiles = ['packages/*/test/**/*', 'packages/**/*.spec.ts'];
+const jestFiles = ['packages/*/test/**/*', 'packages/*/lib/**/*.spec.ts'];
 
 export default tseslint.config(
   {
@@ -22,7 +22,7 @@ export default tseslint.config(
     files: jestFiles,
     ...jest.configs['flat/style']
   },
-  prettier,
+  prettierPlugin,
   {
     languageOptions: {
       globals: {
