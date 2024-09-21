@@ -1,11 +1,10 @@
 {
-  "extends": "../tsconfig.build.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist",
+    "outDir": "dist",
     "paths": {
       "@/*": ["../redis/lib/*"],
-      "@health/*": ["lib/*"]
+      "@health/*": ["./lib/*"]
     }
   },
   "include": ["lib", "test"],
