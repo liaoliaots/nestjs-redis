@@ -18,8 +18,13 @@ jobs:
           architecture: x64
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm -r lint
-      - run: pnpm -r build
-      # - run: pnpm -r publish
+      - run: pnpm -F "@liaoliaots/nestjs-redis" run lint
+      - name: Build for CJS
+        run: pnpm -F "@liaoliaots/nestjs-redis" run build
+      - name: Build for ESM
+        run: |
+          npm pkg set type=module
+          pnpm -F "@liaoliaots/nestjs-redis" exec tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json
+      # - run: pnpm -r run publish
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

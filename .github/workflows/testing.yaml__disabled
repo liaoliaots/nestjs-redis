@@ -21,6 +21,10 @@ jobs:
           check-latest: true
           architecture: x64
           cache: 'pnpm'
+      - name: Cache Docker images
+        uses: ScribeMD/docker-cache@0.5.0
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles('compose.yaml') }}
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.2
         with:
@@ -29,6 +33,6 @@ jobs:
           down-flags: '-v'
       - run: docker compose exec cluster-m1 redis-cli -a mycluster --cluster create 127.0.0.1:7380 127.0.0.1:7381 127.0.0.1:7382 --cluster-yes
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" lint
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" test
-      - run: pnpm run -F "@liaoliaots/nestjs-redis" test:e2e
+      - run: pnpm -F "@liaoliaots/nestjs-redis" run lint
+      - run: pnpm -F "@liaoliaots/nestjs-redis" run test
+      - run: pnpm -F "@liaoliaots/nestjs-redis" run test:e2e
