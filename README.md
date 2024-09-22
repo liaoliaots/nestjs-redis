@@ -1,10 +1,8 @@
-[![NPM][npm-shield]][npm-url]
+![NPM Version](https://img.shields.io/npm/v/%40liaoliaots%2Fnestjs-redis%2Falpha?style=for-the-badge)
 [![Downloads][downloads-shield]][downloads-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
-![Vulnerabilities][vulnerabilities-shield]
-[![Workflow][workflow-shield]][workflow-url]
 
 <p align="center">
   <a href="https://nestjs.com/">
@@ -62,9 +60,7 @@
 - **Both redis & cluster are supported**: You can also specify multiple instances.
 - **Health**: Checks health of **redis & cluster** server.
 - **Rigorously tested**: With 100+ tests and 100% code coverage.
-- **Decorators**: Injects **redis & cluster** clients via `@InjectRedis()`, `@InjectCluster()`.
-- **Services**: Retrieves **redis & cluster** clients via `RedisService`, `ClusterService`.
-- **Testing**: Generates an injection token via `getRedisToken`, `getClusterToken`.
+- **Services**: Retrieves **redis & cluster** clients via `RedisManager`, `ClusterManager`.
 
 ### Test coverage
 
@@ -76,8 +72,10 @@
 
 ### Prerequisites
 
-This lib requires **Node.js >=12.22.0**, **NestJS ^9.0.0**, **ioredis ^5.0.0**.
+This lib requires **Node.js >=16.13.0**, **NestJS ^10.0.0**, **ioredis ^5.0.0**.
 
+- If you depend on **ioredis 5** & **NestJS 10**, please use version **10** of the lib.
+- If you depend on **ioredis 5** & **NestJS 9**, please use version **9** of the lib.
 - If you depend on **ioredis 4**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 - If you depend on **ioredis 5**, **NestJS 7** or **8**, please use [version 8](https://github.com/liaoliaots/nestjs-redis/tree/v8.2.2) of the lib.
 
@@ -218,12 +216,6 @@ export class AppModule {}
 
 </details>
 
-## Roadmap
-
-- [x] Compatible with **NestJS ^9**
-- [ ] Flexible custom logger
-- [ ] Add some examples for **TLS**
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -246,10 +238,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Full-Featured Redis Client - ioredis](https://github.com/luin/ioredis)
 - [Official Redis Documentation](https://redis.io/)
 - [Official Redis Docker Image](https://hub.docker.com/_/redis)
-- [Official Bitnami Redis Docker Image](https://hub.docker.com/r/bitnami/redis)
 
-[npm-shield]: https://img.shields.io/npm/v/@liaoliaots/nestjs-redis/latest?style=for-the-badge
-[npm-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
 [downloads-shield]: https://img.shields.io/npm/dm/@liaoliaots/nestjs-redis?style=for-the-badge
 [downloads-url]: https://www.npmjs.com/package/@liaoliaots/nestjs-redis
 [stars-shield]: https://img.shields.io/github/stars/liaoliaots/nestjs-redis?style=for-the-badge
@@ -258,6 +247,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [issues-url]: https://github.com/liaoliaots/nestjs-redis/issues
 [license-shield]: https://img.shields.io/npm/l/@liaoliaots/nestjs-redis?style=for-the-badge
 [license-url]: https://github.com/liaoliaots/nestjs-redis/blob/main/LICENSE
-[vulnerabilities-shield]: https://img.shields.io/snyk/vulnerabilities/npm/@liaoliaots/nestjs-redis?style=for-the-badge
-[workflow-shield]: https://img.shields.io/github/actions/workflow/status/liaoliaots/nestjs-redis/testing.yaml?label=TESTING&style=for-the-badge
-[workflow-url]: https://github.com/liaoliaots/nestjs-redis/actions/workflows/testing.yaml
