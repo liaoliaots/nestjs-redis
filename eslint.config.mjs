@@ -9,7 +9,7 @@ const jestFiles = ['packages/*/test/**/*', 'packages/*/lib/**/*.spec.ts'];
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs', 'packages/*/dist/', 'packages/*/*.mjs']
+    ignores: ['eslint.config.mjs', 'packages/*/dist/', 'packages/*/*.mjs', 'packages/global.d.ts']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,

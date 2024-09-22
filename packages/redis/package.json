@@ -1,10 +1,11 @@
 {
   "name": "@liaoliaots/nestjs-redis",
-  "version": "10.0.0",
+  "version": "10.0.0-alpha.3",
   "description": "Redis(ioredis) module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": "./dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "commonjs",
   "files": [
     "dist"
@@ -35,6 +36,7 @@
     "test:clear": "jest --clearCache",
     "make-badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"./\" --style=\"flat-square\" --logo=\"jest\"",
     "madge": "madge --image ./dependency-graph.svg dist/index.js",
+    "publish:alpha": "npm publish --tag alpha",
     "publish:next": "npm publish --tag next",
     "publish:rc": "npm publish --tag rc"
   },
