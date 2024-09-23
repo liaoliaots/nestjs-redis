@@ -14,7 +14,7 @@
   <h1 align="center">Nest Redis Module</h1>
 
   <p align="center">
-    Redis(ioredis) module for Nest framework (node.js).
+    Redis(ioredis & node-redis) module for Nest framework (node.js).
     <br />
     <a href="#usage"><strong>Explore the docs »</strong></a>
     <br />
@@ -76,8 +76,12 @@ This lib requires **Node.js >=16.13.0**, **NestJS ^10.0.0**, **ioredis ^5.0.0**.
 
 - If you depend on **ioredis 5** & **NestJS 10**, please use version **10** of the lib.
 - If you depend on **ioredis 5** & **NestJS 9**, please use version **9** of the lib.
-- If you depend on **ioredis 4**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
 - If you depend on **ioredis 5**, **NestJS 7** or **8**, please use [version 8](https://github.com/liaoliaots/nestjs-redis/tree/v8.2.2) of the lib.
+- If you depend on **ioredis 4**, please use [version 7](https://github.com/liaoliaots/nestjs-redis/tree/v7.0.0) of the lib.
+
+### Node-Redis
+
+If you prefre [node-redis](https://github.com/redis/node-redis), check out [this guide](), but it is in working progress.
 
 ### Installation
 
