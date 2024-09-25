@@ -1,9 +1,7 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
-import type { Redis } from 'ioredis';
 import { RedisModuleOptions, RedisModuleAsyncOptions, RedisOptionsFactory, RedisClients } from './interfaces';
-import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS_NAMESPACE, REDIS_MERGED_OPTIONS } from './redis.constants';
-import { createClient, namespaces } from './common';
-import { RedisManager } from './redis-manager';
+import { REDIS_OPTIONS, REDIS_CLIENTS, DEFAULT_REDIS, REDIS_MERGED_OPTIONS } from './redis.constants';
+import { createClient } from './common';
 import { defaultRedisModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: RedisModuleOptions): ValueProvider<RedisModuleOptions> => ({
@@ -62,18 +60,6 @@ export const createAsyncOptionsProvider = (options: RedisModuleAsyncOptions): Pr
   };
 };
 
-export const createRedisClientProviders = (): FactoryProvider<Redis>[] => {
-  const providers: FactoryProvider<Redis>[] = [];
-  namespaces.forEach((token, namespace) => {
-    providers.push({
-      provide: token,
-      useFactory: (redisManager: RedisManager) => redisManager.getClient(namespace),
-      inject: [RedisManager]
-    });
-  });
-  return providers;
-};
-
 export const redisClientsProvider: FactoryProvider<RedisClients> = {
   provide: REDIS_CLIENTS,
   useFactory: (options: RedisModuleOptions) => {
@@ -81,7 +67,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
     if (Array.isArray(options.config)) {
       options.config.forEach(item =>
         clients.set(
-          item.namespace ?? DEFAULT_REDIS_NAMESPACE,
+          item.namespace ?? DEFAULT_REDIS,
           createClient(
             { ...options.commonOptions, ...item },
             { readyLog: options.readyLog, errorLog: options.errorLog }
@@ -90,7 +76,7 @@ export const redisClientsProvider: FactoryProvider<RedisClients> = {
       );
     } else if (options.config) {
       clients.set(
-        options.config.namespace ?? DEFAULT_REDIS_NAMESPACE,
+        options.config.namespace ?? DEFAULT_REDIS,
         createClient(options.config, { readyLog: options.readyLog, errorLog: options.errorLog })
       );
     }

@@ -1,10 +1,11 @@
 import { isString } from './is';
-import { ClientNamespace } from '@/interfaces';
+import { Namespace } from '@/interfaces';
 
 /**
  * Parses namespace to string.
  *
- * @param namespace - The namespace of the client
+ * @param namespace - The namespace
+ * @returns A string value
  */
-export const parseNamespace = (namespace: ClientNamespace): string =>
+export const parseNamespace = (namespace: Namespace): string =>
   isString(namespace) ? namespace : namespace.toString();

@@ -1,38 +1,10 @@
-import Redis from 'ioredis';
-import { RedisClientOptions, RedisClients, RedisModuleOptions } from '../interfaces';
-import { ClientNamespace } from '@/interfaces';
+import { Redis } from 'ioredis';
+import { RedisClientOptions, RedisModuleOptions } from '../interfaces';
+import { Namespace } from '@/interfaces';
 import { READY_LOG, ERROR_LOG } from '@/messages';
 import { logger } from '../redis-logger';
-import { parseNamespace } from '@/utils';
-import { READY_EVENT, ERROR_EVENT, END_EVENT } from '@/constants';
-import { DEFAULT_REDIS_NAMESPACE, NAMESPACE_KEY } from '../redis.constants';
-
-export const addListeners = ({
-  namespace,
-  instance,
-  readyLog,
-  errorLog
-}: {
-  namespace: ClientNamespace;
-  instance: Redis;
-  readyLog?: boolean;
-  errorLog?: boolean;
-}) => {
-  Reflect.set(instance, NAMESPACE_KEY, namespace);
-  if (readyLog) {
-    instance.on(READY_EVENT, function (this: Redis) {
-      logger.log(READY_LOG(parseNamespace(Reflect.get(this, NAMESPACE_KEY) as ClientNamespace)));
-    });
-  }
-  if (errorLog) {
-    instance.on(ERROR_EVENT, function (this: Redis, error: Error) {
-      logger.error(
-        ERROR_LOG(parseNamespace(Reflect.get(this, NAMESPACE_KEY) as ClientNamespace), error.message),
-        error.stack
-      );
-    });
-  }
-};
+import { parseNamespace, get } from '@/utils';
+import { DEFAULT_REDIS, NAMESPACE_KEY } from '../redis.constants';
 
 export const createClient = (
   { namespace, url, path, onClientCreated, ...redisOptions }: RedisClientOptions,
@@ -42,20 +14,22 @@ export const createClient = (
   if (url) client = new Redis(url, redisOptions);
   else if (path) client = new Redis(path, redisOptions);
   else client = new Redis(redisOptions);
-  addListeners({ namespace: namespace ?? DEFAULT_REDIS_NAMESPACE, instance: client, readyLog, errorLog });
+  Reflect.defineProperty(client, NAMESPACE_KEY, {
+    value: namespace ?? DEFAULT_REDIS,
+    writable: false,
+    enumerable: false,
+    configurable: false
+  });
+  if (readyLog) {
+    client.on('ready', () => {
+      logger.log(READY_LOG(parseNamespace(get<Namespace>(client, NAMESPACE_KEY))));
+    });
+  }
+  if (errorLog) {
+    client.on('error', (error: Error) => {
+      logger.error(ERROR_LOG(parseNamespace(get<Namespace>(client, NAMESPACE_KEY)), error.message), error.stack);
+    });
+  }
   if (onClientCreated) onClientCreated(client);
   return client;
-};
-
-export const destroy = async (clients: RedisClients) => {
-  const promises: Promise<[PromiseSettledResult<ClientNamespace>, PromiseSettledResult<'OK'>]>[] = [];
-  clients.forEach((client, namespace) => {
-    if (client.status === END_EVENT) return;
-    if (client.status === READY_EVENT) {
-      promises.push(Promise.allSettled([namespace, client.quit()]));
-      return;
-    }
-    client.disconnect();
-  });
-  return await Promise.all(promises);
 };

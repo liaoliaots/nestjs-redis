@@ -1,14 +1,7 @@
 import { Provider, FactoryProvider, ValueProvider } from '@nestjs/common';
-import type { Cluster } from 'ioredis';
 import { ClusterModuleOptions, ClusterModuleAsyncOptions, ClusterOptionsFactory, ClusterClients } from './interfaces';
-import {
-  CLUSTER_OPTIONS,
-  CLUSTER_CLIENTS,
-  DEFAULT_CLUSTER_NAMESPACE,
-  CLUSTER_MERGED_OPTIONS
-} from './cluster.constants';
-import { createClient, namespaces } from './common';
-import { ClusterManager } from './cluster-manager';
+import { CLUSTER_OPTIONS, CLUSTER_CLIENTS, DEFAULT_CLUSTER, CLUSTER_MERGED_OPTIONS } from './cluster.constants';
+import { createClient } from './common';
 import { defaultClusterModuleOptions } from './default-options';
 
 export const createOptionsProvider = (options: ClusterModuleOptions): ValueProvider<ClusterModuleOptions> => ({
@@ -67,18 +60,6 @@ export const createAsyncOptionsProvider = (options: ClusterModuleAsyncOptions): 
   };
 };
 
-export const createClusterClientProviders = (): FactoryProvider<Cluster>[] => {
-  const providers: FactoryProvider<Cluster>[] = [];
-  namespaces.forEach((token, namespace) => {
-    providers.push({
-      provide: token,
-      useFactory: (clusterManager: ClusterManager) => clusterManager.getClient(namespace),
-      inject: [ClusterManager]
-    });
-  });
-  return providers;
-};
-
 export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
   provide: CLUSTER_CLIENTS,
   useFactory: (options: ClusterModuleOptions) => {
@@ -86,13 +67,13 @@ export const clusterClientsProvider: FactoryProvider<ClusterClients> = {
     if (Array.isArray(options.config)) {
       options.config.forEach(item =>
         clients.set(
-          item.namespace ?? DEFAULT_CLUSTER_NAMESPACE,
+          item.namespace ?? DEFAULT_CLUSTER,
           createClient(item, { readyLog: options.readyLog, errorLog: options.errorLog })
         )
       );
     } else if (options.config) {
       clients.set(
-        options.config.namespace ?? DEFAULT_CLUSTER_NAMESPACE,
+        options.config.namespace ?? DEFAULT_CLUSTER,
         createClient(options.config, { readyLog: options.readyLog, errorLog: options.errorLog })
       );
     }
