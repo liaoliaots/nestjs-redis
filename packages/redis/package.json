@@ -1,6 +1,6 @@
 {
   "name": "@liaoliaots/nestjs-redis",
-  "version": "10.0.0-alpha.3",
+  "version": "10.0.0-rc.1",
   "description": "Redis(ioredis) module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "exports": "./dist/index.js",
@@ -25,10 +25,10 @@
   ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "lint": "concurrently \"npm:lint:es\" \"npm:lint:tsc\"",
     "lint:es": "eslint \"{lib,test}/**/*.ts\"",
-    "lint:tsc": "tsc -p tsconfig.json --noEmit",
+    "lint:tsc": "tsc --project tsconfig.json --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

@@ -1,11 +1,7 @@
-import { Type, ModuleMetadata, Provider } from '@nestjs/common';
-import type { Cluster } from 'ioredis';
-import { ClusterNode, ClusterOptions } from 'ioredis';
-import { ClientNamespace } from '@/interfaces';
+import { Type, ModuleMetadata, Provider, InjectionToken, OptionalFactoryDependency } from '@nestjs/common';
+import type { Cluster, ClusterNode, ClusterOptions } from 'ioredis';
+import { Namespace } from '@/interfaces';
 
-/**
- * @public
- */
 export interface ClusterClientOptions extends ClusterOptions {
   /**
    * Client name. If client name is not given then it will be called "default".
@@ -13,8 +9,7 @@ export interface ClusterClientOptions extends ClusterOptions {
    *
    * @defaultValue `"default"`
    */
-  namespace?: ClientNamespace;
-
+  namespace?: Namespace;
   /**
    * List of cluster nodes.
    *
@@ -31,7 +26,6 @@ export interface ClusterClientOptions extends ClusterOptions {
    * ```
    */
   nodes: ClusterNode[];
-
   /**
    * Function to be executed as soon as the client is created.
    *
@@ -40,9 +34,6 @@ export interface ClusterClientOptions extends ClusterOptions {
   onClientCreated?: (client: Cluster) => void;
 }
 
-/**
- * @public
- */
 export interface ClusterModuleOptions {
   /**
    * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
@@ -50,43 +41,32 @@ export interface ClusterModuleOptions {
    * @defaultValue `true`
    */
   closeClient?: boolean;
-
   /**
    * If set to `true`, then ready logging will be displayed when the client is ready.
    *
    * @defaultValue `false`
    */
   readyLog?: boolean;
-
   /**
    * If set to `true`, then errors that occurred while connecting will be displayed by the built-in logger.
    *
    * @defaultValue `true`
    */
   errorLog?: boolean;
-
   /**
    * Used to specify single or multiple clients.
    */
   config: ClusterClientOptions | ClusterClientOptions[];
 }
 
-/**
- * @public
- */
 export interface ClusterModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useFactory?: (...args: any[]) => ClusterModuleOptions | Promise<ClusterModuleOptions>;
+  useFactory?: (...args: unknown[]) => ClusterModuleOptions | Promise<ClusterModuleOptions>;
   useClass?: Type<ClusterOptionsFactory>;
   useExisting?: Type<ClusterOptionsFactory>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  inject?: any[];
+  inject?: InjectionToken[] | OptionalFactoryDependency[];
   extraProviders?: Provider[];
 }
 
-/**
- * @public
- */
 export interface ClusterOptionsFactory {
   createClusterOptions: () => ClusterModuleOptions | Promise<ClusterModuleOptions>;
 }

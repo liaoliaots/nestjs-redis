@@ -1,4 +1,4 @@
-import { isString, isSymbol, isError, isResolution, isRejection } from './is';
+import { isString, isError } from './is';
 
 describe('isString', () => {
   test('should work correctly', () => {
@@ -9,17 +9,6 @@ describe('isString', () => {
     expect(isString(undefined)).toBe(false);
     expect(isString(null)).toBe(false);
     expect(isString(Symbol())).toBe(false);
-  });
-});
-
-describe('isSymbol', () => {
-  test('should work correctly', () => {
-    expect(isSymbol(Symbol())).toBe(true);
-    expect(isSymbol('')).toBe(false);
-    expect(isSymbol(1)).toBe(false);
-    expect(isSymbol(true)).toBe(false);
-    expect(isSymbol(undefined)).toBe(false);
-    expect(isSymbol(null)).toBe(false);
   });
 });
 
@@ -37,19 +26,5 @@ describe('isError', () => {
     expect(isError(undefined)).toBe(false);
     expect(isError(null)).toBe(false);
     expect(isError(Symbol())).toBe(false);
-  });
-});
-
-describe('isResolution', () => {
-  test('should work correctly', () => {
-    expect(isResolution({ status: 'fulfilled', value: '' })).toBe(true);
-    expect(isResolution({ status: 'rejected', reason: '' })).toBe(false);
-  });
-});
-
-describe('isRejection', () => {
-  test('should work correctly', () => {
-    expect(isRejection({ status: 'fulfilled', value: '' })).toBe(false);
-    expect(isRejection({ status: 'rejected', reason: '' })).toBe(true);
   });
 });
