@@ -1,6 +1,6 @@
 {
   "name": "@liaoliaots/nestjs-redis",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "Redis(ioredis) module for Nest framework (node.js).",
   "author": "LiaoLiao <yxiaosong002@gmail.com>",
   "exports": "./dist/index.js",
@@ -34,10 +34,9 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:clear": "jest --clearCache",
-    "make-badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"./\" --style=\"flat-square\" --logo=\"jest\"",
-    "madge": "madge --image ./dependency-graph.svg dist/index.js",
+    "badges": "istanbul-badges-readme --coverageDir=\"./coverage\" --readmeDir=\"./\" --style=\"flat-square\" --logo=\"jest\"",
+    "madge": "madge --image dependencies.svg dist/index.js",
     "publish:alpha": "npm publish --tag alpha",
-    "publish:next": "npm publish --tag next",
     "publish:rc": "npm publish --tag rc"
   },
   "dependencies": {
@@ -49,7 +48,7 @@
     "ioredis": "^5.0.0"
   },
   "engines": {
-    "node": ">=16.13.0"
+    "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public"
