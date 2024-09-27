@@ -4,6 +4,6 @@
 export class ClientNotFoundError extends Error {
   constructor(namespace: string) {
     super(`Connection "${namespace}" was not found.`);
-    this.name = ClientNotFoundError.name;
+    this.name = this.constructor.name;
   }
 }

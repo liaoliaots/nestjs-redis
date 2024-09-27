@@ -15,7 +15,7 @@ export class RedisService {
 
   /**
    * Retrieves a redis connection by namespace.
-   * However, if the query does not find a connection, it returns ClientNotFoundError: No Connection found error.
+   * However, if the retrieving does not find a connection, it returns ClientNotFoundError: No Connection found error.
    *
    * @param namespace - The namespace
    * @returns A redis connection
@@ -27,7 +27,7 @@ export class RedisService {
   }
 
   /**
-   * Retrieves a redis connection by namespace, if the query does not find a connection, it returns `null`;
+   * Retrieves a redis connection by namespace, if the retrieving does not find a connection, it returns `null`;
    *
    * @param namespace - The namespace
    * @returns A redis connection or nil

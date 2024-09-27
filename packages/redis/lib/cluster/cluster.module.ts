@@ -9,10 +9,10 @@ import {
   mergedOptionsProvider
 } from './cluster.providers';
 import { CLUSTER_CLIENTS, CLUSTER_MERGED_OPTIONS } from './cluster.constants';
-import { parseNamespace, isError } from '@/utils';
+import { isError } from '@/utils';
 import { logger } from './cluster-logger';
 import { MissingConfigurationsError } from '@/errors';
-import { ERROR_LOG } from '@/messages';
+import { generateErrorMessage } from '@/messages';
 
 @Module({})
 export class ClusterModule implements OnApplicationShutdown {
@@ -80,7 +80,7 @@ export class ClusterModule implements OnApplicationShutdown {
           try {
             await client.quit();
           } catch (e) {
-            if (isError(e)) logger.error(ERROR_LOG(parseNamespace(namespace), e.message), e.stack);
+            if (isError(e)) logger.error(generateErrorMessage(namespace, e.message), e.stack);
           }
           continue;
         }

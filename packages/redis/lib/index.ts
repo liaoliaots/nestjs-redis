@@ -1,3 +1,4 @@
+export { ClientNotFoundError, MissingConfigurationsError } from './errors';
 export { RedisModule } from './redis/redis.module';
 export { DEFAULT_REDIS } from './redis/redis.constants';
 export { RedisService } from './redis/redis.service';

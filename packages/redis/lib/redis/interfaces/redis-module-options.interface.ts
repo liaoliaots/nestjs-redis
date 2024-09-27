@@ -4,14 +4,17 @@ import { Namespace } from '@/interfaces';
 
 export interface RedisClientOptions extends RedisOptions {
   /**
-   * Client name. If client name is not given then it will be called "default".
-   * Different clients must have different names.
+   * Name of the client. If the name is not given then it will be set to "default".
+   *
+   * Please note that you shouldn't have multiple connections without a namespace, or with the same namespace, otherwise they will get overridden.
+   *
+   * For the default name you can also explicitly import `DEFAULT_REDIS`.
    *
    * @defaultValue `"default"`
    */
   namespace?: Namespace;
   /**
-   * URI scheme to be used to specify connection options as a redis:// URL or rediss:// URL.
+   * Connection url to be used to specify connection options as a redis:// URL or rediss:// URL when using TLS.
    *
    * - redis - https://www.iana.org/assignments/uri-schemes/prov/redis
    * - rediss - https://www.iana.org/assignments/uri-schemes/prov/rediss
@@ -19,18 +22,40 @@ export interface RedisClientOptions extends RedisOptions {
    * @example
    * ```ts
    * // Connect to 127.0.0.1:6380, db 4, using password "authpassword":
-   * 'redis://:authpassword@127.0.0.1:6380/4'
+   * url: 'redis://:authpassword@127.0.0.1:6380/4'
+   * ```
+   *
+   * @example
+   * ```ts
+   * // Username can also be passed via URI.
+   * url: 'redis://username:authpassword@127.0.0.1:6380/4'
    * ```
    */
   url?: string;
   /**
-   * Path to be used for Unix domain sockets.
+   * Used to specify the path to Unix domain sockets.
    */
   path?: string;
   /**
-   * Function to be executed as soon as the client is created.
+   * Manually providing a redis instance.
    *
-   * @param client - The new client created
+   * @example
+   * ```ts
+   * provide() {
+   *   // 192.168.1.1:6379
+   *   return new Redis(6379, '192.168.1.1');
+   * }
+   * ```
+   */
+  provide?: () => Redis;
+  /**
+   * Called after the client has been created.
+   */
+  created?: (client: Redis) => void;
+  /**
+   * Function to be executed after the client is created.
+   *
+   * @deprecated Use the new `created` instead.
    */
   onClientCreated?: (client: Redis) => void;
 }
@@ -49,7 +74,7 @@ export interface RedisModuleOptions {
   /**
    * If set to `true`, then ready logging will be displayed when the client is ready.
    *
-   * @defaultValue `false`
+   * @defaultValue `true`
    */
   readyLog?: boolean;
   /**
@@ -62,13 +87,17 @@ export interface RedisModuleOptions {
    * Used to specify single or multiple clients.
    */
   config?: RedisClientOptions | RedisClientOptions[];
+  /**
+   * Called before the instance is created.
+   */
+  beforeCreate?: () => void;
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   useFactory?: (...args: unknown[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
   useClass?: Type<RedisOptionsFactory>;
   useExisting?: Type<RedisOptionsFactory>;
-  inject?: InjectionToken[] | OptionalFactoryDependency[];
+  inject?: (InjectionToken | OptionalFactoryDependency)[];
   extraProviders?: Provider[];
 }
 
