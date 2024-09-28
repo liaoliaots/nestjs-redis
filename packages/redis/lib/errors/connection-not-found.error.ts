@@ -1,7 +1,7 @@
 /**
- * Thrown when consumer tries to get client that does not exist.
+ * Thrown when consumer tries to get connection that does not exist.
  */
-export class ClientNotFoundError extends Error {
+export class ConnectionNotFoundError extends Error {
   constructor(namespace: string) {
     super(`Connection "${namespace}" was not found.`);
     this.name = this.constructor.name;

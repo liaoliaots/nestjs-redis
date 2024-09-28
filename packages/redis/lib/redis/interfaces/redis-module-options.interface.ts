@@ -4,7 +4,7 @@ import { Namespace } from '@/interfaces';
 
 export interface RedisClientOptions extends RedisOptions {
   /**
-   * Name of the client. If the name is not given then it will be set to "default".
+   * Name of the connection. If the name is not given then it will be set to "default".
    *
    * Please note that you shouldn't have multiple connections without a namespace, or with the same namespace, otherwise they will get overridden.
    *
@@ -49,11 +49,11 @@ export interface RedisClientOptions extends RedisOptions {
    */
   provide?: () => Redis;
   /**
-   * Called after the client has been created.
+   * Called after the connection has been created.
    */
   created?: (client: Redis) => void;
   /**
-   * Function to be executed after the client is created.
+   * Function to be executed after the connection is created.
    *
    * @deprecated Use the new `created` instead.
    */
@@ -62,17 +62,17 @@ export interface RedisClientOptions extends RedisOptions {
 
 export interface RedisModuleOptions {
   /**
-   * If set to `true`, all clients will be closed automatically on nestjs application shutdown.
+   * If set to `true`, all connections will be closed automatically on nestjs application shutdown.
    *
    * @defaultValue `true`
    */
   closeClient?: boolean;
   /**
-   * Common options to be passed to each client.
+   * Common options to be passed to each `config`.
    */
   commonOptions?: RedisOptions;
   /**
-   * If set to `true`, then ready logging will be displayed when the client is ready.
+   * If set to `true`, then ready logging will be displayed when the connection is ready.
    *
    * @defaultValue `true`
    */
@@ -84,11 +84,11 @@ export interface RedisModuleOptions {
    */
   errorLog?: boolean;
   /**
-   * Used to specify single or multiple clients.
+   * Used to specify single or multiple connections.
    */
   config?: RedisClientOptions | RedisClientOptions[];
   /**
-   * Called before the instance is created.
+   * Called before the connection is created.
    */
   beforeCreate?: () => void;
 }

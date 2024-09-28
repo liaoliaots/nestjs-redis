@@ -4,10 +4,10 @@ import { REDIS_CLIENTS, DEFAULT_REDIS } from './redis.constants';
 import { RedisClients } from './interfaces';
 import { parseNamespace } from '@/utils';
 import { Namespace } from '@/interfaces';
-import { ClientNotFoundError } from '@/errors';
+import { ConnectionNotFoundError } from '@/errors';
 
 /**
- * Manager for redis connections.
+ * The redis connections manager.
  */
 @Injectable()
 export class RedisService {
@@ -22,7 +22,7 @@ export class RedisService {
    */
   getOrThrow(namespace: Namespace = DEFAULT_REDIS): Redis {
     const client = this.clients.get(namespace);
-    if (!client) throw new ClientNotFoundError(parseNamespace(namespace));
+    if (!client) throw new ConnectionNotFoundError(parseNamespace(namespace));
     return client;
   }
 
@@ -30,7 +30,7 @@ export class RedisService {
    * Retrieves a redis connection by namespace, if the retrieving does not find a connection, it returns `null`;
    *
    * @param namespace - The namespace
-   * @returns A redis connection or nil
+   * @returns A redis connection or `null`
    */
   getOrNil(namespace: Namespace = DEFAULT_REDIS): Redis | null {
     const client = this.clients.get(namespace);
