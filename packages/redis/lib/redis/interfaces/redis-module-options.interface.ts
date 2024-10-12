@@ -65,7 +65,7 @@ export interface RedisModuleOptions {
 }
 
 export interface RedisModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-  useFactory?: (...args: unknown[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
+  useFactory?: (...args: any[]) => RedisModuleOptions | Promise<RedisModuleOptions>;
   useClass?: Type<RedisOptionsFactory>;
   useExisting?: Type<RedisOptionsFactory>;
   inject?: InjectionToken[] | OptionalFactoryDependency[];
