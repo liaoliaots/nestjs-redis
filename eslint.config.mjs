@@ -1,19 +1,18 @@
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
 import globals from 'globals';
-import prettierPlugin from 'eslint-plugin-prettier/recommended';
-// @ts-ignore
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import jest from 'eslint-plugin-jest';
 
-const jestFiles = ['packages/*/test/**/*', 'packages/*/lib/**/*.spec.ts'];
+const jestFiles = ['packages/*/test/**/*.e2e-spec.ts', 'packages/*/lib/**/*.spec.ts'];
 
-export default tseslint.config(
+export default ts.config(
   {
-    ignores: ['eslint.config.mjs', 'packages/*/dist/', 'packages/*/*.mjs', 'packages/global.d.ts']
+    ignores: ['packages/global.d.ts', '**/dist/', '**/*.mjs']
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  js.configs.recommended,
+  ...ts.configs.recommendedTypeChecked,
+  ...ts.configs.stylisticTypeChecked,
   {
     files: jestFiles,
     ...jest.configs['flat/recommended']
@@ -22,21 +21,21 @@ export default tseslint.config(
     files: jestFiles,
     ...jest.configs['flat/style']
   },
-  prettierPlugin,
+  prettierRecommended,
   {
+    linterOptions: {
+      reportUnusedDisableDirectives: true
+    },
     languageOptions: {
       globals: {
         ...globals.node,
         ...globals.jest
       },
       parserOptions: {
-        ecmaVersion: 'latest',
+        sourceType: 'commonjs',
         projectService: true,
         tsconfigRootDir: import.meta.dirname
       }
-    },
-    linterOptions: {
-      reportUnusedDisableDirectives: true
     }
   }
 );

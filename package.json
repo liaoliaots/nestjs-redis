@@ -16,7 +16,6 @@
     "@nestjs/core": "10.4.5",
     "@nestjs/platform-fastify": "10.4.5",
     "@nestjs/testing": "10.4.5",
-    "@tsconfig/node20": "20.1.4",
     "@types/eslint__js": "8.42.3",
     "@types/jest": "29.5.13",
     "@types/node": "20.16.13",
