@@ -7,14 +7,14 @@ export { DEFAULT_CLUSTER } from './cluster/cluster.constants';
 export { ClusterService } from './cluster/cluster.service';
 
 // * Types & Interfaces
-export { Namespace } from './interfaces';
-export {
+export type { Namespace } from './interfaces';
+export type {
   RedisModuleOptions,
   RedisModuleAsyncOptions,
   RedisOptionsFactory,
   RedisClientOptions
 } from './redis/interfaces';
-export {
+export type {
   ClusterModuleOptions,
   ClusterModuleAsyncOptions,
   ClusterOptionsFactory,

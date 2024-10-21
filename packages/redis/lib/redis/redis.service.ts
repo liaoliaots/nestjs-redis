@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
 import type { Redis } from 'ioredis';
 import { REDIS_CLIENTS, DEFAULT_REDIS } from './redis.constants';
-import { RedisClients } from './interfaces';
+import type { RedisClients } from './interfaces';
 import { parseNamespace } from '@/utils';
-import { Namespace } from '@/interfaces';
+import type { Namespace } from '@/interfaces';
 import { ConnectionNotFoundError } from '@/errors';
 
 /**
