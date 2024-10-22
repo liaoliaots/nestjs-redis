@@ -18,7 +18,7 @@
     "@nestjs/testing": "10.4.5",
     "@types/eslint__js": "8.42.3",
     "@types/jest": "29.5.13",
-    "@types/node": "20.16.13",
+    "@types/node": "20.16.14",
     "concurrently": "9.0.1",
     "eslint": "9.13.0",
     "eslint-config-prettier": "9.1.0",
@@ -38,7 +38,7 @@
     "ts-jest": "29.2.5",
     "tsc-alias": "1.8.10",
     "typescript": "5.6.3",
-    "typescript-eslint": "8.10.0"
+    "typescript-eslint": "8.11.0"
   },
   "engines": {
     "node": ">=20",
