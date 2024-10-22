@@ -4,7 +4,7 @@ import globals from 'globals';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import jest from 'eslint-plugin-jest';
 
-const jestFiles = ['packages/*/test/**/*.e2e-spec.ts', 'packages/*/lib/**/*.spec.ts'];
+const jestFiles = ['**/*.e2e-spec.ts', '**/*.spec.ts'];
 
 export default ts.config(
   {
