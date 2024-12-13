@@ -13,6 +13,7 @@
   "keywords": [
     "redis",
     "ioredis",
+    "node-redis",
     "cluster",
     "nestjs",
     "nest",
@@ -20,10 +21,7 @@
     "node",
     "typescript",
     "javascript",
-    "health",
-    "healthcheck",
-    "healthchecks",
-    "diagnostics"
+    "healthchecks"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -42,7 +40,7 @@
     "publish:rc": "npm publish --tag rc"
   },
   "dependencies": {
-    "tslib": "2.8.0"
+    "tslib": "2.8.1"
   },
   "devDependencies": {
     "@liaoliaots/nestjs-redis": "workspace:*"
@@ -54,7 +52,7 @@
     "ioredis": "^5.0.0"
   },
   "engines": {
-    "node": ">=16.13.0"
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"

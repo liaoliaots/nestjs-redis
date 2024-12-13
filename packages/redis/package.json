@@ -40,7 +40,7 @@
     "publish:rc": "npm publish --tag rc"
   },
   "dependencies": {
-    "tslib": "2.8.0"
+    "tslib": "2.8.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
@@ -48,7 +48,7 @@
     "ioredis": "^5.0.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"
