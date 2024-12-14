@@ -1,9 +1,0 @@
-{
-  "extends": "@tsconfig/node20/tsconfig.json",
-  "files": ["eslint.config.mjs"],
-  "compilerOptions": {
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": true
-  }
-}

@@ -1,2 +1,2 @@
 export * from './missing-configurations.error';
-export * from './client-not-found.error';
+export * from './connection-not-found.error';
