@@ -1,7 +1,7 @@
 export default {
   '*.ts': [
     'prettier --write',
-    'eslint "lib/**" --ignore-pattern "lib/**/*.spec.ts"',
+    'eslint --ignore-pattern "test/" --ignore-pattern "**/*.spec.ts"',
     () => 'tsc --project tsconfig.build.json --noEmit'
   ]
 };
