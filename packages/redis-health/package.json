@@ -49,7 +49,16 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/terminus": "^10.0.0",
-    "ioredis": "^5.0.0"
+    "ioredis": "^5.0.0",
+    "redis": "^4.1.0"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    },
+    "redis": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=16"

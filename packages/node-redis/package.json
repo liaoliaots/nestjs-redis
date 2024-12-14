@@ -44,7 +44,7 @@
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
-    "redis": "^5.0.0-next.5"
+    "redis": "^4.1.0"
   },
   "engines": {
     "node": ">=16"
